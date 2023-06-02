@@ -1,5 +1,6 @@
 "use client";
 
+import Footer from "@/components/shared/Footer";
 import { SessionProvider } from "next-auth/react";
 import { Poppins } from "next/font/google";
 import AppBar from "./AppBar";
@@ -27,6 +28,7 @@ export default function RootLayout({
         <SessionProvider session={session}>
           <AppBar />
           {children}
+          <Footer />
         </SessionProvider>
       </body>
     </html>
