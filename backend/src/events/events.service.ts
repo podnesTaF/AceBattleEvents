@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LocationsService } from 'src/locations/locations.service';
+import { TeamEntity } from 'src/teams/entities/team.entity';
 import { Repository } from 'typeorm';
 import { CreateEventDto } from './dto/create-event.dto';
 import { EventEntity } from './entities/event.entity';
@@ -19,7 +20,7 @@ export class EventsService {
       longitude: eventDto.longitude,
     });
 
-    const { title, description, date, imageUrl, price } = eventDto;
+    const { title, description, date, imageUrl, price, prize } = eventDto;
 
     return this.repository.save({
       title,
@@ -28,7 +29,22 @@ export class EventsService {
       imageUrl,
       price,
       location,
+      prize,
     });
+  }
+
+  getAll() {
+    return this.repository
+      .createQueryBuilder('event')
+      .leftJoinAndMapMany(
+        'event.teams',
+        TeamEntity,
+        'team',
+        'team.eventId = event.id',
+      )
+      .loadRelationCountAndMap('event.teamsCount', 'event.teams', 'teams')
+      .orderBy('posts.createdAt', 'DESC')
+      .getMany();
   }
 
   getEventById(id: number) {

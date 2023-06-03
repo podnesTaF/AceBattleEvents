@@ -14,6 +14,9 @@ export class CreateEventDto {
   @IsNumber()
   price: number;
 
+  @IsNumber()
+  prize: number;
+
   @IsString()
   date: string;
 

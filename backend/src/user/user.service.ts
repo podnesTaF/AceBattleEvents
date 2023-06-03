@@ -22,6 +22,10 @@ export class UserService {
     });
   }
 
+  findById(id: number) {
+    return this.repository.findOne({ where: { id } });
+  }
+
   findByCond(cond: LoginUserDto) {
     return this.repository.findOne({ where: { ...cond } });
   }

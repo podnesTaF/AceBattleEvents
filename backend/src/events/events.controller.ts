@@ -11,6 +11,11 @@ export class EventsController {
     return this.eventsService.create(createEventDto);
   }
 
+  @Get()
+  findAll() {
+    return this.eventsService.getAll();
+  }
+
   @Get(':id')
   findById(@Param('id') id: string) {
     return this.eventsService.getEventById(+id);
