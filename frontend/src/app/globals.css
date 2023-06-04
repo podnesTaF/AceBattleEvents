@@ -7,3 +7,17 @@ html {
   padding: 0;
   box-sizing: border-box;
 }
+
+.clip-title {
+  clip-path: none;
+}
+
+@media screen and (min-width: 640px) {
+  .h-calc-screen {
+    height: calc(100vh - 80px);
+  }
+
+  .clip-title {
+    clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
+  }
+}

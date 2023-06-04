@@ -14,7 +14,7 @@ const FormButton: React.FC<FormButtonProps> = ({
   return (
     <button
       {...props}
-      className="text-white text-xl uppercase w-full my-4 bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-5 text-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 inline-flex items-center justify-center"
+      className="text-white text-xl uppercase w-full my-4 bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-2 md:px-4 md:py-4  text-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 inline-flex items-center justify-center"
     >
       {isLoading && (
         <svg

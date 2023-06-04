@@ -5,6 +5,7 @@ import FormField from "@/components/shared/FormField";
 import { LoginFormSchema } from "@/utils/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -50,6 +51,12 @@ const LoginPage = ({ searchParams }: IProps) => {
             disabled={!form.formState.isValid || form.formState.isSubmitting}
             isLoading={form.formState.isSubmitting}
           />
+          <p>
+            Don't have an account yet?{" "}
+            <Link href="auth/register" className="underline text-red-500">
+              Sign up
+            </Link>
+          </p>
         </form>
       </FormProvider>
     </div>

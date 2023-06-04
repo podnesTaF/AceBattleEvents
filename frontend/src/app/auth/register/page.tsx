@@ -7,6 +7,7 @@ import { IUser } from "@/models/IUser";
 import { RegisterSchema } from "@/utils/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -75,6 +76,12 @@ const RegisterPage = () => {
             disabled={!form.formState.isValid || form.formState.isSubmitting}
             isLoading={form.formState.isSubmitting}
           />
+          <p>
+            Already have an account?{" "}
+            <Link href="auth/login" className="underline text-red-500">
+              Sign in
+            </Link>
+          </p>
         </form>
       </FormProvider>
     </div>
