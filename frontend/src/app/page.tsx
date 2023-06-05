@@ -1,5 +1,7 @@
 "use client";
 
+import CustomTitle from "@/components/shared/CustomTitle";
+
 const textStyles =
   "text-lg sm:text-xl text-white border-r-2 border-red-500 px-2 sm:px-4 w-1/4 uppercase text-center";
 
@@ -31,18 +33,7 @@ export default function Home() {
         </div>
       </header>
       <main>
-        <div className="flex w-full">
-          <div className="w-1/2 flex justify-end p-4 bg-[#1E1C1F] items-center">
-            <h3 className="text-2xl sm:text-4xl text-white font-semibold uppercase">
-              BATTLE MILE
-            </h3>
-          </div>
-          <div className="w-1/2 flex justify-start p-4 bg-[#FF0000] clip-title items-center">
-            <h3 className="text-xl sm:text-3xl text-white font-semibold uppercase">
-              RUNNING COMPETITIONS
-            </h3>
-          </div>
-        </div>
+        <CustomTitle title={"BATTLE MILE"} subtitle=" RUNNING COMPETITIONS" />
         <section className="py-[10%] max-w-4xl flex justify-center mx-auto">
           <img
             src="/auth-card.jpg"
