@@ -4,12 +4,16 @@ interface FilterSelectProps {
   label: string;
   placeholder: string;
   values: any[];
+  onChangeFilter: (type: string, value: string) => void;
+  selected?: string;
 }
 
 const FilterSelect: React.FC<FilterSelectProps> = ({
   label,
   placeholder,
   values,
+  onChangeFilter,
+  selected,
 }) => {
   return (
     <div className="w-full sm:w-2/5 md:w-full lg:w-2/5">
@@ -21,12 +25,16 @@ const FilterSelect: React.FC<FilterSelectProps> = ({
       </label>
       <div className="relative">
         <select
+          value={selected}
           id="small"
+          onChange={(e) => onChangeFilter(label, e.target.value)}
           className="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-sm bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none"
         >
-          <option selected>{placeholder}</option>
+          <option value={""}>{placeholder}</option>
           {values.map((v, i) => (
-            <option value={v[0]}>{v[1]}</option>
+            <option key={i} value={v[0]}>
+              {v[1]}
+            </option>
           ))}
         </select>
         <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
@@ -40,7 +48,7 @@ const FilterSelect: React.FC<FilterSelectProps> = ({
             <path
               d="M1.80385 1L7 10L12.1962 1H1.80385Z"
               stroke="black"
-              stroke-width="2"
+              strokeWidth="2"
             />
           </svg>
         </div>

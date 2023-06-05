@@ -27,7 +27,7 @@ const CustomTable: React.FC<CustomTableProps> = ({ titles, rows }) => {
               {titles.map((t, i) => {
                 if (typeof r[t] === "object") {
                   return (
-                    <td className="px-6 py-4">
+                    <td key={i} className="px-6 py-4">
                       <Link
                         href={r[t].link}
                         className="font-medium text-gray-400 dark:text-blue-500 hover:underline cursor-pointer"
