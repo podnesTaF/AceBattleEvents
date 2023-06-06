@@ -1,6 +1,6 @@
 export const rows = [
   {
-    name: "CUP BENELUX",
+    title: "CUP BENELUX",
     date: "23/06/2023",
     location: "brussels",
     "number of teams": 8,

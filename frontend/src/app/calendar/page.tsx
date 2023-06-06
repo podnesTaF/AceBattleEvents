@@ -1,5 +1,6 @@
 "use client";
 
+import { Api } from "@/api";
 import FilterBage from "@/components/events/FilterBage";
 import FilterSelect from "@/components/events/FilterSelect";
 import SearchField from "@/components/events/SearchField";
@@ -7,18 +8,24 @@ import CustomTable from "@/components/shared/CustomTable";
 import CustomTitle from "@/components/shared/CustomTitle";
 import Pagination from "@/components/shared/Pagination";
 import { countries, months, years } from "@/utils/events-filter-values";
-import { rows as originalRows } from "@/utils/tables-dummy-data";
+import { transformIntoEventsTable } from "@/utils/transform-data";
 import { useEffect, useState } from "react";
 
 const CalendarPage = () => {
-  const [rows, setRows] = useState(originalRows);
   const [searchValue, setSearchValue] = useState("");
   const [filters, setFilters] = useState<{ type: string; value: any }[]>([]);
   const [checkValue, setCheckValue] = useState<boolean>(false);
+  const [eventsRows, setEventsRows] = useState<any>([]);
+  const [pagesCount, setPageCount] = useState(1);
+  const [currPage, setCurrPage] = useState(1);
 
   const onChangeInput = (newValue: string) => {
     setSearchValue(newValue);
-    console.log(newValue);
+    onChangeFilter("name", newValue);
+  };
+
+  const changePage = (pageNum: number) => {
+    setCurrPage(pageNum);
   };
 
   const onChangeFilter = (filterType: string, selectedValue: string) => {
@@ -42,11 +49,11 @@ const CalendarPage = () => {
   const removeFilter = (filter: string) => {
     if (filter === "check") {
       setCheckValue(false);
+    } else if (filter === "name") {
+      setSearchValue("");
     }
     setFilters((prev) => prev.filter((f) => f.type !== filter));
   };
-
-  const getFilteredRows = () => {};
 
   useEffect(() => {
     if (checkValue) {
@@ -55,6 +62,20 @@ const CalendarPage = () => {
       removeFilter("check");
     }
   }, [checkValue]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const api = await Api();
+        const eventsData = await api.events.getAllEvents(filters, currPage);
+        setPageCount(eventsData.totalPages);
+        const dataRows = transformIntoEventsTable(eventsData.events);
+        setEventsRows(dataRows);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [filters, currPage]);
 
   return (
     <>
@@ -69,8 +90,10 @@ const CalendarPage = () => {
               <SearchField onChangeInput={onChangeInput} value={searchValue} />
             </div>
             <div className="mb-4">
-              <div className="border-b-[1px] border-solid border-gray-300 py-1 flex flex-wrap items-center">
-                <h4 className="text-lg font-light uppercase mr-3">Filters:</h4>
+              <div className="border-b-[1px] border-solid border-gray-300 py-1 flex flex-wrap items-center gap-2">
+                <h4 className="text-lg font-light uppercase mr-3 py-1">
+                  Filters:
+                </h4>
                 {filters.map((f, i) => (
                   <FilterBage
                     removeFilter={removeFilter}
@@ -127,9 +150,13 @@ const CalendarPage = () => {
           </div>
         </div>
         <div className="my-4">
-          <CustomTable titles={Object.keys(rows[0])} rows={rows} />
+          <CustomTable rows={eventsRows} />
           <div className="flex justify-center">
-            <Pagination pagesCount={1} onChangePage={() => {}} currPage={1} />
+            <Pagination
+              pagesCount={pagesCount}
+              onChangePage={changePage}
+              currPage={currPage}
+            />
           </div>
         </div>
       </main>
