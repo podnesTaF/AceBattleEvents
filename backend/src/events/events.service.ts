@@ -36,20 +36,24 @@ export class EventsService {
   }
 
   async getAll(query: any) {
+    const page = +query.page || 1; // Default to page 1 if not provided
+    const limit = +query.limit || 10;
+
     const qb = this.repository
       .createQueryBuilder('event')
+      .leftJoinAndSelect('event.location', 'location')
       .leftJoin('event.teams', 'team')
       .loadRelationCountAndMap('event.teamsCount', 'event.teams');
 
     if (query.month) {
       const month = query.month.toLowerCase();
-      qb.where('LOWER(MONTH(event.date)) = :month', { month });
+      const monthIndex = new Date(`${month} 1, 2000`).getMonth() + 1; // Get the month index (1-12)
+      qb.where('EXTRACT(MONTH FROM event.date) = :monthIndex', { monthIndex });
     }
 
     if (query.year) {
       const year = +query.year;
       if (!isNaN(year)) {
-        console.log('before', await qb.getMany());
         qb.andWhere('YEAR(event.date) = :year', { year });
       }
     }
@@ -59,13 +63,20 @@ export class EventsService {
     }
 
     if (query.country) {
-      qb.innerJoin('event.location', 'location');
       qb.andWhere('location.country LIKE :country', {
         country: `%${query.country}%`,
       });
     }
 
-    return qb.getMany();
+    const totalItems = await qb.getCount();
+
+    const totalPages = Math.ceil(totalItems / limit);
+
+    qb.skip((page - 1) * limit).take(limit);
+
+    const events = await qb.getMany();
+
+    return { events, totalPages };
   }
 
   getEventById(id: number) {
