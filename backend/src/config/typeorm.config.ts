@@ -5,7 +5,6 @@ import { EventEntity } from 'src/events/entities/event.entity';
 import { LocationEntity } from 'src/locations/entities/locations.entity';
 import { PersonalBestEntity } from 'src/personal-bests/entities/personal-best.entity';
 import { PlayerEntity } from 'src/players/entities/player.entity';
-import { TeamForEventEntity } from 'src/team-for-event/entities/team-for-event.entity';
 import { TeamEntity } from 'src/teams/entities/team.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
 evnconfig();
@@ -23,7 +22,6 @@ const config: TypeOrmModuleOptions = {
     LocationEntity,
     PlayerEntity,
     TeamEntity,
-    TeamForEventEntity,
     CoachEntity,
     PersonalBestEntity,
   ],

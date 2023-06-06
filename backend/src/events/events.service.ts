@@ -27,7 +27,7 @@ export class EventsService {
     return this.repository.save({
       title,
       description,
-      date,
+      date: new Date(date),
       imageUrl,
       price,
       location,
@@ -35,7 +35,7 @@ export class EventsService {
     });
   }
 
-  getAll(query: any) {
+  async getAll(query: any) {
     const qb = this.repository
       .createQueryBuilder('event')
       .leftJoin('event.teams', 'team')
@@ -47,11 +47,11 @@ export class EventsService {
     }
 
     if (query.year) {
-      qb.andWhere('YEAR(event.date) = :year', { year: query.year });
-    }
-
-    if (query.passedEvents === 'true') {
-      qb.andWhere('event.date < NOW()');
+      const year = +query.year;
+      if (!isNaN(year)) {
+        console.log('before', await qb.getMany());
+        qb.andWhere('YEAR(event.date) = :year', { year });
+      }
     }
 
     if (query.name) {
@@ -60,7 +60,9 @@ export class EventsService {
 
     if (query.country) {
       qb.innerJoin('event.location', 'location');
-      qb.andWhere('location.country = :country', { country: query.country });
+      qb.andWhere('location.country LIKE :country', {
+        country: `%${query.country}%`,
+      });
     }
 
     return qb.getMany();
