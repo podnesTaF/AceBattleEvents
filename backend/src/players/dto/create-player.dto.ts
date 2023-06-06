@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class CreatePlayerDto {
   @IsString()
@@ -8,8 +8,5 @@ export class CreatePlayerDto {
   surname: string;
 
   @IsString()
-  dataOfBirth: string;
-
-  @IsNumber()
-  teamId: number;
+  dateOfBirth: string;
 }

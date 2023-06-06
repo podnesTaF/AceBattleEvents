@@ -33,6 +33,9 @@ export class EventEntity {
   @JoinColumn()
   location: LocationEntity;
 
-  @ManyToMany(() => TeamEntity, (team) => team.events)
-  teams?: TeamEntity[];
+  @ManyToMany(() => TeamEntity, (team) => team.events, {
+    onDelete: 'NO ACTION',
+    onUpdate: 'NO ACTION',
+  })
+  teams: TeamEntity[];
 }

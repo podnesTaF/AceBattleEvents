@@ -13,6 +13,9 @@ export class CreateTeamDto {
   @IsString()
   city: string;
 
+  @IsString()
+  country: string;
+
   @IsObject()
   coach: CreateCoachDto;
 

@@ -21,6 +21,15 @@ export class TeamsController {
     return this.teamsService.create(createTeamDto, req.user.id);
   }
 
+  @Post('/register')
+  @UseGuards(JwtAuthGuard)
+  registerTeam(
+    @Request() req,
+    @Body() dto: { teamId: number; eventId: number },
+  ) {
+    return this.teamsService.register(dto);
+  }
+
   @Get()
   findAll() {
     return this.teamsService.findAll();

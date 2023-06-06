@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LocationsService } from 'src/locations/locations.service';
-import { TeamEntity } from 'src/teams/entities/team.entity';
 import { Repository } from 'typeorm';
 import { CreateEventDto } from './dto/create-event.dto';
 import { EventEntity } from './entities/event.entity';
@@ -15,9 +14,12 @@ export class EventsService {
   ) {}
 
   async create(eventDto: CreateEventDto) {
+    const { latitude, longitude, city, country } = eventDto;
     const location = await this.locationsService.create({
-      latitude: eventDto.latitude,
-      longitude: eventDto.longitude,
+      latitude,
+      longitude,
+      city,
+      country,
     });
 
     const { title, description, date, imageUrl, price, prize } = eventDto;
@@ -33,21 +35,41 @@ export class EventsService {
     });
   }
 
-  getAll() {
-    return this.repository
+  getAll(query: any) {
+    const qb = this.repository
       .createQueryBuilder('event')
-      .leftJoinAndMapMany(
-        'event.teams',
-        TeamEntity,
-        'team',
-        'team.eventId = event.id',
-      )
-      .loadRelationCountAndMap('event.teamsCount', 'event.teams', 'teams')
-      .orderBy('posts.createdAt', 'DESC')
-      .getMany();
+      .leftJoin('event.teams', 'team')
+      .loadRelationCountAndMap('event.teamsCount', 'event.teams');
+
+    if (query.month) {
+      const month = query.month.toLowerCase();
+      qb.where('LOWER(MONTH(event.date)) = :month', { month });
+    }
+
+    if (query.year) {
+      qb.andWhere('YEAR(event.date) = :year', { year: query.year });
+    }
+
+    if (query.passedEvents === 'true') {
+      qb.andWhere('event.date < NOW()');
+    }
+
+    if (query.name) {
+      qb.andWhere('event.title LIKE :name', { name: `%${query.name}%` });
+    }
+
+    if (query.country) {
+      qb.innerJoin('event.location', 'location');
+      qb.andWhere('location.country = :country', { country: query.country });
+    }
+
+    return qb.getMany();
   }
 
   getEventById(id: number) {
-    return this.repository.findOne({ where: { id }, relations: ['location'] });
+    return this.repository.findOne({
+      where: { id },
+      relations: ['location', 'teams'],
+    });
   }
 }

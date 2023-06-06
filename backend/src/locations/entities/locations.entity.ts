@@ -10,4 +10,10 @@ export class LocationEntity {
 
   @Column({ type: 'decimal', precision: 9, scale: 6 })
   longitude: number;
+
+  @Column()
+  city: string;
+
+  @Column()
+  country: string;
 }

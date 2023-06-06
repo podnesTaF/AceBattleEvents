@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CoachService } from 'src/coach/coach.service';
+import { EventEntity } from 'src/events/entities/event.entity';
 import { PlayersService } from 'src/players/players.service';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
@@ -13,6 +14,8 @@ export class TeamsService {
   constructor(
     @InjectRepository(TeamEntity)
     private repository: Repository<TeamEntity>,
+    @InjectRepository(EventEntity)
+    private eventRepository: Repository<EventEntity>,
     private playersService: PlayersService,
     private coachService: CoachService,
     private userService: UserService,
@@ -32,10 +35,32 @@ export class TeamsService {
       name: dto.name,
       club: dto.club,
       city: dto.city,
+      country: dto.country,
       coach,
       players,
       manager,
     });
+  }
+
+  async register(dto: { teamId: number; eventId: number }) {
+    const team = await this.repository.findOne({
+      where: { id: dto.teamId },
+      relations: ['events'],
+    });
+    const event = await this.eventRepository.findOne({
+      where: { id: dto.eventId },
+      relations: ['teams'],
+    });
+
+    if (!team || !event) {
+      throw new NotFoundException('Team or event not found');
+    }
+
+    team.events.push(event);
+    event.teams.push(team);
+
+    await this.repository.save(team);
+    await this.eventRepository.save(event);
   }
 
   findAll() {
@@ -43,7 +68,7 @@ export class TeamsService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} team`;
+    return this.repository.findOne({ where: { id }, relations: ['events'] });
   }
 
   update(id: number, updateTeamDto: UpdateTeamDto) {

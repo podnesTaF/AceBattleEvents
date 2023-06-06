@@ -20,7 +20,7 @@ export class PlayerEntity {
   surname: string;
 
   @Column()
-  dateOfBirth: string;
+  dateOfBirth: Date;
 
   @ManyToOne(() => TeamEntity, (team) => team.players)
   team: TeamEntity;

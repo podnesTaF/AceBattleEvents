@@ -28,6 +28,9 @@ export class TeamEntity {
   @Column()
   city: string;
 
+  @Column()
+  country: string;
+
   @ManyToOne(() => UserEntity, (user) => user.teams, { onDelete: 'CASCADE' })
   manager: UserEntity;
 
@@ -38,9 +41,12 @@ export class TeamEntity {
   @OneToMany(() => PlayerEntity, (player) => player.team)
   players: PlayerEntity[];
 
-  @ManyToMany(() => EventEntity, (event) => event.teams)
+  @ManyToMany(() => EventEntity, (event) => event.teams, {
+    onDelete: 'NO ACTION',
+    onUpdate: 'NO ACTION',
+  })
   @JoinTable({
-    name: 'teamForEvent',
+    name: 'team_for_event',
     joinColumn: {
       name: 'teamId',
       referencedColumnName: 'id',
@@ -50,5 +56,5 @@ export class TeamEntity {
       referencedColumnName: 'id',
     },
   })
-  events?: EventEntity[];
+  events: EventEntity[];
 }

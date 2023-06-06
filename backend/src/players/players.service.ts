@@ -12,7 +12,10 @@ export class PlayersService {
   ) {}
 
   create(createPlayerDto: CreatePlayerDto) {
-    return this.repository.save(createPlayerDto);
+    return this.repository.save({
+      ...createPlayerDto,
+      dateOfBirth: new Date(createPlayerDto.dateOfBirth),
+    });
   }
 
   findAll() {

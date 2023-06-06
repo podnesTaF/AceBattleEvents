@@ -25,4 +25,10 @@ export class CreateEventDto {
 
   @IsNumber()
   longitude: number;
+
+  @IsString()
+  city: string;
+
+  @IsString()
+  country: string;
 }
