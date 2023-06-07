@@ -37,8 +37,8 @@ const Map: React.FC<Props> = ({ address }) => {
   }, [address]);
   return (
     <>
-      <h1>Google Maps Example</h1>
-      <div id="map" style={{ height: "400px" }}></div>
+      <h1 className="text-center text-2xl py-3">Find in maps</h1>
+      <div id="map" className="w-full h-[380px] md:h-[480px]"></div>
     </>
   );
 };

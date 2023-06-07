@@ -1,3 +1,5 @@
+import { ITeam } from "./ITeam";
+
 export type IEvent = {
   id: number;
   title: string;
@@ -8,6 +10,8 @@ export type IEvent = {
   teamsCount?: number;
   location: ILocation;
   totalPrize: number;
+  prizes: IPrize[];
+  teams: ITeam[];
 };
 
 export type IPrize = {

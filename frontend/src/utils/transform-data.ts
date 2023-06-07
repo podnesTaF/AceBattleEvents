@@ -1,4 +1,5 @@
 import { IEvent, ILocation } from "@/models/IEvent";
+import { ITeam } from "@/models/ITeam";
 
 export const transformIntoEventsTable = (data: IEvent[]) => {
   return data.map((event) => {
@@ -18,6 +19,20 @@ export const transformIntoEventsTable = (data: IEvent[]) => {
         link: "/calendar/" + id,
         value: "details",
       },
+    };
+  });
+};
+
+export const transformIntoTeamsTable = (data: ITeam[]) => {
+  return data.map((team) => {
+    const { name, country, membersCount, club, coach } = team;
+
+    return {
+      name,
+      country,
+      members: membersCount,
+      club,
+      coach: coach.name + " " + coach.surname,
     };
   });
 };
