@@ -1,14 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Query,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CreateEventDto } from './dto/create-event.dto';
 import { EventsService } from './events.service';
 
@@ -22,8 +12,7 @@ export class EventsController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
-  findAll(@Request() req, @Query() queries: any) {
+  findAll(@Query() queries: any) {
     return this.eventsService.getAll(queries);
   }
 

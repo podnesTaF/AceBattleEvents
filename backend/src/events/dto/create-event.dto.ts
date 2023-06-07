@@ -1,4 +1,12 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+import { CreateLocationDto } from 'src/locations/dto/create-location.dto';
+import { CreatePrizeDto } from 'src/prizes/dto/create-prize.dto';
 
 export class CreateEventDto {
   @IsString()
@@ -14,21 +22,12 @@ export class CreateEventDto {
   @IsNumber()
   price: number;
 
-  @IsNumber()
-  prize: number;
-
   @IsString()
   date: string;
 
-  @IsNumber()
-  latitude: number;
+  @IsObject()
+  location: CreateLocationDto;
 
-  @IsNumber()
-  longitude: number;
-
-  @IsString()
-  city: string;
-
-  @IsString()
-  country: string;
+  @IsArray()
+  prizes: CreatePrizeDto[];
 }

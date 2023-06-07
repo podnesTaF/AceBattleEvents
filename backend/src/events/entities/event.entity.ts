@@ -1,10 +1,12 @@
 import { LocationEntity } from 'src/locations/entities/locations.entity';
+import { PrizeEntity } from 'src/prizes/entities/prize.entity';
 import { TeamEntity } from 'src/teams/entities/team.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToMany,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -32,6 +34,9 @@ export class EventEntity {
   @OneToOne(() => LocationEntity)
   @JoinColumn()
   location: LocationEntity;
+
+  @OneToMany(() => PrizeEntity, (prize) => prize.event)
+  prizes: PrizeEntity[];
 
   @ManyToMany(() => TeamEntity, (team) => team.events, {
     onDelete: 'NO ACTION',

@@ -5,11 +5,11 @@ export class LocationEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'decimal', precision: 9, scale: 6 })
-  latitude: number;
+  @Column()
+  street: string;
 
-  @Column({ type: 'decimal', precision: 9, scale: 6 })
-  longitude: number;
+  @Column()
+  postalCode: string;
 
   @Column()
   city: string;

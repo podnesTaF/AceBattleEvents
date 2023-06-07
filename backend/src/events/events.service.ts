@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LocationsService } from 'src/locations/locations.service';
+import { PrizesService } from 'src/prizes/prizes.service';
 import { Repository } from 'typeorm';
 import { CreateEventDto } from './dto/create-event.dto';
 import { EventEntity } from './entities/event.entity';
@@ -11,18 +12,21 @@ export class EventsService {
     @InjectRepository(EventEntity)
     private repository: Repository<EventEntity>,
     private locationsService: LocationsService,
+    private prizeService: PrizesService,
   ) {}
 
   async create(eventDto: CreateEventDto) {
-    const { latitude, longitude, city, country } = eventDto;
-    const location = await this.locationsService.create({
-      latitude,
-      longitude,
-      city,
-      country,
+    const location = await this.locationsService.create(eventDto.location);
+
+    const prizes = [];
+
+    eventDto.prizes.forEach(async (prize) => {
+      const createdPrize = await this.prizeService.create(prize);
+
+      prizes.push(createdPrize);
     });
 
-    const { title, description, date, imageUrl, price, prize } = eventDto;
+    const { title, description, date, imageUrl, price } = eventDto;
 
     return this.repository.save({
       title,
@@ -31,19 +35,20 @@ export class EventsService {
       imageUrl,
       price,
       location,
-      prize,
+      prizes,
     });
   }
 
   async getAll(query: any) {
     const page = +query.page || 1; // Default to page 1 if not provided
-    const limit = +query.limit || 10;
+    const limit = +query.limit || 5;
 
     const qb = this.repository
       .createQueryBuilder('event')
       .leftJoinAndSelect('event.location', 'location')
       .leftJoin('event.teams', 'team')
-      .loadRelationCountAndMap('event.teamsCount', 'event.teams');
+      .loadRelationCountAndMap('event.teamsCount', 'event.teams')
+      .leftJoinAndSelect('event.prizes', 'prize');
 
     if (query.month) {
       const month = query.month.toLowerCase();
@@ -76,13 +81,24 @@ export class EventsService {
 
     const events = await qb.getMany();
 
-    return { events, totalPages };
+    const resEvents = events.map((ev) => {
+      const totalPrize = ev.prizes.reduce((acc, curr) => acc + curr.sum, 0);
+
+      delete ev.prizes;
+
+      return {
+        ...ev,
+        totalPrize,
+      };
+    });
+
+    return { events: resEvents, totalPages };
   }
 
   getEventById(id: number) {
     return this.repository.findOne({
       where: { id },
-      relations: ['location', 'teams'],
+      relations: ['location', 'teams', 'prizes'],
     });
   }
 }

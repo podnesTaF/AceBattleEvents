@@ -8,6 +8,8 @@ import { LocationEntity } from 'src/locations/entities/locations.entity';
 import { LocationsService } from 'src/locations/locations.service';
 import { PlayerEntity } from 'src/players/entities/player.entity';
 import { PlayersService } from 'src/players/players.service';
+import { PrizeEntity } from 'src/prizes/entities/prize.entity';
+import { PrizesService } from 'src/prizes/prizes.service';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
 import { TeamEntity } from './entities/team.entity';
@@ -23,6 +25,7 @@ import { TeamsService } from './teams.service';
       UserEntity,
       LocationEntity,
       EventEntity,
+      PrizeEntity,
     ]),
   ],
   controllers: [TeamsController],
@@ -32,6 +35,7 @@ import { TeamsService } from './teams.service';
     CoachService,
     UserService,
     EventsService,
+    PrizesService,
     LocationsService,
   ],
   exports: [TeamsService],

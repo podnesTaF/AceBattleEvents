@@ -10,6 +10,7 @@ import { EventsModule } from './events/events.module';
 import { LocationsModule } from './locations/locations.module';
 import { PersonalBestsModule } from './personal-bests/personal-bests.module';
 import { PlayersModule } from './players/players.module';
+import { PrizesModule } from './prizes/prizes.module';
 import { TeamsModule } from './teams/teams.module';
 import { UserModule } from './user/user.module';
 
@@ -25,6 +26,7 @@ import { UserModule } from './user/user.module';
     CoachModule,
     PlayersModule,
     PersonalBestsModule,
+    PrizesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
