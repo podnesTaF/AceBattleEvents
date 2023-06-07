@@ -2,13 +2,18 @@ import Link from "next/link";
 
 interface CustomTableProps {
   rows: any[];
+  isLoading: boolean;
 }
 
-const CustomTable: React.FC<CustomTableProps> = ({ rows }) => {
+const CustomTable: React.FC<CustomTableProps> = ({ rows, isLoading }) => {
   return (
     <div className="relative overflow-x-auto sm:rounded-sm">
-      {!rows.length ? (
+      {isLoading ? (
         <h3>Loading...</h3>
+      ) : rows.length < 1 ? (
+        <div>
+          <h2>No events found.</h2>
+        </div>
       ) : (
         <table className="w-full text-sm text-left border-separate border-spacing-y-2">
           <thead className="text-md text-white uppercase bg-red-500 clip-title-sm">

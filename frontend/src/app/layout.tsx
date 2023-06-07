@@ -1,6 +1,7 @@
 "use client";
 
 import Footer from "@/components/shared/Footer";
+import { Providers } from "@/redux/provider";
 import { SessionProvider } from "next-auth/react";
 import { Poppins } from "next/font/google";
 import AppBar from "./AppBar";
@@ -26,9 +27,11 @@ export default function RootLayout({
       </head>
       <body className={poppins.className}>
         <SessionProvider session={session}>
-          <AppBar />
-          {children}
-          <Footer />
+          <Providers>
+            <AppBar />
+            {children}
+            <Footer />
+          </Providers>
         </SessionProvider>
       </body>
     </html>

@@ -1,14 +1,17 @@
 "use client";
 
-import { Api } from "@/api";
 import FilterBage from "@/components/events/FilterBage";
 import FilterSelect from "@/components/events/FilterSelect";
 import SearchField from "@/components/events/SearchField";
 import CustomTable from "@/components/shared/CustomTable";
 import CustomTitle from "@/components/shared/CustomTitle";
 import Pagination from "@/components/shared/Pagination";
+import { useFetchEventsQuery } from "@/services/eventService";
 import { countries, months, years } from "@/utils/events-filter-values";
-import { transformIntoEventsTable } from "@/utils/transform-data";
+import {
+  getParamsFromFilters,
+  transformIntoEventsTable,
+} from "@/utils/transform-data";
 import { useEffect, useState } from "react";
 
 const CalendarPage = () => {
@@ -17,7 +20,12 @@ const CalendarPage = () => {
   const [checkValue, setCheckValue] = useState<boolean>(false);
   const [eventsRows, setEventsRows] = useState<any>([]);
   const [pagesCount, setPageCount] = useState(1);
-  const [currPage, setCurrPage] = useState(1);
+  const [currPage, setCurrPage] = useState<number>(1);
+
+  const { data, isLoading, error } = useFetchEventsQuery({
+    params: getParamsFromFilters(filters),
+    currPage,
+  });
 
   const onChangeInput = (newValue: string) => {
     setSearchValue(newValue);
@@ -64,18 +72,11 @@ const CalendarPage = () => {
   }, [checkValue]);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const api = await Api();
-        const eventsData = await api.events.getAllEvents(filters, currPage);
-        setPageCount(eventsData.totalPages);
-        const dataRows = transformIntoEventsTable(eventsData.events);
-        setEventsRows(dataRows);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [filters, currPage]);
+    if (data) {
+      setEventsRows(transformIntoEventsTable(data.events));
+      setPageCount(data.totalPages);
+    }
+  }, [data]);
 
   return (
     <>
@@ -150,7 +151,7 @@ const CalendarPage = () => {
           </div>
         </div>
         <div className="my-4">
-          <CustomTable rows={eventsRows} />
+          <CustomTable rows={eventsRows} isLoading={isLoading} />
           <div className="flex justify-center">
             <Pagination
               pagesCount={pagesCount}

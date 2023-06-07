@@ -1,6 +1,14 @@
+"use client";
+
+import { useFetchEventsQuery } from "@/services/eventService";
 import EventCard from "./EventCard";
 
 const CloseEventsPage = () => {
+  const { data, isLoading, error } = useFetchEventsQuery({
+    params: "",
+    currPage: 1,
+  });
+
   return (
     <>
       <header className="w-full flex justify-center h-96 sm:h-[800px] bg-[url('/close_events_intro.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">
@@ -17,9 +25,15 @@ const CloseEventsPage = () => {
         </div>
       </header>
       <main className="max-w-7xl my-5 md:my-8 mx-auto">
-        <EventCard />
-        <EventCard />
-        <EventCard />
+        {isLoading ? (
+          <h2 className="text-center">Loading...</h2>
+        ) : error ? (
+          <h2 className="text-center">Error fetching close events</h2>
+        ) : (
+          data?.events.map((item, i) => (
+            <EventCard idx={i} key={item.id} event={item} />
+          ))
+        )}
       </main>
     </>
   );

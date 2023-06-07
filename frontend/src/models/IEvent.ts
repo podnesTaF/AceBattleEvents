@@ -7,11 +7,18 @@ export type IEvent = {
   price: number;
   teamsCount?: number;
   location: ILocation;
+  totalPrize: number;
+};
+
+export type IPrize = {
+  id: number;
+  place: number;
+  sum: number;
 };
 
 export type ILocation = {
-  latitude: string;
-  longitude: string;
+  postalCode: string;
+  street: string;
   country: string;
   city: string;
 };

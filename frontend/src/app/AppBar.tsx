@@ -1,6 +1,8 @@
 "use client";
 
 import CustomDrawer from "@/components/CustomDrawer";
+import { useAppDispatch, useAppSelector } from "@/hooks/useTyped";
+import { addUser, selectUser } from "@/redux/features/userSlice";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
@@ -9,13 +11,22 @@ import { Button, IconButton } from "@mui/material";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const AppBar = () => {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
+
+  useEffect(() => {
+    if (session?.user) {
+      dispatch(addUser(session.user));
+    }
+  }, [session]);
+
   return (
     <>
       <div className="lg:flex justify-between px-5 py-4 bg-[#1E1C1F] items-center">

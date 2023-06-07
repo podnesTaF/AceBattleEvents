@@ -11,7 +11,6 @@ export const EventsApi = (instance: AxiosInstance) => ({
       ""
     );
 
-    console.log("params", params);
     const { data } = await instance.get<{
       totalPages: number;
       events: IEvent[];

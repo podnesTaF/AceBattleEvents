@@ -1,4 +1,4 @@
-import { IEvent } from "@/models/IEvent";
+import { IEvent, ILocation } from "@/models/IEvent";
 
 export const transformIntoEventsTable = (data: IEvent[]) => {
   return data.map((event) => {
@@ -15,9 +15,33 @@ export const transformIntoEventsTable = (data: IEvent[]) => {
       country: location.country,
       organisators: "ACE BATTLE ASSOCIATION",
       details: {
-        link: "events/" + id,
+        link: "/calendar/" + id,
         value: "details",
       },
     };
   });
+};
+
+export const getParamsFromFilters = (filters: any[]): string => {
+  const params: string = filters.reduce(
+    (acc: string, curr: { type: string; value: string }, i: number) =>
+      i === 0
+        ? acc + `${curr.type}=${curr.value}`
+        : acc + `&${curr.type}=${curr.value}`,
+    ""
+  );
+
+  return params;
+};
+
+export const transformAddress = (location: ILocation): string => {
+  return (
+    location.street +
+    ", " +
+    location.city +
+    ", " +
+    location.country +
+    ", " +
+    location.postalCode
+  );
 };
