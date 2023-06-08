@@ -95,10 +95,32 @@ export class EventsService {
     return { events: resEvents, totalPages };
   }
 
-  getEventById(id: number) {
-    return this.repository.findOne({
+  async getEventById(id: number) {
+    const event = await this.repository.findOne({
       where: { id },
-      relations: ['location', 'teams', 'prizes'],
+      relations: [
+        'location',
+        'teams',
+        'teams.coach',
+        'prizes',
+        'teams.players',
+      ],
     });
+
+    let updatedTeams = [];
+    if (event) {
+      event.teams.forEach((team) => {
+        const membersCount = team.players.length;
+        delete team.players;
+        updatedTeams.push({
+          ...team,
+          membersCount,
+        });
+      });
+    }
+
+    event.teams = updatedTeams;
+
+    return event;
   }
 }

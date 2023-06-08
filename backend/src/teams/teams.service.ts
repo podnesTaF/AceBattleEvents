@@ -28,9 +28,15 @@ export class TeamsService {
       players.push(res);
     });
 
+    console.log('players.', players);
+
     const coach = await this.coachService.create(dto.coach);
 
+    console.log('coach', coach);
+
     const manager = await this.userService.findById(managerId);
+
+    console.log('manager', manager);
     return this.repository.save({
       name: dto.name,
       club: dto.club,
