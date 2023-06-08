@@ -8,22 +8,34 @@ import { useAddTeamMutation } from "@/services/teamService";
 import { countries } from "@/utils/events-filter-values";
 import { AddTeamSchema } from "@/utils/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
+import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Button, IconButton } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import FormLayout from "./FormLayout";
 
 const AddTeam = () => {
   const [addTeam, { data, isLoading, error }] = useAddTeamMutation();
+  const [personalBests, setPersonalBests] = useState<any[][]>([
+    [{ distance: "", time: "", id: Date.now() }],
+  ]);
 
   const form = useForm({
     mode: "onChange",
     resolver: yupResolver(AddTeamSchema),
     defaultValues: {
       players: [
-        { name: "", surname: "", dateOfBirth: "", gender: "", id: Date.now() },
+        {
+          name: "",
+          surname: "",
+          dateOfBirth: "",
+          gender: "",
+          id: Date.now(),
+          personalBests: personalBests[0],
+        },
       ],
     },
   });
@@ -34,6 +46,18 @@ const AddTeam = () => {
     control,
     name: "players",
   });
+
+  const removePb = (playerIdx: number, pbIdx: number) => {
+    const newPbs = [...personalBests];
+    newPbs[playerIdx].splice(pbIdx, 1);
+    setPersonalBests(newPbs);
+  };
+
+  const appendPb = (playerIdx: number) => {
+    const newPbs = [...personalBests];
+    newPbs[playerIdx].push({ distance: "", time: "", id: Date.now() });
+    setPersonalBests(newPbs);
+  };
 
   useEffect(() => {
     if (data) {
@@ -55,6 +79,10 @@ const AddTeam = () => {
         name: player.name,
         surname: player.surname,
         dateOfBirth: player.dateOfBirth,
+        personalBests: player.personalBests.map((pb: any) => ({
+          distance: pb.distance,
+          timeInSeconds: pb.time,
+        })),
       })),
     });
   };
@@ -153,7 +181,7 @@ const AddTeam = () => {
                           placeholder={"Enter name here..."}
                         />
                         {formState.errors.players &&
-                          formState.errors.players[index] && (
+                          formState.errors.players[index]?.name && (
                             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                               {formState?.errors?.players[index]?.name?.message}
                             </p>
@@ -166,7 +194,7 @@ const AddTeam = () => {
                           placeholder={"Enter surname here..."}
                         />
                         {formState.errors.players &&
-                          formState.errors.players[index] && (
+                          formState.errors.players[index]?.surname && (
                             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                               {
                                 formState?.errors?.players[index]?.surname
@@ -182,7 +210,7 @@ const AddTeam = () => {
                           placeholder={"dd/mm/yyyy"}
                         />
                         {formState.errors.players &&
-                          formState.errors.players[index] && (
+                          formState.errors.players[index]?.dateOfBirth && (
                             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                               {
                                 formState?.errors?.players[index]?.dateOfBirth
@@ -202,7 +230,7 @@ const AddTeam = () => {
                           name={`players[${index}].gender`}
                         />
                         {formState.errors.players &&
-                          formState.errors.players[index] && (
+                          formState.errors.players[index]?.gender && (
                             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                               {
                                 formState?.errors?.players[index]?.gender
@@ -210,6 +238,70 @@ const AddTeam = () => {
                               }
                             </p>
                           )}
+                      </div>
+                      <div className="my-3 w-full">
+                        <h3 className="font-semibold text-2xl mb-3">
+                          Personal Bests
+                        </h3>
+                        <div className="flex flex-col sm:flex-row flex-wrap">
+                          {field.personalBests.map((personalBest, idx) => (
+                            <div
+                              key={personalBest.id}
+                              className="flex w-full sm:w-1/2 lg:w-1/4 items-center"
+                            >
+                              <div className="mr-3 border-r-[1px] border-black h-4/5 flex items-center ">
+                                <IconButton
+                                  onClick={() => {
+                                    field.personalBests.splice(idx, 1);
+                                    removePb(index, idx);
+                                  }}
+                                >
+                                  <RemoveCircleOutlineIcon fontSize="large" />
+                                </IconButton>
+                              </div>
+                              <div className="flex sm:flex-col w-full">
+                                <div className="mb-4 mr-3 sm:mb-2 sm:mr-4 w-full">
+                                  <FormField
+                                    label="distance*"
+                                    type="number"
+                                    name={`players[${index}].personalBests[${idx}].distance`}
+                                    placeholder={"distance in m"}
+                                  />
+                                </div>
+
+                                <div className="mb-4 sm:mb-2 sm:mr-4  w-full">
+                                  <FormField
+                                    label="time"
+                                    type="number"
+                                    name={`players[${index}].personalBests[${idx}].time`}
+                                    placeholder={"time in s"}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+
+                          <div className="w-full flex items-center sm:w-auto">
+                            <div className="h-[1px] flex-1 sm:hidden bg-black" />
+                            <IconButton
+                              onClick={() => {
+                                field.personalBests.push({
+                                  distance: "",
+                                  time: "",
+                                  id: Date.now(),
+                                });
+
+                                appendPb(index);
+                              }}
+                            >
+                              <ControlPointIcon fontSize="large" />
+                            </IconButton>
+                            <div className="h-[1px] flex-1 sm:hidden bg-black" />
+                          </div>
+                        </div>
+                        <p className="font-semibold text-end">
+                          Fill personalBests or delete them*
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -227,6 +319,9 @@ const AddTeam = () => {
                       dateOfBirth: "",
                       gender: "",
                       id: Date.now(),
+                      personalBests: [
+                        { distance: "", time: "", id: Date.now() },
+                      ],
                     })
                   }
                 >

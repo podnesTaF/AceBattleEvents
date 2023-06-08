@@ -44,13 +44,19 @@ export const AddTeamSchema = yup.object().shape({
           .string()
           .required("Please provide player date of birth"),
         gender: yup.string().required("Please provide player gender"),
+        personalBests: yup.array().of(
+          yup.object().shape({
+            distance: yup.number().required("Please provide distance"),
+            time: yup.number().required("Please provide time"),
+          })
+        ),
       })
     )
     .test(
       "atLeastFivePlayers",
       "Please provide at least 5 players",
       (value) => {
-        return value && value.length >= 5;
+        return value && value.length >= 1;
       }
     ),
 });

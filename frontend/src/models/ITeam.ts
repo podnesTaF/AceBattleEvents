@@ -52,4 +52,11 @@ export type IPlayer = {
   name: string;
   dateOfBirth: string;
   gender: string;
+  personalBests: IPersonalBest[];
+};
+
+export type IPersonalBest = {
+  id: number;
+  distance: number;
+  timeInSeconds: number;
 };

@@ -27,6 +27,7 @@ const FormRadio: React.FC<FormRadioProps> = ({
     <RadioGroup name={name}>
       {options.map((option, i) => (
         <FormControlLabel
+          key={i}
           {...register(name)}
           control={
             <Radio
