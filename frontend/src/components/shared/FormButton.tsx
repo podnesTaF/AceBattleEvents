@@ -4,19 +4,22 @@ interface FormButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading: boolean;
   title: string;
+  isSubmitting?: boolean;
 }
 
 const FormButton: React.FC<FormButtonProps> = ({
   isLoading,
   title,
+  isSubmitting,
   ...props
 }) => {
   return (
     <button
+      type="submit"
       {...props}
-      className="text-white text-xl uppercase w-full my-4 bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-2 md:px-4 md:py-4  text-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 inline-flex items-center justify-center"
+      className="text-white text-xl uppercase w-full my-2 bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg px-2 py-2 md:px-3 md:py-3  text-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 inline-flex items-center justify-center disabled:bg-red-200"
     >
-      {isLoading && (
+      {(isLoading || isSubmitting) && (
         <svg
           aria-hidden="true"
           role="status"

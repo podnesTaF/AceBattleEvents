@@ -15,18 +15,19 @@ const FormField: React.FC<FormFieldProps> = ({
   type,
 }) => {
   const { register, formState } = useFormContext();
+
   return (
     <div className="my-2">
       <label
-        htmlFor="first_name"
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        htmlFor={name}
+        className="block mb-2 text-lg lg:text-xl font-medium text-gray-900 dark:text-white"
       >
         {label}
       </label>
       <input
         type={type || "text"}
         {...register(name)}
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:border-2 outline-none border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
         placeholder={placeholder}
       />
       {!!formState.errors[name]?.message && (
