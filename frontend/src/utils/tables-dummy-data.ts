@@ -55,3 +55,42 @@ export const rows = [
     },
   },
 ];
+
+export const playerRows = [
+  {
+    name: "Oleksii",
+    surname: "Pidnebesnyi",
+    DoB: "23/06/1998",
+    Cat: "Senior",
+  },
+  {
+    name: "Oleksii",
+    surname: "Pidnebesnyi",
+    DoB: "23/06/1998",
+    Cat: "Senior",
+  },
+  {
+    name: "Oleksii",
+    surname: "Pidnebesnyi",
+    DoB: "23/06/1998",
+    Cat: "Senior",
+  },
+  {
+    name: "Oleksii",
+    surname: "Pidnebesnyi",
+    DoB: "23/06/1998",
+    Cat: "Senior",
+  },
+  {
+    name: "Oleksii",
+    surname: "Pidnebesnyi",
+    DoB: "23/06/1998",
+    Cat: "Senior",
+  },
+  {
+    name: "Oleksii",
+    surname: "Pidnebesnyi",
+    DoB: "23/06/1998",
+    Cat: "Senior",
+  },
+];

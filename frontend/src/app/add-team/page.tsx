@@ -100,9 +100,9 @@ const AddTeam = () => {
   };
 
   useEffect(() => {
-    // if (data) {
-    //   form.reset();
-    // }
+    if (data) {
+      form.reset();
+    }
   }, [data]);
 
   const onSubmit = async (dto: any) => {

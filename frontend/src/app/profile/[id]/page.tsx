@@ -1,5 +1,7 @@
 "use client";
 
+import EventCard from "@/app/close-events/EventCard";
+import TeamCard from "@/components/shared/TeamCard";
 import TollIcon from "@mui/icons-material/Toll";
 import { Divider } from "@mui/material";
 import Image from "next/image";
@@ -76,9 +78,52 @@ const Profile: React.FC<ProfileProps> = ({ params: { id } }) => {
           ))}
         </div>
         <div className="p-4 md:p-6 border-[1px] border-t-0 border-red-500 rounded-b-lg">
-          <h2 className="text-3xl font-semibold mb-4 text-center">
-            Your teams
-          </h2>
+          {activeTab === 0 && (
+            <>
+              <h2 className="text-3xl font-semibold mb-4 text-center">
+                Your teams
+              </h2>
+              <TeamCard />
+              <TeamCard />
+            </>
+          )}
+          {activeTab === 1 && (
+            <>
+              <div className="mx-3 md:mx-5 my-4 p-3 flex justify-center border-b-[1px] w-full">
+                <h3 className="text-2xl font-semibold">Your Registrations</h3>
+              </div>
+              <EventCard
+                isYourRegister={true}
+                event={{
+                  id: 0,
+                  title: "BATTLE MILE CUP BENELUX",
+                  description: "First battle mile competitions",
+                  date: "23 / 06 / 2023, 18:00",
+                  imageUrl: "",
+                  price: 0,
+                  teamsCount: undefined,
+                  location: {
+                    postalCode: "",
+                    street: "",
+                    country: "",
+                    city: "",
+                  },
+                  totalPrize: 100000,
+                  prizes: [],
+                  teams: [],
+                }}
+                idx={0}
+              />
+              <div className="my-4 mx-auto flex flex-col items-center">
+                <p className="text-xl my-4">
+                  There are lots of events to register your team!
+                </p>
+                <button className="px-4 py-2 bg-red-500 text-lg sm:text-xl uppercase text-white rounded hover:bg-red-700 drop-shadow-lg active:scale-95">
+                  CALENDAR
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </main>
     </>

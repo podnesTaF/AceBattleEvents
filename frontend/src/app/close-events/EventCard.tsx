@@ -9,19 +9,29 @@ import React from "react";
 interface EventCardProps {
   event: IEvent;
   idx: number;
+  isYourRegister?: boolean;
 }
 
-const EventCard: React.FC<EventCardProps> = ({ event, idx }) => {
+const EventCard: React.FC<EventCardProps> = ({
+  event,
+  idx,
+  isYourRegister,
+}) => {
   const router = useRouter();
   return (
     <div className="my-10">
       <h1 className="text-4xl md:text-5xl my-4 text-center font-semibold">
         {event.title}
       </h1>
+      {isYourRegister && (
+        <div className="flex justify-between w-full lg:w-[820px] mx-auto my-3 font-semibold text-xl">
+          <p>Registration #1</p>
+          <p>Team: Royal Brussels</p>
+          <p>Coach: Vitaliy Voloshyn</p>
+        </div>
+      )}
       <div
-        className={`w-full bg-[url('/${
-          (idx + 1) % 2 ? "card1.jpg" : "stadium.png"
-        }')] bg-contain md:bg-cover bg-no-repeat relative flex justify-center drop-shadow-xl`}
+        className={`w-full bg-[url('/card1.jpg')] bg-contain md:bg-cover bg-no-repeat relative flex justify-center drop-shadow-xl`}
       >
         <div className="md:bg-[#F7F7F7] px-5 md:py-5 w-full lg:w-[820px]">
           <h3 className="p-3 bg-black/50 text-white md:bg-none text-xl uppercase text-center w-full mb-10 md:my-5">
@@ -59,7 +69,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, idx }) => {
             </div>
           </div>
           <div className="w-full flex justify-around my-4 gap-3">
-            {!isPassed(event.date) && (
+            {!isYourRegister && !isPassed(event.date) && (
               <button className="p-4 bg-red-500 text-lg sm:text-xl uppercase text-white rounded hover:bg-red-700 drop-shadow-lg active:scale-95">
                 Register your team
               </button>
