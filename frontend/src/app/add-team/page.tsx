@@ -19,9 +19,17 @@ import FormLayout from "./FormLayout";
 
 const AddTeam = () => {
   const [addTeam, { data, isLoading, error }] = useAddTeamMutation();
-  const [personalBests, setPersonalBests] = useState<any[][]>([
-    [{ distance: "", time: "", id: Date.now() }],
-  ]);
+  const [personalBests, setPersonalBests] = useState<{
+    [key: string]: { distance: string; time: string; id: number }[];
+  }>({
+    [Date.now() + ""]: [{ distance: "", time: "", id: Date.now() }],
+  });
+
+  // const [personalBests, setPersonalBests] = useState<any[][]>(
+  //   Array.from({ length: 1 }, () => [
+  //     { distance: "", time: "", id: Date.now() },
+  //   ])
+  // )
 
   const form = useForm({
     mode: "onChange",
@@ -33,39 +41,72 @@ const AddTeam = () => {
           surname: "",
           dateOfBirth: "",
           gender: "",
-          id: Date.now(),
-          personalBests: personalBests[0],
+          id: Object.keys(personalBests)[0],
+          personalBests: personalBests[Object.keys(personalBests)[0]],
         },
       ],
     },
   });
 
+  const appendPlayer = () => {
+    const id = Date.now() + "";
+    setPersonalBests((prev: any) => ({
+      ...prev,
+      [id]: [{ distance: "", time: "", id: Date.now() }],
+    }));
+
+    append({
+      name: "",
+      surname: "",
+      dateOfBirth: "",
+      gender: "",
+      id,
+      personalBests: [{ distance: "", time: "", id: Date.now() }],
+    });
+  };
+
   const { control, formState, handleSubmit, watch } = form;
+  console.log(formState.isValid);
 
   const { append, remove } = useFieldArray({
     control,
     name: "players",
   });
 
-  const removePb = (playerIdx: number, pbIdx: number) => {
-    const newPbs = [...personalBests];
-    newPbs[playerIdx].splice(pbIdx, 1);
-    setPersonalBests(newPbs);
+  const removePlayer = (playerId: string, index: number) => {
+    remove(index);
+    setPersonalBests((prev: any) => {
+      const newPbs = { ...prev };
+      delete newPbs[playerId];
+      return newPbs;
+    });
   };
 
-  const appendPb = (playerIdx: number) => {
-    const newPbs = [...personalBests];
-    newPbs[playerIdx].push({ distance: "", time: "", id: Date.now() });
-    setPersonalBests(newPbs);
+  const removePb = (playerId: string, pbIdx: number) => {
+    console.log(playerId, pbIdx);
+    setPersonalBests((prev: any) => ({
+      ...prev,
+      [playerId]: prev[playerId].filter((pb: any, i: number) => i !== pbIdx),
+    }));
+  };
+
+  const appendPb = (playerId: string) => {
+    console.log(playerId);
+    const updatedPbs = personalBests[playerId];
+    setPersonalBests((prev: any) => ({
+      ...prev,
+      [playerId]: updatedPbs.concat({ distance: "", time: "", id: Date.now() }),
+    }));
   };
 
   useEffect(() => {
-    if (data) {
-      form.reset();
-    }
+    // if (data) {
+    //   form.reset();
+    // }
   }, [data]);
 
   const onSubmit = async (dto: any) => {
+    console.log(dto);
     await addTeam({
       name: dto.name,
       club: dto.club,
@@ -169,7 +210,7 @@ const AddTeam = () => {
                       <p className="text-end mb-3 text-xl font-semibold">
                         {`Player ${index + 1}`}
                       </p>
-                      <IconButton onClick={() => remove(index)}>
+                      <IconButton onClick={() => removePlayer(field.id, index)}>
                         <PersonRemoveIcon fontSize="large" />
                       </IconButton>
                     </div>
@@ -253,7 +294,7 @@ const AddTeam = () => {
                                 <IconButton
                                   onClick={() => {
                                     field.personalBests.splice(idx, 1);
-                                    removePb(index, idx);
+                                    removePb(field.id, idx);
                                   }}
                                 >
                                   <RemoveCircleOutlineIcon fontSize="large" />
@@ -291,7 +332,7 @@ const AddTeam = () => {
                                   id: Date.now(),
                                 });
 
-                                appendPb(index);
+                                appendPb(field.id);
                               }}
                             >
                               <ControlPointIcon fontSize="large" />
@@ -312,18 +353,9 @@ const AddTeam = () => {
                 <Button
                   variant="outlined"
                   color="error"
-                  onClick={() =>
-                    append({
-                      name: "",
-                      surname: "",
-                      dateOfBirth: "",
-                      gender: "",
-                      id: Date.now(),
-                      personalBests: [
-                        { distance: "", time: "", id: Date.now() },
-                      ],
-                    })
-                  }
+                  onClick={() => {
+                    appendPlayer();
+                  }}
                 >
                   <PersonAddAlt1Icon fontSize="large" />
                 </Button>
