@@ -23,20 +23,18 @@ export class TeamsService {
 
   async create(dto: CreateTeamDto, managerId: number) {
     const players = [];
-    dto.players.forEach(async (player) => {
-      const res = await this.playersService.create(player);
-      players.push(res);
-    });
 
-    console.log('players.', players);
+    for (let i = 0; i < dto.players.length; i++) {
+      const res = await this.playersService.create(dto.players[i]);
+      players.push(res);
+    }
+
+    console.log(players);
 
     const coach = await this.coachService.create(dto.coach);
 
-    console.log('coach', coach);
-
     const manager = await this.userService.findById(managerId);
 
-    console.log('manager', manager);
     return this.repository.save({
       name: dto.name,
       club: dto.club,
@@ -70,7 +68,9 @@ export class TeamsService {
   }
 
   findAll() {
-    return `This action returns all teams`;
+    return this.repository.find({
+      relations: ['players', 'players.personalBests'],
+    });
   }
 
   findOne(id: number) {

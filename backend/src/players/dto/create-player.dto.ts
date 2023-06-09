@@ -1,4 +1,5 @@
-import { IsString } from 'class-validator';
+import { IsArray, IsString } from 'class-validator';
+import { CreatePersonalBestDto } from 'src/personal-bests/dto/create-personal-best.dto';
 
 export class CreatePlayerDto {
   @IsString()
@@ -9,4 +10,7 @@ export class CreatePlayerDto {
 
   @IsString()
   dateOfBirth: string;
+
+  @IsArray()
+  personalBests: CreatePersonalBestDto[];
 }

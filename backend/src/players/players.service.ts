@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PersonalBestsService } from 'src/personal-bests/personal-bests.service';
 import { Repository } from 'typeorm';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { PlayerEntity } from './entities/player.entity';
@@ -18,11 +19,21 @@ export class PlayersService {
   constructor(
     @InjectRepository(PlayerEntity)
     private repository: Repository<PlayerEntity>,
+    private pbService: PersonalBestsService,
   ) {}
 
-  create(createPlayerDto: CreatePlayerDto) {
+  async create(createPlayerDto: CreatePlayerDto) {
+    const pbs = [];
+
+    for (let i = 0; i < createPlayerDto.personalBests.length; i++) {
+      const pb = createPlayerDto.personalBests[i];
+      const res = await this.pbService.create(pb);
+      pbs.push(res);
+    }
+
     return this.repository.save({
       ...createPlayerDto,
+      personalBests: pbs,
       dateOfBirth: createDateFromDDMMYYYY(createPlayerDto.dateOfBirth),
     });
   }

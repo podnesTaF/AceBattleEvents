@@ -1,11 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreatePersonalBestDto } from './dto/create-personal-best.dto';
 import { UpdatePersonalBestDto } from './dto/update-personal-best.dto';
+import { PersonalBestEntity } from './entities/personal-best.entity';
 
 @Injectable()
 export class PersonalBestsService {
+  constructor(
+    @InjectRepository(PersonalBestEntity)
+    private repository: Repository<PersonalBestEntity>,
+  ) {}
   create(createPersonalBestDto: CreatePersonalBestDto) {
-    return 'This action adds a new personalBest';
+    return this.repository.save(createPersonalBestDto);
   }
 
   findAll() {

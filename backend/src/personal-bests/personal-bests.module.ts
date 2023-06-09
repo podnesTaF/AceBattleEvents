@@ -8,5 +8,6 @@ import { PersonalBestsService } from './personal-bests.service';
   imports: [TypeOrmModule.forFeature([PersonalBestEntity])],
   controllers: [PersonalBestsController],
   providers: [PersonalBestsService],
+  exports: [PersonalBestsService],
 })
 export class PersonalBestsModule {}
