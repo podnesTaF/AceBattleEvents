@@ -22,6 +22,7 @@ const AppBar = () => {
   const user = useAppSelector(selectUser);
 
   useEffect(() => {
+    console.log(session?.user);
     if (session?.user) {
       dispatch(addUser(session.user));
     }
@@ -84,10 +85,16 @@ const AppBar = () => {
               </Link>
 
               <div className={"flex items-center justify-center"}>
-                <TollIcon className={"text-yellow-400"} />
-                <p className={"ml-2 text-white text-xl"}>
-                  {session?.user?.balance} bc
-                </p>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={() => router.push("/add-coins")}
+                >
+                  <TollIcon className={"text-yellow-400"} />
+                  <p className={"ml-2 text-white text-xl"}>
+                    {user?.balance} bc
+                  </p>
+                </Button>
               </div>
               <Button
                 variant="outlined"

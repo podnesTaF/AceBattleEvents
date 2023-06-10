@@ -8,6 +8,7 @@ import {
   transformIntoTeamsTable,
 } from "@/utils/transform-data";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import StatisticCards from "./StatisticCards";
 
@@ -20,6 +21,7 @@ interface Props {
 const EventDetails: React.FC<Props> = ({ params }) => {
   const { data: event, isLoading, error } = useFetchEventQuery(params.id);
   const [address, setAddress] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     if (event) {
@@ -44,6 +46,12 @@ const EventDetails: React.FC<Props> = ({ params }) => {
             {event?.description || "loading"}
           </h3>
         </div>
+        <button
+          onClick={() => router.push(`/calendar/${params.id}/register-team`)}
+          className="hover:bg-red-800 bg-red-500 text-white font-bold py-4 px-6 border border-red-800 rounded absolute top-6 right-6 active:scale-95"
+        >
+          Register Your Team
+        </button>
       </header>
       <main>
         <div className="px-5 sm:px-10 py-5 bg-red-500">
@@ -173,7 +181,12 @@ const EventDetails: React.FC<Props> = ({ params }) => {
               <h2 className="text-3xl uppercase font-semibold mb-8 hidden sm:block">
                 ADD YOUR TEAM AND BE ABLE TO WIN SUPER PRIZE!
               </h2>
-              <button className="bg-red-500 text-white uppercase font-semibold rounded-lg w-3/4 py-3">
+              <button
+                onClick={() =>
+                  router.push(`/calendar/${params.id}/register-team`)
+                }
+                className="bg-red-500 text-white uppercase font-semibold rounded-lg w-3/4 py-3"
+              >
                 Register Now
               </button>
             </div>

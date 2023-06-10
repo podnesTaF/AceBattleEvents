@@ -9,7 +9,7 @@ import TollIcon from "@mui/icons-material/Toll";
 import { Divider } from "@mui/material";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import Tab from "./Tab";
 
 interface ProfileProps {
@@ -21,7 +21,12 @@ interface ProfileProps {
 const Profile: React.FC<ProfileProps> = ({ params: { id } }) => {
   const { data: session } = useSession();
   const { data: teams, isLoading } = useFetchTeamsByUserIdQuery(+id);
+  const [registrations, setRegistrations] = React.useState<any[]>([]);
   console.log(teams);
+
+  useEffect(() => {
+    console.log(teams);
+  }, [teams]);
 
   const [activeTab, setActiveTab] = React.useState(0);
 

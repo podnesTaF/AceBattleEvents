@@ -20,10 +20,13 @@ export const user = createSlice({
     removeUser: (state) => {
       state.user = null;
     },
+    addBalance: (state, action: PayloadAction<number>) => {
+      if (state.user) state.user.balance += action.payload;
+    },
   },
 });
 
-export const { addUser, removeUser } = user.actions;
+export const { addUser, removeUser, addBalance } = user.actions;
 export const selectUser = (state: RootState) => state.user.user;
 
 export default user.reducer;

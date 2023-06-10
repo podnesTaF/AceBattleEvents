@@ -13,7 +13,18 @@ export const teamApi = api.injectEndpoints({
     fetchTeamsByUserId: builder.query<ITeam[], number>({
       query: (userId) => `/teams?user=${userId}`,
     }),
+    regiterTeam: builder.mutation<ITeam, { teamId: number; eventId: number }>({
+      query: ({ teamId, eventId }) => ({
+        url: `/teams/register`,
+        method: "POST",
+        body: { teamId, eventId },
+      }),
+    }),
   }),
 });
 
-export const { useAddTeamMutation, useFetchTeamsByUserIdQuery } = teamApi;
+export const {
+  useAddTeamMutation,
+  useFetchTeamsByUserIdQuery,
+  useRegiterTeamMutation,
+} = teamApi;

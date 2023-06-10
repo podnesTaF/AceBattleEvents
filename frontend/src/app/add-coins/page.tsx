@@ -1,11 +1,29 @@
 "use client";
 
+import { useAppDispatch } from "@/hooks/useTyped";
+import { addBalance } from "@/redux/features/userSlice";
+import { useUpdateUserMutation } from "@/services/userService";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { red } from "@mui/material/colors";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useState } from "react";
 
 const page = () => {
+  const { data: session } = useSession();
+  const [updateBalance, { data }] = useUpdateUserMutation();
+  const [toAdd, setToAdd] = useState("");
   const isWallet = false;
+  const dispatch = useAppDispatch();
+
+  const handleAddBalance = () => {
+    if (toAdd && +toAdd > 0) {
+      updateBalance({ balance: +toAdd });
+      dispatch(addBalance(+toAdd));
+      setToAdd("");
+    }
+  };
+
   return (
     <div className="w-full">
       <div className="w-full flex justify-center items-center relative h-40 md:h-60 bg-[url('/add-coins-intro.jpg')] bg-cover bg-center">
@@ -27,6 +45,8 @@ const page = () => {
               <div className="flex flex-col lg:flex-row px-4 my-3 md:px-5 gap-3 w-full justify-around">
                 <div className="my-2">
                   <input
+                    value={toAdd}
+                    onChange={(e) => setToAdd(e.target.value)}
                     type={"text"}
                     className="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:border-2 outline-none border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
                     placeholder="BC"
@@ -34,6 +54,8 @@ const page = () => {
                 </div>
                 <div className="my-2">
                   <input
+                    value={+toAdd * 0.01 < 0 ? "" : +toAdd * 10 + ""}
+                    onChange={(e) => setToAdd(+e.target.value * 100 + "")}
                     type={"text"}
                     className="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:border-2 outline-none border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
                     placeholder="ETH"
@@ -42,6 +64,8 @@ const page = () => {
                 <div className="my-2">
                   <input
                     type={"text"}
+                    value={+toAdd * 50 < 0 ? "" : +toAdd * 50 + ""}
+                    onChange={(e) => setToAdd(+e.target.value * 0.02 + "")}
                     className="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:border-2 outline-none border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
                     placeholder="Eu"
                   />
@@ -63,7 +87,10 @@ const page = () => {
                     }
                   />
                 </div>
-                <button className="hover:bg-slate-800 bg-black text-white font-bold py-2 px-4 border border-slate-800 rounded">
+                <button
+                  onClick={handleAddBalance}
+                  className="hover:bg-slate-800 bg-black text-white font-bold py-2 px-4 border border-slate-800 rounded"
+                >
                   Confirm
                 </button>
               </div>

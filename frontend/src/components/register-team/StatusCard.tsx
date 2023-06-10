@@ -1,6 +1,13 @@
 import Image from "next/image";
+import Link from "next/link";
 
-const StatusCard = () => {
+interface StatusCardProps {
+  status: string;
+  eventId: string;
+  userId: string;
+}
+
+const StatusCard: React.FC<StatusCardProps> = ({ status, eventId, userId }) => {
   return (
     <div className="w-full min-h-[60vh] relative">
       <Image
@@ -22,10 +29,10 @@ const StatusCard = () => {
         </div>
         <div className="w-full flex justify-around">
           <button className="hover:bg-w-gray-100 bg-white shadow-sm text-xl font-semibold py-2 px-4 border border-red-500 w-2/5 rounded uppercase">
-            Back to event
+            <Link href={"/calendar/" + eventId}>Back to event</Link>
           </button>
           <button className="hover:bg-red-400 bg-red-500 text-white text-xl font-semibold py-2 px-4 border border-red-500 w-2/5  rounded uppercase">
-            Check your registrations
+            <Link href={"/profile/" + userId}>Check your registrations</Link>
           </button>
         </div>
       </div>

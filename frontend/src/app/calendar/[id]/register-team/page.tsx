@@ -3,13 +3,21 @@
 import NoTeams from "@/components/register-team/NoTeams";
 import StatusCard from "@/components/register-team/StatusCard";
 import TeamCard from "@/components/shared/TeamCard";
+import { useAppDispatch } from "@/hooks/useTyped";
 import { ITeam } from "@/models/ITeam";
-import { useFetchTeamsByUserIdQuery } from "@/services/teamService";
+import { addBalance } from "@/redux/features/userSlice";
+import { useFetchEventQuery } from "@/services/eventService";
+import {
+  useFetchTeamsByUserIdQuery,
+  useRegiterTeamMutation,
+} from "@/services/teamService";
+import { formatDate } from "@/utils/date-formater";
 import { Checkbox, FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 
 interface RegisterTeamProps {
   params: {
@@ -19,13 +27,48 @@ interface RegisterTeamProps {
 
 const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
   const [teamId, setTeamId] = React.useState(0);
+  const [choosenTeam, setChoosenTeam] = React.useState<ITeam | null>(null);
   const [status, setStatus] = React.useState(""); // ["success", "error", "pending"]
   const { data: session } = useSession();
   const userId = session?.user?.id || 0;
   const { data: teams, isLoading, error } = useFetchTeamsByUserIdQuery(+userId);
+  const [regiterTeam, { data, error: registerError }] =
+    useRegiterTeamMutation();
+
+  const dispatch = useAppDispatch();
+
+  const { data: event } = useFetchEventQuery(params.id);
+
   const [activeTab, setActiveTab] = React.useState(0);
 
+  const router = useRouter();
+
+  const handleRegisterTeam = async () => {
+    if (teamId > 0 && event?.id) {
+      await regiterTeam({ teamId, eventId: event.id });
+      dispatch(addBalance(-event?.price || 0));
+
+      // @ts-ignore
+      if (!registerError) {
+        setStatus("success");
+      } else {
+        setStatus("error");
+      }
+    }
+  };
+
   const id = params.id;
+
+  const handleCancel = () => {
+    setActiveTab(0);
+    router.push(`/calendar/${id}`);
+  };
+
+  useEffect(() => {
+    if (teamId > 0) {
+      setChoosenTeam(teams?.find((team) => team.id === teamId) || null);
+    }
+  }, [teamId]);
 
   if (status === "success") {
     return (
@@ -36,7 +79,11 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
             Register Team
           </h2>
         </div>
-        <StatusCard />
+        <StatusCard
+          status={status}
+          userId={session?.user.id || "0"}
+          eventId={id}
+        />
       </div>
     );
   }
@@ -122,32 +169,37 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
               <div className="flex flex-col sm:flex-row w-full sm:justify-between gap-3 my-3">
                 <p>Registration for event:</p>
                 <p className="font-semibold w-full text-center md:w-auto md:text-start">
-                  “Battle Mile cup benelux”
+                  {event?.title || "Event Name"}
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row w-full sm:justify-between gap-3 my-3">
                 <p>Date:</p>
                 <p className="font-semibold w-full text-center md:w-auto md:text-start">
-                  24/06/2023
+                  {(event && formatDate(event.date)) || "Event Date"}
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row w-full sm:justify-between gap-3 my-3">
                 <p>Location:</p>
                 <p className="font-semibold w-full text-center md:w-auto md:text-start">
-                  Belguim, Brussels
+                  {`${event?.location.city}, ${event?.location.country}` ||
+                    "Event Location"}
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row w-full sm:justify-between gap-3 my-3">
                 <p>Team to Register:</p>
                 <p className="font-semibold w-full text-center md:w-auto md:text-start">
-                  “Brussels”
+                  {choosenTeam?.name || "Team Name"}
                 </p>
               </div>
               <div className="py-2 border-y-[1px] border-red-500">
                 <h3 className="text-2xl font-semibold">To pay:</h3>
                 <div className="text-end flex flex-col w-full gap-3">
-                  <h4 className="font-semibold text-xl">20 MileCoin</h4>
-                  <h4 className="font-semibold text-xl">500 euro</h4>
+                  <h4 className="font-semibold text-xl">
+                    {event?.price} MileCoin
+                  </h4>
+                  <h4 className="font-semibold text-xl">
+                    {event && event.price * 50} euro
+                  </h4>
                   <h4 className="font-semibold text-xl">0,28 ether</h4>
                 </div>
               </div>
@@ -155,7 +207,7 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
                 <div className="mb-3">
                   <h3 className="text-2xl font-semibold">Your Balance:</h3>
                   <h4 className="font-semibold text-xl text-end">
-                    40 MileCoin
+                    {session?.user?.balance || 0} MileCoin
                   </h4>
                 </div>
                 <div className="mb-3">
@@ -181,11 +233,14 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
                 />
               </div>
               <div className="flex justify-between">
-                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-500 rounded">
+                <button
+                  onClick={handleCancel}
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-500 rounded"
+                >
                   Cancel
                 </button>
                 <button
-                  onClick={() => setStatus("success")}
+                  onClick={handleRegisterTeam}
                   className="hover:bg-slate-800 bg-black text-white font-bold py-2 px-4 border border-slate-800 rounded"
                 >
                   Confirm
