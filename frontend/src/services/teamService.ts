@@ -10,7 +10,10 @@ export const teamApi = api.injectEndpoints({
         body,
       }),
     }),
+    fetchTeamsByUserId: builder.query<ITeam[], number>({
+      query: (userId) => `/teams?user=${userId}`,
+    }),
   }),
 });
 
-export const { useAddTeamMutation } = teamApi;
+export const { useAddTeamMutation, useFetchTeamsByUserIdQuery } = teamApi;

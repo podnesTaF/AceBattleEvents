@@ -20,7 +20,7 @@ const EventCard: React.FC<EventCardProps> = ({
   const router = useRouter();
   return (
     <div className="my-10">
-      <h1 className="text-4xl md:text-5xl my-4 text-center font-semibold">
+      <h1 className="text-3xl md:text-4xl my-4 text-center font-semibold">
         {event.title}
       </h1>
       {isYourRegister && (

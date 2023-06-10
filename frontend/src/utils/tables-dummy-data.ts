@@ -94,3 +94,72 @@ export const playerRows = [
     Cat: "Senior",
   },
 ];
+
+export const transactionRows = [
+  {
+    type: "Registration",
+    date: "23/06/2023 12:00",
+    amount: 10,
+    status: "Success",
+    event: "CUP BENELUX",
+    details: {
+      link: "/",
+      value: "receipt",
+    },
+  },
+  {
+    type: "Registration",
+    date: "23/06/2023 12:00",
+    amount: 10,
+    status: "Success",
+    event: "CUP BENELUX",
+    details: {
+      link: "/",
+      value: "receipt",
+    },
+  },
+  {
+    type: "Registration",
+    date: "23/06/2023 12:00",
+    amount: 10,
+    status: "Success",
+    event: "CUP BENELUX",
+    details: {
+      link: "/",
+      value: "receipt",
+    },
+  },
+  {
+    type: "Registration",
+    date: "23/06/2023 12:00",
+    amount: 10,
+    status: "Success",
+    event: "CUP BENELUX",
+    details: {
+      link: "/",
+      value: "receipt",
+    },
+  },
+  {
+    type: "Registration",
+    date: "23/06/2023 12:00",
+    amount: 10,
+    status: "Success",
+    event: "CUP BENELUX",
+    details: {
+      link: "/",
+      value: "receipt",
+    },
+  },
+  {
+    type: "Registration",
+    date: "23/06/2023 12:00",
+    amount: 10,
+    status: "Success",
+    event: "CUP BENELUX",
+    details: {
+      link: "/",
+      value: "receipt",
+    },
+  },
+];

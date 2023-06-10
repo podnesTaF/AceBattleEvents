@@ -1,5 +1,5 @@
 import { IEvent, ILocation } from "@/models/IEvent";
-import { ITeam } from "@/models/ITeam";
+import { IPlayer, ITeam } from "@/models/ITeam";
 
 export const transformIntoEventsTable = (data: IEvent[]) => {
   return data.map((event) => {
@@ -36,6 +36,41 @@ export const transformIntoTeamsTable = (data: ITeam[]) => {
     };
   });
 };
+
+// write me a function that will take a date of birth and return the age category like U18, U20, U23, Senior
+export const getAgeCategory = (dateOfBirth: string): string => {
+  const age = new Date().getFullYear() - new Date(dateOfBirth).getFullYear();
+  if (age < 18) {
+    return "U18";
+  } else if (age < 20) {
+    return "U20";
+  } else if (age < 23) {
+    return "U23";
+  } else {
+    return "Senior";
+  }
+};
+
+export const transfromIntoPlayersTable = (data: IPlayer[]) => {
+  return data.map((player) => {
+    const { name, surname, dateOfBirth } = player;
+
+    return {
+      name,
+      surname,
+      dateOfBirth: new Date(dateOfBirth).toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }),
+      cat: getAgeCategory(dateOfBirth),
+    };
+  });
+};
+
+// export const getTeamPersonalBest = (players: IPlayer[]): number => {
+//   return players.reduce((acc, curr) => acc + curr.personalBests., 0);
+// }
 
 export const getParamsFromFilters = (filters: any[]): string => {
   const params: string = filters.reduce(

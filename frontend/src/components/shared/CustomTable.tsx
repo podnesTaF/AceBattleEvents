@@ -7,7 +7,7 @@ interface CustomTableProps {
 
 const CustomTable: React.FC<CustomTableProps> = ({ rows, isLoading }) => {
   return (
-    <div className="relative overflow-x-auto sm:rounded-sm">
+    <div className="relative sm:rounded-sm max-h-[500px] overflow-auto">
       {isLoading ? (
         <h3>Loading...</h3>
       ) : rows.length < 1 ? (

@@ -1,9 +1,13 @@
 "use client";
 
 import EventCard from "@/app/close-events/EventCard";
+import CustomTable from "@/components/shared/CustomTable";
 import TeamCard from "@/components/shared/TeamCard";
+import { useFetchTeamsByUserIdQuery } from "@/services/teamService";
+import { transactionRows } from "@/utils/tables-dummy-data";
 import TollIcon from "@mui/icons-material/Toll";
 import { Divider } from "@mui/material";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React from "react";
 import Tab from "./Tab";
@@ -15,6 +19,10 @@ interface ProfileProps {
 }
 
 const Profile: React.FC<ProfileProps> = ({ params: { id } }) => {
+  const { data: session } = useSession();
+  const { data: teams, isLoading } = useFetchTeamsByUserIdQuery(+id);
+  console.log(teams);
+
   const [activeTab, setActiveTab] = React.useState(0);
 
   return (
@@ -83,8 +91,14 @@ const Profile: React.FC<ProfileProps> = ({ params: { id } }) => {
               <h2 className="text-3xl font-semibold mb-4 text-center">
                 Your teams
               </h2>
-              <TeamCard />
-              <TeamCard />
+              {teams && !isLoading ? (
+                teams.map((team, idx) => <TeamCard key={team.id} team={team} />)
+              ) : (
+                <p className="text-center text-xl font-semibold">
+                  You don't have teams yet
+                  <br />
+                </p>
+              )}
             </>
           )}
           {activeTab === 1 && (
@@ -92,6 +106,50 @@ const Profile: React.FC<ProfileProps> = ({ params: { id } }) => {
               <div className="mx-3 md:mx-5 my-4 p-3 flex justify-center border-b-[1px] w-full">
                 <h3 className="text-2xl font-semibold">Your Registrations</h3>
               </div>
+              <EventCard
+                isYourRegister={true}
+                event={{
+                  id: 0,
+                  title: "BATTLE MILE CUP BENELUX",
+                  description: "First battle mile competitions",
+                  date: "23 / 06 / 2023, 18:00",
+                  imageUrl: "",
+                  price: 0,
+                  teamsCount: undefined,
+                  location: {
+                    postalCode: "",
+                    street: "",
+                    country: "",
+                    city: "",
+                  },
+                  totalPrize: 100000,
+                  prizes: [],
+                  teams: [],
+                }}
+                idx={0}
+              />
+              <EventCard
+                isYourRegister={true}
+                event={{
+                  id: 0,
+                  title: "BATTLE MILE CUP BENELUX",
+                  description: "First battle mile competitions",
+                  date: "23 / 06 / 2023, 18:00",
+                  imageUrl: "",
+                  price: 0,
+                  teamsCount: undefined,
+                  location: {
+                    postalCode: "",
+                    street: "",
+                    country: "",
+                    city: "",
+                  },
+                  totalPrize: 100000,
+                  prizes: [],
+                  teams: [],
+                }}
+                idx={0}
+              />
               <EventCard
                 isYourRegister={true}
                 event={{
@@ -123,6 +181,14 @@ const Profile: React.FC<ProfileProps> = ({ params: { id } }) => {
                 </button>
               </div>
             </>
+          )}
+          {activeTab === 2 && (
+            <div className="p-3 md:p-5 w-full">
+              <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-center uppercase">
+                Last Transactions
+              </h2>
+              <CustomTable rows={transactionRows} isLoading={false} />
+            </div>
           )}
         </div>
       </main>
