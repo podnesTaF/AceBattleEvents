@@ -10,16 +10,20 @@ import Image from "next/image";
 import { useState } from "react";
 
 const page = () => {
-  const { data: session } = useSession();
+  const { data: session, status, update } = useSession();
   const [updateBalance, { data }] = useUpdateUserMutation();
   const [toAdd, setToAdd] = useState("");
   const isWallet = false;
   const dispatch = useAppDispatch();
 
   const handleAddBalance = () => {
-    if (toAdd && +toAdd > 0) {
+    if (toAdd && +toAdd > 0 && session) {
       updateBalance({ balance: +toAdd });
       dispatch(addBalance(+toAdd));
+      update({
+        ...session,
+        user: { ...session.user, balance: session.user.balance + +toAdd },
+      });
       setToAdd("");
     }
   };

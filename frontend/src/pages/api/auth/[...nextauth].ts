@@ -1,8 +1,6 @@
 import axios from "axios";
-import NextAuth, {NextAuthOptions} from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-;
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -34,14 +32,18 @@ export const authOptions: NextAuthOptions = {
     // ...add more providers here
   ],
   callbacks: {
-    jwt: async ({ token, user }) => {
-      user && (token.user = user)
-      return token
+    jwt: async ({ token, user, trigger, session }) => {
+      console.log("trigger: ", trigger, "balance: ", session?.user.balance);
+      if (trigger === "update" && session?.user.balance) {
+        token.user.balance = session.user.balance;
+      }
+      user && (token.user = user);
+      return token;
     },
     session: async ({ session, token }) => {
-      session.user = token.user
-      return session
-    }
+      session.user = token.user;
+      return session;
+    },
   },
   session: {
     strategy: "jwt",

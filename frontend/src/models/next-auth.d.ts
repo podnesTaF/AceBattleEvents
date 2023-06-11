@@ -1,15 +1,15 @@
-import NextAuth, {DefaultSession, User} from "next-auth"
-import {IUser} from "@/models/IUser";
+import { IUser } from "@/models/IUser";
+import { User } from "next-auth";
 
 declare module "next-auth" {
-    interface User extends IUser {}
-    interface Session {
-        user: User
-    }
+  interface User extends IUser {}
+  interface Session {
+    user: User;
+  }
 }
 
 declare module "next-auth/jwt" {
-    interface JWT {
-        user: User
-    }
+  interface JWT {
+    user: User;
+  }
 }

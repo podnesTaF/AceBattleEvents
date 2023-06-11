@@ -66,7 +66,7 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
 
   useEffect(() => {
     if (teamId > 0) {
-      setChoosenTeam(teams?.find((team) => team.id === teamId) || null);
+      setChoosenTeam(teams?.find((team: any) => team.id === teamId) || null);
     }
   }, [teamId]);
 
