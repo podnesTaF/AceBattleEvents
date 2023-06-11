@@ -1,5 +1,6 @@
 import { IEvent, ILocation } from "@/models/IEvent";
 import { IPlayer, ITeam } from "@/models/ITeam";
+import { ITransaction } from "@/models/IUser";
 
 export const transformIntoEventsTable = (data: IEvent[]) => {
   return data.map((event) => {
@@ -65,6 +66,35 @@ export const transfromIntoPlayersTable = (data: IPlayer[]) => {
       }),
       cat: getAgeCategory(dateOfBirth),
     };
+  });
+};
+
+export const transformTxTable = (data: ITransaction[]) => {
+  return data.map((tx) => {
+    const { amount, date, type, sender, receiver } = tx;
+    const retData: any = {
+      amount: amount.toFixed(2) + " bc",
+      date: new Date(date).toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }),
+      type,
+    };
+
+    if (receiver) {
+      retData.receiver = receiver.name + " " + receiver.surname;
+    } else {
+      retData.receiver = "N/A";
+    }
+
+    if (sender) {
+      retData.sender = sender.name + " " + sender.surname;
+    } else {
+      retData.sender = "N/A";
+    }
+
+    return retData;
   });
 };
 

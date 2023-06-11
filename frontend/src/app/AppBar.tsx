@@ -22,7 +22,6 @@ const AppBar = () => {
   const user = useAppSelector(selectUser);
 
   useEffect(() => {
-    console.log(session?.user);
     if (session?.user) {
       dispatch(addUser(session.user));
     }
@@ -92,7 +91,7 @@ const AppBar = () => {
                 >
                   <TollIcon className={"text-yellow-400"} />
                   <p className={"ml-2 text-white text-xl"}>
-                    {user?.balance} bc
+                    {user?.balance.toFixed(2)} bc
                   </p>
                 </Button>
               </div>
@@ -100,7 +99,7 @@ const AppBar = () => {
                 variant="outlined"
                 color="error"
                 className={"p-1"}
-                onClick={() => router.push("/profile/1")}
+                onClick={() => router.push("/profile")}
               >
                 <PersonIcon className={"text-white"} fontSize={"large"} />
               </Button>

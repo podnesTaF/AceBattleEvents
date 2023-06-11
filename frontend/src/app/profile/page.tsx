@@ -2,33 +2,49 @@
 
 import EventCard from "@/app/close-events/EventCard";
 import CustomTable from "@/components/shared/CustomTable";
+import Pagination from "@/components/shared/Pagination";
 import TeamCard from "@/components/shared/TeamCard";
-import { useFetchTeamsByUserIdQuery } from "@/services/teamService";
-import { transactionRows } from "@/utils/tables-dummy-data";
+import {
+  useFetchTeamsByUserIdQuery,
+  useGetRegistrationsQuery,
+} from "@/services/teamService";
+import { useFetchTxQuery } from "@/services/userService";
+import { transformTxTable } from "@/utils/transform-data";
 import TollIcon from "@mui/icons-material/Toll";
 import { Divider } from "@mui/material";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import Tab from "./Tab";
 
-interface ProfileProps {
-  params: {
-    id: string;
-  };
-}
+const Profile = () => {
+  const [pagesCount, setPageCount] = useState(1);
+  const [currPage, setCurrPage] = useState<number>(1);
+  const [activeTab, setActiveTab] = useState(0);
 
-const Profile: React.FC<ProfileProps> = ({ params: { id } }) => {
   const { data: session } = useSession();
-  const { data: teams, isLoading } = useFetchTeamsByUserIdQuery(+id);
-  const [registrations, setRegistrations] = React.useState<any[]>([]);
-  console.log(teams);
+  const { data: teams, isLoading } = useFetchTeamsByUserIdQuery();
+  const { data: transactions, isLoading: txLoading } = useFetchTxQuery();
+  const { data: registrations, isLoading: regLoading } =
+    useGetRegistrationsQuery({ page: currPage, limit: 3 });
+
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log(teams);
-  }, [teams]);
+    if (registrations) {
+      setPageCount(registrations.totalPages);
+    }
+  }, [registrations]);
 
-  const [activeTab, setActiveTab] = React.useState(0);
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [currPage]);
+
+  const changePage = (pageNum: number) => {
+    setCurrPage(pageNum);
+  };
 
   return (
     <>
@@ -58,13 +74,13 @@ const Profile: React.FC<ProfileProps> = ({ params: { id } }) => {
             <div className="md:ml-10 flex flex-col md:h-full mt-5 md:mt-0">
               <div className="flex-1">
                 <h3 className="text-3xl md:text-4xl font-semibold">
-                  Oleksii <br />
-                  Pidnebesnyi
+                  {session?.user.name} <br />
+                  {session?.user.surname}
                 </h3>
               </div>
               <p className="text-xl font-semibold">Club “Muse Run”</p>
               <p className="text-xl font-semibold text-gray-400">
-                Brussels | Belgium
+                {session?.user.city} | {session?.user.country}
               </p>
             </div>
             <div
@@ -73,7 +89,9 @@ const Profile: React.FC<ProfileProps> = ({ params: { id } }) => {
               }
             >
               <TollIcon className={"text-black-400"} />
-              <p className={"ml-2 text-xl"}>99 bc</p>
+              <p className={"ml-2 text-xl"}>
+                {session?.user.balance.toFixed(2)} bc
+              </p>
             </div>
           </div>
         </div>
@@ -111,72 +129,31 @@ const Profile: React.FC<ProfileProps> = ({ params: { id } }) => {
               <div className="mx-3 md:mx-5 my-4 p-3 flex justify-center border-b-[1px] w-full">
                 <h3 className="text-2xl font-semibold">Your Registrations</h3>
               </div>
-              <EventCard
-                isYourRegister={true}
-                event={{
-                  id: 0,
-                  title: "BATTLE MILE CUP BENELUX",
-                  description: "First battle mile competitions",
-                  date: "23 / 06 / 2023, 18:00",
-                  imageUrl: "",
-                  price: 0,
-                  teamsCount: undefined,
-                  location: {
-                    postalCode: "",
-                    street: "",
-                    country: "",
-                    city: "",
-                  },
-                  totalPrize: 100000,
-                  prizes: [],
-                  teams: [],
-                }}
-                idx={0}
-              />
-              <EventCard
-                isYourRegister={true}
-                event={{
-                  id: 0,
-                  title: "BATTLE MILE CUP BENELUX",
-                  description: "First battle mile competitions",
-                  date: "23 / 06 / 2023, 18:00",
-                  imageUrl: "",
-                  price: 0,
-                  teamsCount: undefined,
-                  location: {
-                    postalCode: "",
-                    street: "",
-                    country: "",
-                    city: "",
-                  },
-                  totalPrize: 100000,
-                  prizes: [],
-                  teams: [],
-                }}
-                idx={0}
-              />
-              <EventCard
-                isYourRegister={true}
-                event={{
-                  id: 0,
-                  title: "BATTLE MILE CUP BENELUX",
-                  description: "First battle mile competitions",
-                  date: "23 / 06 / 2023, 18:00",
-                  imageUrl: "",
-                  price: 0,
-                  teamsCount: undefined,
-                  location: {
-                    postalCode: "",
-                    street: "",
-                    country: "",
-                    city: "",
-                  },
-                  totalPrize: 100000,
-                  prizes: [],
-                  teams: [],
-                }}
-                idx={0}
-              />
+              <div className="w-full h-full" ref={ref}>
+                {registrations ? (
+                  registrations.teamsForEvents.map((reg, idx) => (
+                    <EventCard
+                      key={idx}
+                      isYourRegister={true}
+                      event={reg.event}
+                      team={reg.team}
+                      idx={idx + 1 + 3 * currPage}
+                    />
+                  ))
+                ) : (
+                  <p className="text-center text-xl font-semibold">
+                    You don't have registrations yet
+                    <br />
+                  </p>
+                )}
+              </div>
+              <div className="flex justify-center">
+                <Pagination
+                  pagesCount={pagesCount}
+                  onChangePage={changePage}
+                  currPage={currPage}
+                />
+              </div>
               <div className="my-4 mx-auto flex flex-col items-center">
                 <p className="text-xl my-4">
                   There are lots of events to register your team!
@@ -192,7 +169,17 @@ const Profile: React.FC<ProfileProps> = ({ params: { id } }) => {
               <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-center uppercase">
                 Last Transactions
               </h2>
-              <CustomTable rows={transactionRows} isLoading={false} />
+              {transactions && !isLoading ? (
+                <CustomTable
+                  rows={transformTxTable(transactions)}
+                  isLoading={false}
+                />
+              ) : (
+                <p className="text-center text-xl font-semibold">
+                  You don't have transactions yet
+                  <br />
+                </p>
+              )}
             </div>
           )}
         </div>

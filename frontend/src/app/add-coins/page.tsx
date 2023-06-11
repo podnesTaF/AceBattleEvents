@@ -2,7 +2,10 @@
 
 import { useAppDispatch } from "@/hooks/useTyped";
 import { addBalance } from "@/redux/features/userSlice";
-import { useUpdateUserMutation } from "@/services/userService";
+import {
+  useCreateTxMutation,
+  useUpdateUserMutation,
+} from "@/services/userService";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { useSession } from "next-auth/react";
@@ -12,19 +15,25 @@ import { useState } from "react";
 const page = () => {
   const { data: session, status, update } = useSession();
   const [updateBalance, { data }] = useUpdateUserMutation();
+  const [createTx, { data: txData }] = useCreateTxMutation();
   const [toAdd, setToAdd] = useState("");
   const isWallet = false;
   const dispatch = useAppDispatch();
 
-  const handleAddBalance = () => {
+  const handleAddBalance = async () => {
     if (toAdd && +toAdd > 0 && session) {
-      updateBalance({ balance: +toAdd });
-      dispatch(addBalance(+toAdd));
-      update({
-        ...session,
-        user: { ...session.user, balance: session.user.balance + +toAdd },
-      });
-      setToAdd("");
+      try {
+        await createTx({ amount: +toAdd, type: "DEBIT" });
+        await updateBalance({ balance: +toAdd });
+        dispatch(addBalance(+toAdd));
+        update({
+          ...session,
+          user: { ...session.user, balance: session.user.balance + +toAdd },
+        });
+        setToAdd("");
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

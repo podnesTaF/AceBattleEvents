@@ -17,6 +17,6 @@ const baseQuery = fetchBaseQuery({
 
 export const api = createApi({
   baseQuery,
-  tagTypes: ["Event"],
+  tagTypes: ["Event", "Transaction", "Registration"],
   endpoints: () => ({}),
 });

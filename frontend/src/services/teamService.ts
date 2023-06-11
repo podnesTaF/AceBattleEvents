@@ -1,4 +1,4 @@
-import { ITeam, ReqTeam } from "@/models/ITeam";
+import { ITeam, ITeamEvent, ReqTeam } from "@/models/ITeam";
 import { api } from "./api";
 
 export const teamApi = api.injectEndpoints({
@@ -10,8 +10,8 @@ export const teamApi = api.injectEndpoints({
         body,
       }),
     }),
-    fetchTeamsByUserId: builder.query<ITeam[], number>({
-      query: (userId) => `/teams?user=${userId}`,
+    fetchTeamsByUserId: builder.query<ITeam[], void>({
+      query: () => `/teams?user=true`,
     }),
     regiterTeam: builder.mutation<ITeam, { teamId: number; eventId: number }>({
       query: ({ teamId, eventId }) => ({
@@ -19,6 +19,15 @@ export const teamApi = api.injectEndpoints({
         method: "POST",
         body: { teamId, eventId },
       }),
+      invalidatesTags: ["Registration"],
+    }),
+    getRegistrations: builder.query<
+      { teamsForEvents: ITeamEvent[]; totalPages: number },
+      { page: number; limit: number }
+    >({
+      query: ({ page, limit }) =>
+        `/teams/registrations?page=${page}&limit=${limit}`,
+      providesTags: ["Registration"],
     }),
   }),
 });
@@ -27,4 +36,5 @@ export const {
   useAddTeamMutation,
   useFetchTeamsByUserIdQuery,
   useRegiterTeamMutation,
+  useGetRegistrationsQuery,
 } = teamApi;

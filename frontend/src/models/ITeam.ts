@@ -1,3 +1,4 @@
+import { IEvent } from "./IEvent";
 import { IUser } from "./IUser";
 
 export type ITeam = {
@@ -10,6 +11,7 @@ export type ITeam = {
   club: string;
   coach: ICoach;
   players: IPlayer[];
+  events: IEvent[];
 };
 
 export type CreateTeam = {
@@ -59,4 +61,9 @@ export type IPersonalBest = {
   id: number;
   distance: number;
   timeInSeconds: number;
+};
+
+export type ITeamEvent = {
+  event: IEvent;
+  team: ITeam;
 };

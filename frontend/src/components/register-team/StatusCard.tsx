@@ -32,7 +32,7 @@ const StatusCard: React.FC<StatusCardProps> = ({ status, eventId, userId }) => {
             <Link href={"/calendar/" + eventId}>Back to event</Link>
           </button>
           <button className="hover:bg-red-400 bg-red-500 text-white text-xl font-semibold py-2 px-4 border border-red-500 w-2/5  rounded uppercase">
-            <Link href={"/profile/" + userId}>Check your registrations</Link>
+            <Link href={"/profile"}>Check your registrations</Link>
           </button>
         </div>
       </div>

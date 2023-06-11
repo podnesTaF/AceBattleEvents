@@ -29,9 +29,9 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
   const [teamId, setTeamId] = React.useState(0);
   const [choosenTeam, setChoosenTeam] = React.useState<ITeam | null>(null);
   const [status, setStatus] = React.useState(""); // ["success", "error", "pending"]
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const userId = session?.user?.id || 0;
-  const { data: teams, isLoading, error } = useFetchTeamsByUserIdQuery(+userId);
+  const { data: teams, isLoading, error } = useFetchTeamsByUserIdQuery();
   const [regiterTeam, { data, error: registerError }] =
     useRegiterTeamMutation();
 
@@ -44,9 +44,21 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
   const router = useRouter();
 
   const handleRegisterTeam = async () => {
+    if (!session?.user) return;
     if (teamId > 0 && event?.id) {
-      await regiterTeam({ teamId, eventId: event.id });
-      dispatch(addBalance(-event?.price || 0));
+      try {
+        await regiterTeam({ teamId, eventId: event.id });
+        dispatch(addBalance(-event?.price || 0));
+        update({
+          ...session,
+          user: {
+            ...session.user,
+            balance: session.user.balance + -event?.price,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
 
       // @ts-ignore
       if (!registerError) {
@@ -207,13 +219,16 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
                 <div className="mb-3">
                   <h3 className="text-2xl font-semibold">Your Balance:</h3>
                   <h4 className="font-semibold text-xl text-end">
-                    {session?.user?.balance || 0} MileCoin
+                    {session?.user?.balance.toFixed(2) || 0} MileCoin
                   </h4>
                 </div>
                 <div className="mb-3">
                   <h3 className="text-2xl font-semibold">Remaining:</h3>
                   <h4 className="font-semibold text-xl text-end">
-                    20 MileCoin
+                    {session &&
+                      event &&
+                      (session.user.balance - event.price).toFixed(2)}{" "}
+                    MileCoin
                   </h4>
                 </div>
               </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { IEvent } from "@/models/IEvent";
+import { ITeam } from "@/models/ITeam";
 import { formatDate, isPassed } from "@/utils/date-formater";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import { useRouter } from "next/navigation";
@@ -10,12 +11,14 @@ interface EventCardProps {
   event: IEvent;
   idx: number;
   isYourRegister?: boolean;
+  team?: ITeam;
 }
 
 const EventCard: React.FC<EventCardProps> = ({
   event,
   idx,
   isYourRegister,
+  team,
 }) => {
   const router = useRouter();
   return (
@@ -23,11 +26,13 @@ const EventCard: React.FC<EventCardProps> = ({
       <h1 className="text-3xl md:text-4xl my-4 text-center font-semibold">
         {event.title}
       </h1>
-      {isYourRegister && (
+      {isYourRegister && team && (
         <div className="flex justify-between w-full lg:w-[820px] mx-auto my-3 font-semibold text-xl">
-          <p>Registration #1</p>
-          <p>Team: Royal Brussels</p>
-          <p>Coach: Vitaliy Voloshyn</p>
+          <p>Registration #{idx}</p>
+          <p>Team: {team.name}</p>
+          <p>
+            Coach: {team.coach.name} {team.coach.surname}
+          </p>
         </div>
       )}
       <div
@@ -42,7 +47,7 @@ const EventCard: React.FC<EventCardProps> = ({
               <div>
                 <h3 className="uppercase text-xl">Location:</h3>
                 <h4 className="uppercase text-lg underline">
-                  {event.location.country}, {event.location.country}{" "}
+                  {event.location?.city}, {event.location?.country}{" "}
                   <FmdGoodIcon />
                 </h4>
               </div>
@@ -70,7 +75,12 @@ const EventCard: React.FC<EventCardProps> = ({
           </div>
           <div className="w-full flex justify-around my-4 gap-3">
             {!isYourRegister && !isPassed(event.date) && (
-              <button className="p-4 bg-red-500 text-lg sm:text-xl uppercase text-white rounded hover:bg-red-700 drop-shadow-lg active:scale-95">
+              <button
+                onClick={() =>
+                  router.push(`/calendar/${event.id}/register-team`)
+                }
+                className="p-4 bg-red-500 text-lg sm:text-xl uppercase text-white rounded hover:bg-red-700 drop-shadow-lg active:scale-95"
+              >
                 Register your team
               </button>
             )}

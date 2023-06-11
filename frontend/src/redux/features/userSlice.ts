@@ -21,7 +21,7 @@ export const user = createSlice({
       state.user = null;
     },
     addBalance: (state, action: PayloadAction<number>) => {
-      if (state.user) state.user.balance += action.payload;
+      if (state.user) state.user.balance += +action.payload.toFixed(2);
     },
   },
 });
