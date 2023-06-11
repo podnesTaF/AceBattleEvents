@@ -29,8 +29,6 @@ export class TeamsService {
       players.push(res);
     }
 
-    console.log(players);
-
     const coach = await this.coachService.create(dto.coach);
 
     const manager = await this.userService.findById(managerId);
@@ -46,7 +44,7 @@ export class TeamsService {
     });
   }
 
-  async register(dto: { teamId: number; eventId: number }) {
+  async register(dto: { teamId: number; eventId: number }, userId: number) {
     const team = await this.repository.findOne({
       where: { id: dto.teamId },
       relations: ['events'],
@@ -63,15 +61,30 @@ export class TeamsService {
     team.events.push(event);
     event.teams.push(team);
 
+    await this.userService.addToBalance(-event.price, userId);
+
     await this.repository.save(team);
     await this.eventRepository.save(event);
   }
 
-  findAll() {
+  findAll(userId?: string) {
+    if (userId) {
+      return this.repository.find({
+        where: { manager: { id: +userId } },
+        relations: ['players', 'players.personalBests', 'coach', 'events'],
+      });
+    }
     return this.repository.find({
       relations: ['players', 'players.personalBests'],
     });
   }
+
+  // async getRegistrations(userId?: string) {
+  //   const teams = await this.repository.find({
+  //     where: { manager: { id: +userId } },
+  //     relations: ['players', 'players.personalBests', 'coach'],
+  //   });
+  // }
 
   findOne(id: number) {
     return this.repository.findOne({ where: { id }, relations: ['events'] });

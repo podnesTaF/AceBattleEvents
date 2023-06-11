@@ -27,12 +27,12 @@ export class TeamsController {
     @Request() req,
     @Body() dto: { teamId: number; eventId: number },
   ) {
-    return this.teamsService.register(dto);
+    return this.teamsService.register(dto, req.user.id);
   }
 
   @Get()
-  findAll() {
-    return this.teamsService.findAll();
+  findAll(@Param('userId') userId: string) {
+    return this.teamsService.findAll(userId);
   }
 
   @Get(':id')

@@ -1,4 +1,12 @@
-import { Controller, Get, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UserService } from './user.service';
 
@@ -16,5 +24,21 @@ export class UserController {
   getMe(@Request() req) {
     console.log(req.user);
     return this.userService.findById(req.user.id);
+  }
+
+  @Post('create-transaction')
+  @UseGuards(JwtAuthGuard)
+  createTransaction(
+    @Request() req,
+    @Body() body: { amount: number; receiverId: number },
+  ) {
+    return this.userService.createTransaction(req.user.id, body.amount);
+  }
+
+  @Patch()
+  @UseGuards(JwtAuthGuard)
+  updateBalance(@Request() req, @Body() body: { balance: number }) {
+    console.log(req.session);
+    return this.userService.addToBalance(+req.user.id, body.balance);
   }
 }

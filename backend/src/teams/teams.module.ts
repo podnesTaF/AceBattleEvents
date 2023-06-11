@@ -12,6 +12,8 @@ import { PlayerEntity } from 'src/players/entities/player.entity';
 import { PlayersService } from 'src/players/players.service';
 import { PrizeEntity } from 'src/prizes/entities/prize.entity';
 import { PrizesService } from 'src/prizes/prizes.service';
+import { TransactionEntity } from 'src/transactions/entities/transaction.entity';
+import { TransactionsService } from 'src/transactions/transactions.service';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
 import { TeamEntity } from './entities/team.entity';
@@ -29,6 +31,7 @@ import { TeamsService } from './teams.service';
       EventEntity,
       PrizeEntity,
       PersonalBestEntity,
+      TransactionEntity,
     ]),
   ],
   controllers: [TeamsController],
@@ -41,6 +44,7 @@ import { TeamsService } from './teams.service';
     PrizesService,
     LocationsService,
     PersonalBestsService,
+    TransactionsService,
   ],
   exports: [TeamsService],
 })

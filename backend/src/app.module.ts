@@ -13,6 +13,7 @@ import { PlayersModule } from './players/players.module';
 import { PrizesModule } from './prizes/prizes.module';
 import { TeamsModule } from './teams/teams.module';
 import { UserModule } from './user/user.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { UserModule } from './user/user.module';
     PlayersModule,
     PersonalBestsModule,
     PrizesModule,
+    TransactionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

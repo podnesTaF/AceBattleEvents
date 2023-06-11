@@ -7,6 +7,7 @@ import { PersonalBestEntity } from 'src/personal-bests/entities/personal-best.en
 import { PlayerEntity } from 'src/players/entities/player.entity';
 import { PrizeEntity } from 'src/prizes/entities/prize.entity';
 import { TeamEntity } from 'src/teams/entities/team.entity';
+import { TransactionEntity } from 'src/transactions/entities/transaction.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
 evnconfig();
 
@@ -26,6 +27,7 @@ const config: TypeOrmModuleOptions = {
     CoachEntity,
     PersonalBestEntity,
     PrizeEntity,
+    TransactionEntity,
   ],
   synchronize: true,
 };

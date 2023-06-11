@@ -1,4 +1,5 @@
 import { TeamEntity } from 'src/teams/entities/team.entity';
+import { TransactionEntity } from 'src/transactions/entities/transaction.entity';
 import {
   Column,
   CreateDateColumn,
@@ -40,8 +41,17 @@ export class UserEntity {
   @Column({ nullable: true })
   password: string;
 
+  @Column({ nullable: true })
+  walletId: string;
+
   @OneToMany(() => TeamEntity, (team) => team.manager)
   teams: TeamEntity[];
+
+  @OneToMany(() => TransactionEntity, (transaction) => transaction.sender)
+  transactionsAsSender: TransactionEntity[];
+
+  @OneToMany(() => TransactionEntity, (transaction) => transaction.receiver)
+  transactionsAsReceiver: TransactionEntity[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
