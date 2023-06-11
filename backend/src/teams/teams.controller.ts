@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -31,8 +32,18 @@ export class TeamsController {
   }
 
   @Get()
-  findAll(@Param('userId') userId: string) {
-    return this.teamsService.findAll(userId);
+  @UseGuards(JwtAuthGuard)
+  findAll(@Request() req, @Query('user') user: any) {
+    return this.teamsService.findAll(user, +req.user.id);
+  }
+
+  @Get('/registrations')
+  @UseGuards(JwtAuthGuard)
+  findAllReg(
+    @Request() req,
+    @Query() query: { limit?: string; page?: string },
+  ) {
+    return this.teamsService.getRegistrations(+req.user.id, query);
   }
 
   @Get(':id')

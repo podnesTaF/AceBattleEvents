@@ -22,28 +22,39 @@ export class UserService {
     });
   }
 
-  async createTransaction(id: number, amount: number, receiverId?: number) {
+  async createTransaction(
+    id: number,
+    amount: number,
+    type: string,
+    receiverId?: number,
+  ) {
     const tx = await this.transactionService.create({
       amount,
+      type,
     });
 
-    let user;
+    let user: UserEntity;
 
     if (receiverId) {
-      user = await this.repository.findOne({ where: { id: receiverId } });
-      if (!user.transactionsAsReceiver) {
-        user.transactionsAsReceiver = [];
-      }
+      user = await this.repository.findOne({
+        where: { id: receiverId },
+        relations: ['transactionsAsReceiver'],
+      });
+      console.log(user);
       user.transactionsAsReceiver.push(tx);
     } else {
-      user = await this.repository.findOne({ where: { id } });
-      if (!user.transactionsAsSender) {
-        user.transactionsAsSender = [];
-      }
+      user = await this.repository.findOne({
+        where: { id },
+        relations: ['transactionsAsSender'],
+      });
       user.transactionsAsSender.push(tx);
     }
 
     return this.repository.save(user);
+  }
+
+  getTx(id: number) {
+    return this.transactionService.findByUserId(id);
   }
 
   findAll() {
@@ -61,7 +72,6 @@ export class UserService {
   }
 
   addToBalance(id: number, amount: number) {
-    this.createTransaction(0, amount, id);
     return this.repository.increment({ id }, 'balance', amount);
   }
 }

@@ -19,26 +19,35 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Get()
+  @Get('/me')
   @UseGuards(JwtAuthGuard)
   getMe(@Request() req) {
-    console.log(req.user);
     return this.userService.findById(req.user.id);
+  }
+
+  @Get('/get-transactions')
+  @UseGuards(JwtAuthGuard)
+  getTx(@Request() req) {
+    return this.userService.getTx(req.user.id);
   }
 
   @Post('create-transaction')
   @UseGuards(JwtAuthGuard)
   createTransaction(
     @Request() req,
-    @Body() body: { amount: number; receiverId: number },
+    @Body() body: { amount: number; receiverId: number; type: string },
   ) {
-    return this.userService.createTransaction(req.user.id, body.amount);
+    return this.userService.createTransaction(
+      req.user.id,
+      body.amount,
+      body.type,
+    );
   }
 
   @Patch()
   @UseGuards(JwtAuthGuard)
   updateBalance(@Request() req, @Body() body: { balance: number }) {
-    console.log(req.session);
+    console.log(body.balance);
     return this.userService.addToBalance(+req.user.id, body.balance);
   }
 }

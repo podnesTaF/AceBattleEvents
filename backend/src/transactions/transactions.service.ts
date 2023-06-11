@@ -15,6 +15,15 @@ export class TransactionsService {
   create(dto: CreateTransactionDto) {
     return this.repository.save({
       amount: dto.amount,
+      type: dto.type,
+    });
+  }
+
+  findByUserId(id: number) {
+    return this.repository.find({
+      where: [{ sender: { id } }, { receiver: { id } }],
+      relations: ['sender', 'receiver'],
+      order: { date: 'DESC' },
     });
   }
 
