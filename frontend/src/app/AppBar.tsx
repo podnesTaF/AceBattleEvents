@@ -3,6 +3,7 @@
 import CustomDrawer from "@/components/CustomDrawer";
 import { useAppDispatch, useAppSelector } from "@/hooks/useTyped";
 import { addUser, selectUser } from "@/redux/features/userSlice";
+import AddCardIcon from "@mui/icons-material/AddCard";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
@@ -29,19 +30,19 @@ const AppBar = () => {
 
   return (
     <>
-      <div className="lg:flex justify-between px-5 py-4 bg-[#1E1C1F] items-center">
+      <div className="xl:flex justify-between px-5 py-4 bg-[#1E1C1F] items-center">
         <div className={"flex justify-between items-center"}>
           <IconButton
             onClick={() => setOpen(true)}
-            className={"text-white lg:hidden items-center"}
+            className={"text-white xl:hidden items-center"}
           >
             <MenuIcon sx={{ fontSize: 40 }} />
           </IconButton>
-          <h2 className={"text-3xl lg:text-4xl uppercase text-white"}>
+          <h2 className={"text-3xl xl:text-4xl uppercase text-white"}>
             Ace Battle Events
           </h2>
         </div>
-        <nav className={"hidden lg:flex gap-4 items-center"}>
+        <nav className={"hidden xl:flex gap-4 items-center"}>
           <Link className="hover:opacity-80" href="/">
             <p
               className={`text-xl uppercase ${
@@ -71,7 +72,7 @@ const AppBar = () => {
           </Link>
           {session?.user ? (
             <>
-              <Link className="hover:opacity-80" href="/register-team">
+              <Link className="hover:opacity-80" href="/add-team">
                 <p
                   className={`text-xl uppercase ${
                     pathname === "/register-team"
@@ -79,24 +80,26 @@ const AppBar = () => {
                       : "text-white"
                   }`}
                 >
-                  Register Team
+                  Add Your Team
                 </p>
               </Link>
 
               <div className={"flex items-center justify-center"}>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  onClick={() => router.push("/add-coins")}
-                >
+                <IconButton>
                   <TollIcon className={"text-yellow-400"} />
                   <p className={"ml-2 text-white text-xl"}>
                     {user?.balance.toFixed(2)} bc
                   </p>
-                </Button>
+                </IconButton>
+                <IconButton
+                  onClick={() => router.push("/add-coins")}
+                  className="hover:opacity-80"
+                >
+                  <AddCardIcon fontSize="large" sx={{ color: "white" }} />
+                </IconButton>
               </div>
               <Button
-                variant="outlined"
+                variant="contained"
                 color="error"
                 className={"p-1"}
                 onClick={() => router.push("/profile")}

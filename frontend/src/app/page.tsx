@@ -8,7 +8,7 @@ const textStyles =
 export default function Home() {
   return (
     <>
-      <header className="w-full flex justify-center items-center h-96 h-calc-screen bg-[url('/main-intro.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">
+      <header className="w-full flex justify-center items-center h-96 h-calc-screen bg-[url('/main-intro.jpg')] bg-fixed bg-cover bg-no-repeat bg-top relative flex-col ">
         <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.4)] z-0"></div>
         <div className="sm:bg-[#1E1C1F] flex flex-col justify-center items-center sm:w-4/5 md:w-3/4 lg:w-3/5 xl:w-1/2 md:p-5 lg:p-10 h-80 z-10">
           <h2 className="text-4xl text-white uppercase font-semibold flex-1 flex items-center">
@@ -53,7 +53,7 @@ export default function Home() {
           </div>
         </section>
         <section className="w-full">
-          <div className="w-full bg-[url('/main-sect-bg.jpg')] bg-cover bg-top min-h-[380px] md:min-h-[480px] lg:min-h-[580px] relative flex items-end">
+          <div className="w-full bg-[url('/main-sect-bg.jpg')] bg-fixed bg-cover bg-top min-h-[380px] md:min-h-[480px] lg:min-h-[580px] relative flex items-end">
             <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.4)] z-0"></div>
             <div className="p-5 sm:p-10 sm:bg-[#1E1C1F] w-full sm:w-3/4 md:w-1/2 z-10">
               <div className="max-w-[240px] mb-5">

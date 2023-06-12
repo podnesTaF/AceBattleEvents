@@ -11,7 +11,7 @@ const CloseEventsPage = () => {
 
   return (
     <>
-      <header className="w-full flex justify-center h-96 sm:h-[800px] bg-[url('/close_events_intro.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">
+      <header className="w-full flex justify-center h-96 sm:h-[800px] bg-[url('/close_events_intro.jpg')] bg-fixed bg-cover bg-no-repeat bg-top relative flex-col ">
         <div className="h-3/5 mb-10 sm:mb-0 sm:h-1/2 bg-[#1E1C1F] flex justify-center items-center w-3/4 sm:w-3/5 md:w-[500px]">
           <h2 className="text-white uppercase font-semibold text-3xl sm:text-5xl">
             CLOSE <br />
