@@ -1,0 +1,41 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface AggregatorV3Interface {\n  function decimals() external view returns (uint8);\n\n  function description() external view returns (string memory);\n\n  function version() external view returns (uint256);\n\n  function getRoundData(uint80 _roundId)\n    external\n    view\n    returns (\n      uint80 roundId,\n      int256 answer,\n      uint256 startedAt,\n      uint256 updatedAt,\n      uint80 answeredInRound\n    );\n\n  function latestRoundData()\n    external\n    view\n    returns (\n      uint80 roundId,\n      int256 answer,\n      uint256 startedAt,\n      uint256 updatedAt,\n      uint80 answeredInRound\n    );\n}\n"
+    },
+    "contracts/PriceConverter.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport \"@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol\";\n\nlibrary PriceConverter {\n    function getPrice(\n        AggregatorV3Interface priceFeed\n    ) internal view returns (uint256) {\n        (, int256 price, , , ) = priceFeed.latestRoundData();\n\n        return uint256(price * 1e10);\n    }\n\n    function getConversionRate(\n        uint256 ethAmount,\n        AggregatorV3Interface priceFeed\n    ) internal view returns (uint256) {\n        uint256 ethPrice = getPrice(priceFeed);\n        uint256 ethAmountInUsd = (ethPrice * ethAmount) / 1e18;\n\n        return ethAmountInUsd;\n    }\n}\n"
+    },
+    "contracts/RunContract.sol": {
+      "content": "// SPDX-License-Identifier: SEE LICENSE IN LICENSE\npragma solidity ^0.8.0;\n\nimport \"./PriceConverter.sol\";\n\nerror FundMe__NotOwner();\n\ncontract RunContract {\n    // variables and events\n\n    using PriceConverter for uint256;\n\n    uint256 public constant MINIMUM_USD = 10 * 1e18;\n    address public immutable i_owner;\n\n    address[] public s_funders;\n\n    mapping(address => uint256) public s_addressToAmountFunded;\n\n    AggregatorV3Interface public s_priceFeed;\n\n    uint256 transactionCount;\n\n    Registration[] public registrations;\n\n    struct Registration {\n        address sender;\n        address receiver;\n        uint256 date;\n        uint256 sum;\n    }\n\n    event RegistrationEvent(\n        address indexed sender,\n        address indexed receiver,\n        uint256 date,\n        uint256 sum\n    );\n\n    constructor(address priceFeedAdd) {\n        i_owner = msg.sender;\n        s_priceFeed = AggregatorV3Interface(priceFeedAdd);\n    }\n\n    // add money to contract and account\n    function fund() public payable {\n        require(\n            msg.value.getConversionRate(s_priceFeed) >= MINIMUM_USD,\n            \"Din't sent enough!\"\n        );\n        s_funders.push(msg.sender);\n        s_addressToAmountFunded[msg.sender] += msg.value;\n    }\n\n    function getBalance() public view returns (uint256) {\n        return s_addressToAmountFunded[msg.sender];\n    }\n\n    function buy(address sender, uint256 date, uint256 sum) public {\n        require(\n            s_addressToAmountFunded[msg.sender] >= sum,\n            \"Insufficient balance\"\n        );\n\n        Registration memory registration = Registration(\n            sender,\n            i_owner,\n            date,\n            sum\n        );\n        registrations.push(registration);\n        s_addressToAmountFunded[msg.sender] -= sum;\n\n        emit RegistrationEvent(sender, i_owner, date, sum);\n    }\n\n    function withdraw() public payable onlyOwner {\n        address[] memory funders = s_funders;\n        for (uint256 i = 0; i < funders.length; i++) {\n            address funder = funders[i];\n            s_addressToAmountFunded[funder] = 0;\n        }\n\n        s_funders = new address[](0);\n        (bool success, ) = i_owner.call{value: address(this).balance}(\"\");\n        require(success, \"Withdrawal failed\");\n    }\n\n    function getMyTransactions() public view returns (Registration[] memory) {\n        uint256 count = 0;\n\n        // Count the number of transactions related to the user\n        for (uint256 i = 0; i < registrations.length; i++) {\n            Registration memory transaction = registrations[i];\n            if (\n                transaction.sender == msg.sender ||\n                transaction.receiver == msg.sender\n            ) {\n                count++;\n            }\n        }\n\n        // Create a new array to store the user's transactions\n        Registration[] memory userTransactions = new Registration[](count);\n        uint256 index = 0;\n\n        // Populate the userTransactions array with the user's transactions\n        for (uint256 i = 0; i < registrations.length; i++) {\n            Registration memory transaction = registrations[i];\n            if (\n                transaction.sender == msg.sender ||\n                transaction.receiver == msg.sender\n            ) {\n                userTransactions[index] = transaction;\n                index++;\n            }\n        }\n\n        return userTransactions;\n    }\n\n    function getTransactionCount() public view returns (uint256) {\n        return transactionCount;\n    }\n\n    modifier onlyOwner() {\n        if (msg.sender == i_owner) {\n            revert FundMe__NotOwner();\n        }\n        _;\n    }\n\n    receive() external payable {\n        fund();\n    }\n\n    fallback() external payable {\n        fund();\n    }\n\n    // functions\n}\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}
