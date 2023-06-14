@@ -9,24 +9,59 @@ import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import TollIcon from "@mui/icons-material/Toll";
 import { Button, IconButton } from "@mui/material";
+import { ethers } from "ethers";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useMoralis, useWeb3Contract } from "react-moralis";
+import { abi, addresses } from "../constants";
 
 const AppBar = () => {
-  const { data: session } = useSession();
+  const { account, chainId: inHex } = useMoralis();
+  const [balance, setBalance] = useState(0);
+  const { data: session, update } = useSession();
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
 
+  const chainId = inHex ? parseInt(inHex, 16) : 0;
+
+  // @ts-ignore
+  const runAddress = chainId in addresses ? addresses[chainId][0] : null;
+
+  const { runContractFunction: getBalance } = useWeb3Contract({
+    abi: abi,
+    contractAddress: runAddress,
+    functionName: "getBalance",
+    params: {},
+  });
+
+  const handleGetBalance = async () => {
+    if (!session) return;
+    const balance = await getBalance();
+    update({
+      ...session,
+      user: {
+        ...session.user,
+        balance: +ethers.utils.formatEther(balance as any) * 100,
+      },
+    });
+  };
+
+  useEffect(() => {
+    handleGetBalance();
+  }, [account]);
+
   useEffect(() => {
     if (session?.user) {
       dispatch(addUser(session.user));
     }
   }, [session]);
+
+  useEffect(() => {}, []);
 
   return (
     <>

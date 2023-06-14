@@ -79,6 +79,11 @@
         "internalType": "uint256",
         "name": "sum",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "companyAddress",
+        "type": "address"
       }
     ],
     "name": "buy",

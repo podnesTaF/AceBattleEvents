@@ -3,6 +3,7 @@
 import NoTeams from "@/components/register-team/NoTeams";
 import StatusCard from "@/components/register-team/StatusCard";
 import TeamCard from "@/components/shared/TeamCard";
+import { abi } from "@/constants";
 import { useAppDispatch } from "@/hooks/useTyped";
 import { ITeam } from "@/models/ITeam";
 import { addBalance } from "@/redux/features/userSlice";
@@ -12,12 +13,15 @@ import {
   useRegiterTeamMutation,
 } from "@/services/teamService";
 import { formatDate } from "@/utils/date-formater";
+import { chainAddress } from "@/utils/web3-helpers";
 import { Checkbox, FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { red } from "@mui/material/colors";
+import { ethers } from "ethers";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useMoralis, useWeb3Contract } from "react-moralis";
 
 interface RegisterTeamProps {
   params: {
@@ -26,47 +30,80 @@ interface RegisterTeamProps {
 }
 
 const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
-  const [teamId, setTeamId] = React.useState(0);
-  const [choosenTeam, setChoosenTeam] = React.useState<ITeam | null>(null);
-  const [status, setStatus] = React.useState(""); // ["success", "error", "pending"]
+  const [teamId, setTeamId] = useState(0);
+  const [choosenTeam, setChoosenTeam] = useState<ITeam | null>(null);
+  const [price, setPrice] = useState(0);
+  const [status, setStatus] = useState(""); // ["success", "error", "pending"]
   const { data: session, update } = useSession();
-  const userId = session?.user?.id || 0;
   const { data: teams, isLoading, error } = useFetchTeamsByUserIdQuery();
   const [regiterTeam, { data, error: registerError }] =
     useRegiterTeamMutation();
+
+  const { chainId: inHex, account, Moralis } = useMoralis();
+
+  // @ts-ignore
+  const runAddress = chainAddress(inHex);
 
   const dispatch = useAppDispatch();
 
   const { data: event } = useFetchEventQuery(params.id);
 
-  const [activeTab, setActiveTab] = React.useState(0);
+  const [activeTab, setActiveTab] = useState(0);
 
   const router = useRouter();
 
+  const { runContractFunction: buyRegistration } = useWeb3Contract({
+    abi: abi,
+    contractAddress: runAddress,
+    functionName: "buy",
+    params: {
+      sender: account,
+      date: Date.now(),
+      sum: ethers.utils.parseEther(price * 0.01 + "") as any,
+      companyAddress: "0x93467db8e687AA59f449D64b5b262691A75F3d10",
+    },
+  });
+
   const handleRegisterTeam = async () => {
-    if (!session?.user) return;
+    if (!session?.user || !account) return;
     if (teamId > 0 && event?.id) {
       try {
-        await regiterTeam({ teamId, eventId: event.id });
-        dispatch(addBalance(-event?.price || 0));
-        update({
-          ...session,
-          user: {
-            ...session.user,
-            balance: session.user.balance + -event?.price,
+        await buyRegistration({
+          onSuccess: async () => {
+            await onSuccessRegister();
+            setStatus("success");
+          },
+          onError: (error) => {
+            console.log(error);
           },
         });
+
+        // if (tx) {
+        //   await onSuccessRegister(tx);
+        // }
+        // @ts-ignore
+        // if (!registerError) {
+
+        // } else {
+        //   setStatus("error");
+        // }
       } catch (error) {
         console.log(error);
       }
-
-      // @ts-ignore
-      if (!registerError) {
-        setStatus("success");
-      } else {
-        setStatus("error");
-      }
     }
+  };
+
+  const onSuccessRegister = async () => {
+    if (!session?.user || !event?.id) return;
+    await regiterTeam({ teamId, eventId: event.id });
+    dispatch(addBalance(-event?.price || 0));
+    update({
+      ...session,
+      user: {
+        ...session.user,
+        balance: session.user.balance + -event?.price,
+      },
+    });
   };
 
   const id = params.id;
@@ -81,6 +118,16 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
       setChoosenTeam(teams?.find((team: any) => team.id === teamId) || null);
     }
   }, [teamId]);
+
+  useEffect(() => {
+    if (event?.price) {
+      setPrice(event.price);
+    }
+  }, [event]);
+
+  useEffect(() => {
+    Moralis.enableWeb3();
+  }, []);
 
   if (status === "success") {
     return (
@@ -99,7 +146,6 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
       </div>
     );
   }
-
   return (
     <div className="w-full">
       <div className="w-full flex justify-center items-center relative h-40 md:h-60 bg-[url('/auth-intro.jpg')] bg-cover bg-center">

@@ -13,14 +13,12 @@
     "@emotion/styled": "^11.11.0",
     "@googlemaps/js-api-loader": "^1.16.1",
     "@hookform/resolvers": "^3.1.0",
+    "@moralisweb3/next": "^2.22.2",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.3",
     "@react-google-maps/api": "^2.18.1",
     "@reduxjs/toolkit": "^1.9.5",
-    "@types/googlemaps": "^3.43.3",
-    "@types/node": "20.2.5",
-    "@types/react": "18.2.7",
-    "@types/react-dom": "18.2.4",
+    "@walletconnect/web3-provider": "^1.8.0",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
     "moralis": "^2.22.2",
@@ -37,5 +35,12 @@
     "use-places-autocomplete": "^4.0.0",
     "web3uikit": "^1.0.4",
     "yup": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/googlemaps": "^3.43.3",
+    "@types/node": "20.2.5",
+    "@types/react": "18.2.7",
+    "@types/react-dom": "18.2.4",
+    "encoding": "^0.1.13"
   }
 }

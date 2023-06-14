@@ -1,6 +1,7 @@
 "use client";
 
 import { useAppDispatch } from "@/hooks/useTyped";
+import { addBalance } from "@/redux/features/userSlice";
 import {
   useCreateTxMutation,
   useUpdateUserMutation,
@@ -13,41 +14,42 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { useMoralis, useWeb3Contract } from "react-moralis";
 import { ConnectButton } from "web3uikit";
-import { abi, addresses } from "../../constants";
+import { abi } from "../../constants";
+import { chainAddress } from "../../utils/web3-helpers";
+
+const apiKey = process.env.NEXT_PUBLIC_MORALIS_API_KEY || "";
 
 const page = () => {
-  const { account } = useMoralis();
   const { data: session, status, update } = useSession();
   const [balance, setBalance] = useState<any>(0);
   const [updateBalance, { data }] = useUpdateUserMutation();
   const [createTx, { data: txData }] = useCreateTxMutation();
   const [toAdd, setToAdd] = useState("");
-  const { chainId: inHex, isWeb3Enabled } = useMoralis();
-  const chainId = inHex ? parseInt(inHex, 16) : 0;
+  const { chainId: inHex, account } = useMoralis();
   const dispatch = useAppDispatch();
-
   // @ts-ignore
-  const runAddress = chainId in addresses ? addresses[chainId][0] : null;
+  const runAddress = chainAddress(inHex);
 
   const handleAddBalance = useCallback(async () => {
     await fund({
-      onSuccess: () => console.log("success"),
+      onSuccess: async () => {
+        if (toAdd && +toAdd > 0 && session) {
+          try {
+            await createTx({ amount: +toAdd, type: "DEBIT" });
+            await updateBalance({ balance: +toAdd });
+            dispatch(addBalance(+toAdd));
+            update({
+              ...session,
+              user: { ...session.user, balance: session.user.balance + +toAdd },
+            });
+            setToAdd("");
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      },
       onError: (error) => console.log(error),
     });
-    // if (toAdd && +toAdd > 0 && session) {
-    //   try {
-    //     await createTx({ amount: +toAdd, type: "DEBIT" });
-    //     await updateBalance({ balance: +toAdd });
-    //     dispatch(addBalance(+toAdd));
-    //     update({
-    //       ...session,
-    //       user: { ...session.user, balance: session.user.balance + +toAdd },
-    //     });
-    //     setToAdd("");
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // }
   }, [toAdd, session]);
 
   // const value = ethers.utils.parseEther((+toAdd * 0.01).toFixed(2)),
@@ -61,7 +63,14 @@ const page = () => {
     contractAddress: runAddress,
     functionName: "fund",
     params: {},
-    msgValue: ethers.utils.parseEther("0.01") as any,
+    msgValue: ethers.utils.parseEther(+toAdd * 0.01 + "") as any,
+  });
+
+  const { runContractFunction: withdraw } = useWeb3Contract({
+    abi: abi,
+    contractAddress: runAddress,
+    functionName: "withdraw",
+    params: {},
   });
 
   const { runContractFunction: getBalance } = useWeb3Contract({
@@ -78,7 +87,7 @@ const page = () => {
     params: {
       sender: account,
       date: Date.now(),
-      sum: ethers.utils.parseEther("0.01") as any,
+      sum: ethers.utils.parseEther(+toAdd * 0.01 + "") as any,
     },
   });
 
@@ -89,21 +98,10 @@ const page = () => {
     params: {},
   });
 
-  const handleGetBalance = async () => {
-    const balance = await getBalance();
-    setBalance(ethers.utils.formatEther(balance as any));
-  };
-
   const handleBuy = async () => {
     const tx = await buyRegistration();
     console.log(tx);
   };
-
-  useEffect(() => {
-    if (account) {
-      handleGetBalance();
-    }
-  }, [account, handleAddBalance]);
 
   useEffect(() => {
     const getTx = async () => {
@@ -130,6 +128,21 @@ const page = () => {
             <h3 className="text-2xl z-10 uppercase font-semibold mb-4">
               Add coins
             </h3>
+            <div className="my-3">
+              <button
+                className="p-3"
+                onClick={async () => {
+                  await withdraw({
+                    onSuccess: async () => {
+                      console.log("success");
+                    },
+                    onError: (error) => console.log("withdraw error"),
+                  });
+                }}
+              >
+                Withdraw
+              </button>
+            </div>
             <div className="w-full runded-md shadow-md">
               <div className="rounded-t-md p-3 bg-red-600">
                 <h3 className="text-white text-xl font-semibold">Sum</h3>
@@ -193,7 +206,7 @@ const page = () => {
               Your wallet
             </h3>
             {account ? (
-              <div className="shadow-md rounded-md bg-gradient-to-b from-purple-700 via-red-600 to-orange-400 h-[200px] w-[350px] sm:h-[270px] sm:w-[480px]  p-4 flex flex-col">
+              <div className="shadow-md rounded-md bg-gradient-to-b from-purple-700 via-red-600 to-orange-400 h-[200px] w-[350px] sm:h-[270px] sm:w-[480px]  p-4 flex flex-col relative">
                 <p className="text-white text-xl font-semibold flex-1">
                   {account.slice(0, 6)}...{account.slice(-4)}
                 </p>
@@ -202,15 +215,10 @@ const page = () => {
                   width={26}
                   height={43}
                   alt="ether"
-                  className="ml-auto"
+                  className="ml-auto absolute bottom-4 right-4"
                 />
                 <div className="my-2">
-                  <button className="p-3" onClick={handleBuy}>
-                    getBalance
-                  </button>
-                  <p className="text-white text-xl font-semibold">
-                    {balance} ETH
-                  </p>
+                  <ConnectButton />
                 </div>
               </div>
             ) : (
