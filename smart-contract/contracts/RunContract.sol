@@ -56,7 +56,12 @@ contract RunContract {
         return s_addressToAmountFunded[msg.sender];
     }
 
-    function buy(address sender, uint256 date, uint256 sum) public {
+    function buy(
+        address sender,
+        uint256 date,
+        uint256 sum,
+        address companyAddress
+    ) public {
         require(
             s_addressToAmountFunded[msg.sender] >= sum,
             "Insufficient balance"
@@ -71,18 +76,19 @@ contract RunContract {
         registrations.push(registration);
         s_addressToAmountFunded[msg.sender] -= sum;
 
+        (bool success, ) = companyAddress.call{value: sum}("");
+
+        require(success, "registration failed");
+
         emit RegistrationEvent(sender, i_owner, date, sum);
     }
 
     function withdraw() public payable onlyOwner {
-        address[] memory funders = s_funders;
-        for (uint256 i = 0; i < funders.length; i++) {
-            address funder = funders[i];
-            s_addressToAmountFunded[funder] = 0;
-        }
+        uint256 amount = s_addressToAmountFunded[msg.sender];
+        require(amount > 0, "No balance to withdraw");
 
-        s_funders = new address[](0);
-        (bool success, ) = i_owner.call{value: address(this).balance}("");
+        s_addressToAmountFunded[msg.sender] = 0;
+        (bool success, ) = msg.sender.call{value: amount}("");
         require(success, "Withdrawal failed");
     }
 

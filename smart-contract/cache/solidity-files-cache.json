@@ -88,8 +88,8 @@
       ]
     },
     "/Users/macbookpro/Desktop/AceBattleEvents/smart-contract/contracts/RunContract.sol": {
-      "lastModificationDate": 1686733356562,
-      "contentHash": "dfd412a9d298b714fdea9ef4ba739cbf",
+      "lastModificationDate": 1686754454823,
+      "contentHash": "98466d8f27755f00eb8c026bc8815632",
       "sourceName": "contracts/RunContract.sol",
       "solcConfig": {
         "version": "0.8.18",
