@@ -1,11 +1,17 @@
 "use client";
 
 import CustomTitle from "@/components/shared/CustomTitle";
+import { useMoralis } from "react-moralis";
 
 const textStyles =
   "text-lg sm:text-xl text-white border-r-2 border-red-500 px-2 sm:px-4 w-1/4 uppercase text-center";
 
+const supportedChains = ["31337", "5"];
+
 export default function Home() {
+  const { isWeb3Enabled, chainId } = useMoralis();
+  const chainIdString = chainId ? parseInt(chainId).toString() : "0";
+
   return (
     <>
       <header className="w-full flex justify-center items-center h-96 h-calc-screen bg-[url('/main-intro.jpg')] bg-fixed bg-cover bg-no-repeat bg-top relative flex-col ">

@@ -1,41 +1,120 @@
 "use client";
 
 import { useAppDispatch } from "@/hooks/useTyped";
-import { addBalance } from "@/redux/features/userSlice";
 import {
   useCreateTxMutation,
   useUpdateUserMutation,
 } from "@/services/userService";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { red } from "@mui/material/colors";
+import { ethers } from "ethers";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useMoralis, useWeb3Contract } from "react-moralis";
+import { ConnectButton } from "web3uikit";
+import { abi, addresses } from "../../constants";
 
 const page = () => {
+  const { account } = useMoralis();
   const { data: session, status, update } = useSession();
+  const [balance, setBalance] = useState<any>(0);
   const [updateBalance, { data }] = useUpdateUserMutation();
   const [createTx, { data: txData }] = useCreateTxMutation();
   const [toAdd, setToAdd] = useState("");
-  const isWallet = false;
+  const { chainId: inHex, isWeb3Enabled } = useMoralis();
+  const chainId = inHex ? parseInt(inHex, 16) : 0;
   const dispatch = useAppDispatch();
 
-  const handleAddBalance = async () => {
-    if (toAdd && +toAdd > 0 && session) {
-      try {
-        await createTx({ amount: +toAdd, type: "DEBIT" });
-        await updateBalance({ balance: +toAdd });
-        dispatch(addBalance(+toAdd));
-        update({
-          ...session,
-          user: { ...session.user, balance: session.user.balance + +toAdd },
-        });
-        setToAdd("");
-      } catch (error) {
-        console.log(error);
-      }
-    }
+  // @ts-ignore
+  const runAddress = chainId in addresses ? addresses[chainId][0] : null;
+
+  const handleAddBalance = useCallback(async () => {
+    await fund({
+      onSuccess: () => console.log("success"),
+      onError: (error) => console.log(error),
+    });
+    // if (toAdd && +toAdd > 0 && session) {
+    //   try {
+    //     await createTx({ amount: +toAdd, type: "DEBIT" });
+    //     await updateBalance({ balance: +toAdd });
+    //     dispatch(addBalance(+toAdd));
+    //     update({
+    //       ...session,
+    //       user: { ...session.user, balance: session.user.balance + +toAdd },
+    //     });
+    //     setToAdd("");
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // }
+  }, [toAdd, session]);
+
+  // const value = ethers.utils.parseEther((+toAdd * 0.01).toFixed(2)),
+
+  const {
+    runContractFunction: fund,
+    isLoading,
+    isFetching,
+  } = useWeb3Contract({
+    abi: abi,
+    contractAddress: runAddress,
+    functionName: "fund",
+    params: {},
+    msgValue: ethers.utils.parseEther("0.01") as any,
+  });
+
+  const { runContractFunction: getBalance } = useWeb3Contract({
+    abi: abi,
+    contractAddress: runAddress,
+    functionName: "getBalance",
+    params: {},
+  });
+
+  const { runContractFunction: buyRegistration } = useWeb3Contract({
+    abi: abi,
+    contractAddress: runAddress,
+    functionName: "buy",
+    params: {
+      sender: account,
+      date: Date.now(),
+      sum: ethers.utils.parseEther("0.01") as any,
+    },
+  });
+
+  const { runContractFunction: getMyTx } = useWeb3Contract({
+    abi: abi,
+    contractAddress: runAddress,
+    functionName: "getMyTransactions",
+    params: {},
+  });
+
+  const handleGetBalance = async () => {
+    const balance = await getBalance();
+    setBalance(ethers.utils.formatEther(balance as any));
   };
+
+  const handleBuy = async () => {
+    const tx = await buyRegistration();
+    console.log(tx);
+  };
+
+  useEffect(() => {
+    if (account) {
+      handleGetBalance();
+    }
+  }, [account, handleAddBalance]);
+
+  useEffect(() => {
+    const getTx = async () => {
+      const tx = await getMyTx();
+      console.log(tx);
+    };
+
+    if (account) {
+      getTx();
+    }
+  }, [account]);
 
   return (
     <div className="w-full">
@@ -67,8 +146,8 @@ const page = () => {
                 </div>
                 <div className="my-2">
                   <input
-                    value={+toAdd * 0.01 < 0 ? "" : +toAdd * 10 + ""}
-                    onChange={(e) => setToAdd(+e.target.value * 100 + "")}
+                    value={+toAdd * 0.01 < 0 ? "" : (+toAdd * 0.01).toFixed(2)}
+                    onChange={(e) => setToAdd(+e.target.value * 0.01 + "")}
                     type={"text"}
                     className="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:border-2 outline-none border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
                     placeholder="ETH"
@@ -113,10 +192,10 @@ const page = () => {
             <h3 className="text-2xl z-10 uppercase font-semibold mb-4">
               Your wallet
             </h3>
-            {isWallet ? (
+            {account ? (
               <div className="shadow-md rounded-md bg-gradient-to-b from-purple-700 via-red-600 to-orange-400 h-[200px] w-[350px] sm:h-[270px] sm:w-[480px]  p-4 flex flex-col">
                 <p className="text-white text-xl font-semibold flex-1">
-                  0x92123...2dd212
+                  {account.slice(0, 6)}...{account.slice(-4)}
                 </p>
                 <Image
                   src="/ether.svg"
@@ -125,6 +204,14 @@ const page = () => {
                   alt="ether"
                   className="ml-auto"
                 />
+                <div className="my-2">
+                  <button className="p-3" onClick={handleBuy}>
+                    getBalance
+                  </button>
+                  <p className="text-white text-xl font-semibold">
+                    {balance} ETH
+                  </p>
+                </div>
               </div>
             ) : (
               <div className="h-[200px] w-[350px] sm:h-[270px] sm:w-[480px] flex flex-col">
@@ -132,9 +219,10 @@ const page = () => {
                   You have no wallet connected. Add your wallet to proceed
                   payments
                 </p>
-                <button className="w-full shadow-md rounded-md bg-gradient-to-b from-purple-700 via-red-600 to-orange-400 text-xl text-white font-semibold py-3 hover:opacity-90 active:scale-95">
+                <ConnectButton />
+                {/* <button className="w-full shadow-md rounded-md bg-gradient-to-b from-purple-700 via-red-600 to-orange-400 text-xl text-white font-semibold py-3 hover:opacity-90 active:scale-95">
                   Add wallet
-                </button>
+                </button> */}
               </div>
             )}
           </div>
