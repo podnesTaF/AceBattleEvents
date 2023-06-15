@@ -4,6 +4,7 @@ import { IEvent } from "@/models/IEvent";
 import { ITeam } from "@/models/ITeam";
 import { formatDate, isPassed } from "@/utils/date-formater";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -21,6 +22,7 @@ const EventCard: React.FC<EventCardProps> = ({
   team,
 }) => {
   const router = useRouter();
+  const { data: session } = useSession();
   return (
     <div className="my-10">
       <h1 className="text-3xl md:text-4xl my-4 text-center font-semibold">
@@ -74,7 +76,7 @@ const EventCard: React.FC<EventCardProps> = ({
             </div>
           </div>
           <div className="w-full flex justify-around my-4 gap-3">
-            {!isYourRegister && !isPassed(event.date) && (
+            {!isYourRegister && !isPassed(event.date) && session?.user && (
               <button
                 onClick={() =>
                   router.push(`/calendar/${event.id}/register-team`)

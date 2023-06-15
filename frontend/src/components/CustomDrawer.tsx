@@ -118,15 +118,13 @@ const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen }) => {
             </p>
           </Link>
           {session?.user && (
-            <Link className="hover:opacity-80" href="/register-team">
+            <Link className="hover:opacity-80" href="/add-team">
               <p
                 className={`text-xl uppercase py-2 ${
-                  pathname === "/register-team"
-                    ? "text-[#FF0000]"
-                    : "text-white"
+                  pathname === "/add-team" ? "text-[#FF0000]" : "text-white"
                 }`}
               >
-                Register Team
+                Add team
               </p>
             </Link>
           )}

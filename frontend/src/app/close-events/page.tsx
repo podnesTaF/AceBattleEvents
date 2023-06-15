@@ -1,7 +1,12 @@
 "use client";
 
 import { useFetchEventsQuery } from "@/services/eventService";
+import dynamic from "next/dynamic";
 import EventCard from "./EventCard";
+
+const EventSkeleton = dynamic(
+  () => import("@/components/events/EventSkeleton")
+);
 
 const CloseEventsPage = () => {
   const { data, isLoading, error } = useFetchEventsQuery({
@@ -25,10 +30,12 @@ const CloseEventsPage = () => {
         </div>
       </header>
       <main className="max-w-7xl my-5 md:my-8 mx-auto">
-        {isLoading ? (
-          <h2 className="text-center">Loading...</h2>
-        ) : error ? (
+        {error ? (
           <h2 className="text-center">Error fetching close events</h2>
+        ) : isLoading ? (
+          Array.from({ length: 2 }).map((_, index) => (
+            <EventSkeleton key={index} />
+          ))
         ) : (
           data?.events.map((item, i) => (
             <EventCard idx={i} key={item.id} event={item} />

@@ -1,16 +1,21 @@
 "use client";
-import Map from "@/components/events/Map";
-import CustomTable from "@/components/shared/CustomTable";
+import TableSkeleton from "@/components/shared/TableSkeleton";
 import { useFetchEventQuery } from "@/services/eventService";
 import { formatDate } from "@/utils/date-formater";
 import {
   transformAddress,
   transformIntoTeamsTable,
 } from "@/utils/transform-data";
+import Skeleton from "@mui/material/Skeleton";
+import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import StatisticCards from "./StatisticCards";
+
+const Map = dynamic(() => import("@/components/events/Map"));
+const CustomTable = dynamic(() => import("@/components/shared/CustomTable"));
 
 interface Props {
   params: {
@@ -20,6 +25,7 @@ interface Props {
 
 const EventDetails: React.FC<Props> = ({ params }) => {
   const { data: event, isLoading, error } = useFetchEventQuery(params.id);
+  const { data: session } = useSession();
   const [address, setAddress] = useState("");
   const router = useRouter();
 
@@ -34,24 +40,46 @@ const EventDetails: React.FC<Props> = ({ params }) => {
       <header className="w-full flex justify-center h-96 sm:h-[800px] bg-[url('/page-detail.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">
         <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.4)] z-0"></div>
         <div className="h-3/5 mb-10 sm:mb-0 sm:h-1/2 ml-5 flex flex-col justify-center items-center w-3/4 sm:w-3/5 md:w-[500px] z-10">
-          <h2 className="text-white uppercase font-semibold text-3xl sm:text-5xl mb-5">
-            {event?.title || "loading"}
-          </h2>
+          {isLoading ? (
+            <Skeleton
+              variant="text"
+              width={300}
+              height={100}
+              animation="wave"
+              sx={{ bgcolor: "grey.600", opacity: 0.6, mb: 5 }}
+            />
+          ) : (
+            <h2 className="text-white uppercase font-semibold text-3xl sm:text-5xl mb-5">
+              {event?.title}
+            </h2>
+          )}
           <h4 className="text-white text-2xl uppercase">
             Share your energy with us!
           </h4>
         </div>
         <div className="absolute w-full sm:w-1/2 md:w-[500px] h-1/5 sm:h-1/4 bg-black/60 bottom-0 right-0 flex justify-center items-center z-10">
-          <h3 className="uppercase text-xl font-thin text-white w-4/5">
-            {event?.description || "loading"}
-          </h3>
+          {isLoading ? (
+            <Skeleton
+              variant="text"
+              width={300}
+              height={70}
+              animation="wave"
+              sx={{ bgcolor: "grey.600", opacity: 0.6, mb: 5 }}
+            />
+          ) : (
+            <h3 className="uppercase text-xl font-thin text-white w-4/5">
+              {event?.description}
+            </h3>
+          )}
         </div>
-        <button
-          onClick={() => router.push(`/calendar/${params.id}/register-team`)}
-          className="hover:bg-red-800 bg-red-500 text-white font-bold py-4 px-6 border border-red-800 rounded absolute top-6 right-6 active:scale-95"
-        >
-          Register Your Team
-        </button>
+        {session?.user && (
+          <button
+            onClick={() => router.push(`/calendar/${params.id}/register-team`)}
+            className="hover:bg-red-800 bg-red-500 text-white font-bold py-4 px-6 border border-red-800 rounded absolute top-6 right-6 active:scale-95"
+          >
+            Register Your Team
+          </button>
+        )}
       </header>
       <main>
         <div className="px-5 sm:px-10 py-5 bg-red-500">
@@ -66,33 +94,35 @@ const EventDetails: React.FC<Props> = ({ params }) => {
             className="absolute top-0 right-0 -z-10"
           />
           <div className="w-full xl:w-3/4 max-w-[1280px] px-4 py-5 sm:px-8 lg:px-12 lg:py-8">
-            {event && <StatisticCards event={event} />}
+            <StatisticCards event={event} />
             <div className="flex flex-col md:flex-row items-center md:items-start justify-between w-full gap-10 md:gap-0">
               <div className="w-full max-w-[500px] min-h-[350px] md:w-2/5 border-[1px] border-red bg-white p-4 flex flex-col justify-between">
                 <div className="flex justify-between">
                   <p className="text-xl font-semibold">Country:</p>
+                  {isLoading && <Skeleton variant="text" width={100} />}
                   <p className="text-xl font-light">
-                    {event?.location.country || "loading"}
+                    {event?.location.country}
                   </p>
                 </div>
                 <div className="flex justify-between">
                   <p className="text-xl font-semibold">City:</p>
                   <p className="text-xl font-light">
-                    {event?.location.city || "loading"}
+                    {isLoading && <Skeleton variant="text" width={100} />}
+                    {event?.location.city}
                   </p>
                 </div>
                 <div className="flex flex-col">
                   <p className="text-xl font-semibold">Address:</p>
+                  {isLoading && <Skeleton variant="text" width={100} />}
                   <p className="text-xl font-light underline">
-                    {event?.location.street +
-                      ", " +
-                      event?.location.postalCode || "loading"}
+                    {event?.location.street + ", " + event?.location.postalCode}
                   </p>
                 </div>
                 <div className="flex justify-between">
                   <p className="text-xl font-semibold">Date:</p>
                   <p className="text-xl font-light">
-                    {event ? formatDate(event.date) : "loading"}
+                    {isLoading && <Skeleton variant="text" width={100} />}
+                    {event && formatDate(event.date)}
                   </p>
                 </div>
               </div>
@@ -133,6 +163,14 @@ const EventDetails: React.FC<Props> = ({ params }) => {
                     </p>
                   </div>
                 </div>
+                {isLoading && (
+                  <Skeleton
+                    variant="rectangular"
+                    animation="wave"
+                    height={300}
+                    width={400}
+                  />
+                )}
                 {event?.prizes.map((prize) => (
                   <div
                     key={prize.id}
@@ -161,6 +199,7 @@ const EventDetails: React.FC<Props> = ({ params }) => {
                 isLoading={false}
               />
             )}
+            {isLoading && <TableSkeleton />}
           </div>
 
           <div className="my-20 mx-4 xl:mx-0 flex flex-col sm:flex-row justify-around gap-3">
@@ -182,9 +221,13 @@ const EventDetails: React.FC<Props> = ({ params }) => {
                 ADD YOUR TEAM AND BE ABLE TO WIN SUPER PRIZE!
               </h2>
               <button
-                onClick={() =>
-                  router.push(`/calendar/${params.id}/register-team`)
-                }
+                onClick={() => {
+                  if (session?.user) {
+                    router.push(`/calendar/${params.id}/register-team`);
+                  } else {
+                    router.push(`/auth/login`);
+                  }
+                }}
                 className="bg-red-500 text-white uppercase font-semibold rounded-lg w-3/4 py-3"
               >
                 Register Now

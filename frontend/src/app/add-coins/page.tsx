@@ -1,5 +1,6 @@
 "use client";
 
+import AccountInfo from "@/components/add-coins/AccountInfo";
 import { useAppDispatch } from "@/hooks/useTyped";
 import { addBalance } from "@/redux/features/userSlice";
 import {
@@ -10,10 +11,8 @@ import { Checkbox, FormControlLabel } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { ethers } from "ethers";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useMoralis, useWeb3Contract } from "react-moralis";
-import { ConnectButton } from "web3uikit";
 import { abi } from "../../constants";
 import { chainAddress } from "../../utils/web3-helpers";
 
@@ -22,7 +21,7 @@ const page = () => {
   const [updateBalance] = useUpdateUserMutation();
   const [createTx] = useCreateTxMutation();
   const [toAdd, setToAdd] = useState("");
-  const { chainId: inHex, account } = useMoralis();
+  const { chainId: inHex, account, isWeb3Enabled } = useMoralis();
   const dispatch = useAppDispatch();
   // @ts-ignore
   const runAddress = chainAddress(inHex);
@@ -62,10 +61,6 @@ const page = () => {
     msgValue: ethers.utils.parseEther(+toAdd * 0.01 + "") as any,
   });
 
-  useEffect(() => {
-    console.log({ isLoading, isFetching });
-  }, [isLoading, isFetching]);
-
   return (
     <div className="w-full">
       <div className="w-full flex justify-center items-center relative h-40 md:h-60 bg-[url('/add-coins-intro.jpg')] bg-cover bg-center">
@@ -80,11 +75,22 @@ const page = () => {
             <h3 className="text-2xl z-10 uppercase font-semibold mb-4">
               Add coins
             </h3>
-            <div className="w-full runded-md shadow-md">
+            <div className={`w-full runded-md shadow-md relative`}>
+              {!account && (
+                <div className="absolute left-0 top-0 h-full w-full flex justify-center items-center z-10">
+                  <h3 className="text-2xl font-semibold">
+                    Connect to your wallet
+                  </h3>
+                </div>
+              )}
               <div className="rounded-t-md p-3 bg-red-600">
                 <h3 className="text-white text-xl font-semibold">Sum</h3>
               </div>
-              <div className="flex flex-col lg:flex-row px-4 my-3 md:px-5 gap-3 w-full justify-around">
+              <div
+                className={`flex flex-col lg:flex-row px-4 my-3 md:px-5 gap-3 w-full justify-around ${
+                  !account && "blur-sm"
+                }`}
+              >
                 <div className="my-2">
                   <input
                     value={toAdd}
@@ -113,7 +119,11 @@ const page = () => {
                   />
                 </div>
               </div>
-              <div className="px-4 mt-3 pb-4 md:px-5 flex flex-col items-end justify-start">
+              <div
+                className={`px-4 mt-3 pb-4 md:px-5 flex flex-col items-end justify-start ${
+                  !account && "blur-sm"
+                }`}
+              >
                 <div className="mb-2 w-full">
                   <FormControlLabel
                     label="I agree this policies and agreements"
@@ -162,34 +172,7 @@ const page = () => {
             <h3 className="text-2xl z-10 uppercase font-semibold mb-4">
               Your wallet
             </h3>
-            {account ? (
-              <div className="shadow-md rounded-md bg-gradient-to-b from-purple-700 via-red-600 to-orange-400 h-[200px] w-[350px] sm:h-[270px] sm:w-[480px]  p-4 flex flex-col relative">
-                <p className="text-white text-xl font-semibold flex-1">
-                  {account.slice(0, 6)}...{account.slice(-4)}
-                </p>
-                <Image
-                  src="/ether.svg"
-                  width={26}
-                  height={43}
-                  alt="ether"
-                  className="ml-auto absolute bottom-4 right-4"
-                />
-                <div className="my-2">
-                  <ConnectButton />
-                </div>
-              </div>
-            ) : (
-              <div className="h-[200px] w-[350px] sm:h-[270px] sm:w-[480px] flex flex-col">
-                <p className="text-xl mb-6">
-                  You have no wallet connected. Add your wallet to proceed
-                  payments
-                </p>
-                <ConnectButton />
-                {/* <button className="w-full shadow-md rounded-md bg-gradient-to-b from-purple-700 via-red-600 to-orange-400 text-xl text-white font-semibold py-3 hover:opacity-90 active:scale-95">
-                  Add wallet
-                </button> */}
-              </div>
-            )}
+            <AccountInfo isWeb3Enabled={isWeb3Enabled} account={account} />
           </div>
         </div>
       </div>

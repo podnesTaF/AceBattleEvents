@@ -1,4 +1,5 @@
 import Link from "next/link";
+import TableSkeleton from "./TableSkeleton";
 
 interface CustomTableProps {
   rows: any[];
@@ -9,7 +10,7 @@ const CustomTable: React.FC<CustomTableProps> = ({ rows, isLoading }) => {
   return (
     <div className="relative sm:rounded-sm max-h-[500px] overflow-auto">
       {isLoading ? (
-        <h3>Loading...</h3>
+        <TableSkeleton />
       ) : rows.length < 1 ? (
         <div>
           <h2>No events found.</h2>

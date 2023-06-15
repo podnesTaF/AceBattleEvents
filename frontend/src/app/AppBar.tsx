@@ -1,6 +1,5 @@
 "use client";
 
-import CustomDrawer from "@/components/CustomDrawer";
 import { useAppDispatch, useAppSelector } from "@/hooks/useTyped";
 import { addUser, selectUser } from "@/redux/features/userSlice";
 import AddCardIcon from "@mui/icons-material/AddCard";
@@ -8,15 +7,18 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import TollIcon from "@mui/icons-material/Toll";
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, Skeleton } from "@mui/material";
 import { ethers } from "ethers";
 import { Session } from "next-auth";
 import { signIn, signOut, useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useMoralis, useWeb3Contract } from "react-moralis";
 import { abi, addresses } from "../constants";
+
+const CustomDrawer = dynamic(() => import("@/components/CustomDrawer"));
 
 const AppBar = () => {
   const { account, chainId: inHex } = useMoralis();
@@ -57,12 +59,11 @@ const AppBar = () => {
   }, [handleGetBalance]);
 
   useEffect(() => {
+    console.log(session?.user);
     if (session?.user) {
       dispatch(addUser(session.user));
     }
   }, [session]);
-
-  useEffect(() => {}, []);
 
   return (
     <>
@@ -149,7 +150,7 @@ const AppBar = () => {
                 <LogoutIcon className={"text-white"} fontSize={"large"} />
               </Button>
             </>
-          ) : (
+          ) : session === null ? (
             <>
               <Button
                 variant="outlined"
@@ -166,6 +167,28 @@ const AppBar = () => {
                 Sign In
               </Button>
             </>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Skeleton
+                variant="circular"
+                width={50}
+                height={50}
+                animation="wave"
+                sx={{ marginRight: 4, bgcolor: "lightgray", opacity: 0.4 }}
+              />
+              <Skeleton
+                variant="text"
+                height={32}
+                width={150}
+                animation="wave"
+                sx={{ bgcolor: "lightgray", opacity: 0.4 }}
+              />
+            </div>
           )}
         </nav>
       </div>

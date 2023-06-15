@@ -11,11 +11,20 @@ import {
 import { useFetchTxQuery } from "@/services/userService";
 import { transformTxTable } from "@/utils/transform-data";
 import TollIcon from "@mui/icons-material/Toll";
-import { Divider } from "@mui/material";
+import { Divider, Skeleton } from "@mui/material";
 import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Tab from "./Tab";
+
+const TableSkeleton = dynamic(
+  () => import("@/components/shared/TableSkeleton")
+);
+
+const EventSkeleton = dynamic(
+  () => import("@/components/events/EventSkeleton")
+);
 
 const Profile = () => {
   const [pagesCount, setPageCount] = useState(1);
@@ -73,15 +82,23 @@ const Profile = () => {
           <div className="flex-1 flex justify-between items-center md:items-start">
             <div className="md:ml-10 flex flex-col md:h-full mt-5 md:mt-0">
               <div className="flex-1">
-                <h3 className="text-3xl md:text-4xl font-semibold">
-                  {session?.user.name} <br />
-                  {session?.user.surname}
-                </h3>
+                {session ? (
+                  <h3 className="text-3xl md:text-4xl font-semibold">
+                    {session?.user.name} <br />
+                    {session?.user.surname}
+                  </h3>
+                ) : (
+                  <Skeleton variant="rectangular" width={100} height={40} />
+                )}
               </div>
               <p className="text-xl font-semibold">Club “Muse Run”</p>
-              <p className="text-xl font-semibold text-gray-400">
-                {session?.user.city} | {session?.user.country}
-              </p>
+              {session ? (
+                <p className="text-xl font-semibold text-gray-400">
+                  {session?.user.city}|{session?.user.country}
+                </p>
+              ) : (
+                <Skeleton variant="rectangular" width={100} height={40} />
+              )}
             </div>
             <div
               className={
@@ -89,9 +106,15 @@ const Profile = () => {
               }
             >
               <TollIcon className={"text-black-400"} />
-              <p className={"ml-2 text-xl"}>
-                {session?.user.balance.toFixed(2)} bc
-              </p>
+              {session ? (
+                <p className={"ml-2 text-xl"}>
+                  {session?.user.balance.toFixed(2)} bc
+                </p>
+              ) : (
+                <span>
+                  <Skeleton width={40} />
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -114,6 +137,10 @@ const Profile = () => {
               <h2 className="text-3xl font-semibold mb-4 text-center">
                 Your teams
               </h2>
+              {isLoading &&
+                Array.from({ length: 2 }).map((_, idx) => (
+                  <TeamCard key={idx} />
+                ))}
               {teams && !isLoading ? (
                 teams.map((team, idx) => <TeamCard key={team.id} team={team} />)
               ) : (
@@ -130,7 +157,11 @@ const Profile = () => {
                 <h3 className="text-2xl font-semibold">Your Registrations</h3>
               </div>
               <div className="w-full h-full" ref={ref}>
-                {registrations ? (
+                {regLoading &&
+                  Array.from({ length: 2 }).map((_, idx) => (
+                    <EventSkeleton key={idx} />
+                  ))}
+                {registrations && !isLoading ? (
                   registrations.teamsForEvents.map((reg, idx) => (
                     <EventCard
                       key={idx}
@@ -169,6 +200,7 @@ const Profile = () => {
               <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-center uppercase">
                 Last Transactions
               </h2>
+              {isLoading && <TableSkeleton />}
               {transactions && !isLoading ? (
                 <CustomTable
                   rows={transformTxTable(transactions)}
