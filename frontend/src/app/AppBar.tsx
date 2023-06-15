@@ -10,10 +10,11 @@ import PersonIcon from "@mui/icons-material/Person";
 import TollIcon from "@mui/icons-material/Toll";
 import { Button, IconButton } from "@mui/material";
 import { ethers } from "ethers";
+import { Session } from "next-auth";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useMoralis, useWeb3Contract } from "react-moralis";
 import { abi, addresses } from "../constants";
 
@@ -39,21 +40,21 @@ const AppBar = () => {
     params: {},
   });
 
-  const handleGetBalance = async () => {
-    if (!session) return;
+  const handleGetBalance = useCallback(async () => {
+    if (!session || !account) return;
     const balance = await getBalance();
-    update({
-      ...session,
+    update((prevSession: Session) => ({
+      ...prevSession,
       user: {
-        ...session.user,
+        ...prevSession.user,
         balance: +ethers.utils.formatEther(balance as any) * 100,
       },
-    });
-  };
+    }));
+  }, [account]);
 
   useEffect(() => {
     handleGetBalance();
-  }, [account]);
+  }, [handleGetBalance]);
 
   useEffect(() => {
     if (session?.user) {
@@ -110,9 +111,7 @@ const AppBar = () => {
               <Link className="hover:opacity-80" href="/add-team">
                 <p
                   className={`text-xl uppercase ${
-                    pathname === "/register-team"
-                      ? "text-[#FF0000]"
-                      : "text-white"
+                    pathname === "/add-team" ? "text-[#FF0000]" : "text-white"
                   }`}
                 >
                   Add Your Team

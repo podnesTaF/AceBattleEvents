@@ -25,12 +25,6 @@ const AddTeam = () => {
     [Date.now() + ""]: [{ distance: "", time: "", id: Date.now() }],
   });
 
-  // const [personalBests, setPersonalBests] = useState<any[][]>(
-  //   Array.from({ length: 1 }, () => [
-  //     { distance: "", time: "", id: Date.now() },
-  //   ])
-  // )
-
   const form = useForm({
     mode: "onChange",
     resolver: yupResolver(AddTeamSchema),

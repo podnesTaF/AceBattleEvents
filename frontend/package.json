@@ -18,12 +18,17 @@
     "@mui/material": "^5.13.3",
     "@react-google-maps/api": "^2.18.1",
     "@reduxjs/toolkit": "^1.9.5",
+    "@walletconnect/ethereum-provider": "^2.8.0",
+    "@walletconnect/modal": "^2.4.5",
     "@walletconnect/web3-provider": "^1.8.0",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
+    "lokijs": "^1.5.12",
+    "magic-sdk": "^17.4.0",
     "moralis": "^2.22.2",
     "next": "13.4.4",
     "next-auth": "^4.22.1",
+    "pino-pretty": "^10.0.0",
     "postcss": "8.4.24",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -34,7 +39,8 @@
     "typescript": "5.0.4",
     "use-places-autocomplete": "^4.0.0",
     "web3uikit": "^1.0.4",
-    "yup": "^1.2.0"
+    "yup": "^1.2.0",
+    "@toruslabs/eccrypto": "^2.1.1"
   },
   "devDependencies": {
     "@types/googlemaps": "^3.43.3",
@@ -42,5 +48,8 @@
     "@types/react": "18.2.7",
     "@types/react-dom": "18.2.4",
     "encoding": "^0.1.13"
+  },
+  "overrides": {
+    "@toruslabs/eccrypto": "^2.1.1"
   }
 }

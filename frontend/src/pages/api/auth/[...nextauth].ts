@@ -33,8 +33,7 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     jwt: async ({ token, user, trigger, session }) => {
-      console.log("trigger: ", trigger, "balance: ", session?.user.balance);
-      if (trigger === "update" && session?.user.balance) {
+      if (trigger === "update" && session?.user) {
         token.user.balance = session.user.balance;
       }
       user && (token.user = user);

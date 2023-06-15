@@ -71,7 +71,7 @@ export const transfromIntoPlayersTable = (data: IPlayer[]) => {
 
 export const transformTxTable = (data: ITransaction[]) => {
   return data.map((tx) => {
-    const { amount, date, type, sender, receiver } = tx;
+    const { amount, date, type, sender, receiver, txHash } = tx;
     const retData: any = {
       amount: amount.toFixed(2) + " bc",
       date: new Date(date).toLocaleDateString("en-GB", {
@@ -80,6 +80,10 @@ export const transformTxTable = (data: ITransaction[]) => {
         year: "numeric",
       }),
       type,
+      txLink: {
+        link: "https://goerli.etherscan.io/tx/" + txHash,
+        value: txHash.slice(0, 5) + "..." + txHash.slice(-5),
+      },
     };
 
     if (receiver) {

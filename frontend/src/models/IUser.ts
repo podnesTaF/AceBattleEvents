@@ -17,4 +17,5 @@ export interface ITransaction {
   type: string;
   sender: IUser;
   receiver: IUser;
+  txHash: string;
 }

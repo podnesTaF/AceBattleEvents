@@ -18,11 +18,14 @@ export const userApi = api.injectEndpoints({
       query: () => "/users/get-transactions",
       providesTags: ["Transaction"],
     }),
-    createTx: builder.mutation<ITransaction, { amount: number; type: string }>({
-      query: ({ amount, type }) => ({
+    createTx: builder.mutation<
+      ITransaction,
+      { amount: number; type: string; txHash: string }
+    >({
+      query: ({ amount, type, txHash }) => ({
         url: "/users/create-transaction",
         method: "POST",
-        body: { amount, type },
+        body: { amount, type, txHash },
       }),
     }),
   }),
