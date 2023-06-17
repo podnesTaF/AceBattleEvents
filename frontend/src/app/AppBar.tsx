@@ -59,7 +59,6 @@ const AppBar = () => {
   }, [handleGetBalance]);
 
   useEffect(() => {
-    console.log(session?.user);
     if (session?.user) {
       dispatch(addUser(session.user));
     }
@@ -145,7 +144,9 @@ const AppBar = () => {
                 variant="outlined"
                 color="error"
                 className={"p-1"}
-                onClick={() => signOut()}
+                onClick={() => {
+                  signOut().then(() => router.push("/"));
+                }}
               >
                 <LogoutIcon className={"text-white"} fontSize={"large"} />
               </Button>

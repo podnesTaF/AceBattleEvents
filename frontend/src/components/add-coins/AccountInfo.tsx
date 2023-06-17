@@ -8,10 +8,7 @@ interface AccountInfoProps {
   isWeb3Enabled?: boolean;
 }
 
-const AccountInfo: React.FC<AccountInfoProps> = ({
-  account,
-  isWeb3Enabled,
-}) => {
+const AccountInfo: React.FC<AccountInfoProps> = ({ account }) => {
   if (account) {
     return (
       <div className="shadow-md rounded-md bg-gradient-to-b from-purple-700 via-red-600 to-orange-400 h-[200px] w-[350px] sm:h-[270px] sm:w-[480px]  p-4 flex flex-col relative">
@@ -32,7 +29,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({
     );
   }
 
-  if (!account && isWeb3Enabled)
+  if (account === null)
     return (
       <div className="h-[200px] w-[350px] sm:h-[270px] sm:w-[480px] flex flex-col">
         <p className="text-xl mb-6">
