@@ -18,6 +18,12 @@ export class TransactionEntity {
   @Column()
   type: string;
 
+  @Column()
+  txHash: string;
+
+  @Column()
+  wallet: string;
+
   @ManyToOne(() => UserEntity, (user) => user.transactionsAsSender)
   sender: UserEntity;
 

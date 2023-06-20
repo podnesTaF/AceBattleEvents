@@ -46,7 +46,10 @@ export class TeamsService {
     });
   }
 
-  async register(dto: { teamId: number; eventId: number }, userId: number) {
+  async register(
+    dto: { teamId: number; eventId: number; txHash: string; wallet: string },
+    userId: number,
+  ) {
     const team = await this.repository.findOne({
       where: { id: dto.teamId },
       relations: ['events'],
@@ -68,6 +71,8 @@ export class TeamsService {
       userId,
       -event.price,
       'Event registration',
+      dto.txHash,
+      dto.wallet,
     );
     await this.userService.addToBalance(-event.price, userId);
 

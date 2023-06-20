@@ -16,6 +16,8 @@ export class TransactionsService {
     return this.repository.save({
       amount: dto.amount,
       type: dto.type,
+      txHash: dto.txHash,
+      wallet: dto.wallet,
     });
   }
 

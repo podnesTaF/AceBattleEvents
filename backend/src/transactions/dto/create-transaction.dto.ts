@@ -6,4 +6,10 @@ export class CreateTransactionDto {
 
   @IsString()
   type: string;
+
+  @IsString()
+  txHash: string;
+
+  @IsString()
+  wallet: string;
 }

@@ -34,15 +34,18 @@ export class TeamEntity {
   @ManyToOne(() => UserEntity, (user) => user.teams, { onDelete: 'CASCADE' })
   manager: UserEntity;
 
-  @OneToOne(() => CoachEntity)
+  @OneToOne(() => CoachEntity, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   coach: CoachEntity;
 
-  @OneToMany(() => PlayerEntity, (player) => player.team)
+  @OneToMany(() => PlayerEntity, (player) => player.team, {
+    onDelete: 'CASCADE',
+  })
   players: PlayerEntity[];
 
   @ManyToMany(() => EventEntity, (event) => event.teams, {
-    onDelete: 'NO ACTION',
     onUpdate: 'NO ACTION',
   })
   @JoinTable({

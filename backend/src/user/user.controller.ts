@@ -35,12 +35,21 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   createTransaction(
     @Request() req,
-    @Body() body: { amount: number; receiverId: number; type: string },
+    @Body()
+    body: {
+      amount: number;
+      receiverId: number;
+      type: string;
+      txHash: string;
+      wallet: string;
+    },
   ) {
     return this.userService.createTransaction(
       req.user.id,
       body.amount,
       body.type,
+      body.txHash,
+      body.wallet,
     );
   }
 

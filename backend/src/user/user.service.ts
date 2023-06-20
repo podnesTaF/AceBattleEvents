@@ -26,11 +26,15 @@ export class UserService {
     id: number,
     amount: number,
     type: string,
+    txHash: string,
+    wallet: string,
     receiverId?: number,
   ) {
     const tx = await this.transactionService.create({
       amount,
       type,
+      txHash,
+      wallet,
     });
 
     let user: UserEntity;

@@ -26,7 +26,8 @@ export class TeamsController {
   @UseGuards(JwtAuthGuard)
   registerTeam(
     @Request() req,
-    @Body() dto: { teamId: number; eventId: number },
+    @Body()
+    dto: { teamId: number; eventId: number; txHash: string; wallet: string },
   ) {
     return this.teamsService.register(dto, req.user.id);
   }
