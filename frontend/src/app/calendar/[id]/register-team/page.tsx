@@ -3,26 +3,19 @@
 import NoTeams from "@/components/register-team/NoTeams";
 import StatusCard from "@/components/register-team/StatusCard";
 import TeamCard from "@/components/shared/TeamCard";
-import { abi } from "@/constants";
-import { useAppDispatch } from "@/hooks/useTyped";
 import { ITeam } from "@/models/ITeam";
-import { addBalance } from "@/redux/features/userSlice";
 import { useFetchEventQuery } from "@/services/eventService";
 import {
   useFetchTeamsByUserIdQuery,
   useRegiterTeamMutation,
 } from "@/services/teamService";
 import { formatDate } from "@/utils/date-formater";
-import { chainAddress } from "@/utils/web3-helpers";
 import { Checkbox, FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { red } from "@mui/material/colors";
-import { ethers } from "ethers";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useMoralis, useWeb3Contract } from "react-moralis";
-import { useNotification } from "web3uikit";
 
 interface RegisterTeamProps {
   params: {
@@ -33,21 +26,11 @@ interface RegisterTeamProps {
 const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
   const [teamId, setTeamId] = useState(0);
   const [choosenTeam, setChoosenTeam] = useState<ITeam | null>(null);
-  const [price, setPrice] = useState(0);
-  const [status, setStatus] = useState(""); // ["success", "error", "pending"]
-  const { data: session, update } = useSession();
+  const [status, setStatus] = useState("");
+  const { data: session } = useSession();
   const { data: teams } = useFetchTeamsByUserIdQuery();
-  const [regiterTeam, { data, error: registerError }] =
+  const [regiterTeam, { data, isLoading, error: registerError }] =
     useRegiterTeamMutation();
-
-  const notificator = useNotification();
-
-  const { chainId: inHex, account, Moralis } = useMoralis();
-
-  // @ts-ignore
-  const runAddress = chainAddress(inHex);
-
-  const dispatch = useAppDispatch();
 
   const { data: event } = useFetchEventQuery(params.id);
 
@@ -55,69 +38,25 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
 
   const router = useRouter();
 
-  const {
-    isFetching,
-    isLoading,
-    runContractFunction: buyRegistration,
-  } = useWeb3Contract({
-    abi: abi,
-    contractAddress: runAddress,
-    functionName: "buy",
-    params: {
-      sender: account,
-      date: Date.now(),
-      sum: ethers.utils.parseEther(price * 0.01 + "") as any,
-      companyAddress: "0x93467db8e687AA59f449D64b5b262691A75F3d10",
-    },
-  });
-
   const handleRegisterTeam = async () => {
-    if (!session?.user || !account) return;
+    if (!session?.user) return;
     if (teamId > 0 && event?.id) {
       try {
-        await buyRegistration({
-          onSuccess: async (tx: any) => {
-            await tx.wait(1);
-            notificator({
-              type: "success",
-              message: "Transaction Complete!",
-              title: "Transaction Notification",
-              position: "topR",
-            });
-            setStatus("success");
-            await onSuccessRegister(tx);
-          },
-          onError: (error) => {
-            notificator({
-              type: "error",
-              message: "Transaction canceled!",
-              title: "Transaction Notification",
-              position: "topR",
-            });
-            setStatus("error");
-          },
-        });
+        await onSuccessRegister(123);
+        setStatus("success");
       } catch (error) {
-        console.log(error);
+        setStatus("error");
       }
     }
   };
 
   const onSuccessRegister = async (tx: any) => {
-    if (!session?.user || !event?.id || !account) return;
+    if (!session?.user || !event?.id) return;
     await regiterTeam({
       teamId,
       eventId: event.id,
       txHash: tx.hash,
-      wallet: account,
-    });
-    dispatch(addBalance(-event?.price || 0));
-    update({
-      ...session,
-      user: {
-        ...session.user,
-        balance: session.user.balance + -event?.price,
-      },
+      wallet: "123",
     });
   };
 
@@ -133,16 +72,6 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
       setChoosenTeam(teams?.find((team: any) => team.id === teamId) || null);
     }
   }, [teamId]);
-
-  useEffect(() => {
-    if (event?.price) {
-      setPrice(event.price);
-    }
-  }, [event]);
-
-  useEffect(() => {
-    Moralis.enableWeb3();
-  }, []);
 
   if (status === "success" || status === "error") {
     return (
@@ -260,35 +189,7 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
                   {choosenTeam?.name || "Team Name"}
                 </p>
               </div>
-              <div className="py-2 border-y-[1px] border-red-500">
-                <h3 className="text-2xl font-semibold">To pay:</h3>
-                <div className="text-end flex flex-col w-full gap-3">
-                  <h4 className="font-semibold text-xl">
-                    {event?.price} MileCoin
-                  </h4>
-                  <h4 className="font-semibold text-xl">
-                    {event && event.price * 50} euro
-                  </h4>
-                  <h4 className="font-semibold text-xl">0,28 ether</h4>
-                </div>
-              </div>
-              <div className="py-2">
-                <div className="mb-3">
-                  <h3 className="text-2xl font-semibold">Your Balance:</h3>
-                  <h4 className="font-semibold text-xl text-end">
-                    {session?.user?.balance.toFixed(2) || 0} MileCoin
-                  </h4>
-                </div>
-                <div className="mb-3">
-                  <h3 className="text-2xl font-semibold">Remaining:</h3>
-                  <h4 className="font-semibold text-xl text-end">
-                    {session &&
-                      event &&
-                      (session.user.balance - event.price).toFixed(2)}{" "}
-                    MileCoin
-                  </h4>
-                </div>
-              </div>
+
               <div className="my-3">
                 <FormControlLabel
                   label="I agree this policies and agreements"
@@ -306,18 +207,17 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
               </div>
               <div className="flex justify-between">
                 <button
-                  disabled={isLoading || isFetching}
+                  disabled={isLoading}
                   onClick={handleCancel}
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-500 rounded disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Cancel
                 </button>
                 <button
-                  disabled={isLoading || isFetching}
                   onClick={handleRegisterTeam}
                   className="hover:bg-slate-800 bg-black text-white font-bold py-2 px-4 border border-slate-800 rounded disabled:opacity-80 disabled:cursor-not-allowed"
                 >
-                  {(isLoading || isFetching) && (
+                  {isLoading && (
                     <svg
                       aria-hidden="true"
                       role="status"

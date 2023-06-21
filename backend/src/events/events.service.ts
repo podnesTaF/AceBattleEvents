@@ -4,13 +4,13 @@ import { LocationsService } from 'src/locations/locations.service';
 import { PrizesService } from 'src/prizes/prizes.service';
 import { Repository } from 'typeorm';
 import { CreateEventDto } from './dto/create-event.dto';
-import { EventEntity } from './entities/event.entity';
+import { Event } from './entities/event.entity';
 
 @Injectable()
 export class EventsService {
   constructor(
-    @InjectRepository(EventEntity)
-    private repository: Repository<EventEntity>,
+    @InjectRepository(Event)
+    private repository: Repository<Event>,
     private locationsService: LocationsService,
     private prizeService: PrizesService,
   ) {}
@@ -26,14 +26,14 @@ export class EventsService {
       prizes.push(createdPrize);
     });
 
-    const { title, description, date, imageUrl, price } = eventDto;
+    const { title, description, date, introImageUrl, minorImageUrl } = eventDto;
 
     return this.repository.save({
       title,
       description,
       date: new Date(date),
-      imageUrl,
-      price,
+      introImageUrl,
+      minorImageUrl,
       location,
       prizes,
     });

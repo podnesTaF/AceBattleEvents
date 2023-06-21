@@ -3,7 +3,6 @@
 import CloseIcon from "@mui/icons-material/Close";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
-import TollIcon from "@mui/icons-material/Toll";
 import { Button, Divider, Drawer, IconButton } from "@mui/material";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
@@ -57,16 +56,6 @@ const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen }) => {
                 <LogoutIcon className={"text-white"} />
               </button>
             </div>
-            <div
-              className={
-                "absolute -top-2 right-0 flex items-center justify-center"
-              }
-            >
-              <TollIcon className={"text-yellow-400"} />
-              <p className={"ml-2 text-white text-xl"}>
-                {session?.user?.balance.toFixed(2)} bc
-              </p>
-            </div>
           </div>
         ) : (
           <div className={"flex gap-3 my-5 p-3 w-full"}>
@@ -115,6 +104,15 @@ const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen }) => {
               }`}
             >
               Close Events
+            </p>
+          </Link>
+          <Link href="/results">
+            <p
+              className={`hover:opacity-80 py-2 border-b-2 border-solid border-red-300/10 text-xl uppercase ${
+                pathname === "/results" ? "text-[#FF0000]" : "text-white"
+              }`}
+            >
+              Results
             </p>
           </Link>
           {session?.user && (

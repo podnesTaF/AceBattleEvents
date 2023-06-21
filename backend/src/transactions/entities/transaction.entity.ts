@@ -1,9 +1,7 @@
-import { UserEntity } from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -23,12 +21,6 @@ export class TransactionEntity {
 
   @Column()
   wallet: string;
-
-  @ManyToOne(() => UserEntity, (user) => user.transactionsAsSender)
-  sender: UserEntity;
-
-  @ManyToOne(() => UserEntity, (user) => user.transactionsAsReceiver)
-  receiver: UserEntity;
 
   @CreateDateColumn({ type: 'timestamp' })
   date: Date;

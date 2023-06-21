@@ -1,7 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Country } from 'src/country/entity/country.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class LocationEntity {
+export class Location {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -14,6 +15,6 @@ export class LocationEntity {
   @Column()
   city: string;
 
-  @Column()
-  country: string;
+  @ManyToOne(() => Country, (country) => country.locations)
+  country: Country;
 }

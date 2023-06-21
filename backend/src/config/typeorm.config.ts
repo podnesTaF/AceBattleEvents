@@ -1,14 +1,15 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { config as evnconfig } from 'dotenv';
+import { Club } from 'src/club/entities/club.entity';
 import { CoachEntity } from 'src/coach/entities/coach.entity';
-import { EventEntity } from 'src/events/entities/event.entity';
-import { LocationEntity } from 'src/locations/entities/locations.entity';
+import { Country } from 'src/country/entity/country.entity';
+import { Event } from 'src/events/entities/event.entity';
+import { Location } from 'src/locations/entities/locations.entity';
 import { PersonalBestEntity } from 'src/personal-bests/entities/personal-best.entity';
 import { PlayerEntity } from 'src/players/entities/player.entity';
 import { PrizeEntity } from 'src/prizes/entities/prize.entity';
-import { TeamEntity } from 'src/teams/entities/team.entity';
-import { TransactionEntity } from 'src/transactions/entities/transaction.entity';
-import { UserEntity } from 'src/user/entities/user.entity';
+import { Team } from 'src/teams/entities/team.entity';
+import { User } from 'src/user/entities/user.entity';
 evnconfig();
 
 const config: TypeOrmModuleOptions = {
@@ -19,15 +20,16 @@ const config: TypeOrmModuleOptions = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   entities: [
-    UserEntity,
-    EventEntity,
-    LocationEntity,
+    User,
+    Event,
+    Club,
+    Location,
+    Country,
     PlayerEntity,
-    TeamEntity,
+    Team,
     CoachEntity,
     PersonalBestEntity,
     PrizeEntity,
-    TransactionEntity,
   ],
   synchronize: true,
 };

@@ -10,5 +10,5 @@ export class CreateLocationDto {
   city: string;
 
   @IsString()
-  country: string;
+  countryId: number;
 }

@@ -1,7 +1,9 @@
+import { Club } from 'src/club/entities/club.entity';
 import { CoachEntity } from 'src/coach/entities/coach.entity';
-import { EventEntity } from 'src/events/entities/event.entity';
+import { Country } from 'src/country/entity/country.entity';
+import { Event } from 'src/events/entities/event.entity';
 import { PlayerEntity } from 'src/players/entities/player.entity';
-import { UserEntity } from 'src/user/entities/user.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   Entity,
@@ -15,24 +17,27 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class TeamEntity {
+export class Team {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   name: string;
 
-  @Column({ nullable: true })
-  club: string;
+  @Column()
+  gender: string;
 
   @Column()
   city: string;
 
-  @Column()
-  country: string;
+  @ManyToOne(() => Country, (country) => country.teams)
+  country: Country;
 
-  @ManyToOne(() => UserEntity, (user) => user.teams, { onDelete: 'CASCADE' })
-  manager: UserEntity;
+  @ManyToOne(() => User, (user) => user.teams, { onDelete: 'CASCADE' })
+  manager: User;
+
+  @OneToMany(() => Club, (club) => club.team)
+  clubs: Club[];
 
   @OneToOne(() => CoachEntity, {
     onDelete: 'CASCADE',
@@ -45,7 +50,7 @@ export class TeamEntity {
   })
   players: PlayerEntity[];
 
-  @ManyToMany(() => EventEntity, (event) => event.teams, {
+  @ManyToMany(() => Event, (event) => event.teams, {
     onUpdate: 'NO ACTION',
   })
   @JoinTable({
@@ -59,5 +64,5 @@ export class TeamEntity {
       referencedColumnName: 'id',
     },
   })
-  events: EventEntity[];
+  events: Event[];
 }

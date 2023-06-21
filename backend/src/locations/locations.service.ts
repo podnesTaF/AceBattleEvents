@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateLocationDto } from './dto/create-location.dto';
-import { LocationEntity } from './entities/locations.entity';
+import { Location } from './entities/locations.entity';
 
 @Injectable()
 export class LocationsService {
   constructor(
-    @InjectRepository(LocationEntity)
-    private repository: Repository<LocationEntity>,
+    @InjectRepository(Location)
+    private repository: Repository<Location>,
   ) {}
 
   create(dto: CreateLocationDto) {

@@ -4,8 +4,6 @@ import Footer from "@/components/shared/Footer";
 import { Providers } from "@/redux/provider";
 import { SessionProvider } from "next-auth/react";
 import { Poppins } from "next/font/google";
-import { MoralisProvider } from "react-moralis";
-import { NotificationProvider } from "web3uikit";
 import AppBar from "./AppBar";
 import "./globals.css";
 
@@ -29,15 +27,11 @@ export default function RootLayout({
       </head>
       <body className={poppins.className}>
         <SessionProvider session={session}>
-          <MoralisProvider initializeOnMount={false}>
-            <NotificationProvider>
-              <Providers>
-                <AppBar />
-                {children}
-                <Footer />
-              </Providers>
-            </NotificationProvider>
-          </MoralisProvider>
+          <Providers>
+            <AppBar />
+            {children}
+            <Footer />
+          </Providers>
         </SessionProvider>
       </body>
     </html>

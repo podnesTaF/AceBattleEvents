@@ -1,16 +1,17 @@
-import { TeamEntity } from 'src/teams/entities/team.entity';
-import { TransactionEntity } from 'src/transactions/entities/transaction.entity';
+import { Club } from 'src/club/entities/club.entity';
+import { Team } from 'src/teams/entities/team.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
-export class UserEntity {
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -23,8 +24,8 @@ export class UserEntity {
   @Column({ unique: true })
   email: string;
 
-  @Column()
-  club: string;
+  @Column({ default: 'user' })
+  role: string;
 
   @Column()
   city: string;
@@ -32,26 +33,17 @@ export class UserEntity {
   @Column()
   country: string;
 
-  @Column({ type: 'float', default: 0 })
-  balance: number;
-
   @Column({ nullable: true })
   imageUrl: string;
 
   @Column({ nullable: true })
   password: string;
 
-  @Column({ nullable: true })
-  walletId: string;
+  @OneToOne(() => Club, (club) => club.manager, { nullable: true })
+  club: Club;
 
-  @OneToMany(() => TeamEntity, (team) => team.manager)
-  teams: TeamEntity[];
-
-  @OneToMany(() => TransactionEntity, (transaction) => transaction.sender)
-  transactionsAsSender: TransactionEntity[];
-
-  @OneToMany(() => TransactionEntity, (transaction) => transaction.receiver)
-  transactionsAsReceiver: TransactionEntity[];
+  @OneToMany(() => Team, (team) => team.manager)
+  teams: Team[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
