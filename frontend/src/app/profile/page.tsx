@@ -1,26 +1,18 @@
 "use client";
 
 import EventCard from "@/app/close-events/EventCard";
-import CustomTable from "@/components/shared/CustomTable";
 import Pagination from "@/components/shared/Pagination";
 import TeamCard from "@/components/shared/TeamCard";
 import {
   useFetchTeamsByUserIdQuery,
   useGetRegistrationsQuery,
 } from "@/services/teamService";
-import { useFetchTxQuery } from "@/services/userService";
-import { transformTxTable } from "@/utils/transform-data";
-import TollIcon from "@mui/icons-material/Toll";
 import { Divider, Skeleton } from "@mui/material";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Tab from "./Tab";
-
-const TableSkeleton = dynamic(
-  () => import("@/components/shared/TableSkeleton")
-);
 
 const EventSkeleton = dynamic(
   () => import("@/components/events/EventSkeleton")
@@ -33,7 +25,6 @@ const Profile = () => {
 
   const { data: session } = useSession();
   const { data: teams, isLoading } = useFetchTeamsByUserIdQuery();
-  const { data: transactions, isLoading: txLoading } = useFetchTxQuery();
   const { data: registrations, isLoading: regLoading } =
     useGetRegistrationsQuery({ page: currPage, limit: 3 });
 
@@ -100,29 +91,13 @@ const Profile = () => {
                 <Skeleton variant="rectangular" width={100} height={40} />
               )}
             </div>
-            <div
-              className={
-                "flex items-center justify-center rounded border-[1px] border-black p-3"
-              }
-            >
-              <TollIcon className={"text-black-400"} />
-              {session ? (
-                <p className={"ml-2 text-xl"}>
-                  {session?.user.balance.toFixed(2)} bc
-                </p>
-              ) : (
-                <span>
-                  <Skeleton width={40} />
-                </span>
-              )}
-            </div>
           </div>
         </div>
       </header>
       <main className="max-w-7xl mx-4 xl-auto mt-4 mb-8 md:mx-auto">
         <Divider className="md:hidden" />
         <div className="flex w-full gap-1 md:gap-2 border-b-[1px] border-b-red-500">
-          {["Teams", "Registrations", "Transactions"].map((title, index) => (
+          {["Teams", "Registrations", "Last races"].map((title, index) => (
             <Tab
               key={index}
               onClick={() => setActiveTab(index)}
@@ -195,25 +170,7 @@ const Profile = () => {
               </div>
             </>
           )}
-          {activeTab === 2 && (
-            <div className="p-3 md:p-5 w-full">
-              <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-center uppercase">
-                Last Transactions
-              </h2>
-              {isLoading && <TableSkeleton />}
-              {transactions && !isLoading ? (
-                <CustomTable
-                  rows={transformTxTable(transactions)}
-                  isLoading={false}
-                />
-              ) : (
-                <p className="text-center text-xl font-semibold">
-                  You don't have transactions yet
-                  <br />
-                </p>
-              )}
-            </div>
-          )}
+          {activeTab === 2 && null}
         </div>
       </main>
     </>
