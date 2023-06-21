@@ -1,22 +1,22 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CoachService } from 'src/coach/coach.service';
-import { EventEntity } from 'src/events/entities/event.entity';
+import { Event } from 'src/events/entities/event.entity';
 import { EventsService } from 'src/events/events.service';
 import { PlayersService } from 'src/players/players.service';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
-import { TeamEntity } from './entities/team.entity';
+import { Team } from './entities/team.entity';
 
 @Injectable()
 export class TeamsService {
   constructor(
-    @InjectRepository(TeamEntity)
-    private repository: Repository<TeamEntity>,
-    @InjectRepository(EventEntity)
-    private eventRepository: Repository<EventEntity>,
+    @InjectRepository(Team)
+    private repository: Repository<Team>,
+    @InjectRepository(Event)
+    private eventRepository: Repository<Event>,
     private playersService: PlayersService,
     private coachService: CoachService,
     private userService: UserService,
@@ -67,15 +67,6 @@ export class TeamsService {
     team.events.push(event);
     event.teams.push(team);
 
-    await this.userService.createTransaction(
-      userId,
-      -event.price,
-      'Event registration',
-      dto.txHash,
-      dto.wallet,
-    );
-    await this.userService.addToBalance(-event.price, userId);
-
     await this.repository.save(team);
     await this.eventRepository.save(event);
   }
@@ -111,7 +102,7 @@ export class TeamsService {
       order: { id: 'ASC' },
     });
 
-    const removeUnnecessary = (event: EventEntity) => {
+    const removeUnnecessary = (event: Event) => {
       const totalPrize = event.prizes.reduce((acc, curr) => acc + curr.sum, 0);
       delete event.prizes;
       delete event.teams;
@@ -122,7 +113,7 @@ export class TeamsService {
       };
     };
 
-    const removeUnnecessaryForTeam = (team: TeamEntity) => {
+    const removeUnnecessaryForTeam = (team: Team) => {
       delete team.events;
       return team;
     };

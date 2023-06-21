@@ -4,8 +4,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { ClubModule } from './club/club.module';
 import { CoachModule } from './coach/coach.module';
 import typeOrmConfig from './config/typeorm.config';
+import { CountryModule } from './country/country.module';
 import { EventsModule } from './events/events.module';
 import { LocationsModule } from './locations/locations.module';
 import { PersonalBestsModule } from './personal-bests/personal-bests.module';
@@ -13,7 +15,6 @@ import { PlayersModule } from './players/players.module';
 import { PrizesModule } from './prizes/prizes.module';
 import { TeamsModule } from './teams/teams.module';
 import { UserModule } from './user/user.module';
-import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { TransactionsModule } from './transactions/transactions.module';
     PlayersModule,
     PersonalBestsModule,
     PrizesModule,
-    TransactionsModule,
+    ClubModule,
+    CountryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

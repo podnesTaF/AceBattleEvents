@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CoachService } from 'src/coach/coach.service';
 import { CoachEntity } from 'src/coach/entities/coach.entity';
-import { EventEntity } from 'src/events/entities/event.entity';
+import { Event } from 'src/events/entities/event.entity';
 import { EventsService } from 'src/events/events.service';
-import { LocationEntity } from 'src/locations/entities/locations.entity';
+import { Location } from 'src/locations/entities/locations.entity';
 import { LocationsService } from 'src/locations/locations.service';
 import { PersonalBestEntity } from 'src/personal-bests/entities/personal-best.entity';
 import { PersonalBestsService } from 'src/personal-bests/personal-bests.service';
@@ -12,26 +12,23 @@ import { PlayerEntity } from 'src/players/entities/player.entity';
 import { PlayersService } from 'src/players/players.service';
 import { PrizeEntity } from 'src/prizes/entities/prize.entity';
 import { PrizesService } from 'src/prizes/prizes.service';
-import { TransactionEntity } from 'src/transactions/entities/transaction.entity';
-import { TransactionsService } from 'src/transactions/transactions.service';
-import { UserEntity } from 'src/user/entities/user.entity';
+import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
-import { TeamEntity } from './entities/team.entity';
+import { Team } from './entities/team.entity';
 import { TeamsController } from './teams.controller';
 import { TeamsService } from './teams.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      TeamEntity,
+      Team,
       PlayerEntity,
       CoachEntity,
-      UserEntity,
-      LocationEntity,
-      EventEntity,
+      User,
+      Location,
+      Event,
       PrizeEntity,
       PersonalBestEntity,
-      TransactionEntity,
     ]),
   ],
   controllers: [TeamsController],
@@ -44,7 +41,6 @@ import { TeamsService } from './teams.service';
     PrizesService,
     LocationsService,
     PersonalBestsService,
-    TransactionsService,
   ],
   exports: [TeamsService],
 })

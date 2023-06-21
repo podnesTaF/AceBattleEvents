@@ -16,9 +16,6 @@ export class CreateUserDto {
   @IsOptional()
   imageUrl?: string;
 
-  @IsOptional()
-  club?: string;
-
   @IsString()
   city: string;
 

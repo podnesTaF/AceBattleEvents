@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from '../user/dto/create-user.dto';
-import { UserEntity } from '../user/entities/user.entity';
+import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -31,7 +31,7 @@ export class AuthService {
     return this.jwtService.sign(payload);
   }
 
-  async login(user: UserEntity) {
+  async login(user: User) {
     const { password, ...userData } = user;
     return {
       ...userData,
@@ -48,7 +48,6 @@ export class AuthService {
         surname: dto.surname,
         city: dto.city,
         country: dto.country,
-        club: dto.club,
         password: hashedPassword,
         imageUrl: dto.imageUrl,
       });

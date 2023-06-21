@@ -1,6 +1,6 @@
-import { LocationEntity } from 'src/locations/entities/locations.entity';
+import { Location } from 'src/locations/entities/locations.entity';
 import { PrizeEntity } from 'src/prizes/entities/prize.entity';
-import { TeamEntity } from 'src/teams/entities/team.entity';
+import { Team } from 'src/teams/entities/team.entity';
 import {
   Column,
   Entity,
@@ -12,7 +12,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class EventEntity {
+export class Event {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -26,21 +26,21 @@ export class EventEntity {
   date: Date;
 
   @Column({ nullable: true })
-  imageUrl: string;
+  introImageUrl: string;
 
-  @Column()
-  price: number;
+  @Column({ nullable: true })
+  minorImageUrl: string;
 
-  @OneToOne(() => LocationEntity)
+  @OneToOne(() => Location)
   @JoinColumn()
-  location: LocationEntity;
+  location: Location;
 
   @OneToMany(() => PrizeEntity, (prize) => prize.event)
   prizes: PrizeEntity[];
 
-  @ManyToMany(() => TeamEntity, (team) => team.events, {
+  @ManyToMany(() => Team, (team) => team.events, {
     onDelete: 'NO ACTION',
     onUpdate: 'NO ACTION',
   })
-  teams: TeamEntity[];
+  teams: Team[];
 }
