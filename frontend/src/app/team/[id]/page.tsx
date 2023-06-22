@@ -1,5 +1,10 @@
+"use client";
+
+import CustomTable from "@/components/shared/CustomTable";
+import Pagination from "@/components/shared/Pagination";
+import { raceRows } from "@/utils/tables-dummy-data";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 interface Props {
   params: {
@@ -8,6 +13,7 @@ interface Props {
 }
 
 const TeamPage: React.FC<Props> = ({ params: { id } }) => {
+  const [page, setPage] = useState(0);
   return (
     <>
       <header className="w-full flex justify-center h-96 sm:h-[800px] bg-[url('/page-detail.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">
@@ -35,21 +41,143 @@ const TeamPage: React.FC<Props> = ({ params: { id } }) => {
                 Vitaly Sabulyak
               </h2>
             </div>
+            <div className="mr-4">
+              <h4 className="text-xl font-semibold text-gray-400 mb-4">
+                Personal Best
+              </h4>
+              <h2 className="text-2xl md:text-3xl font-semibold">
+                16:30:00.23
+              </h2>
+            </div>
           </div>
-          <div className="mb-4 px-4 xl:px-0">
-            <h4 className="text-xl font-semibold text-gray-400 mb-4">
+          <div className="my-5 px-4 xl:px-0">
+            <h4 className="text-2xl font-semibold text-gray-400 mb-5">
               Runners
             </h4>
-            <div className="flex flex-wrap px-4 xl:px-8 my-4 gap-6">
+            <div className="flex flex-wrap px-4 xl:px-8 my-4 gap-8 justify-center">
               <div className="max-w-xs max-h-sm relative">
                 <Image
                   src="/avatar.jpg"
                   alt="avatar"
-                  width={300}
+                  width={250}
                   height={300}
                   className="rounded-md object-cover"
                 />
+                <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
+                  <a
+                    href="https://worldathletics.org/athletes/jamaica/shelly-ann-fraser-pryce-14285680"
+                    target="_blank"
+                  >
+                    <h4 className="text-2xl text-white underline">
+                      Oleksii <br /> Pidnebensyi
+                    </h4>
+                  </a>
+                </div>
               </div>
+              <div className="max-w-xs max-h-sm relative">
+                <Image
+                  src="/avatar.jpg"
+                  alt="avatar"
+                  width={250}
+                  height={300}
+                  className="rounded-md object-cover"
+                />
+                <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
+                  <a
+                    href="https://worldathletics.org/athletes/jamaica/shelly-ann-fraser-pryce-14285680"
+                    target="_blank"
+                  >
+                    <h4 className="text-2xl text-white underline">
+                      Oleksii <br /> Pidnebensyi
+                    </h4>
+                  </a>
+                </div>
+              </div>
+              <div className="max-w-xs max-h-sm relative">
+                <Image
+                  src="/avatar.jpg"
+                  alt="avatar"
+                  width={250}
+                  height={300}
+                  className="rounded-md object-cover"
+                />
+                <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
+                  <a
+                    href="https://worldathletics.org/athletes/jamaica/shelly-ann-fraser-pryce-14285680"
+                    target="_blank"
+                  >
+                    <h4 className="text-2xl text-white underline">
+                      Oleksii <br /> Pidnebensyi
+                    </h4>
+                  </a>
+                </div>
+              </div>
+              <div className="max-w-xs max-h-sm relative">
+                <Image
+                  src="/avatar.jpg"
+                  alt="avatar"
+                  width={250}
+                  height={300}
+                  className="rounded-md object-cover"
+                />
+                <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
+                  <a
+                    href="https://worldathletics.org/athletes/jamaica/shelly-ann-fraser-pryce-14285680"
+                    target="_blank"
+                  >
+                    <h4 className="text-2xl text-white underline">
+                      Oleksii <br /> Pidnebensyi
+                    </h4>
+                  </a>
+                </div>
+              </div>
+              <div className="max-w-xs max-h-sm relative">
+                <Image
+                  src="/avatar.jpg"
+                  alt="avatar"
+                  width={250}
+                  height={300}
+                  className="rounded-md object-cover"
+                />
+                <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
+                  <a
+                    href="https://worldathletics.org/athletes/jamaica/shelly-ann-fraser-pryce-14285680"
+                    target="_blank"
+                  >
+                    <h4 className="text-2xl text-white underline">
+                      Oleksii <br /> Pidnebensyi
+                    </h4>
+                  </a>
+                </div>
+              </div>
+              <div className="max-w-xs max-h-sm relative">
+                <Image
+                  src="/avatar.jpg"
+                  alt="avatar"
+                  width={250}
+                  height={300}
+                  className="rounded-md object-cover"
+                />
+                <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
+                  <a
+                    href="https://worldathletics.org/athletes/jamaica/shelly-ann-fraser-pryce-14285680"
+                    target="_blank"
+                  >
+                    <h4 className="text-2xl text-white underline">
+                      Oleksii <br /> Pidnebensyi
+                    </h4>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="my-5 px-4 xl:px-0">
+            <h4 className="text-2xl font-semibold text-gray-400 mb-5">
+              Last Races
+            </h4>
+            <CustomTable rows={raceRows} isLoading={false} />
+            <div className="mt-4 flex justify-center">
+              <Pagination onChangePage={setPage} currPage={1} pagesCount={3} />
             </div>
           </div>
         </div>
