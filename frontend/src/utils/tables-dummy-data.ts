@@ -243,3 +243,56 @@ export const raceRows = [
     },
   },
 ];
+
+export const resultRows = [
+  {
+    date: "23/06/2023",
+    event: "CUP BENELUX",
+    category: "indoor",
+    battle: "Brussels / 23:00:00 vs Luxemburg / 23:30:00",
+    details: {
+      link: "/",
+      value: "details",
+    },
+  },
+  {
+    date: "23/06/2023",
+    event: "CUP BENELUX",
+    category: "indoor",
+    battle: "Brussels / 23:00:00 vs Luxemburg / 23:30:00",
+    details: {
+      link: "/",
+      value: "details",
+    },
+  },
+  {
+    date: "23/06/2023",
+    event: "CUP BENELUX",
+    category: "indoor",
+    battle: "Brussels / 23:00:00 vs Luxemburg / 23:30:00",
+    details: {
+      link: "/",
+      value: "details",
+    },
+  },
+  {
+    date: "23/06/2023",
+    event: "CUP BENELUX",
+    category: "indoor",
+    battle: "Brussels / 23:00:00 vs Luxemburg / 23:30:00",
+    details: {
+      link: "/",
+      value: "details",
+    },
+  },
+  {
+    date: "23/06/2023",
+    event: "CUP BENELUX",
+    category: "indoor",
+    battle: "Brussels / 23:00:00 vs Luxemburg / 23:30:00",
+    details: {
+      link: "/",
+      value: "details",
+    },
+  },
+];
