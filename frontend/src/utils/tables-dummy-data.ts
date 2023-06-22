@@ -163,3 +163,136 @@ export const transactionRows = [
     },
   },
 ];
+
+export const raceRows = [
+  {
+    date: "23/06/2023",
+    event: "CUP BENELUX",
+    location: "brussels | belgium",
+    result: "16:00:30.30 pb",
+    place: 2,
+    race: {
+      link: "/calendar/2",
+      value: "Brussles vs Amsterdam",
+    },
+  },
+  {
+    date: "23/06/2023",
+    event: "CUP BENELUX",
+    location: "brussels | belgium",
+    result: "16:00:30.30 pb",
+    place: 2,
+    race: {
+      link: "/calendar/2",
+      value: "Brussles vs Amsterdam",
+    },
+  },
+  {
+    date: "23/06/2023",
+    event: "CUP BENELUX",
+    location: "brussels | belgium",
+    result: "16:00:30.30 pb",
+    place: 2,
+    race: {
+      link: "/calendar/2",
+      value: "Brussles vs Amsterdam",
+    },
+  },
+  {
+    date: "23/06/2023",
+    event: "CUP BENELUX",
+    location: "brussels | belgium",
+    result: "16:00:30.30 pb",
+    place: 2,
+    race: {
+      link: "/calendar/2",
+      value: "Brussles vs Amsterdam",
+    },
+  },
+  {
+    date: "23/06/2023",
+    event: "CUP BENELUX",
+    location: "brussels | belgium",
+    result: "16:00:30.30 pb",
+    place: 2,
+    race: {
+      link: "/calendar/2",
+      value: "Brussles vs Amsterdam",
+    },
+  },
+  {
+    date: "23/06/2023",
+    event: "CUP BENELUX",
+    location: "brussels | belgium",
+    result: "16:00:30.30 pb",
+    place: 2,
+    race: {
+      link: "/calendar/2",
+      value: "Brussles vs Amsterdam",
+    },
+  },
+  {
+    date: "23/06/2023",
+    event: "CUP BENELUX",
+    location: "brussels | belgium",
+    result: "16:00:30.30 pb",
+    place: 2,
+    race: {
+      link: "/calendar/2",
+      value: "Brussles vs Amsterdam",
+    },
+  },
+];
+
+export const resultRows = [
+  {
+    date: "23/06/2023",
+    event: "CUP BENELUX",
+    category: "indoor",
+    battle: "Brussels / 23:00:00 vs Luxemburg / 23:30:00",
+    details: {
+      link: "/",
+      value: "details",
+    },
+  },
+  {
+    date: "23/06/2023",
+    event: "CUP BENELUX",
+    category: "indoor",
+    battle: "Brussels / 23:00:00 vs Luxemburg / 23:30:00",
+    details: {
+      link: "/",
+      value: "details",
+    },
+  },
+  {
+    date: "23/06/2023",
+    event: "CUP BENELUX",
+    category: "indoor",
+    battle: "Brussels / 23:00:00 vs Luxemburg / 23:30:00",
+    details: {
+      link: "/",
+      value: "details",
+    },
+  },
+  {
+    date: "23/06/2023",
+    event: "CUP BENELUX",
+    category: "indoor",
+    battle: "Brussels / 23:00:00 vs Luxemburg / 23:30:00",
+    details: {
+      link: "/",
+      value: "details",
+    },
+  },
+  {
+    date: "23/06/2023",
+    event: "CUP BENELUX",
+    category: "indoor",
+    battle: "Brussels / 23:00:00 vs Luxemburg / 23:30:00",
+    details: {
+      link: "/",
+      value: "details",
+    },
+  },
+];
