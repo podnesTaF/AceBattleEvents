@@ -61,6 +61,19 @@ export const AddTeamSchema = yup.object().shape({
     ),
 });
 
+const MAX_FILE_SIZE = 1024000; //100KB
+
+const validFileExtensions = {
+  image: ["jpg", "gif", "png", "jpeg", "svg", "webp"],
+};
+
+function isValidFileType(fileName: any) {
+  return (
+    fileName &&
+    validFileExtensions["image"].indexOf(fileName.split(".").pop()) > -1
+  );
+}
+
 export const addEventSchema = yup.object().shape({
   title: yup.string().required("Please provide event title"),
   startDateTime: yup
@@ -76,19 +89,9 @@ export const addEventSchema = yup.object().shape({
   prizes: yup.array().of(
     yup.object().shape({
       place: yup.number().required("Please provide place"),
-      amount: yup.string().required("Please provide amount"),
+      amount: yup.number().required("Please provide amount"),
     })
   ),
-  introImage: yup
-    .mixed()
-    .test("isImageSelected", "Please provide event intro image", (value) => {
-      // Check if an image file is selected
-      return value && value instanceof File;
-    }),
-  minorImage: yup
-    .mixed()
-    .test("isImageSelected", "Please provide event minor image", (value) => {
-      // Check if an image file is selected
-      return value && value instanceof File;
-    }),
+  introImage: yup.mixed().required("Required"),
+  minorImage: yup.mixed().required("Required"),
 });
