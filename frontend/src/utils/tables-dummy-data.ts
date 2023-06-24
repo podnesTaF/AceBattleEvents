@@ -296,3 +296,51 @@ export const resultRows = [
     },
   },
 ];
+
+export const eventRows = [
+  {
+    name: "CUP BENELUX",
+    "competition date": "23/06/2023",
+    createdAt: "23/05/2023",
+    "event page": {
+      link: "/calendar/1",
+      value: "cup benelux",
+    },
+  },
+  {
+    name: "CUP BENELUX",
+    "competition date": "23/06/2023",
+    createdAt: "23/05/2023",
+    "event page": {
+      link: "/calendar/1",
+      value: "cup benelux",
+    },
+  },
+  {
+    name: "CUP BENELUX",
+    "competition date": "23/06/2023",
+    createdAt: "23/05/2023",
+    "event page": {
+      link: "/calendar/1",
+      value: "cup benelux",
+    },
+  },
+  {
+    name: "CUP BENELUX",
+    "competition date": "23/06/2023",
+    createdAt: "23/05/2023",
+    "event page": {
+      link: "/calendar/1",
+      value: "cup benelux",
+    },
+  },
+  {
+    name: "CUP BENELUX",
+    "competition date": "23/06/2023",
+    createdAt: "23/05/2023",
+    "event page": {
+      link: "/calendar/1",
+      value: "cup benelux",
+    },
+  },
+];
