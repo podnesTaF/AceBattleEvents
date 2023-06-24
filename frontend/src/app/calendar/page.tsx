@@ -6,6 +6,7 @@ import SearchField from "@/components/events/SearchField";
 import CustomTable from "@/components/shared/CustomTable";
 import CustomTitle from "@/components/shared/CustomTitle";
 import Pagination from "@/components/shared/Pagination";
+import { useFilter } from "@/hooks/useFilter";
 import { useFetchEventsQuery } from "@/services/eventService";
 import { countries, months, years } from "@/utils/events-filter-values";
 import {
@@ -15,9 +16,15 @@ import {
 import { useEffect, useState } from "react";
 
 const CalendarPage = () => {
-  const [searchValue, setSearchValue] = useState("");
-  const [filters, setFilters] = useState<{ type: string; value: any }[]>([]);
-  const [checkValue, setCheckValue] = useState<boolean>(false);
+  const {
+    filters,
+    checkValue,
+    searchValue,
+    onChangeFilter,
+    removeFilter,
+    setCheckValue,
+    setSearchValue,
+  } = useFilter();
   const [eventsRows, setEventsRows] = useState<any>([]);
   const [pagesCount, setPageCount] = useState(1);
   const [currPage, setCurrPage] = useState<number>(1);
@@ -34,33 +41,6 @@ const CalendarPage = () => {
 
   const changePage = (pageNum: number) => {
     setCurrPage(pageNum);
-  };
-
-  const onChangeFilter = (filterType: string, selectedValue: string) => {
-    if (selectedValue === "") {
-      removeFilter(filterType);
-      return;
-    }
-    setFilters((prev) => {
-      const typeObj = prev.find((f) => f.type === filterType);
-      if (!typeObj) {
-        return [...prev, { type: filterType, value: selectedValue }];
-      } else {
-        return [
-          ...prev.filter((f) => f.type !== filterType),
-          { type: filterType, value: selectedValue },
-        ];
-      }
-    });
-  };
-
-  const removeFilter = (filter: string) => {
-    if (filter === "check") {
-      setCheckValue(false);
-    } else if (filter === "name") {
-      setSearchValue("");
-    }
-    setFilters((prev) => prev.filter((f) => f.type !== filter));
   };
 
   useEffect(() => {

@@ -60,3 +60,35 @@ export const AddTeamSchema = yup.object().shape({
       }
     ),
 });
+
+export const addEventSchema = yup.object().shape({
+  title: yup.string().required("Please provide event title"),
+  startDateTime: yup
+    .string()
+    .required("Please provide event start date and time"),
+  endDate: yup.string().required("Please provide event end date"),
+  discipline: yup.string().required("Please provide event discipline"),
+  category: yup.string().required("Please provide event category"),
+  country: yup.string().required("Please provide event country"),
+  city: yup.string().required("Please provide event city"),
+  street: yup.string().required("Please provide event street"),
+  zipCode: yup.string().required("Please provide event zip code"),
+  prizes: yup.array().of(
+    yup.object().shape({
+      place: yup.number().required("Please provide place"),
+      amount: yup.string().required("Please provide amount"),
+    })
+  ),
+  introImage: yup
+    .mixed()
+    .test("isImageSelected", "Please provide event intro image", (value) => {
+      // Check if an image file is selected
+      return value && value instanceof File;
+    }),
+  minorImage: yup
+    .mixed()
+    .test("isImageSelected", "Please provide event minor image", (value) => {
+      // Check if an image file is selected
+      return value && value instanceof File;
+    }),
+});

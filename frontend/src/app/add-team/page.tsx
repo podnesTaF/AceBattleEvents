@@ -60,7 +60,6 @@ const AddTeam = () => {
   };
 
   const { control, formState, handleSubmit, watch } = form;
-  console.log(formState.isValid);
 
   const { append, remove } = useFieldArray({
     control,
