@@ -83,7 +83,7 @@ const SideBar = () => {
   };
 
   return (
-    <div className="sm:h-screen fixed sm:sticky bottom-0 sm:w-64 flex sm:flex-col bg-[#1E1C1F] overflow-x-scroll sm:overflow-x-auto">
+    <div className="sm:h-screen fixed sm:sticky bottom-0 sm:w-64 flex sm:flex-col bg-[#1E1C1F] overflow-x-scroll sm:overflow-x-auto z-10">
       <div className="py-4 hidden sm:flex px-4">
         <h3 className="text-2xl font-semibold text-white uppercase">Admin</h3>
       </div>
