@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { FileService, FileType } from 'src/file/file.service';
 import { LocationsService } from 'src/locations/locations.service';
 import { PrizesService } from 'src/prizes/prizes.service';
 import { Repository } from 'typeorm';
@@ -13,20 +14,34 @@ export class EventsService {
     private repository: Repository<Event>,
     private locationsService: LocationsService,
     private prizeService: PrizesService,
+    private fileService: FileService,
   ) {}
 
-  async create(eventDto: CreateEventDto) {
+  async create(eventDto: CreateEventDto, introImage: any, minorImage: any) {
+    let introImageUrl: string;
+    let minorImageUrl: string;
+    if (introImage) {
+      introImageUrl = this.fileService.createFile(FileType.IMAGE, introImage);
+    } else {
+      introImageUrl = null;
+    }
+    if (minorImage) {
+      minorImageUrl = this.fileService.createFile(FileType.IMAGE, minorImage);
+    } else {
+      minorImageUrl = null;
+    }
+
     const location = await this.locationsService.create(eventDto.location);
 
     const prizes = [];
 
-    eventDto.prizes.forEach(async (prize) => {
+    for (let i = 0; i < eventDto.prizes.length; i++) {
+      const prize = eventDto.prizes[i];
       const createdPrize = await this.prizeService.create(prize);
-
       prizes.push(createdPrize);
-    });
+    }
 
-    const { title, description, date, introImageUrl, minorImageUrl } = eventDto;
+    const { title, description, date } = eventDto;
 
     return this.repository.save({
       title,

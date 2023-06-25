@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CreateEventDto } from './dto/create-event.dto';
 import { EventsService } from './events.service';
 
@@ -7,8 +17,19 @@ export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
   @Post()
-  create(@Body() createEventDto: CreateEventDto) {
-    return this.eventsService.create(createEventDto);
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'introImage', maxCount: 1 },
+      { name: 'minorImage', maxCount: 1 },
+    ]),
+  )
+  create(@UploadedFiles() files, @Body() createEventDto: CreateEventDto) {
+    console.log(createEventDto);
+    return this.eventsService.create(
+      createEventDto,
+      files.introImage[0],
+      files.minorImage[0],
+    );
   }
 
   @Get()
