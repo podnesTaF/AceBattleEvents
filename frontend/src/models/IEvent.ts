@@ -21,8 +21,8 @@ export type IPrize = {
 };
 
 export type ILocation = {
-  postalCode: string;
-  street: string;
+  zipCode: string;
+  address: string;
   country: string;
   city: string;
 };

@@ -18,7 +18,15 @@ export const eventApi = api.injectEndpoints({
       }),
       providesTags: (result) => ["Event"],
     }),
+    addEvent: builder.mutation<IEvent, any>({
+      query: (body) => ({
+        url: "/events",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useFetchEventsQuery, useFetchEventQuery } = eventApi;
+export const { useFetchEventsQuery, useFetchEventQuery, useAddEventMutation } =
+  eventApi;

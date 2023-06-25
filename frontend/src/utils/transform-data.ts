@@ -120,12 +120,12 @@ export const getParamsFromFilters = (filters: any[]): string => {
 
 export const transformAddress = (location: ILocation): string => {
   return (
-    location.street +
+    location.address +
     ", " +
     location.city +
     ", " +
     location.country +
     ", " +
-    location.postalCode
+    location.zipCode
   );
 };

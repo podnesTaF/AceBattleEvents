@@ -84,7 +84,7 @@ export const addEventSchema = yup.object().shape({
   category: yup.string().required("Please provide event category"),
   country: yup.string().required("Please provide event country"),
   city: yup.string().required("Please provide event city"),
-  street: yup.string().required("Please provide event street"),
+  address: yup.string().required("Please provide event address"),
   zipCode: yup.string().required("Please provide event zip code"),
   prizes: yup.array().of(
     yup.object().shape({
