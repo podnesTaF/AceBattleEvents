@@ -3,13 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreatePersonalBestDto } from './dto/create-personal-best.dto';
 import { UpdatePersonalBestDto } from './dto/update-personal-best.dto';
-import { PersonalBestEntity } from './entities/personal-best.entity';
+import { PersonalBest } from './entities/personal-best.entity';
 
 @Injectable()
 export class PersonalBestsService {
   constructor(
-    @InjectRepository(PersonalBestEntity)
-    private repository: Repository<PersonalBestEntity>,
+    @InjectRepository(PersonalBest)
+    private repository: Repository<PersonalBest>,
   ) {}
   create(createPersonalBestDto: CreatePersonalBestDto) {
     return this.repository.save(createPersonalBestDto);

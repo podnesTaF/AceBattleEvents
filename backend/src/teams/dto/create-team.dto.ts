@@ -1,4 +1,10 @@
-import { IsArray, IsObject, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { CreateCoachDto } from 'src/coach/dto/create-coach-dto';
 import { CreatePlayerDto } from 'src/players/dto/create-player.dto';
 
@@ -13,8 +19,8 @@ export class CreateTeamDto {
   @IsString()
   city: string;
 
-  @IsString()
-  country: string;
+  @IsNumber()
+  countryId: number;
 
   @IsObject()
   coach: CreateCoachDto;

@@ -1,5 +1,5 @@
 import { Club } from 'src/club/entities/club.entity';
-import { CoachEntity } from 'src/coach/entities/coach.entity';
+import { Coach } from 'src/coach/entities/coach.entity';
 import { Country } from 'src/country/entity/country.entity';
 import { Event } from 'src/events/entities/event.entity';
 import { PlayerEntity } from 'src/players/entities/player.entity';
@@ -39,11 +39,11 @@ export class Team {
   @OneToMany(() => Club, (club) => club.team)
   clubs: Club[];
 
-  @OneToOne(() => CoachEntity, {
+  @OneToOne(() => Coach, {
     onDelete: 'CASCADE',
   })
   @JoinColumn()
-  coach: CoachEntity;
+  coach: Coach;
 
   @OneToMany(() => PlayerEntity, (player) => player.team, {
     onDelete: 'CASCADE',

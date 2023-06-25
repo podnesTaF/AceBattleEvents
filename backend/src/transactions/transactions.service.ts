@@ -21,13 +21,13 @@ export class TransactionsService {
     });
   }
 
-  findByUserId(id: number) {
-    return this.repository.find({
-      where: [{ sender: { id } }, { receiver: { id } }],
-      relations: ['sender', 'receiver'],
-      order: { date: 'DESC' },
-    });
-  }
+  // findByUserId(id: number) {
+  //   return this.repository.find({
+  //     where: [{ sender: { id } }, { receiver: { id } }],
+  //     relations: ['sender', 'receiver'],
+  //     order: { date: 'DESC' },
+  //   });
+  // }
 
   findAll() {
     return `This action returns all transactions`;

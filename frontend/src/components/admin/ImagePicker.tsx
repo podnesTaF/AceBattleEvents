@@ -1,27 +1,23 @@
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
+import { useFormContext } from "react-hook-form";
 
 interface ImageUploadProps {
-  setImage: Function;
-  imageUrl?: string;
-  image: any;
+  name: string;
 }
 
-const ImagePicker: React.FC<ImageUploadProps> = ({
-  setImage,
-  image,
-  imageUrl,
-}) => {
+const ImagePicker: React.FC<ImageUploadProps> = ({ name }) => {
   const [previewUrl, setPreviewUrl] = useState<any>("");
   const [isHover, setIsHover] = useState(false);
   const [valid, setValid] = useState(false);
   const [drag, setDrag] = useState(true);
   const [oldImageUrl, setImageUrl] = useState("");
   const pickImageRef = useRef<HTMLInputElement>(null);
+  const [image, setImage] = useState<any>(null);
+  const { register, formState, setValue } = useFormContext();
 
   useEffect(() => {
     if (!image) return;
-    console.log(image);
     const fileReader = new FileReader();
     fileReader.onload = () => {
       setPreviewUrl(fileReader.result);
@@ -53,27 +49,28 @@ const ImagePicker: React.FC<ImageUploadProps> = ({
     }
   };
 
-  const pickedHandler = (e: any) => {
-    if (e.target.files || e.target.files.length === 1) {
-      console.log(e.target.files);
-      const pickedFile = e.target.files[0];
-      setImage(pickedFile);
-      setValid(true);
-    } else {
-      console.log("wrong file type");
-      setValid(false);
-    }
-  };
-
   const handleDelete = () => {
-    if (pickImageRef?.current) {
+    if (pickImageRef?.current?.value) {
       pickImageRef.current.value = "";
     }
     if (oldImageUrl) {
       setImageUrl("");
     }
+    setImage("");
     setPreviewUrl("");
-    setImage(undefined);
+    setValue(name, "");
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const pickedFile = e.target.files[0];
+      setImage(pickedFile);
+      setValid(true);
+      setValue(name, pickedFile); // Set the form value using setValue
+    } else {
+      console.log("wrong file type");
+      setValid(false);
+    }
   };
 
   return (
@@ -106,7 +103,8 @@ const ImagePicker: React.FC<ImageUploadProps> = ({
       <div
         className={
           "w-full border-2 border-dashed border-gray-300 rounded-md p-4 mt-6 flex justify-center items-center cursor-pointer " +
-          (drag ? "bg-gray-100" : "")
+          (drag ? "bg-gray-100" : "") +
+          (previewUrl ? " hidden" : "")
         }
         onDragStart={(e) => dragStartHandler(e)}
         onDragLeave={(e) => dragLeaveHandler(e)}
@@ -115,13 +113,18 @@ const ImagePicker: React.FC<ImageUploadProps> = ({
         onClick={pickImageHandler}
       >
         <input
+          {...register(name)}
           ref={pickImageRef}
           type="file"
-          style={{ display: "none" }}
+          className="hidden"
           accept=".jpg,.png,.jpeg,.webp"
-          onChange={pickedHandler}
+          onChange={handleImageChange}
         />
-
+        {!!formState.errors[name]?.message && (
+          <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+            {formState.errors[name]?.message as any}
+          </p>
+        )}
         <p>
           Drag and drop photos <span>or click to upload</span>
         </p>

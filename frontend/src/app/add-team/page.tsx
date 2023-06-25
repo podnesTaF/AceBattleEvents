@@ -76,7 +76,6 @@ const AddTeam = () => {
   };
 
   const removePb = (playerId: string, pbIdx: number) => {
-    console.log(playerId, pbIdx);
     setPersonalBests((prev: any) => ({
       ...prev,
       [playerId]: prev[playerId].filter((pb: any, i: number) => i !== pbIdx),
@@ -84,7 +83,6 @@ const AddTeam = () => {
   };
 
   const appendPb = (playerId: string) => {
-    console.log(playerId);
     const updatedPbs = personalBests[playerId];
     setPersonalBests((prev: any) => ({
       ...prev,
@@ -99,7 +97,6 @@ const AddTeam = () => {
   }, [data]);
 
   const onSubmit = async (dto: any) => {
-    console.log(dto);
     await addTeam({
       name: dto.name,
       club: dto.club,

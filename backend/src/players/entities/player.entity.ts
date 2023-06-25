@@ -1,4 +1,4 @@
-import { PersonalBestEntity } from 'src/personal-bests/entities/personal-best.entity';
+import { PersonalBest } from 'src/personal-bests/entities/personal-best.entity';
 import { Team } from 'src/teams/entities/team.entity';
 import {
   Column,
@@ -25,6 +25,6 @@ export class PlayerEntity {
   @ManyToOne(() => Team, (team) => team.players)
   team: Team;
 
-  @OneToMany(() => PersonalBestEntity, (personalBest) => personalBest.player)
-  personalBests: PersonalBestEntity[];
+  @OneToMany(() => PersonalBest, (personalBest) => personalBest.player)
+  personalBests: PersonalBest[];
 }

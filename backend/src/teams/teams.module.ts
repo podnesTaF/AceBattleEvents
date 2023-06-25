@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CoachService } from 'src/coach/coach.service';
-import { CoachEntity } from 'src/coach/entities/coach.entity';
+import { Coach } from 'src/coach/entities/coach.entity';
+import { CountryService } from 'src/country/country.service';
+import { Country } from 'src/country/entity/country.entity';
 import { Event } from 'src/events/entities/event.entity';
 import { EventsService } from 'src/events/events.service';
 import { Location } from 'src/locations/entities/locations.entity';
 import { LocationsService } from 'src/locations/locations.service';
-import { PersonalBestEntity } from 'src/personal-bests/entities/personal-best.entity';
+import { PersonalBest } from 'src/personal-bests/entities/personal-best.entity';
 import { PersonalBestsService } from 'src/personal-bests/personal-bests.service';
 import { PlayerEntity } from 'src/players/entities/player.entity';
 import { PlayersService } from 'src/players/players.service';
@@ -23,12 +25,13 @@ import { TeamsService } from './teams.service';
     TypeOrmModule.forFeature([
       Team,
       PlayerEntity,
-      CoachEntity,
+      Coach,
       User,
       Location,
       Event,
+      Country,
       PrizeEntity,
-      PersonalBestEntity,
+      PersonalBest,
     ]),
   ],
   controllers: [TeamsController],
@@ -40,6 +43,7 @@ import { TeamsService } from './teams.service';
     EventsService,
     PrizesService,
     LocationsService,
+    CountryService,
     PersonalBestsService,
   ],
   exports: [TeamsService],

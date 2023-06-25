@@ -16,7 +16,6 @@ import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 const AddEvent = () => {
   const [selectedDateTime, setSelectedDateTime] = useState("");
   const [activeSlide, setActiveSlide] = useState(0);
-  const [image, setImage] = useState<File | null>(null);
 
   const form = useForm({
     mode: "onChange",
@@ -209,11 +208,20 @@ const AddEvent = () => {
                   <div className="w-full">
                     <label
                       htmlFor="introImage"
-                      className="text-gray uppercase text-2xl mb-3"
+                      className="text-gray uppercase text-xl mb-3"
                     >
                       UPLOAD INTRO IMAGE
                     </label>
-                    <ImagePicker setImage={setImage} image={image} />
+                    <ImagePicker name="introImage" />
+                  </div>
+                  <div className="w-full my-4">
+                    <label
+                      htmlFor="introImage"
+                      className="text-gray uppercase text-xl mb-3"
+                    >
+                      UPLOAD MINOR IMAGE
+                    </label>
+                    <ImagePicker name="minorImage" />
                   </div>
                 </>
               )}
@@ -224,6 +232,7 @@ const AddEvent = () => {
                   }}
                   variant="outlined"
                   type="button"
+                  className="w-36"
                   disabled={activeSlide === 0}
                 >
                   prev
@@ -240,12 +249,14 @@ const AddEvent = () => {
                     Next
                   </Button>
                 ) : (
-                  <FormButton
-                    title="create event"
-                    disabled={!formState.isValid || formState.isSubmitting}
-                    isSubmitting={formState.isSubmitting}
-                    isLoading={formState.isSubmitting}
-                  />
+                  <div className="max-w-xs">
+                    <FormButton
+                      title="create event"
+                      disabled={!formState.isValid || formState.isSubmitting}
+                      isSubmitting={formState.isSubmitting}
+                      isLoading={formState.isSubmitting}
+                    />
+                  </div>
                 )}
               </div>
             </div>
