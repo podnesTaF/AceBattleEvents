@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CoachController } from './coach.controller';
 import { CoachService } from './coach.service';
-import { CoachEntity } from './entities/coach.entity';
+import { Coach } from './entities/coach.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CoachEntity])],
+  imports: [TypeOrmModule.forFeature([Coach])],
   controllers: [CoachController],
   providers: [CoachService],
   exports: [CoachService],
