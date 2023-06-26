@@ -61,7 +61,7 @@ export const AddTeamSchema = yup.object().shape({
     ),
 });
 
-const MAX_FILE_SIZE = 1024000; //100KB
+const MAX_FILE_SIZE = 1024000; //1000KB
 
 const validFileExtensions = {
   image: ["jpg", "gif", "png", "jpeg", "svg", "webp"],
@@ -94,4 +94,8 @@ export const addEventSchema = yup.object().shape({
   ),
   introImage: yup.mixed().required("Required"),
   minorImage: yup.mixed().required("Required"),
+});
+
+export const addImageSchema = yup.object().shape({
+  image: yup.mixed().required("Required"),
 });

@@ -14,10 +14,18 @@ const ImagePicker: React.FC<ImageUploadProps> = ({ name }) => {
   const [oldImageUrl, setImageUrl] = useState("");
   const pickImageRef = useRef<HTMLInputElement>(null);
   const [image, setImage] = useState<any>(null);
-  const { register, formState, setValue } = useFormContext();
+  const { register, formState, setValue, getValues } = useFormContext();
 
   useEffect(() => {
-    if (!image) return;
+    if (!getValues(name)) {
+      setPreviewUrl("");
+    }
+  }, [getValues(name)]);
+
+  useEffect(() => {
+    if (!image) {
+      return;
+    }
     const fileReader = new FileReader();
     fileReader.onload = () => {
       setPreviewUrl(fileReader.result);
@@ -92,7 +100,7 @@ const ImagePicker: React.FC<ImageUploadProps> = ({ name }) => {
           )}
           {isHover && (
             <div
-              className="absolute top-3 right-3 bg-white/80 text-xl cursor-pointer px-3 py-2 rounded-sm hover:bg-cyan-300"
+              className="absolute top-3 right-3 bg-white/80 text-xl cursor-pointer px-3 py-2 rounded-sm hover:bg-red-500 hover:text-white transition-all"
               onClick={handleDelete}
             >
               DELETE
@@ -102,7 +110,7 @@ const ImagePicker: React.FC<ImageUploadProps> = ({ name }) => {
       </div>
       <div
         className={
-          "w-full border-2 border-dashed border-gray-300 rounded-md p-4 mt-6 flex justify-center items-center cursor-pointer " +
+          "w-full h-full border-2 border-dashed border-gray-300 rounded-md p-4 mt-2 flex justify-center items-center cursor-pointer mb-6" +
           (drag ? "bg-gray-100" : "") +
           (previewUrl ? " hidden" : "")
         }
@@ -116,6 +124,7 @@ const ImagePicker: React.FC<ImageUploadProps> = ({ name }) => {
           {...register(name)}
           ref={pickImageRef}
           type="file"
+          id={name}
           className="hidden"
           accept=".jpg,.png,.jpeg,.webp"
           onChange={handleImageChange}
