@@ -51,11 +51,12 @@ export class FileService {
         __dirname,
         '..',
         'static',
-        FileType.IMAGE,
+        'image',
         'small',
       );
       if (fs.existsSync(smallFilePath)) {
-        return fs.readdirSync(smallFilePath);
+        const images = fs.readdirSync(smallFilePath);
+        return images.map((image) => 'image/small/' + image);
       }
       return [];
     } catch (e) {
