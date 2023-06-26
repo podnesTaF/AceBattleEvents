@@ -61,7 +61,7 @@ export const AddTeamSchema = yup.object().shape({
     ),
 });
 
-const MAX_FILE_SIZE = 1024000; //100KB
+const MAX_FILE_SIZE = 1024000; //1000KB
 
 const validFileExtensions = {
   image: ["jpg", "gif", "png", "jpeg", "svg", "webp"],
@@ -84,7 +84,7 @@ export const addEventSchema = yup.object().shape({
   category: yup.string().required("Please provide event category"),
   country: yup.string().required("Please provide event country"),
   city: yup.string().required("Please provide event city"),
-  street: yup.string().required("Please provide event street"),
+  address: yup.string().required("Please provide event address"),
   zipCode: yup.string().required("Please provide event zip code"),
   prizes: yup.array().of(
     yup.object().shape({
@@ -94,4 +94,8 @@ export const addEventSchema = yup.object().shape({
   ),
   introImage: yup.mixed().required("Required"),
   minorImage: yup.mixed().required("Required"),
+});
+
+export const addImageSchema = yup.object().shape({
+  image: yup.mixed().required("Required"),
 });

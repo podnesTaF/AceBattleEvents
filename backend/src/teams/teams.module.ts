@@ -6,6 +6,7 @@ import { CountryService } from 'src/country/country.service';
 import { Country } from 'src/country/entity/country.entity';
 import { Event } from 'src/events/entities/event.entity';
 import { EventsService } from 'src/events/events.service';
+import { FileService } from 'src/file/file.service';
 import { Location } from 'src/locations/entities/locations.entity';
 import { LocationsService } from 'src/locations/locations.service';
 import { PersonalBest } from 'src/personal-bests/entities/personal-best.entity';
@@ -44,6 +45,7 @@ import { TeamsService } from './teams.service';
     PrizesService,
     LocationsService,
     CountryService,
+    FileService,
     PersonalBestsService,
   ],
   exports: [TeamsService],

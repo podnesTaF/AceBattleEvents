@@ -4,6 +4,7 @@ import ImagePicker from "@/components/admin/ImagePicker";
 import FormButton from "@/components/shared/FormButton";
 import FormField from "@/components/shared/FormField";
 import FormSelect from "@/components/shared/FormSelect";
+import { useAddEventMutation } from "@/services/eventService";
 import { countries } from "@/utils/events-filter-values";
 import { addEventSchema } from "@/utils/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,8 +15,8 @@ import { useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 
 const AddEvent = () => {
-  const [selectedDateTime, setSelectedDateTime] = useState("");
   const [activeSlide, setActiveSlide] = useState(0);
+  const [addEvent, { isLoading }] = useAddEventMutation();
 
   const form = useForm({
     mode: "onChange",
@@ -33,7 +34,32 @@ const AddEvent = () => {
   });
 
   const onSubmit = async (dto: any) => {
-    console.log(dto);
+    const new_event = new FormData();
+    new_event.append("title", dto.title);
+    new_event.append("startDateTime", dto.startDateTime);
+    new_event.append("endDate", dto.endDate);
+    new_event.append("discipline", dto.discipline);
+    new_event.append("category", dto.category);
+
+    new_event.append(
+      "location",
+      JSON.stringify({
+        country: dto.country,
+        city: dto.city,
+        address: dto.address,
+        zipCode: dto.zipCode,
+      })
+    );
+
+    new_event.append("prizes", JSON.stringify(dto.prizes));
+    new_event.append("introImage", dto.introImage);
+    new_event.append("minorImage", dto.minorImage);
+
+    try {
+      await addEvent(new_event);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -131,9 +157,9 @@ const AddEvent = () => {
                   <div className="w-full flex flex-col  sm:flex-row gap-3">
                     <div className="w-full sm:w-1/2">
                       <FormField
-                        label="Street*"
-                        name={"street"}
-                        placeholder={"Enter street here..."}
+                        label="Address*"
+                        name={"address"}
+                        placeholder={"Enter address here..."}
                       />
                     </div>
                     <div className="w-full sm:w-1/2">

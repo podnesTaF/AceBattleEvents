@@ -4,6 +4,7 @@ import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import GroupsIcon from "@mui/icons-material/Groups";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import PermMediaIcon from "@mui/icons-material/PermMedia";
 import { useState } from "react";
 import SideTab from "./SideTab";
 
@@ -67,6 +68,17 @@ const tabs = [
       },
     ],
     name: "players",
+  },
+  {
+    title: "Media files",
+    icon: <PermMediaIcon />,
+    hiddenTabs: [
+      {
+        title: "All media",
+        link: "/admin/media",
+      },
+    ],
+    name: "media",
   },
 ];
 
