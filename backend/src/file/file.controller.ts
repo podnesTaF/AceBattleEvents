@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileService, FileType } from './file.service';
+import { storage } from './google-cloud-storage.config';
 
 @Controller('images')
 export class FileController {
@@ -16,20 +17,31 @@ export class FileController {
 
   @Post()
   @UseInterceptors(FileInterceptor('image'))
-  uploadImage(@UploadedFile() file: any): { imagePath: string } {
-    const imagePath = this.fileService.createFile(FileType.IMAGE, file);
+  async uploadImage(@UploadedFile() file: any): Promise<{ imagePath: string }> {
+    const imagePath = await this.fileService.uploadFileToStorage(
+      FileType.IMAGE,
+      file,
+      storage,
+    );
     return { imagePath };
   }
 
   @Delete(':imagePath')
-  deleteImage(@Param('imagePath') imagePath: string): { success: boolean } {
-    const isDeleted = this.fileService.deleteFile(imagePath);
+  async deleteImage(
+    @Param('imagePath') imagePath: string,
+  ): Promise<{ success: boolean }> {
+    const isDeleted = await this.fileService.deleteFileFromStorage(
+      imagePath,
+      storage,
+    );
     return { success: isDeleted };
   }
 
   @Get('small')
-  getAllSmallImages(): { imagePaths: string[] } {
-    const imagePaths = this.fileService.getAllSmallImages();
+  async getAllSmallImages(): Promise<{ imagePaths: string[] }> {
+    const imagePaths = await this.fileService.getAllSmallImagesFromStorage(
+      storage,
+    );
     return { imagePaths };
   }
 }

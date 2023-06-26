@@ -1,3 +1,4 @@
+import { Storage } from '@google-cloud/storage';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FileService } from 'src/file/file.service';
@@ -12,7 +13,13 @@ import { EventsService } from './events.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Event, Location, PrizeEntity])],
   controllers: [EventsController],
-  providers: [EventsService, LocationsService, PrizesService, FileService],
+  providers: [
+    EventsService,
+    LocationsService,
+    PrizesService,
+    FileService,
+    Storage,
+  ],
   exports: [EventsService],
 })
 export class EventsModule {}
