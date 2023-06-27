@@ -1,77 +1,98 @@
+import { Storage } from '@google-cloud/storage';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as fs from 'fs';
-import * as path from 'path';
 import sharp from 'sharp';
 import * as uuid from 'uuid';
+import { googleCloudStorageConfig } from './google-cloud-storage.config';
 
 export enum FileType {
   IMAGE = 'image',
   AVATAR = 'avatar',
 }
 
+const bucketBaseUrl =
+  'https://storage.googleapis.com/' + googleCloudStorageConfig.bucketName;
+
 @Injectable()
 export class FileService {
-  createFile(type: FileType, file: any): string {
+  async uploadFileToStorage(
+    type: FileType,
+    file: any,
+    storage: Storage,
+  ): Promise<string> {
     try {
       const fileExtension = file.originalname.split('.').pop();
       const fileName = uuid.v4().toString() + '.' + fileExtension;
-      const filePath = path.resolve(__dirname, '..', 'static', type);
 
-      if (!fs.existsSync(filePath)) {
-        fs.mkdirSync(filePath, { recursive: true });
-      }
+      const bucket = storage.bucket(googleCloudStorageConfig.bucketName);
 
-      const largeFilePath = path.resolve(filePath, 'large');
-      if (!fs.existsSync(largeFilePath)) {
-        fs.mkdirSync(largeFilePath, { recursive: true });
-      }
+      const fileUpload = bucket.file(`${type}/large/${fileName}`);
+      const stream = fileUpload.createWriteStream({
+        resumable: false,
+        gzip: true,
+      });
 
-      const smallFilePath = path.resolve(filePath, 'small');
-      if (!fs.existsSync(smallFilePath)) {
-        fs.mkdirSync(smallFilePath, { recursive: true });
-      }
+      stream.on('error', (error) => {
+        throw new Error(`Error uploading file: ${error}`);
+      });
 
-      fs.writeFileSync(path.resolve(largeFilePath, fileName), file.buffer);
+      stream.on('finish', () => {
+        console.log(`File uploaded successfully: ${fileName}`);
+      });
+
+      stream.end(file.buffer);
 
       // Create a smaller version of the image for preview
       const smallFileName = 'small_' + fileName;
-      sharp(file.buffer)
-        .resize(200, 200) // Adjust the desired dimensions for the small image
-        .toFile(path.resolve(smallFilePath, smallFileName));
+      const smallFileBuffer = await sharp(file.buffer)
+        .resize(200, 200)
+        .toBuffer();
 
-      return type + '/large/' + fileName;
+      const smallFileUpload = bucket.file(`${type}/small/${smallFileName}`);
+      const smallStream = smallFileUpload.createWriteStream({
+        resumable: false,
+        gzip: true,
+      });
+
+      smallStream.on('error', (error) => {
+        throw new Error(`Error uploading small file: ${error}`);
+      });
+
+      smallStream.on('finish', () => {
+        console.log(`Small file uploaded successfully: ${smallFileName}`);
+      });
+
+      smallStream.end(smallFileBuffer);
+
+      return `${bucketBaseUrl}/${type}/small/${smallFileName}`;
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  getAllSmallImages(): string[] {
+  async getAllSmallImagesFromStorage(storage: Storage): Promise<string[]> {
     try {
-      const smallFilePath = path.resolve(
-        __dirname,
-        '..',
-        'static',
-        'image',
-        'small',
-      );
-      if (fs.existsSync(smallFilePath)) {
-        const images = fs.readdirSync(smallFilePath);
-        return images.map((image) => 'image/small/' + image);
-      }
-      return [];
+      const bucket = storage.bucket(googleCloudStorageConfig.bucketName);
+
+      const [files] = await bucket.getFiles({ prefix: 'image/small/' });
+
+      return files.map((file) => bucketBaseUrl + '/' + file.name);
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  deleteFile(imagePath: string): boolean {
+  async deleteFileFromStorage(
+    imagePath: string,
+    storage: Storage,
+  ): Promise<boolean> {
     try {
-      const filePath = path.resolve(__dirname, '..', 'static', imagePath);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-        return true;
-      }
-      return false;
+      // Replace with your bucket name
+      const bucket = storage.bucket(googleCloudStorageConfig.bucketName);
+      const file = bucket.file(imagePath);
+
+      await file.delete();
+
+      return true;
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }

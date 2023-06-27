@@ -4,6 +4,7 @@ export const imageApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getSmallImages: builder.query<{ imagePaths: string[] }, void>({
       query: () => `/images/small`,
+      providesTags: (result) => ["Image"],
     }),
   }),
 });

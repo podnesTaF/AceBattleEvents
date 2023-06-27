@@ -1,3 +1,4 @@
+import { Storage } from '@google-cloud/storage';
 import {
   Body,
   Controller,
@@ -14,7 +15,10 @@ import { EventsService } from './events.service';
 
 @Controller('events')
 export class EventsController {
-  constructor(private readonly eventsService: EventsService) {}
+  constructor(
+    private readonly eventsService: EventsService,
+    private readonly storage: Storage,
+  ) {}
 
   @Post()
   @UseInterceptors(
@@ -29,6 +33,7 @@ export class EventsController {
       createEventDto,
       files.introImage[0],
       files.minorImage[0],
+      this.storage,
     );
   }
 

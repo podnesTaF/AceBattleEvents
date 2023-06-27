@@ -1,3 +1,4 @@
+import { Storage } from '@google-cloud/storage';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FileService, FileType } from 'src/file/file.service';
@@ -17,16 +18,29 @@ export class EventsService {
     private fileService: FileService,
   ) {}
 
-  async create(eventDto: CreateEventDto, introImage: any, minorImage: any) {
+  async create(
+    eventDto: CreateEventDto,
+    introImage: any,
+    minorImage: any,
+    storage: Storage,
+  ) {
     let introImageUrl: string;
     let minorImageUrl: string;
     if (introImage) {
-      introImageUrl = this.fileService.createFile(FileType.IMAGE, introImage);
+      introImageUrl = await this.fileService.uploadFileToStorage(
+        FileType.IMAGE,
+        introImage,
+        storage,
+      );
     } else {
       introImageUrl = null;
     }
     if (minorImage) {
-      minorImageUrl = this.fileService.createFile(FileType.IMAGE, minorImage);
+      minorImageUrl = await this.fileService.uploadFileToStorage(
+        FileType.IMAGE,
+        minorImage,
+        storage,
+      );
     } else {
       minorImageUrl = null;
     }
