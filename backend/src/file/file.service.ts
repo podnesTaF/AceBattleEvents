@@ -9,6 +9,9 @@ export enum FileType {
   AVATAR = 'avatar',
 }
 
+const bucketBaseUrl =
+  'https://storage.googleapis.com/' + googleCloudStorageConfig.bucketName;
+
 @Injectable()
 export class FileService {
   async uploadFileToStorage(
@@ -60,7 +63,7 @@ export class FileService {
 
       smallStream.end(smallFileBuffer);
 
-      return `${type}/large/${fileName}`;
+      return `${bucketBaseUrl}/${type}/small/${smallFileName}`;
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -68,13 +71,11 @@ export class FileService {
 
   async getAllSmallImagesFromStorage(storage: Storage): Promise<string[]> {
     try {
-      const bucketName = 'abe_cloud_storage'; // Replace with your bucket name
       const bucket = storage.bucket(googleCloudStorageConfig.bucketName);
-      const smallFilePath = `${bucketName}/image/small/`;
 
-      const [files] = await bucket.getFiles({ prefix: smallFilePath });
+      const [files] = await bucket.getFiles({ prefix: 'image/small/' });
 
-      return files.map((file) => file.name);
+      return files.map((file) => bucketBaseUrl + '/' + file.name);
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }

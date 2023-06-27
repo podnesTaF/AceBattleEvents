@@ -42,6 +42,7 @@ export class FileController {
     const imagePaths = await this.fileService.getAllSmallImagesFromStorage(
       storage,
     );
+
     return { imagePaths };
   }
 }
