@@ -4,6 +4,7 @@ import ImagePicker from "@/components/admin/ImagePicker";
 import SearchField from "@/components/events/SearchField";
 import FormButton from "@/components/shared/FormButton";
 import { useFilter } from "@/hooks/useFilter";
+import { api } from "@/services/api";
 import { useGetSmallImagesQuery } from "@/services/imageService";
 import { addImageSchema } from "@/utils/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -36,7 +37,6 @@ const MediaPage = () => {
   });
 
   const onSubmit = async (dto: any) => {
-    console.log(dto.image);
     try {
       const formData = new FormData();
       formData.append("image", dto.image);
@@ -46,7 +46,9 @@ const MediaPage = () => {
       );
       if (res.status === 201) {
         form.reset();
+        console.log(res.data.imagePath);
         setImages((prev) => [...prev, res.data.imagePath]);
+        api.util.invalidateTags(["Image"]);
       }
     } catch (error) {
       console.log(error);
@@ -112,7 +114,7 @@ const MediaPage = () => {
               >
                 <div className={`w-full h-48 bg-no-repeat bg-cover`}>
                   <Image
-                    src={`http://localhost:4000/${image}`}
+                    src={image}
                     alt="small image"
                     width={200}
                     className="object-contain"
