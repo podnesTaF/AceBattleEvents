@@ -105,7 +105,7 @@ const MediaPage = () => {
             </FormProvider>
           </Collapse>
         </div>
-        <div className="max-w-6xl flex flex-wrap gap-2 mx-2 lg:mx-6 my-6">
+        <div className="max-w-6xl flex flex-wrap gap-4 mx-2 lg:mx-6 my-6">
           {images.length > 0 &&
             images?.map((image: any, i) => (
               <div

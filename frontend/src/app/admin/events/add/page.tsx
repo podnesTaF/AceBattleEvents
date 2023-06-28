@@ -1,5 +1,6 @@
 "use client";
 
+import AddImageDialog from "@/components/admin/AddImageDialog";
 import ImagePicker from "@/components/admin/ImagePicker";
 import FormButton from "@/components/shared/FormButton";
 import FormField from "@/components/shared/FormField";
@@ -11,12 +12,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Button, IconButton } from "@mui/material";
+import axios from "axios";
 import { useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 
 const AddEvent = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [addEvent, { isLoading }] = useAddEventMutation();
+  const [imageDialogOpen, setImageDialogOpen] = useState<boolean>(false);
+  const [minorImageOpen, setMinorImageOpen] = useState<boolean>(false);
 
   const form = useForm({
     mode: "onChange",
@@ -34,29 +38,47 @@ const AddEvent = () => {
   });
 
   const onSubmit = async (dto: any) => {
-    const new_event = new FormData();
-    new_event.append("title", dto.title);
-    new_event.append("startDateTime", dto.startDateTime);
-    new_event.append("endDate", dto.endDate);
-    new_event.append("discipline", dto.discipline);
-    new_event.append("category", dto.category);
+    const location = {
+      country: dto.country,
+      city: dto.city,
+      address: dto.address,
+      zipCode: dto.zipCode,
+    };
 
-    new_event.append(
-      "location",
-      JSON.stringify({
-        country: dto.country,
-        city: dto.city,
-        address: dto.address,
-        zipCode: dto.zipCode,
-      })
-    );
+    const introImageUrl = await uploadImage(dto.introImage);
+    const minorImageUrl = await uploadImage(dto.minorImage);
 
-    new_event.append("prizes", JSON.stringify(dto.prizes));
-    new_event.append("introImage", dto.introImage);
-    new_event.append("minorImage", dto.minorImage);
-
+    console.log(introImageUrl, minorImageUrl);
     try {
-      await addEvent(new_event);
+      await addEvent({
+        title: dto.title,
+        startDateTime: dto.startDateTime,
+        endDate: dto.endDate,
+        location: location,
+        prizes: dto.prizes.map((prize: any) => ({
+          place: prize.place,
+          amount: prize.amount,
+        })),
+        description: "description",
+        introImage: introImageUrl,
+        minorImage: minorImageUrl,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const uploadImage = async (image: any) => {
+    try {
+      const formData = new FormData();
+      formData.append("image", image);
+      const res = await axios.post(
+        "http://localhost:4000/api/v1/images",
+        formData
+      );
+      if (res.status === 201) {
+        return res.data.imagePath;
+      }
     } catch (error) {
       console.log(error);
     }
@@ -232,13 +254,17 @@ const AddEvent = () => {
                     Media
                   </h3>
                   <div className="w-full">
-                    <label
-                      htmlFor="introImage"
-                      className="text-gray uppercase text-xl mb-3"
-                    >
+                    <label className="text-gray uppercase text-xl mb-3">
                       UPLOAD INTRO IMAGE
                     </label>
-                    <ImagePicker name="introImage" />
+                    <button onClick={() => setImageDialogOpen(true)}>
+                      Open image dialog
+                    </button>
+                    <AddImageDialog
+                      isOpen={imageDialogOpen}
+                      handleClose={() => setImageDialogOpen(false)}
+                      name={"introImage"}
+                    />
                   </div>
                   <div className="w-full my-4">
                     <label
@@ -247,6 +273,11 @@ const AddEvent = () => {
                     >
                       UPLOAD MINOR IMAGE
                     </label>
+                    <AddImageDialog
+                      isOpen={minorImageOpen}
+                      handleClose={() => setMinorImageOpen(false)}
+                      name={"minorImage"}
+                    />
                     <ImagePicker name="minorImage" />
                   </div>
                 </>

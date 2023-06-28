@@ -92,8 +92,8 @@ export const addEventSchema = yup.object().shape({
       amount: yup.number().required("Please provide amount"),
     })
   ),
-  introImage: yup.mixed().required("Required"),
-  minorImage: yup.mixed().required("Required"),
+  introImage: yup.string().required("Please provide event intro image"),
+  minorImage: yup.string().required("Please provide event minor image"),
 });
 
 export const addImageSchema = yup.object().shape({
