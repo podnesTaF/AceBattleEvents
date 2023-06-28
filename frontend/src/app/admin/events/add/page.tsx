@@ -1,5 +1,6 @@
 "use client";
 
+import AddImageDialog from "@/components/admin/AddImageDialog";
 import ImagePicker from "@/components/admin/ImagePicker";
 import FormButton from "@/components/shared/FormButton";
 import FormField from "@/components/shared/FormField";
@@ -18,6 +19,8 @@ import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 const AddEvent = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [addEvent, { isLoading }] = useAddEventMutation();
+  const [imageDialogOpen, setImageDialogOpen] = useState<boolean>(false);
+  const [minorImageOpen, setMinorImageOpen] = useState<boolean>(false);
 
   const form = useForm({
     mode: "onChange",
@@ -251,13 +254,17 @@ const AddEvent = () => {
                     Media
                   </h3>
                   <div className="w-full">
-                    <label
-                      htmlFor="introImage"
-                      className="text-gray uppercase text-xl mb-3"
-                    >
+                    <label className="text-gray uppercase text-xl mb-3">
                       UPLOAD INTRO IMAGE
                     </label>
-                    <ImagePicker name="introImage" />
+                    <button onClick={() => setImageDialogOpen(true)}>
+                      Open image dialog
+                    </button>
+                    <AddImageDialog
+                      isOpen={imageDialogOpen}
+                      handleClose={() => setImageDialogOpen(false)}
+                      name={"introImage"}
+                    />
                   </div>
                   <div className="w-full my-4">
                     <label
@@ -266,6 +273,11 @@ const AddEvent = () => {
                     >
                       UPLOAD MINOR IMAGE
                     </label>
+                    <AddImageDialog
+                      isOpen={minorImageOpen}
+                      handleClose={() => setMinorImageOpen(false)}
+                      name={"minorImage"}
+                    />
                     <ImagePicker name="minorImage" />
                   </div>
                 </>

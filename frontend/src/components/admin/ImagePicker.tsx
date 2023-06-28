@@ -4,6 +4,7 @@ import { useFormContext } from "react-hook-form";
 
 interface ImageUploadProps {
   name: string;
+  customSubmit?: Function;
 }
 
 const ImagePicker: React.FC<ImageUploadProps> = ({ name }) => {
