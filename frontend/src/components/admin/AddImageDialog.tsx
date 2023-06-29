@@ -15,11 +15,11 @@ import Image from "next/image";
 import React from "react";
 import { useFormContext } from "react-hook-form";
 import ImagePicker from "./ImagePicker";
-
 interface Props {
   isOpen: boolean;
   handleClose: () => void;
   name: string;
+  setIntroPreview: Function;
 }
 
 const tabs = [
@@ -31,7 +31,12 @@ const tabs = [
   },
 ];
 
-const AddImageDialog: React.FC<Props> = ({ isOpen, handleClose, name }) => {
+const AddImageDialog: React.FC<Props> = ({
+  isOpen,
+  handleClose,
+  name,
+  setIntroPreview,
+}) => {
   const [activeTab, setActiveTab] = React.useState(0);
   const { data: images, isLoading } = useGetSmallImagesQuery();
   const { register, formState, setValue, getValues } = useFormContext();
@@ -41,13 +46,18 @@ const AddImageDialog: React.FC<Props> = ({ isOpen, handleClose, name }) => {
     setActiveTab(newValue);
   };
 
+  console.log(isOpen);
+
   const onPick = (image: string) => {
-    setValue(name, image);
-    setPicked(image);
+    setValue(name, image === picked ? "" : image);
+    setPicked(picked === image ? null : image);
   };
 
-  const getUploadedImage = async (e: any, image: string) => {
-    e.preventDefault();
+  const getUploadedImage = async (
+    image: string,
+    previewUrl: string,
+    imageName: string
+  ) => {
     try {
       const formData = new FormData();
       formData.append("image", image);
@@ -58,14 +68,20 @@ const AddImageDialog: React.FC<Props> = ({ isOpen, handleClose, name }) => {
 
       if ((res.status = 201)) {
         setValue(name, res.data.imagePath);
+        setPicked(res.data.imagePath);
+        setIntroPreview({ url: previewUrl, name: imageName });
+        handleClose();
       }
-    } catch (error) {}
-    setValue(name, image);
-    setPicked(image);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onAdd = () => {
-    setValue(name, getValues(name));
+    setIntroPreview({
+      url: getValues(name),
+      name: getValues(name).split("/")[3],
+    });
     handleClose();
   };
 
@@ -104,23 +120,26 @@ const AddImageDialog: React.FC<Props> = ({ isOpen, handleClose, name }) => {
         </div>
       </TabPanel>
       <TabPanel value={activeTab} index={1}>
-        <div className="flex flex-wrap gap-4">
-          <ImagePicker name={name} />
-        </div>
+        {!picked && (
+          <div className="flex flex-wrap gap-4">
+            <ImagePicker name={name} customSubmit={getUploadedImage} />
+          </div>
+        )}
       </TabPanel>
       <input type="text" className="hidden" {...register(name)} />
       <Divider />
       <div className="flex justify-end items-center gap-4 p-2">
-        <Button onClick={handleClose} size="large">
+        <Button type="button" onClick={handleClose} size="large">
           Cancel
         </Button>
-        <Button
-          disabled={!!formState.errors[name]?.message}
+        <button
+          disabled={!picked}
           onClick={onAdd}
-          size="large"
+          type="button"
+          className="px-4 py-2 bg-red-500 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Add image
-        </Button>
+        </button>
       </div>
     </Dialog>
   );

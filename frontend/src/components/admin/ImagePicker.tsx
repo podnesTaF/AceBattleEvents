@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
@@ -7,7 +8,7 @@ interface ImageUploadProps {
   customSubmit?: Function;
 }
 
-const ImagePicker: React.FC<ImageUploadProps> = ({ name }) => {
+const ImagePicker: React.FC<ImageUploadProps> = ({ name, customSubmit }) => {
   const [previewUrl, setPreviewUrl] = useState<any>("");
   const [isHover, setIsHover] = useState(false);
   const [valid, setValid] = useState(false);
@@ -67,7 +68,9 @@ const ImagePicker: React.FC<ImageUploadProps> = ({ name }) => {
     }
     setImage("");
     setPreviewUrl("");
-    setValue(name, "");
+    if (!customSubmit) {
+      setValue(name, ""); // Set the form value using setValue
+    }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,7 +78,9 @@ const ImagePicker: React.FC<ImageUploadProps> = ({ name }) => {
       const pickedFile = e.target.files[0];
       setImage(pickedFile);
       setValid(true);
-      setValue(name, pickedFile); // Set the form value using setValue
+      if (!customSubmit) {
+        setValue(name, pickedFile); // Set the form value using setValue
+      }
     } else {
       console.log("wrong file type");
       setValid(false);
@@ -139,6 +144,23 @@ const ImagePicker: React.FC<ImageUploadProps> = ({ name }) => {
           Drag and drop photos <span>or click to upload</span>
         </p>
       </div>
+      {customSubmit && (
+        <div className="my-3 z-10">
+          <Button
+            onClick={customSubmit.bind(
+              null,
+              image,
+              previewUrl,
+              image?.orinalname
+            )}
+            type="button"
+            className="ml-auto"
+            variant="outlined"
+          >
+            Upload
+          </Button>
+        </div>
+      )}
     </>
   );
 };
