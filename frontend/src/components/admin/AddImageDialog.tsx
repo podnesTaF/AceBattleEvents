@@ -46,9 +46,11 @@ const AddImageDialog: React.FC<Props> = ({
     setActiveTab(newValue);
   };
 
+  console.log(isOpen);
+
   const onPick = (image: string) => {
-    setValue(name, image);
-    setPicked(image);
+    setValue(name, image === picked ? "" : image);
+    setPicked(picked === image ? null : image);
   };
 
   const getUploadedImage = async (
@@ -80,6 +82,7 @@ const AddImageDialog: React.FC<Props> = ({
       url: getValues(name),
       name: getValues(name).split("/")[3],
     });
+    handleClose();
   };
 
   return (
@@ -129,14 +132,14 @@ const AddImageDialog: React.FC<Props> = ({
         <Button type="button" onClick={handleClose} size="large">
           Cancel
         </Button>
-        <Button
-          disabled={!!formState.errors[name]?.message}
+        <button
+          disabled={!picked}
           onClick={onAdd}
           type="button"
-          size="large"
+          className="px-4 py-2 bg-red-500 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Add image
-        </Button>
+        </button>
       </div>
     </Dialog>
   );

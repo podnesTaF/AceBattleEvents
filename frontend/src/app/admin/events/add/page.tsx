@@ -10,9 +10,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Button, Divider, IconButton } from "@mui/material";
-import axios from "axios";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 
@@ -34,6 +34,8 @@ const AddEvent = () => {
   }>({ url: "", name: "" });
   const [minorImageOpen, setMinorImageOpen] = useState<boolean>(false);
 
+  const router = useRouter();
+
   const form = useForm({
     mode: "onChange",
     resolver: yupResolver(addEventSchema),
@@ -42,7 +44,7 @@ const AddEvent = () => {
     },
   });
 
-  const { control, formState, handleSubmit, watch } = form;
+  const { control, formState, handleSubmit, watch, getValues } = form;
 
   const { append, remove } = useFieldArray({
     control,
@@ -57,10 +59,6 @@ const AddEvent = () => {
       zipCode: dto.zipCode,
     };
 
-    const introImageUrl = await uploadImage(dto.introImage);
-    const minorImageUrl = await uploadImage(dto.minorImage);
-
-    console.log(introImageUrl, minorImageUrl);
     try {
       await addEvent({
         title: dto.title,
@@ -72,25 +70,11 @@ const AddEvent = () => {
           amount: prize.amount,
         })),
         description: "description",
-        introImage: introImageUrl,
-        minorImage: minorImageUrl,
+        introImageUrl: dto.introImage,
+        minorImageUrl: dto.minorImage,
       });
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
-  const uploadImage = async (image: any) => {
-    try {
-      const formData = new FormData();
-      formData.append("image", image);
-      const res = await axios.post(
-        "http://localhost:4000/api/v1/images",
-        formData
-      );
-      if (res.status === 201) {
-        return res.data.imagePath;
-      }
+      router.push("/admin/events");
     } catch (error) {
       console.log(error);
     }
@@ -278,11 +262,13 @@ const AddEvent = () => {
                           Open Storage
                         </button>
                       </div>
-                      {introImagePreview.url ? (
+                      {introImagePreview.url && (
                         <div className="mb-4 flex w-full justify-center gap-4">
-                          <h4 className="text-xl text-gray-500">
-                            {introImagePreview.name}
-                          </h4>
+                          <div>
+                            <h4 className="text-xl text-gray-500">
+                              {introImagePreview.name}
+                            </h4>
+                          </div>
                           <Image
                             src={introImagePreview.url}
                             alt={"intro preview"}
@@ -290,14 +276,13 @@ const AddEvent = () => {
                             height={400}
                           />
                         </div>
-                      ) : (
-                        <AddImageDialog
-                          isOpen={imageDialogOpen}
-                          handleClose={() => setImageDialogOpen(false)}
-                          name={"introImage"}
-                          setIntroPreview={setIntroImagePreview}
-                        />
                       )}
+                      <AddImageDialog
+                        isOpen={imageDialogOpen}
+                        handleClose={() => setImageDialogOpen(false)}
+                        name={"introImage"}
+                        setIntroPreview={setIntroImagePreview}
+                      />
                     </div>
                   </div>
                   <Divider />
@@ -313,7 +298,7 @@ const AddEvent = () => {
                         Open Storage
                       </button>
                     </div>
-                    {minorImagePreview.url ? (
+                    {minorImagePreview.url && (
                       <div className="mb-4 flex w-full justify-center gap-4">
                         <h4 className="text-xl text-gray-500">
                           {minorImagePreview.name}
@@ -325,14 +310,13 @@ const AddEvent = () => {
                           height={400}
                         />
                       </div>
-                    ) : (
-                      <AddImageDialog
-                        isOpen={minorImageOpen}
-                        handleClose={() => setMinorImageOpen(false)}
-                        name={"minorImage"}
-                        setIntroPreview={setMinorImagePreview}
-                      />
                     )}
+                    <AddImageDialog
+                      isOpen={minorImageOpen}
+                      handleClose={() => setMinorImageOpen(false)}
+                      name={"minorImage"}
+                      setIntroPreview={setMinorImagePreview}
+                    />
                   </div>
                 </>
               )}

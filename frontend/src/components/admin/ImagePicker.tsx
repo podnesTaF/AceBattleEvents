@@ -144,14 +144,14 @@ const ImagePicker: React.FC<ImageUploadProps> = ({ name, customSubmit }) => {
           Drag and drop photos <span>or click to upload</span>
         </p>
       </div>
-      {customSubmit && !image && (
-        <div className="my-3">
+      {customSubmit && (
+        <div className="my-3 z-10">
           <Button
             onClick={customSubmit.bind(
               null,
               image,
               previewUrl,
-              image.originalname
+              image?.orinalname
             )}
             type="button"
             className="ml-auto"

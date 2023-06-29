@@ -24,6 +24,7 @@ export const eventApi = api.injectEndpoints({
         method: "POST",
         body,
       }),
+      invalidatesTags: (result) => [{ type: "Event", id: "LIST" }],
     }),
   }),
 });
