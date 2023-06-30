@@ -4,8 +4,10 @@ export type IEvent = {
   id: number;
   title: string;
   description: string;
-  date: string;
-  imageUrl?: string;
+  startDateTime: string;
+  endDateTime: string;
+  introImage?: string;
+  minorImage?: string;
   price: number;
   teamsCount?: number;
   location: ILocation;
@@ -17,12 +19,18 @@ export type IEvent = {
 export type IPrize = {
   id: number;
   place: number;
-  sum: number;
+  amount: number;
 };
 
 export type ILocation = {
   zipCode: string;
   address: string;
-  country: string;
+  country: ICountry;
   city: string;
+};
+
+export type ICountry = {
+  id: number;
+  name: string;
+  code: string;
 };

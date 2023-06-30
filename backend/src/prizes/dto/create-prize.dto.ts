@@ -2,7 +2,7 @@ import { IsNumber, IsOptional } from 'class-validator';
 
 export class CreatePrizeDto {
   @IsNumber()
-  sum: number;
+  amount: number;
 
   @IsNumber()
   place: number;

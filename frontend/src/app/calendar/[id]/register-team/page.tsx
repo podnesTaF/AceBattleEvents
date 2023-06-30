@@ -14,7 +14,7 @@ import { Checkbox, FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 interface RegisterTeamProps {
@@ -37,6 +37,7 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
   const [activeTab, setActiveTab] = useState(0);
 
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleRegisterTeam = async () => {
     if (!session?.user) return;
@@ -107,7 +108,7 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
             <h3 className="text-3xl md:text-4xl font-semibold mt-5 text-center">
               Choose team to register
             </h3>
-            <NoTeams />
+            <NoTeams url={pathname} />
           </div>
         ) : (
           <div className="w-full max-w-6xl mx-auto">
@@ -173,13 +174,13 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
               <div className="flex flex-col sm:flex-row w-full sm:justify-between gap-3 my-3">
                 <p>Date:</p>
                 <p className="font-semibold w-full text-center md:w-auto md:text-start">
-                  {(event && formatDate(event.date)) || "Event Date"}
+                  {(event && formatDate(event.startDateTime)) || "Event Date"}
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row w-full sm:justify-between gap-3 my-3">
                 <p>Location:</p>
                 <p className="font-semibold w-full text-center md:w-auto md:text-start">
-                  {`${event?.location.city}, ${event?.location.country}` ||
+                  {`${event?.location.city}, ${event?.location.country.name}` ||
                     "Event Location"}
                 </p>
               </div>

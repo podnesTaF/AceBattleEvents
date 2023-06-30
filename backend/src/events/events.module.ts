@@ -1,6 +1,8 @@
 import { Storage } from '@google-cloud/storage';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CountryService } from 'src/country/country.service';
+import { Country } from 'src/country/entity/country.entity';
 import { FileService } from 'src/file/file.service';
 import { Location } from 'src/locations/entities/locations.entity';
 import { LocationsService } from 'src/locations/locations.service';
@@ -11,7 +13,7 @@ import { EventsController } from './events.controller';
 import { EventsService } from './events.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Event, Location, PrizeEntity])],
+  imports: [TypeOrmModule.forFeature([Event, Location, PrizeEntity, Country])],
   controllers: [EventsController],
   providers: [
     EventsService,
@@ -19,6 +21,7 @@ import { EventsService } from './events.service';
     PrizesService,
     FileService,
     Storage,
+    CountryService,
   ],
   exports: [EventsService],
 })

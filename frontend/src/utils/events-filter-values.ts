@@ -67,3 +67,9 @@ export const months = {
   November: "November",
   December: "December",
 };
+
+export const teamTypes = {
+  male: "male",
+  female: "female",
+  mixed: "mixed",
+};

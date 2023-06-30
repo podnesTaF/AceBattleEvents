@@ -10,7 +10,7 @@ export class Location {
   address: string;
 
   @Column()
-  postalCode: string;
+  zipCode: string;
 
   @Column()
   city: string;

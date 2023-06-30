@@ -43,6 +43,8 @@ export class TeamsService {
       name: dto.name,
       club: dto.club,
       city: dto.city,
+      gender: dto.gender,
+      country,
       coach,
       players,
       manager,
@@ -106,7 +108,10 @@ export class TeamsService {
     });
 
     const removeUnnecessary = (event: Event) => {
-      const totalPrize = event.prizes.reduce((acc, curr) => acc + curr.sum, 0);
+      const totalPrize = event.prizes.reduce(
+        (acc, curr) => acc + curr.amount,
+        0,
+      );
       delete event.prizes;
       delete event.teams;
 

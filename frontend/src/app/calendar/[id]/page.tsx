@@ -6,6 +6,7 @@ import {
   transformAddress,
   transformIntoTeamsTable,
 } from "@/utils/transform-data";
+import { Divider } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
@@ -101,7 +102,7 @@ const EventDetails: React.FC<Props> = ({ params }) => {
                   <p className="text-xl font-semibold">Country:</p>
                   {isLoading && <Skeleton variant="text" width={100} />}
                   <p className="text-xl font-light">
-                    {event?.location.country}
+                    {event?.location.country.name}
                   </p>
                 </div>
                 <div className="flex justify-between">
@@ -122,7 +123,7 @@ const EventDetails: React.FC<Props> = ({ params }) => {
                   <p className="text-xl font-semibold">Date:</p>
                   <p className="text-xl font-light">
                     {isLoading && <Skeleton variant="text" width={100} />}
-                    {event && formatDate(event.date)}
+                    {event && formatDate(event.startDateTime)}
                   </p>
                 </div>
               </div>
@@ -183,7 +184,7 @@ const EventDetails: React.FC<Props> = ({ params }) => {
                     </div>
                     <div className="w-3/4">
                       <p className="text-2xl uppercase text-center">
-                        {prize.sum} $
+                        {prize.amount} $
                       </p>
                     </div>
                   </div>
@@ -191,13 +192,20 @@ const EventDetails: React.FC<Props> = ({ params }) => {
               </div>
             </div>
           </div>
-          <div className="w-full my-10">
+          <div className="w-full my-10 mx-4 xl:mx-0">
             <h2 className="text-4xl my-3 font-semibold">Registered Teams</h2>
-            {event && (
+            {event?.teams.length ? (
               <CustomTable
                 rows={transformIntoTeamsTable(event?.teams)}
                 isLoading={false}
               />
+            ) : (
+              <>
+                <p className="text-2xl text-center">
+                  There are no registered teams yet
+                </p>
+                <Divider />
+              </>
             )}
             {isLoading && <TableSkeleton />}
           </div>

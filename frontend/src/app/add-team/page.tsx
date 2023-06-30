@@ -5,7 +5,7 @@ import FormField from "@/components/shared/FormField";
 import FormRadio from "@/components/shared/FormRadio";
 import FormSelect from "@/components/shared/FormSelect";
 import { useAddTeamMutation } from "@/services/teamService";
-import { countries } from "@/utils/events-filter-values";
+import { countries, teamTypes } from "@/utils/events-filter-values";
 import { AddTeamSchema } from "@/utils/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
@@ -13,6 +13,7 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Button, IconButton } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import FormLayout from "./FormLayout";
@@ -24,6 +25,7 @@ const AddTeam = () => {
   }>({
     [Date.now() + ""]: [{ distance: "", time: "", id: Date.now() }],
   });
+  const router = useRouter();
 
   const form = useForm({
     mode: "onChange",
@@ -97,25 +99,32 @@ const AddTeam = () => {
   }, [data]);
 
   const onSubmit = async (dto: any) => {
-    await addTeam({
-      name: dto.name,
-      club: dto.club,
-      country: dto.country,
-      city: dto.city,
-      coach: {
-        name: dto.coachName,
-        surname: dto.coachSurname,
-      },
-      players: dto.players.map((player: any) => ({
-        name: player.name,
-        surname: player.surname,
-        dateOfBirth: player.dateOfBirth,
-        personalBests: player.personalBests.map((pb: any) => ({
-          distance: pb.distance,
-          timeInSeconds: pb.time,
+    try {
+      await addTeam({
+        name: dto.name,
+        club: dto.club,
+        country: dto.country,
+        city: dto.city,
+        coach: {
+          name: dto.coachName,
+          surname: dto.coachSurname,
+        },
+        gender: dto.type,
+        players: dto.players.map((player: any) => ({
+          name: player.name,
+          surname: player.surname,
+          dateOfBirth: player.dateOfBirth,
+          personalBests: player.personalBests.map((pb: any) => ({
+            distance: pb.distance,
+            timeInSeconds: pb.time,
+          })),
         })),
-      })),
-    });
+      });
+
+      router.back();
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <>
@@ -157,6 +166,15 @@ const AddTeam = () => {
                   label="City*"
                   name={"city"}
                   placeholder={"Enter club here..."}
+                />
+              </div>
+              <div className="w-full md:w-2/5">
+                <FormSelect
+                  name={"type"}
+                  label={"Team Type*"}
+                  placeholder={"Choose Gender"}
+                  values={Object.entries(teamTypes)}
+                  onChangeFilter={() => {}}
                 />
               </div>
             </FormLayout>
@@ -321,7 +339,6 @@ const AddTeam = () => {
                                   time: "",
                                   id: Date.now(),
                                 });
-
                                 appendPb(field.id);
                               }}
                             >
