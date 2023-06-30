@@ -31,6 +31,7 @@ export const AddTeamSchema = yup.object().shape({
   city: yup.string().required("Please provide team city"),
   country: yup.string().required("Please provide team country"),
   club: yup.string(),
+  type: yup.string().required("Please provide team type"),
   coachName: yup.string().required("Please provide coach name"),
   coachSurname: yup.string().required("Please provide coach surname"),
   coachGender: yup.string().required("Please provide coach gender"),

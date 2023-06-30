@@ -4,6 +4,7 @@ import { IUser } from "./IUser";
 export type ITeam = {
   id: number;
   name: string;
+  gender: string;
   country: string;
   city: string;
   membersCount: number;
@@ -20,6 +21,7 @@ export type CreateTeam = {
   city: string;
   club: string;
   coachName: string;
+  gender: string;
   coachSurname: string;
   coachGender: string;
   players: IPlayer[];
@@ -30,6 +32,7 @@ export type ReqTeam = {
   country: string;
   city: string;
   club: string;
+  gender: string;
   coach: {
     surname: string;
     name: string;
