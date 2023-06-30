@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Country } from 'src/country/entity/country.entity';
 import { Repository } from 'typeorm';
 import { CreateLocationDto } from './dto/create-location.dto';
 import { Location } from './entities/locations.entity';
@@ -11,8 +12,8 @@ export class LocationsService {
     private repository: Repository<Location>,
   ) {}
 
-  create(dto: CreateLocationDto) {
-    return this.repository.save({ ...dto });
+  create(dto: CreateLocationDto, country: Country) {
+    return this.repository.save({ ...dto, country });
   }
 
   findLocation(eventId: number) {

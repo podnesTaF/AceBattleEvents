@@ -65,6 +65,7 @@ export class FileService {
 
       return `${bucketBaseUrl}/${type}/small/${smallFileName}`;
     } catch (e) {
+      console.log(e);
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
@@ -86,7 +87,6 @@ export class FileService {
     storage: Storage,
   ): Promise<boolean> {
     try {
-      // Replace with your bucket name
       const bucket = storage.bucket(googleCloudStorageConfig.bucketName);
       const file = bucket.file(imagePath);
 

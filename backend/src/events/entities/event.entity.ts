@@ -23,7 +23,10 @@ export class Event {
   description: string;
 
   @Column()
-  date: Date;
+  startDateTime: Date;
+
+  @Column()
+  endDate: Date;
 
   @Column({ nullable: true })
   introImageUrl: string;

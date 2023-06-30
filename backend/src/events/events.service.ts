@@ -1,7 +1,7 @@
 import { Storage } from '@google-cloud/storage';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FileService, FileType } from 'src/file/file.service';
+import { CountryService } from 'src/country/country.service';
 import { LocationsService } from 'src/locations/locations.service';
 import { PrizesService } from 'src/prizes/prizes.service';
 import { Repository } from 'typeorm';
@@ -15,37 +15,21 @@ export class EventsService {
     private repository: Repository<Event>,
     private locationsService: LocationsService,
     private prizeService: PrizesService,
-    private fileService: FileService,
+    private countriesService: CountryService,
   ) {}
 
-  async create(
-    eventDto: CreateEventDto,
-    introImage: any,
-    minorImage: any,
-    storage: Storage,
-  ) {
-    let introImageUrl: string;
-    let minorImageUrl: string;
-    if (introImage) {
-      introImageUrl = await this.fileService.uploadFileToStorage(
-        FileType.IMAGE,
-        introImage,
-        storage,
-      );
-    } else {
-      introImageUrl = null;
-    }
-    if (minorImage) {
-      minorImageUrl = await this.fileService.uploadFileToStorage(
-        FileType.IMAGE,
-        minorImage,
-        storage,
-      );
-    } else {
-      minorImageUrl = null;
-    }
+  async create(eventDto: CreateEventDto, storage: Storage) {
+    let country = await this.countriesService.returnIfExist({
+      name: eventDto.location.country,
+    });
 
-    const location = await this.locationsService.create(eventDto.location);
+    if (!country) {
+      country = await this.countriesService.create(eventDto.location.country);
+    }
+    const location = await this.locationsService.create(
+      eventDto.location,
+      country,
+    );
 
     const prizes = [];
 
@@ -55,14 +39,22 @@ export class EventsService {
       prizes.push(createdPrize);
     }
 
-    const { title, description, date } = eventDto;
+    const {
+      title,
+      description,
+      startDateTime,
+      endDate,
+      introImageUrl,
+      minorImageUrl,
+    } = eventDto;
 
     return this.repository.save({
       title,
       description,
-      date: new Date(date),
-      introImageUrl,
-      minorImageUrl,
+      startDateTime: new Date(startDateTime),
+      endDate: new Date(endDate),
+      introImageUrl: introImageUrl || null,
+      minorImageUrl: minorImageUrl || null,
       location,
       prizes,
     });
@@ -111,7 +103,7 @@ export class EventsService {
     const events = await qb.getMany();
 
     const resEvents = events.map((ev) => {
-      const totalPrize = ev.prizes.reduce((acc, curr) => acc + curr.sum, 0);
+      const totalPrize = ev.prizes.reduce((acc, curr) => acc + curr.amount, 0);
 
       delete ev.prizes;
 
@@ -129,6 +121,7 @@ export class EventsService {
       where: { id },
       relations: [
         'location',
+        'location.country',
         'teams',
         'teams.coach',
         'prizes',

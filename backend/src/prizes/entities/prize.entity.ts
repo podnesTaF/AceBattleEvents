@@ -10,7 +10,7 @@ export class PrizeEntity {
   place: number;
 
   @Column()
-  sum: number;
+  amount: number;
 
   @ManyToOne(() => Event, (event) => event.prizes)
   event: Event;
