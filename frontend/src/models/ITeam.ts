@@ -1,11 +1,11 @@
-import { IEvent } from "./IEvent";
+import { ICountry, IEvent } from "./IEvent";
 import { IUser } from "./IUser";
 
 export type ITeam = {
   id: number;
   name: string;
   gender: string;
-  country: string;
+  country: ICountry;
   city: string;
   membersCount: number;
   manager: IUser;
