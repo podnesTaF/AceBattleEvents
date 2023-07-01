@@ -7,18 +7,25 @@ import Pagination from "@/components/shared/Pagination";
 import { useFilter } from "@/hooks/useFilter";
 import { useFetchAllTeamsQuery } from "@/services/teamService";
 import { countries } from "@/utils/events-filter-values";
+import { getParamsFromFilters } from "@/utils/transform-data";
 import EditIcon from "@mui/icons-material/Edit";
 import { useEffect, useState } from "react";
 
 const TeamsPage = () => {
   const { filters, searchValue, onChangeFilter, setSearchValue } = useFilter();
-  const { data, isLoading, error } = useFetchAllTeamsQuery();
   const [teamsRows, setTeamsRows] = useState<any>([]);
   const [currPage, setCurrPage] = useState<number>(1);
+  const [pagesCount, setPagesCount] = useState<number>(1);
+
+  const { data, isLoading, error } = useFetchAllTeamsQuery({
+    params: getParamsFromFilters(filters),
+    page: currPage,
+  });
 
   useEffect(() => {
     if (data) {
-      const formattedTeams: any = data.map((team) => ({
+      setPagesCount(data.totalPages);
+      const formattedTeams: any = data.teams.map((team) => ({
         name: team.name,
         country: team.country.name,
         members: team.membersCount || 0,
@@ -70,7 +77,7 @@ const TeamsPage = () => {
               <Pagination
                 onChangePage={setCurrPage}
                 currPage={currPage}
-                pagesCount={1}
+                pagesCount={pagesCount}
               />
             </div>
           </div>

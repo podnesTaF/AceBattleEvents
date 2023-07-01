@@ -7,15 +7,20 @@ import Pagination from "@/components/shared/Pagination";
 import { useFilter } from "@/hooks/useFilter";
 import { useGetAllPlayersQuery } from "@/services/playerService";
 import { genders } from "@/utils/events-filter-values";
+import { getParamsFromFilters } from "@/utils/transform-data";
 import { useEffect, useState } from "react";
 
 const PlayersPage = () => {
   const { filters, searchValue, onChangeFilter, setSearchValue } = useFilter();
   const [currPage, setCurrPage] = useState<number>(1);
+  const [pagesCount, setPagesCount] = useState<number>(1);
 
   const [playersRows, setPlayersRows] = useState<any>([]);
 
-  const { data, isLoading, error } = useGetAllPlayersQuery();
+  const { data, isLoading, error } = useGetAllPlayersQuery({
+    params: getParamsFromFilters(filters),
+    page: currPage,
+  });
 
   const onChangeInput = (newValue: string) => {
     setSearchValue(newValue);
@@ -24,8 +29,9 @@ const PlayersPage = () => {
 
   useEffect(() => {
     if (data) {
+      setPagesCount(data.totalPages);
       setPlayersRows(
-        data.map((player) => ({
+        data.players.map((player) => ({
           name: player.name,
           surname: player.surname,
           DOB: player.dateOfBirth,
@@ -66,7 +72,7 @@ const PlayersPage = () => {
               <Pagination
                 onChangePage={setCurrPage}
                 currPage={currPage}
-                pagesCount={1}
+                pagesCount={pagesCount}
               />
             </div>
           </div>
