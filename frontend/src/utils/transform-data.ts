@@ -4,8 +4,8 @@ import { ITransaction } from "@/models/IUser";
 
 export const transformIntoEventsTable = (data: IEvent[]) => {
   return data.map((event) => {
-    const { title, date, location, id, teamsCount } = event;
-    const formated = new Date(date);
+    const { title, startDateTime, location, id, teamsCount } = event;
+    const formated = new Date(startDateTime);
     const formattedDate = formated.toLocaleDateString("en-GB", {
       day: "2-digit",
       month: "2-digit",
@@ -30,10 +30,28 @@ export const transformIntoTeamsTable = (data: ITeam[]) => {
 
     return {
       name,
-      country,
-      members: membersCount,
-      club,
+      country: country.name,
+      members: membersCount || 0,
+      club: club || "no club",
       coach: coach.name + " " + coach.surname,
+    };
+  });
+};
+
+export const expendForAdminTeamsTable = (data: ITeam[]) => {
+  return data.map((team) => {
+    const { name, country, membersCount, club, coach, id } = team;
+
+    return {
+      id,
+      name,
+      country: country.name,
+      members: membersCount || 0,
+      coach: coach.name + " " + coach.surname,
+      details: {
+        link: "/team/" + id,
+        value: "details",
+      },
     };
   });
 };

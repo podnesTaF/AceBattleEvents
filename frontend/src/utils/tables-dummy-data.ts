@@ -344,3 +344,51 @@ export const eventRows = [
     },
   },
 ];
+
+export const teamRows = [
+  {
+    name: "Mice Team",
+    coach: "Alex Boussard",
+    createdAt: "23/06/2023",
+    linkToPage: {
+      link: "/",
+      value: "team page",
+    },
+  },
+  {
+    name: "Mice Team",
+    coach: "Alex Boussard",
+    createdAt: "23/06/2023",
+    linkToPage: {
+      link: "/",
+      value: "team page",
+    },
+  },
+  {
+    name: "Mice Team",
+    coach: "Alex Boussard",
+    createdAt: "23/06/2023",
+    linkToPage: {
+      link: "/",
+      value: "team page",
+    },
+  },
+  {
+    name: "Mice Team",
+    coach: "Alex Boussard",
+    createdAt: "23/06/2023",
+    linkToPage: {
+      link: "/",
+      value: "team page",
+    },
+  },
+  {
+    name: "Mice Team",
+    coach: "Alex Boussard",
+    createdAt: "23/06/2023",
+    linkToPage: {
+      link: "/",
+      value: "team page",
+    },
+  },
+];

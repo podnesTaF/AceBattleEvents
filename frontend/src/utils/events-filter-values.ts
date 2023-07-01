@@ -73,3 +73,8 @@ export const teamTypes = {
   female: "female",
   mixed: "mixed",
 };
+
+export const genders = {
+  male: "male",
+  female: "female",
+};

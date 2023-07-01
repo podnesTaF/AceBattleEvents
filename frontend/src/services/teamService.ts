@@ -10,6 +10,12 @@ export const teamApi = api.injectEndpoints({
         body,
       }),
     }),
+    fetchAllTeams: builder.query<
+      { teams: ITeam[]; totalPages: number },
+      { params: string; page: number }
+    >({
+      query: ({ params, page }) => `/teams?${params}&page=${page}}`,
+    }),
     fetchTeamsByUserId: builder.query<ITeam[], void>({
       query: () => `/teams?user=true`,
     }),
@@ -40,4 +46,5 @@ export const {
   useFetchTeamsByUserIdQuery,
   useRegiterTeamMutation,
   useGetRegistrationsQuery,
+  useFetchAllTeamsQuery,
 } = teamApi;

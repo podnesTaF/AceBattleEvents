@@ -5,29 +5,47 @@ import SearchField from "@/components/events/SearchField";
 import CustomTable from "@/components/shared/CustomTable";
 import Pagination from "@/components/shared/Pagination";
 import { useFilter } from "@/hooks/useFilter";
+import { useFetchEventsQuery } from "@/services/eventService";
 import { countries, years } from "@/utils/events-filter-values";
-import { eventRows as initRows } from "@/utils/tables-dummy-data";
+import { getParamsFromFilters } from "@/utils/transform-data";
 import EditIcon from "@mui/icons-material/Edit";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const AllEvents = () => {
-  const { filters, searchValue, onChangeFilter, setSearchValue } = useFilter();
-  const [eventsRows, setEventsRows] = useState<any>(
-    initRows.map((row) => ({
-      ...row,
-      edit: {
-        link: "/admin/events/edit",
-        value: <EditIcon />,
-      },
-    }))
-  );
+  const [eventsRows, setEventsRows] = useState<any>([]);
   const [currPage, setCurrPage] = useState<number>(1);
+  const [pagesCount, setPageCount] = useState(1);
+
+  const { filters, searchValue, onChangeFilter, setSearchValue } = useFilter();
+  const { data, isLoading, error } = useFetchEventsQuery({
+    params: getParamsFromFilters(filters),
+    currPage,
+  });
 
   const onChangeInput = (newValue: string) => {
     setSearchValue(newValue);
     onChangeFilter("name", newValue);
   };
 
+  useEffect(() => {
+    if (data) {
+      const eventsRowsFormatted = data.events.map((event) => ({
+        title: event.title,
+        country: event.location.country.name,
+        date: event.startDateTime,
+        "event page": {
+          link: `/calendar/${event.id}`,
+          value: "Event Page",
+        },
+        edit: {
+          link: `/admin/events/${event.id}`,
+          value: <EditIcon />,
+        },
+      }));
+      setEventsRows(eventsRowsFormatted);
+      setPageCount(data.totalPages);
+    }
+  }, [data]);
   return (
     <>
       <div className="w-full flex flex-col gap-3 sm:flex-row justify-between items-center bg-[#1E1C1F] p-4">
@@ -54,12 +72,16 @@ const AllEvents = () => {
           />
         </div>
         <div className="max-w-6xl mb-4">
-          <CustomTable rows={eventsRows} isLoading={false} />
+          {isLoading ? (
+            <CustomTable rows={[]} isLoading={true} />
+          ) : (
+            <CustomTable rows={eventsRows} isLoading={false} />
+          )}
           <div className="flex mx-auto my-4">
             <Pagination
               onChangePage={setCurrPage}
               currPage={currPage}
-              pagesCount={1}
+              pagesCount={pagesCount}
             />
           </div>
         </div>

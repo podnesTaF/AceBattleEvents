@@ -1,3 +1,4 @@
+import { Country } from 'src/country/entity/country.entity';
 import { PersonalBest } from 'src/personal-bests/entities/personal-best.entity';
 import { Team } from 'src/teams/entities/team.entity';
 import {
@@ -21,6 +22,12 @@ export class PlayerEntity {
 
   @Column()
   dateOfBirth: Date;
+
+  @Column()
+  gender: string;
+
+  @ManyToOne(() => Country, (country) => country.players)
+  country: Country;
 
   @ManyToOne(() => Team, (team) => team.players)
   team: Team;
