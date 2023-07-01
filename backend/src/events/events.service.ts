@@ -67,6 +67,7 @@ export class EventsService {
     const qb = this.repository
       .createQueryBuilder('event')
       .leftJoinAndSelect('event.location', 'location')
+      .leftJoinAndSelect('location.country', 'country')
       .leftJoin('event.teams', 'team')
       .loadRelationCountAndMap('event.teamsCount', 'event.teams')
       .leftJoinAndSelect('event.prizes', 'prize');
@@ -123,6 +124,7 @@ export class EventsService {
         'location',
         'location.country',
         'teams',
+        'teams.country',
         'teams.coach',
         'prizes',
         'teams.players',

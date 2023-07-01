@@ -76,16 +76,50 @@ export class TeamsService {
     await this.eventRepository.save(event);
   }
 
-  findAll(user?: string, userId?: number) {
-    if (user) {
-      return this.repository.find({
-        where: { manager: { id: userId } },
-        relations: ['players', 'players.personalBests', 'coach', 'events'],
-      });
+  async findAll(queries: any, userId?: number) {
+    const page = +queries.page || 1; // Default to page 1 if not provided
+    const limit = +queries.limit || 5;
+
+    const qb = this.repository
+      .createQueryBuilder('team')
+      .leftJoinAndSelect('team.country', 'country')
+      .leftJoinAndSelect('team.coach', 'coach')
+      .leftJoinAndSelect('team.players', 'players')
+      .leftJoinAndSelect('players.personalBests', 'personalBests')
+      .leftJoinAndSelect('team.events', 'events');
+
+    if (queries.user) {
+      qb.where('team.managerId = :id', { id: userId });
+
+      return qb.getMany();
     }
-    return this.repository.find({
-      relations: ['players', 'players.personalBests'],
-    });
+
+    if (queries.country) {
+      qb.where('country.name = :name', { name: queries.country });
+    }
+
+    if (queries.gender) {
+      qb.andWhere('team.gender = :gender', { gender: queries.gender });
+    }
+
+    if (queries.name) {
+      qb.andWhere('team.gender = :name', { name: queries.name });
+    }
+
+    const totalItems = await qb.getCount();
+
+    const totalPages = Math.ceil(totalItems / limit);
+
+    qb.skip((page - 1) * limit).take(limit);
+
+    const teams = await qb.getMany();
+
+    console.log(teams);
+
+    return {
+      teams,
+      totalPages,
+    };
   }
 
   async getRegistrations(

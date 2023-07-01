@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { PlayersService } from './players.service';
 
@@ -12,8 +12,17 @@ export class PlayersController {
   }
 
   @Get()
-  findAll() {
-    return this.playersService.findAll();
+  findAll(
+    @Query()
+    queries: {
+      gender?: string;
+      name?: string;
+      country?: string;
+      page?: number;
+      limit?: number;
+    },
+  ) {
+    return this.playersService.findAll(queries);
   }
 
   @Get(':id')

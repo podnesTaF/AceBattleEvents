@@ -38,8 +38,38 @@ export class PlayersService {
     });
   }
 
-  findAll() {
-    return `This action returns all players`;
+  async findAll(query: any) {
+    const page = +query.page || 1; // Default to page 1 if not provided
+    const limit = +query.limit || 5;
+
+    const qb = this.repository
+      .createQueryBuilder('player')
+      .leftJoinAndSelect('player.country', 'country');
+
+    if (query.country) {
+      qb.where('country.name = :country', { country: query.country });
+    }
+
+    if (query.name) {
+      qb.andWhere('player.name like :name', { name: `%${query.name}%` });
+    }
+
+    if (query.gender) {
+      qb.andWhere('player.gender = :gender', { gender: query.gender });
+    }
+
+    const totalItems = await qb.getCount();
+
+    const totalPages = Math.ceil(totalItems / limit);
+
+    qb.skip((page - 1) * limit).take(limit);
+
+    const players = await qb.getMany();
+
+    return {
+      players,
+      totalPages,
+    };
   }
 
   findOne(id: number) {
