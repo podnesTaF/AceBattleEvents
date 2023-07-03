@@ -37,7 +37,7 @@ const CustomTable: React.FC<CustomTableProps> = ({ rows, isLoading }) => {
                     return (
                       <td key={i} className="px-6 py-4">
                         <Link
-                          href={r[t].link}
+                          href={r[t].link || "/error"}
                           className="font-medium text-gray-400 dark:text-blue-500 hover:underline cursor-pointer"
                         >
                           {r[t].value}

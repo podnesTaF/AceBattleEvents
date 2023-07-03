@@ -3,6 +3,7 @@
 import { IEvent } from "@/models/IEvent";
 import { ITeam } from "@/models/ITeam";
 import { formatDate, isPassed } from "@/utils/date-formater";
+import { getGoogleMapsLink } from "@/utils/link-helpers";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -49,13 +50,17 @@ const EventCard: React.FC<EventCardProps> = ({
               <div>
                 <h3 className="uppercase text-xl">Location:</h3>
                 <h4 className="uppercase text-lg underline">
-                  {event.location?.city}, {event.location?.country}{" "}
+                  <a href={getGoogleMapsLink(event.location)} target="_blank">
+                    {event.location?.city}, {event.location?.country.name}{" "}
+                  </a>
                   <FmdGoodIcon />
                 </h4>
               </div>
               <div>
                 <h3 className="uppercase text-xl">Date:</h3>
-                <h4 className="uppercase text-lg">{formatDate(event.date)}</h4>
+                <h4 className="uppercase text-lg">
+                  {formatDate(event.startDateTime)}
+                </h4>
               </div>
               <div>
                 <h3 className="uppercase text-xl">teams:</h3>
@@ -76,16 +81,18 @@ const EventCard: React.FC<EventCardProps> = ({
             </div>
           </div>
           <div className="w-full flex justify-around my-4 gap-3">
-            {!isYourRegister && !isPassed(event.date) && session?.user && (
-              <button
-                onClick={() =>
-                  router.push(`/calendar/${event.id}/register-team`)
-                }
-                className="p-4 bg-red-500 text-lg sm:text-xl uppercase text-white rounded hover:bg-red-700 drop-shadow-lg active:scale-95"
-              >
-                Register your team
-              </button>
-            )}
+            {!isYourRegister &&
+              !isPassed(event.startDateTime) &&
+              session?.user && (
+                <button
+                  onClick={() =>
+                    router.push(`/calendar/${event.id}/register-team`)
+                  }
+                  className="p-4 bg-red-500 text-lg sm:text-xl uppercase text-white rounded hover:bg-red-700 drop-shadow-lg active:scale-95"
+                >
+                  Register your team
+                </button>
+              )}
             <button
               onClick={() => router.push("/calendar/" + event.id)}
               className="p-4 border-[1px] border-red-500 text-lg sm:text-xl uppercase rounded hover:bg-gray-100 drop-shadow-lg active:scale-95"
