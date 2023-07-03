@@ -34,6 +34,10 @@ export const transformIntoTeamsTable = (data: ITeam[]) => {
       members: membersCount || 0,
       club: club || "no club",
       coach: coach.name + " " + coach.surname,
+      details: {
+        link: "/team/" + team.id,
+        value: "details",
+      },
     };
   });
 };

@@ -135,6 +135,7 @@ export class TeamsService {
         'events',
         'events.teams',
         'events.location',
+        'events.location.country',
         'events.prizes',
         'coach',
       ],

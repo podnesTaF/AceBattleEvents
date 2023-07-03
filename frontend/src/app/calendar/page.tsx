@@ -58,6 +58,10 @@ const CalendarPage = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    console.log(eventsRows);
+  }, [eventsRows]);
+
   return (
     <>
       <header className="w-full flex justify-center items-center h-48 sm:h-56 bg-[url('/main-intro-sm.jpg')] md:bg-[url('/main-intro.jpg')] bg-fixed bg-cover bg-no-repeat bg-top relative flex-col ">

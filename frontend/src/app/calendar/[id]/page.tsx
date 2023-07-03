@@ -2,6 +2,7 @@
 import TableSkeleton from "@/components/shared/TableSkeleton";
 import { useFetchEventQuery } from "@/services/eventService";
 import { formatDate } from "@/utils/date-formater";
+import { getGoogleMapsLink } from "@/utils/link-helpers";
 import {
   transformAddress,
   transformIntoTeamsTable,
@@ -115,9 +116,18 @@ const EventDetails: React.FC<Props> = ({ params }) => {
                 <div className="flex flex-col">
                   <p className="text-xl font-semibold">Address:</p>
                   {isLoading && <Skeleton variant="text" width={100} />}
-                  <p className="text-xl font-light underline">
-                    {event?.location.address + ", " + event?.location.zipCode}
-                  </p>
+                  {event?.location && (
+                    <p className="text-xl font-light underline">
+                      <a
+                        href={getGoogleMapsLink(event?.location)}
+                        target="_blank"
+                      >
+                        {event?.location.address +
+                          ", " +
+                          event?.location.zipCode}
+                      </a>
+                    </p>
+                  )}
                 </div>
                 <div className="flex justify-between">
                   <p className="text-xl font-semibold">Date:</p>

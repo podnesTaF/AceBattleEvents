@@ -75,13 +75,15 @@ export class EventsService {
     if (query.month) {
       const month = query.month.toLowerCase();
       const monthIndex = new Date(`${month} 1, 2000`).getMonth() + 1; // Get the month index (1-12)
-      qb.where('EXTRACT(MONTH FROM event.date) = :monthIndex', { monthIndex });
+      qb.where('EXTRACT(MONTH FROM event.startDateTime) = :monthIndex', {
+        monthIndex,
+      });
     }
 
     if (query.year) {
       const year = +query.year;
       if (!isNaN(year)) {
-        qb.andWhere('YEAR(event.date) = :year', { year });
+        qb.andWhere('YEAR(event.startDateTime) = :year', { year });
       }
     }
 
@@ -90,7 +92,7 @@ export class EventsService {
     }
 
     if (query.country) {
-      qb.andWhere('location.country LIKE :country', {
+      qb.andWhere('country.name LIKE :country', {
         country: `%${query.country}%`,
       });
     }
