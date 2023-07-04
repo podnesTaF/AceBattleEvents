@@ -1,5 +1,6 @@
 "use client";
 
+import AddPlayerInfo from "@/components/shared/AddPlayerInfo";
 import FormButton from "@/components/shared/FormButton";
 import FormField from "@/components/shared/FormField";
 import FormRadio from "@/components/shared/FormRadio";
@@ -223,7 +224,18 @@ const AddTeam = () => {
                       </IconButton>
                     </div>
                     <div className="flex flex-col md:flex-row flex-wrap gap-3 mb-3 justify-around">
-                      <div className="w-full md:w-2/5">
+                      <AddPlayerInfo
+                        name={`players[${index}]`}
+                        errorState={
+                          formState?.errors?.players &&
+                          formState?.errors?.players[index]
+                        }
+                        errorInstance={
+                          formState?.errors?.players &&
+                          formState?.errors?.players[index]
+                        }
+                      />
+                      {/* <div className="w-full md:w-2/5">
                         <FormField
                           label="First name*"
                           name={`players[${index}].name`}
@@ -287,7 +299,7 @@ const AddTeam = () => {
                               }
                             </p>
                           )}
-                      </div>
+                      </div> */}
                       <div className="my-3 w-full">
                         <h3 className="font-semibold text-2xl mb-3">
                           Personal Bests

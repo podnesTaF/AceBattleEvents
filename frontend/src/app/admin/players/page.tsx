@@ -1,5 +1,6 @@
 "use client";
 
+import AddPlayerForm from "@/components/admin/AddPlayerForm";
 import AdminHeader from "@/components/admin/AdminHeader";
 import FilterSelect from "@/components/events/FilterSelect";
 import CustomTable from "@/components/shared/CustomTable";
@@ -14,6 +15,7 @@ const PlayersPage = () => {
   const { filters, searchValue, onChangeFilter, setSearchValue } = useFilter();
   const [currPage, setCurrPage] = useState<number>(1);
   const [pagesCount, setPagesCount] = useState<number>(1);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const [playersRows, setPlayersRows] = useState<any>([]);
 
@@ -57,6 +59,7 @@ const PlayersPage = () => {
         onChangeInput={onChangeInput}
       >
         <div className="my-4 lg:my-6 mx-2 lg:mx-6">
+          <AddPlayerForm isOpen={true} onClose={() => setIsOpen(false)} />
           <div className="flex gap-4 max-w-xl mb-4 flex-col sm:flex-row">
             <FilterSelect
               onChangeFilter={onChangeFilter}
