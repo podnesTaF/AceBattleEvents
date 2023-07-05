@@ -9,13 +9,14 @@ import { useFilter } from "@/hooks/useFilter";
 import { useGetAllPlayersQuery } from "@/services/playerService";
 import { genders } from "@/utils/events-filter-values";
 import { getParamsFromFilters } from "@/utils/transform-data";
+import { Collapse } from "@mui/material";
 import { useEffect, useState } from "react";
 
 const PlayersPage = () => {
   const { filters, searchValue, onChangeFilter, setSearchValue } = useFilter();
   const [currPage, setCurrPage] = useState<number>(1);
   const [pagesCount, setPagesCount] = useState<number>(1);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isCreatePlayerOpen, setIsCreatePlayerOpen] = useState<boolean>(false);
 
   const [playersRows, setPlayersRows] = useState<any>([]);
 
@@ -59,7 +60,18 @@ const PlayersPage = () => {
         onChangeInput={onChangeInput}
       >
         <div className="my-4 lg:my-6 mx-2 lg:mx-6">
-          <AddPlayerForm isOpen={true} onClose={() => setIsOpen(false)} />
+          <button
+            onClick={() => setIsCreatePlayerOpen((prev) => !prev)}
+            className="rounded-md px-4 py-2 bg-red-600 text-white text-xl mb-4"
+          >
+            Create Player
+          </button>
+          <Collapse in={isCreatePlayerOpen}>
+            <AddPlayerForm
+              isOpen={isCreatePlayerOpen}
+              onClose={() => setIsCreatePlayerOpen(false)}
+            />
+          </Collapse>
           <div className="flex gap-4 max-w-xl mb-4 flex-col sm:flex-row">
             <FilterSelect
               onChangeFilter={onChangeFilter}

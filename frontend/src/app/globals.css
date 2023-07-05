@@ -14,7 +14,7 @@ html {
 
 @media screen and (min-width: 640px) {
   .h-calc-screen {
-    height: calc(100vh - 80px);
+    height: calc(100vh - 84px);
   }
 
   .clip-title {

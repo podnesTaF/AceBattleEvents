@@ -65,7 +65,7 @@ const TeamPage: React.FC<Props> = ({ params: { id } }) => {
                 />
                 <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
                   <a
-                    href="https://worldathletics.org/athletes/jamaica/shelly-ann-fraser-pryce-14285680"
+                    href="https://worldathletics.org/athletes/ukraine/oleksii-pidnebesnyi-14983870"
                     target="_blank"
                   >
                     <h4 className="text-2xl text-white underline">
@@ -84,7 +84,7 @@ const TeamPage: React.FC<Props> = ({ params: { id } }) => {
                 />
                 <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
                   <a
-                    href="https://worldathletics.org/athletes/jamaica/shelly-ann-fraser-pryce-14285680"
+                    href="https://worldathletics.org/athletes/ukraine/oleksii-pidnebesnyi-14983870"
                     target="_blank"
                   >
                     <h4 className="text-2xl text-white underline">
@@ -103,7 +103,7 @@ const TeamPage: React.FC<Props> = ({ params: { id } }) => {
                 />
                 <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
                   <a
-                    href="https://worldathletics.org/athletes/jamaica/shelly-ann-fraser-pryce-14285680"
+                    href="https://worldathletics.org/athletes/ukraine/oleksii-pidnebesnyi-14983870"
                     target="_blank"
                   >
                     <h4 className="text-2xl text-white underline">
