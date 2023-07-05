@@ -1,5 +1,6 @@
 "use client";
 
+import AnnonceStripe from "@/components/main/AnnonceStripe";
 import { useAppDispatch } from "@/hooks/useTyped";
 import { addUser } from "@/redux/features/userSlice";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -29,7 +30,7 @@ const AppBar = () => {
 
   return (
     <>
-      <div className="xl:flex justify-between px-5 py-4 bg-[#1E1C1F] items-center">
+      <div className="xl:flex justify-between px-5 py-4 bg-[#1E1C1F] items-center fixed left-0 top-0 w-full z-10">
         <div className={"flex justify-between items-center"}>
           <IconButton
             onClick={() => setOpen(true)}
@@ -150,6 +151,7 @@ const AppBar = () => {
           )}
         </nav>
       </div>
+      <AnnonceStripe />
       <CustomDrawer setOpen={setOpen} open={open} />
     </>
   );
