@@ -52,6 +52,7 @@ const AddEvent = () => {
   });
 
   const onSubmit = async (dto: any) => {
+    console.log(dto);
     const location = {
       country: dto.country,
       city: dto.city,
@@ -70,8 +71,8 @@ const AddEvent = () => {
           amount: prize.amount,
         })),
         description: "description",
-        introImageUrl: dto.introImage,
-        minorImageUrl: dto.minorImage,
+        introImage: dto.introImage,
+        minorImage: dto.minorImage,
       });
 
       router.push("/admin/events");
