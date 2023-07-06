@@ -1,4 +1,5 @@
 import { Location } from 'src/locations/entities/locations.entity';
+import { Media } from 'src/media/entities/media.entity';
 import { PrizeEntity } from 'src/prizes/entities/prize.entity';
 import { Team } from 'src/teams/entities/team.entity';
 import {
@@ -6,6 +7,7 @@ import {
   Entity,
   JoinColumn,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -28,11 +30,13 @@ export class Event {
   @Column()
   endDate: Date;
 
-  @Column({ nullable: true })
-  introImageUrl: string;
+  @ManyToOne(() => Media, { nullable: true })
+  @JoinColumn()
+  introImage: Media;
 
-  @Column({ nullable: true })
-  minorImageUrl: string;
+  @ManyToOne(() => Media, { nullable: true })
+  @JoinColumn()
+  minorImage: Media;
 
   @OneToOne(() => Location)
   @JoinColumn()

@@ -24,4 +24,9 @@ export class EventsController {
   findById(@Param('id') id: string) {
     return this.eventsService.getEventById(+id);
   }
+
+  @Get('last')
+  findLast() {
+    return this.eventsService.findLastEvent();
+  }
 }

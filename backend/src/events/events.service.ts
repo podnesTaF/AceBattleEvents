@@ -44,8 +44,8 @@ export class EventsService {
       description,
       startDateTime,
       endDate,
-      introImageUrl,
-      minorImageUrl,
+      introImage,
+      minorImage,
     } = eventDto;
 
     return this.repository.save({
@@ -53,8 +53,8 @@ export class EventsService {
       description,
       startDateTime: new Date(startDateTime),
       endDate: new Date(endDate),
-      introImageUrl: introImageUrl || null,
-      minorImageUrl: minorImageUrl || null,
+      introImage: introImage || null,
+      minorImage: minorImage || null,
       location,
       prizes,
     });
@@ -70,7 +70,8 @@ export class EventsService {
       .leftJoinAndSelect('location.country', 'country')
       .leftJoin('event.teams', 'team')
       .loadRelationCountAndMap('event.teamsCount', 'event.teams')
-      .leftJoinAndSelect('event.prizes', 'prize');
+      .leftJoinAndSelect('event.prizes', 'prize')
+      .orderBy('event.id', 'DESC');
 
     if (query.month) {
       const month = query.month.toLowerCase();
@@ -148,5 +149,9 @@ export class EventsService {
     event.teams = updatedTeams;
 
     return event;
+  }
+
+  async findLastEvent() {
+    return this.repository.findOne({ where: { id: 25 } });
   }
 }

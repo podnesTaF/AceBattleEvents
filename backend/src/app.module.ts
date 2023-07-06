@@ -18,6 +18,7 @@ import { PlayersModule } from './players/players.module';
 import { PrizesModule } from './prizes/prizes.module';
 import { TeamsModule } from './teams/teams.module';
 import { UserModule } from './user/user.module';
+import { MediaModule } from './media/media.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { UserModule } from './user/user.module';
     ClubModule,
     CountryModule,
     FileModule,
+    MediaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
