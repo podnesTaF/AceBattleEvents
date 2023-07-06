@@ -1,5 +1,6 @@
 "use client";
 
+import { IMedia } from "@/models/IMedia";
 import { useGetSmallImagesQuery } from "@/services/imageService";
 import {
   Box,
@@ -61,15 +62,15 @@ const AddImageDialog: React.FC<Props> = ({
     try {
       const formData = new FormData();
       formData.append("image", image);
-      const res = await axios.post(
+      const { data } = await axios.post<IMedia, any>(
         "http://localhost:4000/api/v1/images",
         formData
       );
 
-      if ((res.status = 201)) {
-        setValue(name, res.data.imagePath);
-        setPicked(res.data.imagePath);
-        setIntroPreview({ url: previewUrl, name: imageName });
+      if (data) {
+        setValue(name, data);
+        setPicked(data.mediaUrl);
+        setIntroPreview({ url: previewUrl, name: data.title });
         handleClose();
       }
     } catch (error) {

@@ -1,4 +1,5 @@
 import { IsArray, IsObject, IsOptional, IsString } from 'class-validator';
+import { Media } from 'src/media/entities/media.entity';
 import { CreatePrizeDto } from 'src/prizes/dto/create-prize.dto';
 
 export class CreateEventDto {
@@ -27,9 +28,9 @@ export class CreateEventDto {
 
   @IsString()
   @IsOptional()
-  introImageUrl?: string;
+  introImage?: Media;
 
   @IsString()
   @IsOptional()
-  minorImageUrl?: string;
+  minorImage?: Media;
 }

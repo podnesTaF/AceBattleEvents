@@ -1,6 +1,9 @@
 import { Storage } from '@google-cloud/storage';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import sharp from 'sharp';
+import { Media } from 'src/media/entities/media.entity';
+import { Repository } from 'typeorm';
 import * as uuid from 'uuid';
 import { googleCloudStorageConfig } from './google-cloud-storage.config';
 
@@ -14,11 +17,16 @@ const bucketBaseUrl =
 
 @Injectable()
 export class FileService {
+  constructor(
+    @InjectRepository(Media)
+    private repository: Repository<Media>,
+  ) {}
+
   async uploadFileToStorage(
     type: FileType,
     file: any,
     storage: Storage,
-  ): Promise<string> {
+  ): Promise<Media> {
     try {
       const fileExtension = file.originalname.split('.').pop();
       const fileName = uuid.v4().toString() + '.' + fileExtension;
@@ -63,7 +71,19 @@ export class FileService {
 
       smallStream.end(smallFileBuffer);
 
-      return `${bucketBaseUrl}/${type}/small/${smallFileName}`;
+      console.log({
+        title: file.originalname,
+        mediaUrl: `${bucketBaseUrl}/${type}/large/${fileName}`,
+        smallUrl: `${bucketBaseUrl}/${type}/small/${smallFileName}`,
+        mediaType: type,
+      });
+
+      return this.repository.create({
+        title: file.originalname,
+        mediaUrl: `${bucketBaseUrl}/${type}/large/${fileName}`,
+        smallUrl: `${bucketBaseUrl}/${type}/small/${smallFileName}`,
+        mediaType: type,
+      });
     } catch (e) {
       console.log(e);
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);

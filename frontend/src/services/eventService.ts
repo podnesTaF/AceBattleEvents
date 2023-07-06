@@ -5,7 +5,7 @@ export const eventApi = api.injectEndpoints({
   endpoints: (builder) => ({
     fetchEvents: builder.query<
       { events: IEvent[]; totalPages: number },
-      { params: string; currPage: number }
+      { params?: string; currPage?: number }
     >({
       query: ({ params, currPage }) => ({
         url: `events?${params}&page=${currPage}&limit=5`,

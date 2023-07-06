@@ -5,6 +5,7 @@ import { Coach } from 'src/coach/entities/coach.entity';
 import { Country } from 'src/country/entity/country.entity';
 import { Event } from 'src/events/entities/event.entity';
 import { Location } from 'src/locations/entities/locations.entity';
+import { Media } from 'src/media/entities/media.entity';
 import { PersonalBest } from 'src/personal-bests/entities/personal-best.entity';
 import { PlayerEntity } from 'src/players/entities/player.entity';
 import { PrizeEntity } from 'src/prizes/entities/prize.entity';
@@ -30,6 +31,7 @@ const config: TypeOrmModuleOptions = {
     Coach,
     PersonalBest,
     PrizeEntity,
+    Media,
   ],
   synchronize: true,
 };

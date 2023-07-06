@@ -9,6 +9,8 @@ import { EventsService } from 'src/events/events.service';
 import { FileService } from 'src/file/file.service';
 import { Location } from 'src/locations/entities/locations.entity';
 import { LocationsService } from 'src/locations/locations.service';
+import { Media } from 'src/media/entities/media.entity';
+import { MediaService } from 'src/media/media.service';
 import { PersonalBest } from 'src/personal-bests/entities/personal-best.entity';
 import { PersonalBestsService } from 'src/personal-bests/personal-bests.service';
 import { PlayerEntity } from 'src/players/entities/player.entity';
@@ -33,6 +35,7 @@ import { TeamsService } from './teams.service';
       Country,
       PrizeEntity,
       PersonalBest,
+      Media,
     ]),
   ],
   controllers: [TeamsController],
@@ -47,6 +50,7 @@ import { TeamsService } from './teams.service';
     CountryService,
     FileService,
     PersonalBestsService,
+    MediaService,
   ],
   exports: [TeamsService],
 })

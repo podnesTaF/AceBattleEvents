@@ -1,3 +1,4 @@
+import { IMedia } from "./IMedia";
 import { ITeam } from "./ITeam";
 
 export type IEvent = {
@@ -6,8 +7,8 @@ export type IEvent = {
   description: string;
   startDateTime: string;
   endDateTime: string;
-  introImage?: string;
-  minorImage?: string;
+  introImage?: IMedia;
+  minorImage?: IMedia;
   price: number;
   teamsCount?: number;
   location: ILocation;
