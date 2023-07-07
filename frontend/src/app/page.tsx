@@ -1,6 +1,7 @@
 "use client";
 
 import IntroSlider from "@/components/main/IntroSlider";
+import TeamsCarousel from "@/components/main/TeamsCarousel";
 import CustomTitle from "@/components/shared/CustomTitle";
 import { useFetchEventsQuery } from "@/services/eventService";
 
@@ -37,10 +38,12 @@ export default function Home() {
           </div>
         </section>
         <section className="w-full my-4 bg-[#1E1C1F] p-4">
-          <h3 className="text-white font-semibold text-2xl uppercase mb-4">
-            Teams
-          </h3>
-          <div></div>
+          <div className="max-w-7xl mx-auto my-4 flex flex-col items-center justify-center overflow-hidden">
+            <h3 className="text-white font-semibold text-2xl uppercase mb-4">
+              Teams
+            </h3>
+            <TeamsCarousel teams={[]} />
+          </div>
         </section>
         <section className="w-full">
           <div className="w-full bg-[url('/main-sect-bg-sm.jpg')] md:bg-[url('/main-sect-bg.jpg')] bg-fixed bg-cover bg-top min-h-[380px] md:min-h-[480px] lg:min-h-[580px] relative flex items-end">

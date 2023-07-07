@@ -4,21 +4,24 @@ import ImagePicker from "@/components/admin/ImagePicker";
 import SearchField from "@/components/events/SearchField";
 import FormButton from "@/components/shared/FormButton";
 import { useFilter } from "@/hooks/useFilter";
+import { IMedia } from "@/models/IMedia";
 import { api } from "@/services/api";
-import { useGetSmallImagesQuery } from "@/services/imageService";
+import { useGetImagesQuery } from "@/services/imageService";
 import { addImageSchema } from "@/utils/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Collapse } from "@mui/material";
 import axios from "axios";
-import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+
+const Image = dynamic(() => import("next/image"), { ssr: false });
 
 const MediaPage = () => {
   const { searchValue, setSearchValue, onChangeFilter } = useFilter();
   const [openAdd, setOpenAdd] = useState<boolean>(false);
-  const [images, setImages] = useState<string[]>([]);
-  const { data, isLoading } = useGetSmallImagesQuery();
+  const [images, setImages] = useState<IMedia[]>([]);
+  const { data, isLoading } = useGetImagesQuery();
 
   const onChangeInput = (newValue: string) => {
     setSearchValue(newValue);
@@ -27,7 +30,7 @@ const MediaPage = () => {
 
   useEffect(() => {
     if (data) {
-      setImages(data.imagePaths);
+      setImages(data);
     }
   }, [data]);
 
@@ -40,14 +43,14 @@ const MediaPage = () => {
     try {
       const formData = new FormData();
       formData.append("image", dto.image);
-      const res = await axios.post(
+      const { data } = await axios.post(
         "http://localhost:4000/api/v1/images",
         formData
       );
-      if (res.status === 201) {
+      if (data) {
         form.reset();
-        console.log(res.data.imagePath);
-        setImages((prev) => [...prev, res.data.imagePath]);
+        setImages((prev) => [...prev, data]);
+        console.log(data);
         api.util.invalidateTags(["Image"]);
       }
     } catch (error) {
@@ -107,14 +110,14 @@ const MediaPage = () => {
         </div>
         <div className="max-w-6xl flex flex-wrap gap-4 mx-2 lg:mx-6 my-6">
           {images.length > 0 &&
-            images?.map((image: any, i) => (
+            images.map((image, i) => (
               <div
-                key={image}
+                key={image.id}
                 className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5"
               >
                 <div className={`w-full h-48 bg-no-repeat bg-cover`}>
                   <Image
-                    src={image}
+                    src={image.smallUrl}
                     alt="small image"
                     width={200}
                     className="object-contain"

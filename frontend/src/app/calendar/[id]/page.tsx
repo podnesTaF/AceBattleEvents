@@ -37,9 +37,20 @@ const EventDetails: React.FC<Props> = ({ params }) => {
     }
   }, [event]);
 
+  console.log(event?.introImage?.mediaUrl);
+
   return (
     <>
-      <header className="w-full flex justify-center h-96 sm:h-[800px] bg-[url('/page-detail.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">
+      <header
+        className={`w-full flex justify-center h-96 sm:h-[640px] md:h-[720px] lg:h-[800px] h-calc-screen-lg relative flex-col`}
+      >
+        <Image
+          src={event?.introImage?.mediaUrl || "/page-detail.jpg"}
+          alt="intro image"
+          width={1280}
+          height={980}
+          className="w-full h-full absolute object-cover"
+        />
         <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.4)] z-0"></div>
         <div className="h-3/5 mb-10 sm:mb-0 sm:h-1/2 ml-5 flex flex-col justify-center items-center w-3/4 sm:w-3/5 md:w-[500px] z-10">
           {isLoading ? (

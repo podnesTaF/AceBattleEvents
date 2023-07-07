@@ -34,7 +34,8 @@ export const AddTeamSchema = yup.object().shape({
   type: yup.string().required("Please provide team type"),
   coachName: yup.string().required("Please provide coach name"),
   coachSurname: yup.string().required("Please provide coach surname"),
-  coachGender: yup.string().required("Please provide coach gender"),
+  teamImage: yup.object(),
+  logo: yup.object(),
   players: yup
     .array()
     .of(
