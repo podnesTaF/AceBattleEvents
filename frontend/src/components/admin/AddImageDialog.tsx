@@ -1,7 +1,7 @@
 "use client";
 
 import { IMedia } from "@/models/IMedia";
-import { useGetSmallImagesQuery } from "@/services/imageService";
+import { useGetImagesQuery } from "@/services/imageService";
 import {
   Box,
   Button,
@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import ImagePicker from "./ImagePicker";
 interface Props {
@@ -39,7 +39,7 @@ const AddImageDialog: React.FC<Props> = ({
   setIntroPreview,
 }) => {
   const [activeTab, setActiveTab] = React.useState(0);
-  const { data: images, isLoading } = useGetSmallImagesQuery();
+  const { data: images, isLoading } = useGetImagesQuery();
   const { register, formState, setValue, getValues } = useFormContext();
   const [picked, setPicked] = React.useState<any>(null);
 
@@ -47,11 +47,9 @@ const AddImageDialog: React.FC<Props> = ({
     setActiveTab(newValue);
   };
 
-  console.log(isOpen);
-
-  const onPick = (image: string) => {
-    setValue(name, image === picked ? "" : image);
-    setPicked(picked === image ? null : image);
+  const onPick = (image: IMedia) => {
+    setValue(name, image.mediaUrl === picked ? "" : image);
+    setPicked(picked === image.mediaUrl ? null : image.mediaUrl);
   };
 
   const getUploadedImage = async (
@@ -78,10 +76,17 @@ const AddImageDialog: React.FC<Props> = ({
     }
   };
 
+  useEffect(() => {
+    if (activeTab === 1) {
+      setPicked(null);
+      setValue(name, {});
+    }
+  }, [activeTab]);
+
   const onAdd = () => {
     setIntroPreview({
-      url: getValues(name),
-      name: getValues(name).split("/")[3],
+      url: getValues(name).mediaUrl,
+      name: getValues(name).title,
     });
     handleClose();
   };
@@ -106,15 +111,20 @@ const AddImageDialog: React.FC<Props> = ({
           {isLoading ? (
             <p>Loading...</p>
           ) : (
-            images?.imagePaths.map((image, index) => (
+            images?.map((image, index) => (
               <div
                 key={index}
                 className={`relative w-24 h-24 cursor-pointer hover:opacity-80 ${
-                  picked === image && "border-2 border-blue-500"
+                  picked === image.mediaUrl && "border-2 border-blue-500"
                 }`}
                 onClick={onPick.bind(null, image)}
               >
-                <Image src={image} alt="image" width={200} height={200} />
+                <Image
+                  src={image.smallUrl}
+                  alt="image"
+                  width={200}
+                  height={200}
+                />
               </div>
             ))
           )}

@@ -3,8 +3,8 @@
 import AddPlayerInfo from "@/components/shared/AddPlayerInfo";
 import FormButton from "@/components/shared/FormButton";
 import FormField from "@/components/shared/FormField";
-import FormRadio from "@/components/shared/FormRadio";
 import FormSelect from "@/components/shared/FormSelect";
+import ImageField from "@/components/shared/ImageField";
 import { useAddTeamMutation } from "@/services/teamService";
 import { countries, teamTypes } from "@/utils/events-filter-values";
 import { AddTeamSchema } from "@/utils/validators";
@@ -13,7 +13,7 @@ import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import { Button, IconButton } from "@mui/material";
+import { Button, Divider, IconButton } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
@@ -100,6 +100,7 @@ const AddTeam = () => {
   }, [data]);
 
   const onSubmit = async (dto: any) => {
+    console.log(dto);
     try {
       await addTeam({
         name: dto.name,
@@ -111,10 +112,13 @@ const AddTeam = () => {
           surname: dto.coachSurname,
         },
         gender: dto.type,
+        teamImage: dto.teamImage,
+        logo: dto.logo,
         players: dto.players.map((player: any) => ({
           name: player.name,
           surname: player.surname,
           dateOfBirth: player.dateOfBirth,
+          gender: player.gender,
           personalBests: player.personalBests.map((pb: any) => ({
             distance: pb.distance,
             timeInSeconds: pb.time,
@@ -127,6 +131,7 @@ const AddTeam = () => {
       console.log(error);
     }
   };
+
   return (
     <>
       <header className="w-full flex justify-center items-center h-48 sm:h-56 bg-[url('/add-team-sm.jpg')] md:bg-[url('/add-team-large.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">
@@ -194,19 +199,6 @@ const AddTeam = () => {
                   placeholder={"Enter surname here..."}
                 />
               </div>
-              <div className="w-full md:w-5/6">
-                <div className="w-full md:w-2/5">
-                  <h3>Gender</h3>
-                  <FormRadio
-                    options={[
-                      { value: "male", label: "Male" },
-                      { value: "female", label: "Female" },
-                    ]}
-                    onChange={() => {}}
-                    name={"coachGender"}
-                  />
-                </div>
-              </div>
             </FormLayout>
             <div className="m-4">
               <h3 className="text-center mb-3 text-2xl font-semibold">
@@ -235,71 +227,6 @@ const AddTeam = () => {
                           formState?.errors?.players[index]
                         }
                       />
-                      {/* <div className="w-full md:w-2/5">
-                        <FormField
-                          label="First name*"
-                          name={`players[${index}].name`}
-                          placeholder={"Enter name here..."}
-                        />
-                        {formState.errors.players &&
-                          formState.errors.players[index]?.name && (
-                            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                              {formState?.errors?.players[index]?.name?.message}
-                            </p>
-                          )}
-                      </div>
-                      <div className="w-full md:w-2/5">
-                        <FormField
-                          label="Surname*"
-                          name={`players[${index}].surname`}
-                          placeholder={"Enter surname here..."}
-                        />
-                        {formState.errors.players &&
-                          formState.errors.players[index]?.surname && (
-                            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                              {
-                                formState?.errors?.players[index]?.surname
-                                  ?.message
-                              }
-                            </p>
-                          )}
-                      </div>
-                      <div className="w-full md:w-2/5">
-                        <FormField
-                          label="Date Of Birth*"
-                          name={`players[${index}].dateOfBirth`}
-                          placeholder={"dd/mm/yyyy"}
-                        />
-                        {formState.errors.players &&
-                          formState.errors.players[index]?.dateOfBirth && (
-                            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                              {
-                                formState?.errors?.players[index]?.dateOfBirth
-                                  ?.message
-                              }
-                            </p>
-                          )}
-                      </div>
-                      <div className="w-full md:w-2/5">
-                        <h3>Gender</h3>
-                        <FormRadio
-                          options={[
-                            { value: "male", label: "Male" },
-                            { value: "female", label: "Female" },
-                          ]}
-                          onChange={() => {}}
-                          name={`players[${index}].gender`}
-                        />
-                        {formState.errors.players &&
-                          formState.errors.players[index]?.gender && (
-                            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                              {
-                                formState?.errors?.players[index]?.gender
-                                  ?.message
-                              }
-                            </p>
-                          )}
-                      </div> */}
                       <div className="my-3 w-full">
                         <h3 className="font-semibold text-2xl mb-3">
                           Personal Bests
@@ -383,6 +310,17 @@ const AddTeam = () => {
                 Team has to consist of at least 5 players*
               </p>
             </div>
+            <FormLayout title="Media">
+              <div className="w-full">
+                <ImageField title="upload team logo" name="logo" />
+              </div>
+              <Divider />
+              <div className="w-full my-4">
+                <div className="my-3">
+                  <ImageField title="upload Team Image" name="teamImage" />
+                </div>
+              </div>
+            </FormLayout>
             <div className="mx-5 md:w-1/2 lg:w-1/3 md:ml-auto">
               <FormButton
                 title="add team"

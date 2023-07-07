@@ -24,6 +24,10 @@ export class MediaService {
     return this.repository.find();
   }
 
+  findAllImages() {
+    return this.repository.find({ where: { mediaType: 'image' } });
+  }
+
   findByUrl(url: string) {
     return this.repository.findOne({ where: { mediaUrl: url } });
   }

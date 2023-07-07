@@ -11,8 +11,8 @@ export class MediaController {
     return this.mediaService.create(createMediaDto);
   }
 
-  @Get()
-  getAllMedia() {
-    return this.mediaService.findAll();
+  @Get('/images')
+  getAllImages() {
+    return this.mediaService.findAllImages();
   }
 }

@@ -6,6 +6,7 @@ import {
   IsString,
 } from 'class-validator';
 import { CreateCoachDto } from 'src/coach/dto/create-coach-dto';
+import { Media } from 'src/media/entities/media.entity';
 import { CreatePlayerDto } from 'src/players/dto/create-player.dto';
 
 export class CreateTeamDto {
@@ -24,6 +25,14 @@ export class CreateTeamDto {
 
   @IsNumber()
   countryId: number;
+
+  @IsObject()
+  @IsOptional()
+  logo?: Media;
+
+  @IsObject()
+  @IsOptional()
+  teamImage?: Media;
 
   @IsObject()
   coach: CreateCoachDto;

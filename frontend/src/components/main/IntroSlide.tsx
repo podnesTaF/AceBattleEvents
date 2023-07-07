@@ -1,8 +1,9 @@
+import { IEvent } from "@/models/IEvent";
 import Image from "next/image";
 import React from "react";
 
 interface Props {
-  event: any;
+  event: IEvent;
   isActive: boolean;
   idx: number;
   length: number;
@@ -57,6 +58,7 @@ const IntroSlide: React.FC<Props> = ({
       </div>
       <Image
         src={
+          event.introImage?.mediaUrl ||
           "https://storage.googleapis.com/abe_cloud_storage/image/large/dccfea3d-a639-4569-9c06-b37bbbb37130.jpg"
         }
         alt="bg"

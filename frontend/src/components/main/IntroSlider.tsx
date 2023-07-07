@@ -16,6 +16,10 @@ const IntroSlider: React.FC<Props> = ({ events }) => {
   };
 
   useEffect(() => {
+    console.log(events);
+  }, [events]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % events.length);
       setProgress(0);

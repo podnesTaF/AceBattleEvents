@@ -1,4 +1,5 @@
 import { ICountry, IEvent } from "./IEvent";
+import { IMedia } from "./IMedia";
 import { IUser } from "./IUser";
 
 export type ITeam = {
@@ -11,6 +12,8 @@ export type ITeam = {
   manager: IUser;
   club: string;
   coach: ICoach;
+  logo: IMedia;
+  teamImage: IMedia;
   players: IPlayer[];
   events: IEvent[];
 };
@@ -33,6 +36,8 @@ export type ReqTeam = {
   city: string;
   club: string;
   gender: string;
+  logo: IMedia;
+  teamImage: IMedia;
   coach: {
     surname: string;
     name: string;

@@ -3,6 +3,7 @@
 import FormButton from "@/components/shared/FormButton";
 import FormField from "@/components/shared/FormField";
 import FormSelect from "@/components/shared/FormSelect";
+import ImageField from "@/components/shared/ImageField";
 import { useAddEventMutation } from "@/services/eventService";
 import { countries } from "@/utils/events-filter-values";
 import { addEventSchema } from "@/utils/validators";
@@ -11,7 +12,6 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Button, Divider, IconButton } from "@mui/material";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
@@ -251,73 +251,16 @@ const AddEvent = () => {
                     Media
                   </h3>
                   <div className="w-full">
-                    <div>
-                      <div className="flex gap-4 mb-4 items-center">
-                        <h4 className="text-gray uppercase text-xl font-semibold">
-                          UPLOAD INTRO IMAGE
-                        </h4>
-                        <button
-                          className="px-4 py-2 rounded-md bg-red-500 text-xl text-white font-semibold"
-                          onClick={() => setImageDialogOpen(true)}
-                        >
-                          Open Storage
-                        </button>
-                      </div>
-                      {introImagePreview.url && (
-                        <div className="mb-4 flex w-full justify-center gap-4">
-                          <div>
-                            <h4 className="text-xl text-gray-500">
-                              {introImagePreview.name}
-                            </h4>
-                          </div>
-                          <Image
-                            src={introImagePreview.url}
-                            alt={"intro preview"}
-                            width={400}
-                            height={400}
-                          />
-                        </div>
-                      )}
-                      <AddImageDialog
-                        isOpen={imageDialogOpen}
-                        handleClose={() => setImageDialogOpen(false)}
-                        name={"introImage"}
-                        setIntroPreview={setIntroImagePreview}
-                      />
-                    </div>
+                    <ImageField title="upload intro image" name="introImage" />
                   </div>
                   <Divider />
                   <div className="w-full my-4">
-                    <div className="flex gap-4 mb-4 items-center">
-                      <h4 className="text-gray uppercase text-xl font-semibold">
-                        UPLOAD MINOR IMAGE
-                      </h4>
-                      <button
-                        className="px-4 py-2 rounded-md bg-red-500 text-xl text-white font-semibold"
-                        onClick={() => setMinorImageOpen(true)}
-                      >
-                        Open Storage
-                      </button>
+                    <div className="my-3">
+                      <ImageField
+                        title="upload minor Image"
+                        name="minorImage"
+                      />
                     </div>
-                    {minorImagePreview.url && (
-                      <div className="mb-4 flex w-full justify-center gap-4">
-                        <h4 className="text-xl text-gray-500">
-                          {minorImagePreview.name}
-                        </h4>
-                        <Image
-                          src={minorImagePreview.url}
-                          alt={"minor preview"}
-                          width={400}
-                          height={400}
-                        />
-                      </div>
-                    )}
-                    <AddImageDialog
-                      isOpen={minorImageOpen}
-                      handleClose={() => setMinorImageOpen(false)}
-                      name={"minorImage"}
-                      setIntroPreview={setMinorImagePreview}
-                    />
                   </div>
                 </>
               )}

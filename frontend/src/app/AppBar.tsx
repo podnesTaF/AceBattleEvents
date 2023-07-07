@@ -30,7 +30,7 @@ const AppBar = () => {
 
   return (
     <>
-      <div className="xl:flex justify-between px-5 py-4 bg-[#1E1C1F] items-center fixed left-0 top-0 w-full z-10">
+      <div className="xl:flex justify-between px-5 py-2 bg-[#1E1C1F] items-center w-full z-10">
         <div className={"flex justify-between items-center"}>
           <IconButton
             onClick={() => setOpen(true)}
@@ -38,14 +38,14 @@ const AppBar = () => {
           >
             <MenuIcon sx={{ fontSize: 40 }} />
           </IconButton>
-          <h2 className={"text-3xl xl:text-4xl uppercase text-white"}>
+          <h2 className={"text-2xl xl:text-3xl uppercase text-white"}>
             Ace Battle Events
           </h2>
         </div>
         <nav className={"hidden xl:flex gap-4 items-center"}>
           <Link className="hover:opacity-80" href="/">
             <p
-              className={`text-xl uppercase ${
+              className={`text-lg uppercase ${
                 pathname === "/" ? "text-[#FF0000]" : "text-white"
               }`}
             >
@@ -54,7 +54,7 @@ const AppBar = () => {
           </Link>
           <Link className="hover:opacity-80" href="/calendar">
             <p
-              className={`text-xl uppercase ${
+              className={`text-lg uppercase ${
                 pathname === "/calendar" ? "text-[#FF0000]" : "text-white"
               }`}
             >
@@ -63,7 +63,7 @@ const AppBar = () => {
           </Link>
           <Link className="hover:opacity-80" href="/close-events">
             <p
-              className={`text-xl uppercase ${
+              className={`text-lg uppercase ${
                 pathname === "/close-events" ? "text-[#FF0000]" : "text-white"
               }`}
             >
@@ -72,7 +72,7 @@ const AppBar = () => {
           </Link>
           <Link className="hover:opacity-80" href="/results">
             <p
-              className={`text-xl uppercase ${
+              className={`text-lg uppercase ${
                 pathname === "/results" ? "text-[#FF0000]" : "text-white"
               }`}
             >
@@ -83,7 +83,7 @@ const AppBar = () => {
             <>
               <Link className="hover:opacity-80" href="/add-team">
                 <p
-                  className={`text-xl uppercase ${
+                  className={`text-lg uppercase ${
                     pathname === "/add-team" ? "text-[#FF0000]" : "text-white"
                   }`}
                 >
@@ -151,7 +151,7 @@ const AppBar = () => {
           )}
         </nav>
       </div>
-      <AnnonceStripe />
+      {pathname === "/" && <AnnonceStripe />}
       <CustomDrawer setOpen={setOpen} open={open} />
     </>
   );

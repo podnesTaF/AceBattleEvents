@@ -1,9 +1,8 @@
 import { Storage } from '@google-cloud/storage';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import sharp from 'sharp';
 import { Media } from 'src/media/entities/media.entity';
-import { Repository } from 'typeorm';
+import { MediaService } from 'src/media/media.service';
 import * as uuid from 'uuid';
 import { googleCloudStorageConfig } from './google-cloud-storage.config';
 
@@ -17,10 +16,7 @@ const bucketBaseUrl =
 
 @Injectable()
 export class FileService {
-  constructor(
-    @InjectRepository(Media)
-    private repository: Repository<Media>,
-  ) {}
+  constructor(private mediaService: MediaService) {}
 
   async uploadFileToStorage(
     type: FileType,
@@ -78,7 +74,7 @@ export class FileService {
         mediaType: type,
       });
 
-      return this.repository.create({
+      return this.mediaService.create({
         title: file.originalname,
         mediaUrl: `${bucketBaseUrl}/${type}/large/${fileName}`,
         smallUrl: `${bucketBaseUrl}/${type}/small/${smallFileName}`,
