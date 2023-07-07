@@ -13,4 +13,7 @@ export class CreatePlayerDto {
 
   @IsArray()
   personalBests: CreatePersonalBestDto[];
+
+  @IsString()
+  gender: string;
 }

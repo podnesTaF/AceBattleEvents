@@ -45,6 +45,8 @@ export class TeamsService {
       city: dto.city,
       gender: dto.gender,
       country,
+      logo: dto.logo,
+      teamImage: dto.teamImage,
       coach,
       players,
       manager,

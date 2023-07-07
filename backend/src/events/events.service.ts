@@ -66,6 +66,8 @@ export class EventsService {
 
     const qb = this.repository
       .createQueryBuilder('event')
+      .leftJoinAndSelect('event.introImage', 'introImage')
+      .leftJoinAndSelect('event.minorImage', 'minorImage')
       .leftJoinAndSelect('event.location', 'location')
       .leftJoinAndSelect('location.country', 'country')
       .leftJoin('event.teams', 'team')
@@ -131,6 +133,8 @@ export class EventsService {
         'teams.coach',
         'prizes',
         'teams.players',
+        'introImage',
+        'minorImage',
       ],
     });
 
