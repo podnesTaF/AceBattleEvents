@@ -4,6 +4,7 @@ import IntroSlider from "@/components/main/IntroSlider";
 import TeamsCarousel from "@/components/main/TeamsCarousel";
 import CustomTitle from "@/components/shared/CustomTitle";
 import { useFetchEventsQuery } from "@/services/eventService";
+import { useFetchAllTeamsQuery } from "@/services/teamService";
 
 const textStyles =
   "text-lg sm:text-xl text-white border-r-2 border-red-500 px-2 sm:px-4 w-1/4 uppercase text-center";
@@ -12,6 +13,15 @@ export default function Home() {
   const { data, error, isLoading } = useFetchEventsQuery({
     params: "",
     currPage: 1,
+  });
+
+  const {
+    data: teamsData,
+    error: teamsError,
+    isLoading: teamsLoading,
+  } = useFetchAllTeamsQuery({
+    params: "",
+    page: 1,
   });
 
   return (
@@ -42,7 +52,7 @@ export default function Home() {
             <h3 className="text-white font-semibold text-2xl uppercase mb-4">
               Teams
             </h3>
-            <TeamsCarousel teams={[]} />
+            {teamsData && <TeamsCarousel teams={teamsData.teams} />}
           </div>
         </section>
         <section className="w-full">

@@ -2,6 +2,7 @@ import { ITeam } from "@/models/ITeam";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { IconButton } from "@mui/material";
+import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 const TeamsCarousel: React.FC<Props> = ({ teams }) => {
   const [activeIndex, setActiveIndex] = useState(1);
   const [translateDistance, setTranslateDistance] = useState(0);
+  const [sliderWidth, setSliderWidth] = useState(0);
 
   const sliderRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<any>([]);
@@ -27,6 +29,12 @@ const TeamsCarousel: React.FC<Props> = ({ teams }) => {
   };
 
   useEffect(() => {
+    if (teams) {
+      setSliderWidth(teams.length * 100);
+    }
+  }, [teams]);
+
+  useEffect(() => {
     if (sliderRef.current) {
       sliderRef.current.style.transform = `translateX(${translateDistance}px)`;
     }
@@ -37,22 +45,30 @@ const TeamsCarousel: React.FC<Props> = ({ teams }) => {
       <div
         ref={sliderRef}
         className="slider-carousel"
-        style={{ transform: `translateX(535px)` }}
+        style={{ width: `${sliderWidth}%` }}
       >
-        {Array.from({ length: 3 }).map((_, index) => (
+        {teams.map((team, index) => (
           <div
-            key={index}
+            key={team.id}
             ref={(el) => (itemRefs.current[index] = el)}
-            className={`slider-carousel-item ${
+            className={`w-full overflow-hidden relative ${
               index === activeIndex
                 ? "opacity-100 scale-100"
                 : "opacity-60 scale-50"
             }`}
           >
-            <h3 className="text-xl">
-              Hello Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Explicabo, labore!
-            </h3>
+            <Image
+              src={team.logo.mediaUrl}
+              alt="team logo"
+              className="object-cover"
+              width={400}
+              height={400}
+            />
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 px-4 py-2 bg-red-500">
+              <h3 className="text-xl uppercase font-semibold text-white">
+                {team.name}
+              </h3>
+            </div>
           </div>
         ))}
       </div>
