@@ -15,19 +15,10 @@ html {
 }
 
 .slider-carousel {
-  width: 300%;
   position: absolute;
   transition: transform 0.3s ease;
   display: flex;
   align-items: center;
-}
-
-.slider-carousel .slider-carousel-item {
-  width: 100%;
-  background-color: #fcfcfc;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 0 7px rgba(0, 0, 0, 0.3);
 }
 
 @media screen and (min-width: 1180px) {
