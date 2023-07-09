@@ -12,6 +12,6 @@ export class PrizeEntity {
   @Column()
   amount: number;
 
-  @ManyToOne(() => Event, (event) => event.prizes)
+  @ManyToOne(() => Event, (event) => event.prizes, { onDelete: 'CASCADE' })
   event: Event;
 }

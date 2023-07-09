@@ -67,13 +67,6 @@ export class FileService {
 
       smallStream.end(smallFileBuffer);
 
-      console.log({
-        title: file.originalname,
-        mediaUrl: `${bucketBaseUrl}/${type}/large/${fileName}`,
-        smallUrl: `${bucketBaseUrl}/${type}/small/${smallFileName}`,
-        mediaType: type,
-      });
-
       return this.mediaService.create({
         title: file.originalname,
         mediaUrl: `${bucketBaseUrl}/${type}/large/${fileName}`,

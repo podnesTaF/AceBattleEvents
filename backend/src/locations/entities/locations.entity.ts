@@ -15,6 +15,8 @@ export class Location {
   @Column()
   city: string;
 
-  @ManyToOne(() => Country, (country) => country.locations)
+  @ManyToOne(() => Country, (country) => country.locations, {
+    onDelete: 'CASCADE',
+  })
   country: Country;
 }

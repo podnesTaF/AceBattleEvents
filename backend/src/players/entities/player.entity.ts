@@ -29,7 +29,7 @@ export class PlayerEntity {
   @ManyToOne(() => Country, (country) => country.players)
   country: Country;
 
-  @ManyToOne(() => Team, (team) => team.players)
+  @ManyToOne(() => Team, (team) => team.players, { onDelete: 'CASCADE' })
   team: Team;
 
   @OneToMany(() => PersonalBest, (personalBest) => personalBest.player)

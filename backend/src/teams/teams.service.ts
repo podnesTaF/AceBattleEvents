@@ -87,6 +87,7 @@ export class TeamsService {
       .leftJoinAndSelect('team.country', 'country')
       .leftJoinAndSelect('team.coach', 'coach')
       .leftJoinAndSelect('team.players', 'players')
+      .leftJoinAndSelect('team.logo', 'logo')
       .leftJoinAndSelect('players.personalBests', 'personalBests')
       .leftJoinAndSelect('team.events', 'events');
 
@@ -115,8 +116,6 @@ export class TeamsService {
     qb.skip((page - 1) * limit).take(limit);
 
     const teams = await qb.getMany();
-
-    console.log(teams);
 
     return {
       teams,

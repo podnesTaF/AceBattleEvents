@@ -39,10 +39,13 @@ export class User {
   @Column({ nullable: true })
   password: string;
 
-  @OneToOne(() => Club, (club) => club.manager, { nullable: true })
+  @OneToOne(() => Club, (club) => club.manager, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
   club: Club;
 
-  @OneToMany(() => Team, (team) => team.manager)
+  @OneToMany(() => Team, (team) => team.manager, { onDelete: 'CASCADE' })
   teams: Team[];
 
   @CreateDateColumn({ type: 'timestamp' })

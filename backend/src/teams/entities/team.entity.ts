@@ -59,6 +59,7 @@ export class Team {
 
   @OneToMany(() => PlayerEntity, (player) => player.team, {
     onDelete: 'CASCADE',
+    eager: true,
   })
   players: PlayerEntity[];
 
