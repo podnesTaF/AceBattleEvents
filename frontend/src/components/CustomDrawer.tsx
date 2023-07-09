@@ -38,7 +38,7 @@ const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen }) => {
               variant="outlined"
               color="error"
               className={"p-1 py-2 mr-2"}
-              onClick={() => router.push("/profile/1")}
+              onClick={() => router.push("/profile")}
             >
               <PersonIcon className={"text-white"} sx={{ fontSize: 40 }} />
             </Button>

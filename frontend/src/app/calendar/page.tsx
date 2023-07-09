@@ -67,7 +67,7 @@ const CalendarPage = () => {
       <header className="w-full flex justify-center items-center h-48 sm:h-56 bg-[url('/main-intro-sm.jpg')] md:bg-[url('/main-intro.jpg')] bg-fixed bg-cover bg-no-repeat bg-top relative flex-col ">
         <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.4)] z-0"></div>
       </header>
-      <CustomTitle title={"BATTLE MILE"} subtitle="Events calendar" />
+      <CustomTitle title={"Ace BATTLE MILE"} subtitle="Events calendar" />
       <main className="max-w-7xl mx-auto">
         <div className="flex flex-col-reverse md:flex-row w-full p-8 md:p-4 xl:p-2 my-4">
           <div className="w-full md:w-1/2 mr-0 md:mr-5 my-5 md:my-0 flex flex-col justify-center">

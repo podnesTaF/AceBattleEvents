@@ -1,4 +1,5 @@
 import { IEvent } from "@/models/IEvent";
+import { formatDate } from "@/utils/date-formater";
 import Image from "next/image";
 import React from "react";
 
@@ -34,7 +35,7 @@ const IntroSlide: React.FC<Props> = ({
           {event.title}
         </h4>
         <h5 className="text-lg sm:text-2xl text-red-500 mb-4 md:mb-4">
-          {event.startDateTime}
+          {formatDate(event.startDateTime)}
         </h5>
         <div className="w-full flex justify-around gap-4">
           {length > 1 &&

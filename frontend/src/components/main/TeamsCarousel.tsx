@@ -3,6 +3,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { IconButton } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 
 interface Props {
@@ -10,17 +11,20 @@ interface Props {
 }
 const TeamsCarousel: React.FC<Props> = ({ teams }) => {
   const [activeIndex, setActiveIndex] = useState(1);
-  const [translateDistance, setTranslateDistance] = useState(0);
+  const [translateDistance, setTranslateDistance] = useState(220);
   const [sliderWidth, setSliderWidth] = useState(0);
 
   const sliderRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<any>([]);
+
+  const router = useRouter();
 
   const slide = (direction: "next" | "prev") => {
     if (!sliderRef.current) return;
 
     const slideDistance = itemRefs.current[0].offsetWidth;
 
+    console.log(slideDistance);
     setActiveIndex((prev) => prev + (direction === "next" ? 1 : -1));
 
     setTranslateDistance(
@@ -41,7 +45,7 @@ const TeamsCarousel: React.FC<Props> = ({ teams }) => {
   }, [translateDistance]);
 
   return (
-    <div className="my-4 w-full sm:w-3/4 md:w-1/2 h-96 relative flex justify-center items-center">
+    <div className="my-4 w-full sm:w-3/4 md:w-[400px] h-96 relative flex justify-center items-center">
       <div
         ref={sliderRef}
         className="slider-carousel"
@@ -50,8 +54,9 @@ const TeamsCarousel: React.FC<Props> = ({ teams }) => {
         {teams.map((team, index) => (
           <div
             key={team.id}
+            onClick={() => router.push(`/team/${team.id}`)}
             ref={(el) => (itemRefs.current[index] = el)}
-            className={`w-full overflow-hidden relative ${
+            className={`w-full overflow-hidden relative cursor-pointer active:scale-95 ${
               index === activeIndex
                 ? "opacity-100 scale-100"
                 : "opacity-60 scale-50"
@@ -60,9 +65,9 @@ const TeamsCarousel: React.FC<Props> = ({ teams }) => {
             <Image
               src={team.logo.mediaUrl}
               alt="team logo"
-              className="object-cover"
-              width={400}
-              height={400}
+              className="object-contain max-h-[350px]"
+              width={350}
+              height={350}
             />
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 px-4 py-2 bg-red-500">
               <h3 className="text-xl uppercase font-semibold text-white">
@@ -75,7 +80,7 @@ const TeamsCarousel: React.FC<Props> = ({ teams }) => {
       {activeIndex > 0 && (
         <IconButton
           onClick={() => slide("prev")}
-          className="absolute -left-12 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-20 rounded-full p-2"
+          className="absolute left-2 sm:-left-6 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-60 rounded-full p-2"
           type="button"
         >
           <ChevronLeftIcon />
@@ -84,7 +89,7 @@ const TeamsCarousel: React.FC<Props> = ({ teams }) => {
       {activeIndex < itemRefs.current.length - 1 && (
         <IconButton
           onClick={() => slide("next")}
-          className="absolute -right-12 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-20 rounded-full p-2"
+          className="absolute right-2 sm:-right-6 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-60 rounded-full p-2"
           type="button"
         >
           <ChevronRightIcon />
