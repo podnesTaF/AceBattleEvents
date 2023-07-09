@@ -12,6 +12,8 @@ export class PersonalBest {
   @Column()
   timeInSeconds: number;
 
-  @ManyToOne(() => PlayerEntity, (player) => player.personalBests)
+  @ManyToOne(() => PlayerEntity, (player) => player.personalBests, {
+    onDelete: 'CASCADE',
+  })
   player: PlayerEntity;
 }

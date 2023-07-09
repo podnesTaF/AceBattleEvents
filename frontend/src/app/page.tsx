@@ -30,7 +30,10 @@ export default function Home() {
         {data && <IntroSlider events={data.events} />}
       </header>
       <main>
-        <CustomTitle title={"BATTLE MILE"} subtitle=" RUNNING COMPETITIONS" />
+        <CustomTitle
+          title={"ACE BATTLE MILE"}
+          subtitle=" RUNNING COMPETITIONS"
+        />
         <section className="py-[10%] max-w-4xl flex justify-center mx-auto gap-4 md:gap-10">
           <img
             src="/main-page-img.jpg"
@@ -39,7 +42,7 @@ export default function Home() {
           />
           <div className="flex flex-col justify-center w-1/2">
             <h3 className="text-2xl sm:text-4xl font-semibold">
-              Welcome to the revolutionary world of Battle Mile.
+              Welcome to the revolutionary world of Ace Battle Mile.
             </h3>
             <p className="text-xl mt-5 sm:mt-10">
               Running events have been transformed into epic battles between
@@ -68,7 +71,7 @@ export default function Home() {
                 <p className="text-white text-sm">
                   Join us in this extraordinary journey, where passion meets
                   competition and running transcends its boundaries. Step onto
-                  the battlefield, and let the Battle Mile web3 marketplace
+                  the battlefield, and let the Ace Battle Mile web3 marketplace
                   become your gateway to an unparalleled running experience.
                   Register your team today, and prepare to make history in the
                   realm of running battles.
@@ -80,9 +83,9 @@ export default function Home() {
             <p className="text-white text-sm">
               Join us in this extraordinary journey, where passion meets
               competition and running transcends its boundaries. Step onto the
-              battlefield, and let the Battle Mile web3 marketplace become your
-              gateway to an unparalleled running experience. Register your team
-              today, and prepare to make history in the realm of running
+              battlefield, and let the Ace Battle Mile web3 marketplace become
+              your gateway to an unparalleled running experience. Register your
+              team today, and prepare to make history in the realm of running
               battles.
             </p>
           </div>

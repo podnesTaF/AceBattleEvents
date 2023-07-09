@@ -12,7 +12,6 @@ export class MediaService {
   ) {}
 
   create(dto: CreateMediaDto) {
-    console.log(dto);
     return this.repository.save(dto);
   }
 

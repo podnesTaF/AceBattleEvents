@@ -30,19 +30,19 @@ export class Event {
   @Column()
   endDate: Date;
 
-  @ManyToOne(() => Media, { nullable: true })
+  @ManyToOne(() => Media, { nullable: true, eager: true })
   @JoinColumn()
   introImage: Media;
 
-  @ManyToOne(() => Media, { nullable: true })
+  @ManyToOne(() => Media, { nullable: true, eager: true })
   @JoinColumn()
   minorImage: Media;
 
-  @OneToOne(() => Location)
+  @OneToOne(() => Location, { onDelete: 'CASCADE' })
   @JoinColumn()
   location: Location;
 
-  @OneToMany(() => PrizeEntity, (prize) => prize.event)
+  @OneToMany(() => PrizeEntity, (prize) => prize.event, { onDelete: 'CASCADE' })
   prizes: PrizeEntity[];
 
   @ManyToMany(() => Team, (team) => team.events, {
