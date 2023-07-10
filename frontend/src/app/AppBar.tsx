@@ -32,12 +32,14 @@ const AppBar = () => {
     <>
       <div className="xl:flex justify-between px-5 py-2 bg-[#1E1C1F] items-center w-full z-10">
         <div className={"flex justify-between items-center"}>
-          <IconButton
-            onClick={() => setOpen(true)}
-            className={"text-white xl:hidden items-center"}
-          >
-            <MenuIcon sx={{ fontSize: 40 }} />
-          </IconButton>
+          <div className="xl:hidden">
+            <IconButton
+              onClick={() => setOpen(true)}
+              className={"text-white items-center"}
+            >
+              <MenuIcon sx={{ fontSize: 40 }} />
+            </IconButton>
+          </div>
           <h2 className={"text-2xl xl:text-3xl uppercase text-white"}>
             Ace Battle Events
           </h2>

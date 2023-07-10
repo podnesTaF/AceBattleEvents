@@ -38,6 +38,9 @@ export const teamApi = api.injectEndpoints({
         `/teams/registrations?page=${page}&limit=${limit}`,
       providesTags: ["Registration"],
     }),
+    fetchTeam: builder.query<ITeam, number>({
+      query: (id) => `/teams/${id}`,
+    }),
   }),
 });
 
@@ -47,4 +50,5 @@ export const {
   useRegiterTeamMutation,
   useGetRegistrationsQuery,
   useFetchAllTeamsQuery,
+  useFetchTeamQuery,
 } = teamApi;

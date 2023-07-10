@@ -80,7 +80,8 @@ const TeamsCarousel: React.FC<Props> = ({ teams }) => {
       {activeIndex > 0 && (
         <IconButton
           onClick={() => slide("prev")}
-          className="absolute left-2 sm:-left-6 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-60 rounded-full p-2"
+          style={{ position: "absolute", backgroundColor: "white" }}
+          className="left-2 sm:-left-6 top-1/2 transform -translate-y-1/2 opacity-60 rounded-full p-2 hover:opacity-100"
           type="button"
         >
           <ChevronLeftIcon />
@@ -89,7 +90,8 @@ const TeamsCarousel: React.FC<Props> = ({ teams }) => {
       {activeIndex < itemRefs.current.length - 1 && (
         <IconButton
           onClick={() => slide("next")}
-          className="absolute right-2 sm:-right-6 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-60 rounded-full p-2"
+          style={{ position: "absolute", backgroundColor: "white" }}
+          className="right-2 sm:-right-6 top-1/2 transform -translate-y-1/2 opacity-60 rounded-full p-2  hover:opacity-100"
           type="button"
         >
           <ChevronRightIcon />

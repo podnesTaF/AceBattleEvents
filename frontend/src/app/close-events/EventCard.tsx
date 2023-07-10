@@ -6,6 +6,7 @@ import { formatDate, isPassed } from "@/utils/date-formater";
 import { getGoogleMapsLink } from "@/utils/link-helpers";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -41,9 +42,18 @@ const EventCard: React.FC<EventCardProps> = ({
       <div
         className={`w-full bg-[url('/card1.jpg')] bg-contain md:bg-cover bg-no-repeat relative flex justify-center drop-shadow-xl`}
       >
+        <Image
+          src={event.introImage?.mediaUrl || "/card1.jpg"}
+          alt="event image"
+          width={1280}
+          height={830}
+          className="absolute top-0 left-0 w-full h-full object-cover -z-10"
+        />
         <div className="md:bg-[#F7F7F7] px-5 md:py-5 w-full lg:w-[820px]">
           <h3 className="p-3 bg-black/50 text-white md:bg-none text-xl uppercase text-center w-full mb-10 md:my-5">
-            {event.description}
+            {event.description.length < 100
+              ? event.description
+              : event.description.slice(0, 97) + "..."}
           </h3>
           <div className="flex flex-col md:flex-row w-full">
             <div className="w-full md:w-1/2 border-red border-[1px] p-4 flex flex-col gap-2 bg-white min-h-[400px] justify-between">

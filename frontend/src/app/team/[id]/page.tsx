@@ -2,6 +2,7 @@
 
 import CustomTable from "@/components/shared/CustomTable";
 import Pagination from "@/components/shared/Pagination";
+import { useFetchTeamQuery } from "@/services/teamService";
 import { raceRows } from "@/utils/tables-dummy-data";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -14,17 +15,32 @@ interface Props {
 
 const TeamPage: React.FC<Props> = ({ params: { id } }) => {
   const [page, setPage] = useState(0);
+
+  const { data: team, isLoading, isError } = useFetchTeamQuery(+id);
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <>
-      <header className="w-full flex justify-center h-96 sm:h-[800px] bg-[url('/page-detail.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">
+      <header className="w-full flex justify-center h-96 sm:h-[600px] bg-[url('/page-detail.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">
         <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.4)] z-0"></div>
-        <div className="h-3/5 mb-10 sm:mb-0 sm:h-1/2 ml-5 flex flex-col justify-center items-center w-3/4 sm:w-3/5 md:w-[500px] z-10">
-          <h2 className="text-white uppercase font-semibold text-3xl sm:text-5xl mb-5">
-            Brussels
-          </h2>
-          <h4 className="text-white text-2xl uppercase">
-            club "Royal Runners"
-          </h4>
+        <div className="h-3/5 mb-10 sm:mb-0 sm:h-1/2 ml-5 flex flex-col md:flex-row gap-4 justify-center items-center w-3/4 sm:w-3/5 md:w-[600px] z-10">
+          <div className="w-96">
+            <Image
+              src={team?.logo.mediaUrl || ""}
+              alt="avatar"
+              width={300}
+              height={300}
+            />
+          </div>
+          <div>
+            <h2 className="text-white uppercase font-semibold text-3xl sm:text-5xl mb-5">
+              {team?.name}
+            </h2>
+            <h4 className="text-white text-2xl uppercase">
+              club "{team?.club}"
+            </h4>
+          </div>
         </div>
       </header>
       <main>
@@ -38,7 +54,7 @@ const TeamPage: React.FC<Props> = ({ params: { id } }) => {
                 Coach
               </h4>
               <h2 className="text-2xl md:text-3xl font-semibold">
-                Vitaly Sabulyak
+                {team?.coach.name} {team?.coach.surname}
               </h2>
             </div>
             <div className="mr-4">
@@ -55,120 +71,27 @@ const TeamPage: React.FC<Props> = ({ params: { id } }) => {
               Runners
             </h4>
             <div className="flex flex-wrap px-4 xl:px-8 my-4 gap-8 justify-center">
-              <div className="max-w-xs max-h-sm relative">
-                <Image
-                  src="/avatar.jpg"
-                  alt="avatar"
-                  width={250}
-                  height={300}
-                  className="rounded-md object-cover"
-                />
-                <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
-                  <a
-                    href="https://worldathletics.org/athletes/ukraine/oleksii-pidnebesnyi-14983870"
-                    target="_blank"
-                  >
-                    <h4 className="text-2xl text-white underline">
-                      Oleksii <br /> Pidnebensyi
-                    </h4>
-                  </a>
+              {team?.players.map((player) => (
+                <div className="max-w-xs max-h-sm relative" key={player.id}>
+                  <Image
+                    src="/avatar.jpg"
+                    alt="avatar"
+                    width={250}
+                    height={300}
+                    className="rounded-md object-cover"
+                  />
+                  <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
+                    <a
+                      href="https://worldathletics.org/athletes/ukraine/oleksii-pidnebesnyi-14983870"
+                      target="_blank"
+                    >
+                      <h4 className="text-2xl text-white underline">
+                        {player.name} <br /> {player.surname}
+                      </h4>
+                    </a>
+                  </div>
                 </div>
-              </div>
-              <div className="max-w-xs max-h-sm relative">
-                <Image
-                  src="/avatar.jpg"
-                  alt="avatar"
-                  width={250}
-                  height={300}
-                  className="rounded-md object-cover"
-                />
-                <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
-                  <a
-                    href="https://worldathletics.org/athletes/ukraine/oleksii-pidnebesnyi-14983870"
-                    target="_blank"
-                  >
-                    <h4 className="text-2xl text-white underline">
-                      Oleksii <br /> Pidnebensyi
-                    </h4>
-                  </a>
-                </div>
-              </div>
-              <div className="max-w-xs max-h-sm relative">
-                <Image
-                  src="/avatar.jpg"
-                  alt="avatar"
-                  width={250}
-                  height={300}
-                  className="rounded-md object-cover"
-                />
-                <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
-                  <a
-                    href="https://worldathletics.org/athletes/ukraine/oleksii-pidnebesnyi-14983870"
-                    target="_blank"
-                  >
-                    <h4 className="text-2xl text-white underline">
-                      Oleksii <br /> Pidnebensyi
-                    </h4>
-                  </a>
-                </div>
-              </div>
-              <div className="max-w-xs max-h-sm relative">
-                <Image
-                  src="/avatar.jpg"
-                  alt="avatar"
-                  width={250}
-                  height={300}
-                  className="rounded-md object-cover"
-                />
-                <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
-                  <a
-                    href="https://worldathletics.org/athletes/jamaica/shelly-ann-fraser-pryce-14285680"
-                    target="_blank"
-                  >
-                    <h4 className="text-2xl text-white underline">
-                      Oleksii <br /> Pidnebensyi
-                    </h4>
-                  </a>
-                </div>
-              </div>
-              <div className="max-w-xs max-h-sm relative">
-                <Image
-                  src="/avatar.jpg"
-                  alt="avatar"
-                  width={250}
-                  height={300}
-                  className="rounded-md object-cover"
-                />
-                <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
-                  <a
-                    href="https://worldathletics.org/athletes/jamaica/shelly-ann-fraser-pryce-14285680"
-                    target="_blank"
-                  >
-                    <h4 className="text-2xl text-white underline">
-                      Oleksii <br /> Pidnebensyi
-                    </h4>
-                  </a>
-                </div>
-              </div>
-              <div className="max-w-xs max-h-sm relative">
-                <Image
-                  src="/avatar.jpg"
-                  alt="avatar"
-                  width={250}
-                  height={300}
-                  className="rounded-md object-cover"
-                />
-                <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
-                  <a
-                    href="https://worldathletics.org/athletes/jamaica/shelly-ann-fraser-pryce-14285680"
-                    target="_blank"
-                  >
-                    <h4 className="text-2xl text-white underline">
-                      Oleksii <br /> Pidnebensyi
-                    </h4>
-                  </a>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
           <div className="my-5 px-4 xl:px-0">
