@@ -16,7 +16,7 @@ export const eventApi = api.injectEndpoints({
       query: (eventId) => ({
         url: "/events/" + eventId,
       }),
-      providesTags: (result) => ["Event"],
+      providesTags: (result) => ["Registration", "Event"],
     }),
     addEvent: builder.mutation<IEvent, any>({
       query: (body) => ({
