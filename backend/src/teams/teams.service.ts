@@ -189,7 +189,10 @@ export class TeamsService {
   }
 
   findOne(id: number) {
-    return this.repository.findOne({ where: { id }, relations: ['events'] });
+    return this.repository.findOne({
+      where: { id },
+      relations: ['events', 'players', 'coach', 'logo', 'country'],
+    });
   }
 
   update(id: number, updateTeamDto: UpdateTeamDto) {
