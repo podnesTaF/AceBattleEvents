@@ -82,7 +82,6 @@ const ImagePicker: React.FC<ImageUploadProps> = ({ name, customSubmit }) => {
         setValue(name, pickedFile); // Set the form value using setValue
       }
     } else {
-      console.log("wrong file type");
       setValid(false);
     }
   };
@@ -147,12 +146,7 @@ const ImagePicker: React.FC<ImageUploadProps> = ({ name, customSubmit }) => {
       {customSubmit && (
         <div className="my-3 z-10">
           <Button
-            onClick={customSubmit.bind(
-              null,
-              image,
-              previewUrl,
-              image?.orinalname
-            )}
+            onClick={customSubmit.bind(null, image, previewUrl)}
             type="button"
             className="ml-auto"
             variant="outlined"

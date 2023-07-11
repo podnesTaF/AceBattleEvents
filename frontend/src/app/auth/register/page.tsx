@@ -21,7 +21,7 @@ const RegisterPage = () => {
   const onSubmit = async (dto: any) => {
     try {
       const { data } = await axios.post<any, { data: IUser }>(
-        "http://localhost:4000/api/v1/auth/register",
+        "https://abe-server.up.railway.app/api/v1/auth/register",
         dto
       );
       if (data.id) {

@@ -18,7 +18,7 @@ export const authOptions: NextAuthOptions = {
         const { email, password } = credentials as any;
 
         const { data } = await axios.post(
-          "http://localhost:4000/api/v1/auth/login",
+          "https://abe-server.up.railway.app/api/v1/auth/login",
           { email, password }
         );
 

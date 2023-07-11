@@ -52,16 +52,12 @@ const AddImageDialog: React.FC<Props> = ({
     setPicked(picked === image.mediaUrl ? null : image.mediaUrl);
   };
 
-  const getUploadedImage = async (
-    image: string,
-    previewUrl: string,
-    imageName: string
-  ) => {
+  const getUploadedImage = async (image: string, previewUrl: string) => {
     try {
       const formData = new FormData();
       formData.append("image", image);
       const { data } = await axios.post<IMedia, any>(
-        "http://localhost:4000/api/v1/images",
+        "https://abe-server.up.railway.app/api/v1/images",
         formData
       );
 

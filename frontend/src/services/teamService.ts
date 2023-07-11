@@ -17,7 +17,7 @@ export const teamApi = api.injectEndpoints({
       query: ({ params, page }) => `/teams?${params}&page=${page}}`,
     }),
     fetchTeamsByUserId: builder.query<ITeam[], void>({
-      query: () => `/teams?user=true`,
+      query: () => `/teams/user`,
     }),
     regiterTeam: builder.mutation<
       ITeam,

@@ -44,13 +44,12 @@ const MediaPage = () => {
       const formData = new FormData();
       formData.append("image", dto.image);
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/images",
+        "https://abe-server.up.railway.app/api/v1/images",
         formData
       );
       if (data) {
         form.reset();
         setImages((prev) => [...prev, data]);
-        console.log(data);
         api.util.invalidateTags(["Image"]);
       }
     } catch (error) {
