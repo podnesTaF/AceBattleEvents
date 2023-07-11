@@ -36,13 +36,10 @@ const EventDetails: React.FC<Props> = ({ params }) => {
       setAddress(transformAddress(event.location));
     }
   }, [event]);
-
-  console.log(event?.introImage?.mediaUrl);
-
   return (
     <>
       <header
-        className={`w-full flex justify-center h-96 sm:h-[640px] md:h-[720px] lg:h-[800px] h-calc-screen-lg relative flex-col`}
+        className={`w-full flex justify-center h-[400px] sm:h-[640px] md:h-[720px] lg:h-[800px] h-calc-screen-lg relative flex-col`}
       >
         <Image
           src={event?.introImage?.mediaUrl || "/page-detail.jpg"}
@@ -62,15 +59,15 @@ const EventDetails: React.FC<Props> = ({ params }) => {
               sx={{ bgcolor: "grey.600", opacity: 0.6, mb: 5 }}
             />
           ) : (
-            <h2 className="text-white uppercase font-semibold text-3xl sm:text-5xl mb-5">
+            <h2 className="text-white uppercase font-semibold text-3xl sm:text-5xl mb-3 sm:mb-5 ml-2">
               {event?.title}
             </h2>
           )}
-          <h4 className="text-white text-2xl uppercase">
+          <h4 className="text-white text-xl sm:text-2xl uppercase">
             Share your energy with us!
           </h4>
         </div>
-        <div className="absolute w-full sm:w-1/2 md:w-[500px] h-1/5 sm:h-1/4 bg-black/60 bottom-0 right-0 flex justify-center items-center z-10">
+        <div className="absolute w-full sm:w-1/2 md:w-[500px] sm:h-1/4 bg-black/60 bottom-0 right-0 flex justify-center items-center z-10">
           {isLoading ? (
             <Skeleton
               variant="text"
@@ -80,7 +77,7 @@ const EventDetails: React.FC<Props> = ({ params }) => {
               sx={{ bgcolor: "grey.600", opacity: 0.6, mb: 5 }}
             />
           ) : (
-            <h3 className="uppercase text-xl font-thin text-white w-4/5">
+            <h3 className="uppercase text-lg sm:text-xl font-thin text-white w-4/5 my-2">
               {event?.description}
             </h3>
           )}
@@ -88,7 +85,7 @@ const EventDetails: React.FC<Props> = ({ params }) => {
         {session?.user && (
           <button
             onClick={() => router.push(`/calendar/${params.id}/register-team`)}
-            className="hover:bg-red-800 bg-red-500 text-white font-bold py-4 px-6 border border-red-800 rounded absolute top-6 right-6 active:scale-95"
+            className="hover:bg-red-800 bg-red-500 text-white font-bold py-2 px-3 sm:py-4 sm:px-6 border border-red-800 rounded absolute top-6 right-6 active:scale-95"
           >
             Register Your Team
           </button>

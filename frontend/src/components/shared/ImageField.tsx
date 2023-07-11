@@ -20,6 +20,7 @@ const ImageField: React.FC<Props> = ({ title, name }) => {
       <div className="flex gap-4 mb-4 items-center">
         <h4 className="text-gray uppercase text-xl font-semibold">{title}</h4>
         <button
+          type="button"
           className="px-4 py-2 rounded-md bg-red-500 text-xl text-white font-semibold"
           onClick={() => setImageDialogOpen(true)}
         >

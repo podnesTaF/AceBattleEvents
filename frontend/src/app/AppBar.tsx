@@ -40,7 +40,12 @@ const AppBar = () => {
               <MenuIcon sx={{ fontSize: 40 }} />
             </IconButton>
           </div>
-          <h2 className={"text-2xl xl:text-3xl uppercase text-white"}>
+          <h2
+            onClick={() => router.push("/")}
+            className={
+              "text-2xl xl:text-3xl uppercase text-white cursor-pointer active:scale-95"
+            }
+          >
             Ace Battle Events
           </h2>
         </div>

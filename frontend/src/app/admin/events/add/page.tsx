@@ -11,28 +11,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Button, Divider, IconButton } from "@mui/material";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 
-const AddImageDialog = dynamic(
-  () => import("@/components/admin/AddImageDialog")
-);
-
 const AddEvent = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [addEvent, { isLoading }] = useAddEventMutation();
-  const [imageDialogOpen, setImageDialogOpen] = useState<boolean>(false);
-  const [minorImagePreview, setMinorImagePreview] = useState<{
-    url: string;
-    name: string;
-  }>({ url: "", name: "" });
-  const [introImagePreview, setIntroImagePreview] = useState<{
-    url: string;
-    name: string;
-  }>({ url: "", name: "" });
-  const [minorImageOpen, setMinorImageOpen] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -44,7 +29,7 @@ const AddEvent = () => {
     },
   });
 
-  const { control, formState, handleSubmit, watch, getValues } = form;
+  const { control, formState, handleSubmit, watch } = form;
 
   const { append, remove } = useFieldArray({
     control,
@@ -52,7 +37,6 @@ const AddEvent = () => {
   });
 
   const onSubmit = async (dto: any) => {
-    console.log(dto);
     const location = {
       country: dto.country,
       city: dto.city,
@@ -186,7 +170,7 @@ const AddEvent = () => {
                         label="zip code*"
                         name={"zipCode"}
                         placeholder={"Enter zipCode here..."}
-                        type="number"
+                        type="text"
                       />
                     </div>
                   </div>

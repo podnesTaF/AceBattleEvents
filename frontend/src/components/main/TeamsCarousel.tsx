@@ -11,7 +11,7 @@ interface Props {
 }
 const TeamsCarousel: React.FC<Props> = ({ teams }) => {
   const [activeIndex, setActiveIndex] = useState(1);
-  const [translateDistance, setTranslateDistance] = useState(220);
+  const [translateDistance, setTranslateDistance] = useState(200);
   const [sliderWidth, setSliderWidth] = useState(0);
 
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -23,8 +23,6 @@ const TeamsCarousel: React.FC<Props> = ({ teams }) => {
     if (!sliderRef.current) return;
 
     const slideDistance = itemRefs.current[0].offsetWidth;
-
-    console.log(slideDistance);
     setActiveIndex((prev) => prev + (direction === "next" ? 1 : -1));
 
     setTranslateDistance(
@@ -45,7 +43,7 @@ const TeamsCarousel: React.FC<Props> = ({ teams }) => {
   }, [translateDistance]);
 
   return (
-    <div className="my-4 w-full sm:w-3/4 md:w-[400px] h-96 relative flex justify-center items-center">
+    <div className="my-4 w-full sm:w-[400px] h-96 relative flex justify-center items-center">
       <div
         ref={sliderRef}
         className="slider-carousel"
@@ -60,7 +58,7 @@ const TeamsCarousel: React.FC<Props> = ({ teams }) => {
               index === activeIndex
                 ? "opacity-100 scale-100"
                 : "opacity-60 scale-50"
-            }`}
+            } flex justify-center items-center`}
           >
             <Image
               src={team.logo.mediaUrl}

@@ -100,7 +100,6 @@ const AddTeam = () => {
   }, [data]);
 
   const onSubmit = async (dto: any) => {
-    console.log(dto);
     try {
       await addTeam({
         name: dto.name,
