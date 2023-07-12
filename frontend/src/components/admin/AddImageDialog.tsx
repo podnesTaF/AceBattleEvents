@@ -72,6 +72,8 @@ const AddImageDialog: React.FC<Props> = ({
         setIntroPreview({ url: previewUrl, name: data.title });
         if (instantUpload) {
           handleClose(data);
+        } else {
+          handleClose();
         }
       }
     } catch (error) {
@@ -93,6 +95,8 @@ const AddImageDialog: React.FC<Props> = ({
     });
     if (instantUpload) {
       handleClose(getValues(name));
+    } else {
+      handleClose();
     }
   };
 

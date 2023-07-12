@@ -22,6 +22,7 @@ const FormRadio: React.FC<FormRadioProps> = ({
   const {
     register,
     formState: { errors },
+    getValues,
   } = useFormContext();
   return (
     <RadioGroup name={name}>
@@ -32,6 +33,7 @@ const FormRadio: React.FC<FormRadioProps> = ({
           control={
             <Radio
               value={option.value}
+              checked={getValues(name) === option.value}
               sx={{
                 color: red[600],
                 "&.Mui-checked": {

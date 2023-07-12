@@ -4,9 +4,14 @@ import TableSkeleton from "./TableSkeleton";
 interface CustomTableProps {
   rows: any[];
   isLoading: boolean;
+  onEdit?: (id: string) => void;
 }
 
-const CustomTable: React.FC<CustomTableProps> = ({ rows, isLoading }) => {
+const CustomTable: React.FC<CustomTableProps> = ({
+  rows,
+  isLoading,
+  onEdit,
+}) => {
   return (
     <div className="relative sm:rounded-sm max-h-[500px] overflow-auto">
       {isLoading ? (
@@ -34,6 +39,18 @@ const CustomTable: React.FC<CustomTableProps> = ({ rows, isLoading }) => {
               >
                 {Object.keys(rows[0]).map((t, i) => {
                   if (typeof r[t] === "object") {
+                    if (onEdit && t === "edit") {
+                      return (
+                        <td key={i} className="px-6 py-4">
+                          <button
+                            onClick={() => onEdit(r[t].link)}
+                            className="font-medium text-gray-400 dark:text-blue-500 hover:underline cursor-pointer"
+                          >
+                            {r[t].value}
+                          </button>
+                        </td>
+                      );
+                    }
                     return (
                       <td key={i} className="px-6 py-4">
                         <Link

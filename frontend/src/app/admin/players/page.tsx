@@ -6,6 +6,7 @@ import FilterSelect from "@/components/events/FilterSelect";
 import CustomTable from "@/components/shared/CustomTable";
 import Pagination from "@/components/shared/Pagination";
 import { useFilter } from "@/hooks/useFilter";
+import { IPlayer } from "@/models/ITeam";
 import { useGetAllPlayersQuery } from "@/services/playerService";
 import { genders } from "@/utils/events-filter-values";
 import { getParamsFromFilters } from "@/utils/transform-data";
@@ -17,6 +18,7 @@ const PlayersPage = () => {
   const [currPage, setCurrPage] = useState<number>(1);
   const [pagesCount, setPagesCount] = useState<number>(1);
   const [isCreatePlayerOpen, setIsCreatePlayerOpen] = useState<boolean>(false);
+  const [playerToEdit, setPlayerToEdit] = useState<IPlayer>();
 
   const [playersRows, setPlayersRows] = useState<any>([]);
 
@@ -28,6 +30,15 @@ const PlayersPage = () => {
   const onChangeInput = (newValue: string) => {
     setSearchValue(newValue);
     onChangeFilter("name", newValue);
+  };
+
+  const onEdit = (id: string) => {
+    const player = data?.players.find((p) => p.id === +id);
+    console.log(id);
+    if (player) {
+      setPlayerToEdit(player);
+      setIsCreatePlayerOpen(true);
+    }
   };
 
   useEffect(() => {
@@ -43,7 +54,7 @@ const PlayersPage = () => {
             value: "World Athletics Page",
           },
           edit: {
-            link: "/admin/players/add?id=" + player.id,
+            link: player.id,
             value: "Edit",
           },
         }))
@@ -54,8 +65,8 @@ const PlayersPage = () => {
   return (
     <div className="w-full">
       <AdminHeader
-        title="Teams"
-        description="All Teams"
+        title="Players"
+        description="All Players"
         searchValue={searchValue}
         onChangeInput={onChangeInput}
       >
@@ -70,6 +81,7 @@ const PlayersPage = () => {
             <AddPlayerForm
               isOpen={isCreatePlayerOpen}
               onClose={() => setIsCreatePlayerOpen(false)}
+              player={playerToEdit}
             />
           </Collapse>
           <div className="flex gap-4 max-w-xl mb-4 flex-col sm:flex-row">
@@ -82,7 +94,7 @@ const PlayersPage = () => {
             />
           </div>
           <div className="max-w-6xl mb-4">
-            <CustomTable rows={playersRows} isLoading={false} />
+            <CustomTable rows={playersRows} isLoading={false} onEdit={onEdit} />
             <div className="flex mx-auto my-4">
               <Pagination
                 onChangePage={setCurrPage}
