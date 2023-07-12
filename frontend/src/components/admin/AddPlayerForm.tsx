@@ -1,35 +1,71 @@
 import { addPlayerSchema } from "@/utils/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import AddPlayerInfo from "../shared/AddPlayerInfo";
 
 import FormButton from "@/components/shared/FormButton";
+import { IPlayer } from "@/models/ITeam";
+import {
+  useAddPlayerMutation,
+  useUpdatePlayerMutation,
+} from "@/services/playerService";
+import ImageField from "../shared/ImageField";
 import AddImageDialog from "./AddImageDialog";
 
 interface AddPlayerFormProps {
   isOpen: boolean;
+  player?: IPlayer;
   onClose: () => void;
 }
 
-const AddPlayerForm: React.FC<AddPlayerFormProps> = ({ isOpen, onClose }) => {
+const AddPlayerForm: React.FC<AddPlayerFormProps> = ({ player, onClose }) => {
   const [playerImageOpen, setPlayerImageOpen] = useState<boolean>(false);
   const [avatarPreview, setAvatarPreview] = useState<{
     url: string;
     name: string;
   }>({ url: "", name: "" });
 
+  const [addPlayer] = useAddPlayerMutation();
+  const [updatePlayer] = useUpdatePlayerMutation();
+
   const form = useForm({
     mode: "onChange",
     resolver: yupResolver(addPlayerSchema),
   });
 
-  const { formState } = form;
+  const { formState, setValue } = form;
 
   const onSubmit = (dto: any) => {
-    console.log(dto);
+    try {
+      if (player) {
+        updatePlayer({ ...dto, id: player.id });
+      } else {
+        addPlayer(dto);
+      }
+      form.reset();
+      onClose();
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  useEffect(() => {
+    if (player) {
+      setAvatarPreview({
+        url: player.image?.mediaUrl || "",
+        name: player.image?.title || "",
+      });
+
+      console.log(player.image);
+      setValue("name", player.name);
+      setValue("surname", player.surname);
+      setValue("dateOfBirth", player.dateOfBirth);
+      setValue("gender", player.gender);
+      setValue("image", player?.image || "");
+    }
+  }, [player]);
 
   return (
     <div className="rounded-md shadow-md p-4 mx-4 lg:mx-auto max-w-4xl">
@@ -45,16 +81,8 @@ const AddPlayerForm: React.FC<AddPlayerFormProps> = ({ isOpen, onClose }) => {
                 errorInstance={formState.errors}
                 name={""}
               />
-              <div className="flex gap-4 mb-4 items-center">
-                <h4 className="text-gray uppercase text-lg font-semibold">
-                  UPLOAD AVATAR
-                </h4>
-                <button
-                  className="px-4 py-2 rounded-md bg-red-500 text-xl text-white font-semibold"
-                  onClick={() => setPlayerImageOpen(true)}
-                >
-                  Open Storage
-                </button>
+              <div className="mx-auto">
+                <ImageField title="upload avatar" name="image" />
               </div>
             </div>
 
@@ -72,12 +100,12 @@ const AddPlayerForm: React.FC<AddPlayerFormProps> = ({ isOpen, onClose }) => {
             <AddImageDialog
               isOpen={playerImageOpen}
               handleClose={() => setPlayerImageOpen(false)}
-              name={"avatar"}
+              name={"image"}
               setIntroPreview={setAvatarPreview}
             />
             <div className="max-w-xs ml-auto">
               <FormButton
-                title="create player"
+                title={player ? "Update Player" : "Add Player"}
                 disabled={!formState.isValid || formState.isSubmitting}
                 isSubmitting={formState.isSubmitting}
                 isLoading={formState.isSubmitting}

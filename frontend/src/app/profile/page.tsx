@@ -1,17 +1,24 @@
 "use client";
 
 import EventCard from "@/app/close-events/EventCard";
+import AddImageDialog from "@/components/admin/AddImageDialog";
 import Pagination from "@/components/shared/Pagination";
 import TeamCard from "@/components/shared/TeamCard";
+import { IUser } from "@/models/IUser";
 import {
   useFetchTeamsByUserIdQuery,
   useGetRegistrationsQuery,
 } from "@/services/teamService";
+import {
+  useFetchMeQuery,
+  useUpdateImageMutation,
+} from "@/services/userService";
 import { Divider, Skeleton } from "@mui/material";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import Tab from "./Tab";
 
 const EventSkeleton = dynamic(
@@ -22,13 +29,28 @@ const Profile = () => {
   const [pagesCount, setPageCount] = useState(1);
   const [currPage, setCurrPage] = useState<number>(1);
   const [activeTab, setActiveTab] = useState(0);
+  const [editImageDialogOpen, setEditImageDialogOpen] = useState(false);
+  const [user, setUser] = useState<IUser>();
 
-  const { data: session } = useSession();
+  const { data: session, update: updateSession } = useSession();
   const { data: teams, isLoading } = useFetchTeamsByUserIdQuery();
+  const { data, isLoading: userLoading } = useFetchMeQuery();
   const { data: registrations, isLoading: regLoading } =
     useGetRegistrationsQuery({ page: currPage, limit: 3 });
 
+  const [updateImage] = useUpdateImageMutation();
+
   const ref = useRef<HTMLDivElement>(null);
+
+  const form = useForm({
+    mode: "onChange",
+  });
+
+  useEffect(() => {
+    if (data) {
+      setUser(data);
+    }
+  }, [data]);
 
   useEffect(() => {
     if (registrations) {
@@ -46,6 +68,34 @@ const Profile = () => {
     setCurrPage(pageNum);
   };
 
+  const onCloseDialog = (image?: any) => {
+    if (image) {
+      onAddProfileImage(image);
+    }
+    setEditImageDialogOpen(false);
+  };
+
+  const onAddProfileImage = async (dto: any) => {
+    if (!dto || !user) return;
+    try {
+      await updateImage({ image: dto, userId: user.id });
+
+      setUser((prev: any) => ({
+        ...prev,
+        image: dto,
+      }));
+      updateSession({
+        ...session,
+        user: {
+          ...session?.user,
+          image: dto.image,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <header className="w-full flex flex-col md:h-[800px] relative">
@@ -59,15 +109,30 @@ const Profile = () => {
         </div>
         <div className="flex flex-col md:flex-row rounded-lg md:bg-white p-3 md:p-6 mx-auto max-w-5xl w-full md:w-4/5 lg:2/3 z-10">
           <div className="relative w-[300px] rounded-2xl mx-auto">
-            <Image
-              src="/avatar.jpg"
-              alt="profile"
-              className="rounded-2xl"
-              width={300}
-              height={300}
-            />
+            {isLoading ? (
+              <Skeleton variant={"rectangular"} width={300} height={300} />
+            ) : (
+              <Image
+                src={
+                  user?.image?.mediaUrl ||
+                  "https://storage.googleapis.com/abe_cloud_storage/image/large/c4bccba0-3f80-4eb5-b50f-63e5cd4f0100.jpg"
+                }
+                alt="profile"
+                className="rounded-2xl object-cover"
+                width={300}
+                height={300}
+              />
+            )}
             <div className="absolute -top-4 px-5 py-2 bg-red-700 rounded-md left-1/2 -translate-x-1/2">
               <p className="text-white text-xl font-semibold">manager</p>
+            </div>
+            <div className="mt-4">
+              <button
+                onClick={() => setEditImageDialogOpen(true)}
+                className="w-full py-2 border-none rounded-md bg-red-500 text-white font-semibold text-xl hover:opacity-95 active:scale-95"
+              >
+                Edit Avatar
+              </button>
             </div>
           </div>
           <div className="flex-1 flex justify-between items-center md:items-start">
@@ -172,6 +237,17 @@ const Profile = () => {
           )}
           {activeTab === 2 && null}
         </div>
+        <FormProvider {...form}>
+          <form onSubmit={form.handleSubmit(onAddProfileImage)}>
+            <AddImageDialog
+              isOpen={editImageDialogOpen}
+              handleClose={onCloseDialog}
+              name={"image"}
+              instantUpload={true}
+              setIntroPreview={() => {}}
+            />
+          </form>
+        </FormProvider>
       </main>
     </>
   );

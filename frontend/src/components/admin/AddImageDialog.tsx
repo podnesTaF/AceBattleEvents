@@ -16,11 +16,13 @@ import Image from "next/image";
 import React, { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import ImagePicker from "./ImagePicker";
+
 interface Props {
   isOpen: boolean;
-  handleClose: () => void;
+  handleClose: (image?: any) => void;
   name: string;
   setIntroPreview: Function;
+  instantUpload?: boolean;
 }
 
 const tabs = [
@@ -37,6 +39,7 @@ const AddImageDialog: React.FC<Props> = ({
   handleClose,
   name,
   setIntroPreview,
+  instantUpload,
 }) => {
   const [activeTab, setActiveTab] = React.useState(0);
   const { data: images, isLoading } = useGetImagesQuery();
@@ -57,15 +60,21 @@ const AddImageDialog: React.FC<Props> = ({
       const formData = new FormData();
       formData.append("image", image);
       const { data } = await axios.post<IMedia, any>(
-        "https://abe-server.up.railway.app/api/v1/images",
+        "http://localhost:4000/api/v1/images",
         formData
       );
+
+      console.log("worls", data);
 
       if (data) {
         setValue(name, data);
         setPicked(data.mediaUrl);
         setIntroPreview({ url: previewUrl, name: data.title });
-        handleClose();
+        if (instantUpload) {
+          handleClose(data);
+        } else {
+          handleClose();
+        }
       }
     } catch (error) {
       console.log(error);
@@ -84,7 +93,11 @@ const AddImageDialog: React.FC<Props> = ({
       url: getValues(name).mediaUrl,
       name: getValues(name).title,
     });
-    handleClose();
+    if (instantUpload) {
+      handleClose(getValues(name));
+    } else {
+      handleClose();
+    }
   };
 
   return (
@@ -142,7 +155,7 @@ const AddImageDialog: React.FC<Props> = ({
         <button
           disabled={!picked}
           onClick={onAdd}
-          type="button"
+          type={"button"}
           className="px-4 py-2 bg-red-500 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Add image

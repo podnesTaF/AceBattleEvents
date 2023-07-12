@@ -1,3 +1,5 @@
+import { IMedia } from "./IMedia";
+
 export interface IUser {
   id: number;
   name: string;
@@ -8,6 +10,7 @@ export interface IUser {
   country: string;
   balance: number;
   token: string;
+  image?: IMedia;
 }
 
 export interface ITransaction {

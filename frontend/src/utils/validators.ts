@@ -105,5 +105,5 @@ export const addPlayerSchema = yup.object().shape({
   surname: yup.string().required("Please provide player surname"),
   dateOfBirth: yup.string().required("Please provide player date of birth"),
   gender: yup.string().required("Please provide gender"),
-  avatar: yup.mixed(),
+  image: yup.mixed(),
 });

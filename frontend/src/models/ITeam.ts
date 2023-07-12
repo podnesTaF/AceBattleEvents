@@ -62,6 +62,7 @@ export type IPlayer = {
   name: string;
   dateOfBirth: string;
   gender: string;
+  image?: IMedia;
   personalBests: IPersonalBest[];
 };
 

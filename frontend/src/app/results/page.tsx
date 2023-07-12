@@ -10,13 +10,7 @@ import { countries, years } from "@/utils/events-filter-values";
 import { resultRows } from "@/utils/tables-dummy-data";
 import { useState } from "react";
 
-interface Props {
-  params: {
-    id: string;
-  };
-}
-
-const ResultsPage: React.FC<Props> = ({ params: { id } }) => {
+const ResultsPage: React.FC = () => {
   const [searchValue, setSearchValue] = useState("");
   const [filters, setFilters] = useState<{ type: string; value: any }[]>([]);
   const [currPage, setCurrPage] = useState<number>(1);
