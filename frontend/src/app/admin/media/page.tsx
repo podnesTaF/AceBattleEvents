@@ -44,7 +44,7 @@ const MediaPage = () => {
       const formData = new FormData();
       formData.append("image", dto.image);
       const { data } = await axios.post(
-        "https://abe-server.up.railway.app/api/v1/images",
+        "http://localhost:4000/api/v1/images",
         formData
       );
       if (data) {

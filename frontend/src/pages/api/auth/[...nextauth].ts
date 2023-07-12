@@ -18,7 +18,7 @@ export const authOptions: NextAuthOptions = {
         const { email, password } = credentials as any;
 
         const { data } = await axios.post(
-          "https://abe-server.up.railway.app/api/v1/auth/login",
+          "http://localhost:4000/api/v1/auth/login",
           { email, password }
         );
 
@@ -34,7 +34,11 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     jwt: async ({ token, user, trigger, session }) => {
       if (trigger === "update" && session?.user) {
-        token.user.balance = session.user.balance;
+        if (session.user.balance) {
+          token.user.balance = session.user.balance;
+        } else if (session.user.image) {
+          token.user.image = session.user.image;
+        }
       }
       user && (token.user = user);
       return token;

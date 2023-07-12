@@ -1,3 +1,4 @@
+import { IMedia } from "@/models/IMedia";
 import { ITransaction, IUser } from "@/models/IUser";
 import { api } from "./api";
 
@@ -13,6 +14,7 @@ export const userApi = api.injectEndpoints({
     }),
     fetchMe: builder.query<IUser, void>({
       query: () => "/users/me",
+      providesTags: ["User"],
     }),
     fetchTx: builder.query<ITransaction[], void>({
       query: () => "/users/get-transactions",
@@ -28,6 +30,14 @@ export const userApi = api.injectEndpoints({
         body: { amount, type, txHash },
       }),
     }),
+    updateImage: builder.mutation<any, { image: IMedia; userId: number }>({
+      query: ({ image }) => ({
+        url: "/users/image",
+        method: "PATCH",
+        body: { imageId: image.id },
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
@@ -36,4 +46,5 @@ export const {
   useFetchMeQuery,
   useFetchTxQuery,
   useCreateTxMutation,
+  useUpdateImageMutation,
 } = userApi;
