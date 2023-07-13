@@ -1,4 +1,11 @@
-import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
+import {
+  IsEmail,
+  IsObject,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
+import { Media } from 'src/media/entities/media.entity';
 
 export class CreateUserDto {
   @Length(2)
@@ -13,8 +20,9 @@ export class CreateUserDto {
   @Length(6, 32, { message: 'Password has be at last 6 characters' })
   password: string;
 
+  @IsObject()
   @IsOptional()
-  imageUrl?: string;
+  image?: Media;
 
   @IsString()
   city: string;

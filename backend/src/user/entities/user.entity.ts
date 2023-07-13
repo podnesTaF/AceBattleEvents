@@ -1,9 +1,11 @@
 import { Club } from 'src/club/entities/club.entity';
+import { Media } from 'src/media/entities/media.entity';
 import { Team } from 'src/teams/entities/team.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -34,9 +36,6 @@ export class User {
   country: string;
 
   @Column({ nullable: true })
-  imageUrl: string;
-
-  @Column({ nullable: true })
   password: string;
 
   @OneToOne(() => Club, (club) => club.manager, {
@@ -45,8 +44,12 @@ export class User {
   })
   club: Club;
 
+  @ManyToOne(() => Media, { nullable: true })
   @OneToMany(() => Team, (team) => team.manager, { onDelete: 'CASCADE' })
   teams: Team[];
+
+  @ManyToOne(() => Media, { nullable: true })
+  image: Media;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

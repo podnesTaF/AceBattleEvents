@@ -33,7 +33,6 @@ export class TeamsController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
   findAll(
     @Request() req,
     @Query()
@@ -46,7 +45,13 @@ export class TeamsController {
       user?: any;
     },
   ) {
-    return this.teamsService.findAll(queries, +req.user.id);
+    return this.teamsService.findAll(queries, +req?.user?.id);
+  }
+
+  @Get('/user')
+  @UseGuards(JwtAuthGuard)
+  findUsers(@Request() req) {
+    return this.teamsService.findAllByUser(+req?.user?.id);
   }
 
   @Get('/registrations')

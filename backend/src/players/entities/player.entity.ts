@@ -1,9 +1,11 @@
 import { Country } from 'src/country/entity/country.entity';
+import { Media } from 'src/media/entities/media.entity';
 import { PersonalBest } from 'src/personal-bests/entities/personal-best.entity';
 import { Team } from 'src/teams/entities/team.entity';
 import {
   Column,
   Entity,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -26,11 +28,20 @@ export class PlayerEntity {
   @Column()
   gender: string;
 
+  @Column({ nullable: true })
+  worldAthleticsUrl: string;
+
   @ManyToOne(() => Country, (country) => country.players)
   country: Country;
 
-  @ManyToOne(() => Team, (team) => team.players, { onDelete: 'CASCADE' })
-  team: Team;
+  @ManyToOne(() => Media, { nullable: true })
+  image: Media;
+
+  @ManyToMany(() => Team, (team) => team.players, {
+    onDelete: 'NO ACTION',
+    onUpdate: 'NO ACTION',
+  })
+  teams: Team[];
 
   @OneToMany(() => PersonalBest, (personalBest) => personalBest.player)
   personalBests: PersonalBest[];
