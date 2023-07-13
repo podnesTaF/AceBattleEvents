@@ -20,6 +20,7 @@ const TeamPage: React.FC<Props> = ({ params: { id } }) => {
 
   if (isLoading) return <div>Loading...</div>;
 
+  console.log(team);
   return (
     <>
       <header className="w-full flex justify-center h-96 sm:h-[600px] bg-[url('/page-detail.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">
@@ -74,21 +75,31 @@ const TeamPage: React.FC<Props> = ({ params: { id } }) => {
               {team?.players.map((player) => (
                 <div className="max-w-xs max-h-sm relative" key={player.id}>
                   <Image
-                    src="/avatar.jpg"
+                    src={
+                      player.image
+                        ? player.image.mediaUrl
+                        : "https://storage.googleapis.com/abe_cloud_storage/image/large/c4bccba0-3f80-4eb5-b50f-63e5cd4f0100.jpg"
+                    }
                     alt="avatar"
                     width={250}
                     height={300}
-                    className="rounded-md object-cover"
+                    className="rounded-md object-cover min-h-[300px]"
                   />
                   <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
-                    <a
-                      href="https://worldathletics.org/athletes/ukraine/oleksii-pidnebesnyi-14983870"
-                      target="_blank"
-                    >
-                      <h4 className="text-2xl text-white underline">
+                    {player.worldAthleticsUrl ? (
+                      <a
+                        href="https://worldathletics.org/athletes/ukraine/oleksii-pidnebesnyi-14983870"
+                        target="_blank"
+                      >
+                        <h4 className={`text-2xl text-white underline`}>
+                          {player.name} <br /> {player.surname}
+                        </h4>
+                      </a>
+                    ) : (
+                      <h4 className={`text-2xl text-white`}>
                         {player.name} <br /> {player.surname}
                       </h4>
-                    </a>
+                    )}
                   </div>
                 </div>
               ))}

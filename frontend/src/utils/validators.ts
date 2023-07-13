@@ -46,6 +46,7 @@ export const AddTeamSchema = yup.object().shape({
           .string()
           .required("Please provide player date of birth"),
         gender: yup.string().required("Please provide player gender"),
+        worldAthleticsUrl: yup.string(),
         personalBests: yup.array().of(
           yup.object().shape({
             distance: yup.number().required("Please provide distance"),
@@ -106,4 +107,5 @@ export const addPlayerSchema = yup.object().shape({
   dateOfBirth: yup.string().required("Please provide player date of birth"),
   gender: yup.string().required("Please provide gender"),
   image: yup.mixed(),
+  worldAthleticsUrl: yup.string(),
 });
