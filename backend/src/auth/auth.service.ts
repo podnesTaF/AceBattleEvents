@@ -49,7 +49,7 @@ export class AuthService {
         city: dto.city,
         country: dto.country,
         password: hashedPassword,
-        imageUrl: dto.imageUrl,
+        image: dto.image || null,
       });
       return {
         ...userData,

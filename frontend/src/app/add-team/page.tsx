@@ -38,6 +38,7 @@ const AddTeam = () => {
           surname: "",
           dateOfBirth: "",
           gender: "",
+          worldAthleticsUrl: "",
           id: Object.keys(personalBests)[0],
           personalBests: personalBests[Object.keys(personalBests)[0]],
         },
@@ -57,6 +58,7 @@ const AddTeam = () => {
       surname: "",
       dateOfBirth: "",
       gender: "",
+      worldAthleticsUrl: "",
       id,
       personalBests: [{ distance: "", time: "", id: Date.now() }],
     });
@@ -231,42 +233,44 @@ const AddTeam = () => {
                           Personal Bests
                         </h3>
                         <div className="flex flex-col sm:flex-row flex-wrap">
-                          {field.personalBests.map((personalBest, idx) => (
-                            <div
-                              key={personalBest.id}
-                              className="flex w-full sm:w-1/2 lg:w-1/4 items-center"
-                            >
-                              <div className="mr-3 border-r-[1px] border-black h-4/5 flex items-center ">
-                                <IconButton
-                                  onClick={() => {
-                                    field.personalBests.splice(idx, 1);
-                                    removePb(field.id, idx);
-                                  }}
-                                >
-                                  <RemoveCircleOutlineIcon fontSize="large" />
-                                </IconButton>
-                              </div>
-                              <div className="flex sm:flex-col w-full">
-                                <div className="mb-4 mr-3 sm:mb-2 sm:mr-4 w-full">
-                                  <FormField
-                                    label="distance*"
-                                    type="number"
-                                    name={`players[${index}].personalBests[${idx}].distance`}
-                                    placeholder={"distance in m"}
-                                  />
+                          {field.personalBests.map(
+                            (personalBest: any, idx: number) => (
+                              <div
+                                key={personalBest.id}
+                                className="flex w-full sm:w-1/2 lg:w-1/4 items-center"
+                              >
+                                <div className="mr-3 border-r-[1px] border-black h-4/5 flex items-center ">
+                                  <IconButton
+                                    onClick={() => {
+                                      field.personalBests.splice(idx, 1);
+                                      removePb(field.id, idx);
+                                    }}
+                                  >
+                                    <RemoveCircleOutlineIcon fontSize="large" />
+                                  </IconButton>
                                 </div>
+                                <div className="flex sm:flex-col w-full">
+                                  <div className="mb-4 mr-3 sm:mb-2 sm:mr-4 w-full">
+                                    <FormField
+                                      label="distance*"
+                                      type="number"
+                                      name={`players[${index}].personalBests[${idx}].distance`}
+                                      placeholder={"distance in m"}
+                                    />
+                                  </div>
 
-                                <div className="mb-4 sm:mb-2 sm:mr-4  w-full">
-                                  <FormField
-                                    label="time"
-                                    type="number"
-                                    name={`players[${index}].personalBests[${idx}].time`}
-                                    placeholder={"time in s"}
-                                  />
+                                  <div className="mb-4 sm:mb-2 sm:mr-4  w-full">
+                                    <FormField
+                                      label="time"
+                                      type="number"
+                                      name={`players[${index}].personalBests[${idx}].time`}
+                                      placeholder={"time in s"}
+                                    />
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
+                            )
+                          )}
 
                           <div className="w-full flex items-center sm:w-auto">
                             <div className="h-[1px] flex-1 sm:hidden bg-black" />

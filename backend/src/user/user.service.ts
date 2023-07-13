@@ -22,8 +22,12 @@ export class UserService {
     });
   }
 
+  updateImage(id: number, imageId: number) {
+    return this.repository.update(id, { image: { id: imageId } });
+  }
+
   findById(id: number) {
-    return this.repository.findOne({ where: { id } });
+    return this.repository.findOne({ where: { id }, relations: ['image'] });
   }
 
   findByCond(cond: LoginUserDto) {

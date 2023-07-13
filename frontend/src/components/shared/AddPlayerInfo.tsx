@@ -67,6 +67,19 @@ const AddPlayerInfo: React.FC<AddPlayerInfoProps> = ({
           </p>
         )}
       </div>
+      <div className="w-full">
+        <FormField
+          label="World Athletics URL"
+          name={`${name}.worldAthleticsUrl`}
+          placeholder={"Enter World Athletics URL here..."}
+          type="url"
+        />
+        {errorState?.dateOfBirth && (
+          <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+            {errorInstance.dateOfBirth.message}
+          </p>
+        )}
+      </div>
     </>
   );
 };

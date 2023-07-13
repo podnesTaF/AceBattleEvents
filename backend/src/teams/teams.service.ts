@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CoachService } from 'src/coach/coach.service';
 import { CountryService } from 'src/country/country.service';
 import { Event } from 'src/events/entities/event.entity';
-import { EventsService } from 'src/events/events.service';
 import { PlayersService } from 'src/players/players.service';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
@@ -21,7 +20,6 @@ export class TeamsService {
     private playersService: PlayersService,
     private coachService: CoachService,
     private userService: UserService,
-    private eventService: EventsService,
     private countryService: CountryService,
   ) {}
 
@@ -142,7 +140,6 @@ export class TeamsService {
       ],
       order: { id: 'ASC' },
     });
-
     const removeUnnecessary = (event: Event) => {
       const totalPrize = event.prizes.reduce(
         (acc, curr) => acc + curr.amount,
@@ -186,6 +183,13 @@ export class TeamsService {
       teamsForEvents: teamsForEvents.slice(startIndex, endIndex),
       totalPages,
     };
+  }
+
+  async findAllByUser(userId?: number) {
+    return this.repository.find({
+      where: { manager: { id: +userId } },
+      relations: ['players', 'coach', 'logo', 'country'],
+    });
   }
 
   findOne(id: number) {

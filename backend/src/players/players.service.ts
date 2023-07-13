@@ -44,7 +44,8 @@ export class PlayersService {
 
     const qb = this.repository
       .createQueryBuilder('player')
-      .leftJoinAndSelect('player.country', 'country');
+      .leftJoinAndSelect('player.country', 'country')
+      .leftJoinAndSelect('player.image', 'image');
 
     if (query.country) {
       qb.where('country.name = :country', { country: query.country });
@@ -70,6 +71,10 @@ export class PlayersService {
       players,
       totalPages,
     };
+  }
+
+  update(updatePlayerDto: any) {
+    return this.repository.update(updatePlayerDto.id, updatePlayerDto);
   }
 
   findOne(id: number) {
