@@ -67,7 +67,7 @@ const AddPlayerInfo: React.FC<AddPlayerInfoProps> = ({
           </p>
         )}
       </div>
-      <div className="w-full">
+      <div className="w-full md:w-5/6 md:mx-auto">
         <FormField
           label="World Athletics URL"
           name={`${name}.worldAthleticsUrl`}

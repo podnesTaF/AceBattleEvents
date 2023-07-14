@@ -1,9 +1,10 @@
 import { IEvent } from "@/models/IEvent";
+import { Skeleton } from "@mui/material";
 import React, { useEffect } from "react";
 import IntroSlide from "./IntroSlide";
 
 interface Props {
-  events: IEvent[];
+  events?: IEvent[];
 }
 
 const IntroSlider: React.FC<Props> = ({ events }) => {
@@ -16,13 +17,14 @@ const IntroSlider: React.FC<Props> = ({ events }) => {
   };
 
   useEffect(() => {
+    if (!events) return;
     const interval = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % events.length);
       setProgress(0);
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [activeSlide, events.length]);
+  }, [activeSlide, events]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -30,21 +32,25 @@ const IntroSlider: React.FC<Props> = ({ events }) => {
     }, 30);
 
     return () => clearInterval(interval);
-  }, [activeSlide, events.length]);
+  }, [activeSlide, events]);
 
   return (
     <div className="w-full h-calc-screen flex justify-center">
-      {events.map((event, idx) => (
-        <IntroSlide
-          key={event.id}
-          slideProgress={progress}
-          event={event}
-          isActive={idx === activeSlide}
-          idx={idx}
-          setActiveSlide={onChangeSlide}
-          length={events.length}
-        />
-      ))}
+      {events ? (
+        events.map((event, idx) => (
+          <IntroSlide
+            key={event.id}
+            slideProgress={progress}
+            event={event}
+            isActive={idx === activeSlide}
+            idx={idx}
+            setActiveSlide={onChangeSlide}
+            length={events.length}
+          />
+        ))
+      ) : (
+        <Skeleton variant="rectangular" width="100%" height="100%" />
+      )}
     </div>
   );
 };
