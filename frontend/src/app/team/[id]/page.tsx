@@ -20,7 +20,6 @@ const TeamPage: React.FC<Props> = ({ params: { id } }) => {
 
   if (isLoading) return <div>Loading...</div>;
 
-  console.log(team);
   return (
     <>
       <header className="w-full flex justify-center h-96 sm:h-[600px] bg-[url('/page-detail.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">

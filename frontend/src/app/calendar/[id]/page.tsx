@@ -41,13 +41,17 @@ const EventDetails: React.FC<Props> = ({ params }) => {
       <header
         className={`w-full flex justify-center h-[400px] sm:h-[640px] md:h-[720px] lg:h-[800px] h-calc-screen-lg relative flex-col`}
       >
-        <Image
-          src={event?.introImage?.mediaUrl || "/page-detail.jpg"}
-          alt="intro image"
-          width={1280}
-          height={980}
-          className="w-full h-full absolute object-cover"
-        />
+        {event ? (
+          <Image
+            src={event.introImage?.mediaUrl || "/page-detail.jpg"}
+            alt="intro image"
+            width={1280}
+            height={980}
+            className="w-full h-full absolute object-cover"
+          />
+        ) : (
+          <Skeleton variant="rectangular" width="100%" height="100%" />
+        )}
         <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.4)] z-0"></div>
         <div className="h-3/5 mb-10 sm:mb-0 sm:h-1/2 ml-5 flex flex-col justify-center items-center w-3/4 sm:w-3/5 md:w-[500px] z-10">
           {isLoading ? (
@@ -59,7 +63,7 @@ const EventDetails: React.FC<Props> = ({ params }) => {
               sx={{ bgcolor: "grey.600", opacity: 0.6, mb: 5 }}
             />
           ) : (
-            <h2 className="text-white uppercase font-semibold text-3xl sm:text-5xl mb-3 sm:mb-5 ml-2">
+            <h2 className="text-white uppercase font-semibold text-3xl sm:text-5xl mb-3 sm:mb-5 text-center ml-2 md:ml-0">
               {event?.title}
             </h2>
           )}

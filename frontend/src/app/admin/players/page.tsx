@@ -34,7 +34,6 @@ const PlayersPage = () => {
 
   const onEdit = (id: string) => {
     const player = data?.players.find((p) => p.id === +id);
-    console.log(id);
     if (player) {
       setPlayerToEdit(player);
       setIsCreatePlayerOpen(true);

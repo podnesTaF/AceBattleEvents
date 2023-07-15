@@ -5,6 +5,7 @@ import TeamsCarousel from "@/components/main/TeamsCarousel";
 import CustomTitle from "@/components/shared/CustomTitle";
 import { useFetchEventsQuery } from "@/services/eventService";
 import { useFetchAllTeamsQuery } from "@/services/teamService";
+import { Skeleton } from "@mui/material";
 
 const textStyles =
   "text-lg sm:text-xl text-white border-r-2 border-red-500 px-2 sm:px-4 w-1/4 uppercase text-center";
@@ -27,7 +28,7 @@ export default function Home() {
   return (
     <>
       <header className="w-full flex justify-center items-center h-calc-screen bg-fixed bg-cover bg-no-repeat bg-top relative flex-col ">
-        {data && <IntroSlider events={data.events} />}
+        <IntroSlider events={data?.events} />
       </header>
       <main>
         <CustomTitle
@@ -55,7 +56,13 @@ export default function Home() {
             <h3 className="text-white font-semibold text-2xl uppercase mb-4">
               Teams
             </h3>
-            {teamsData && <TeamsCarousel teams={teamsData.teams} />}
+            {teamsData ? (
+              <TeamsCarousel teams={teamsData.teams} />
+            ) : (
+              <div className="my-4 w-full sm:w-[400px] h-96">
+                <Skeleton variant="rectangular" width="100%" height="100%" />
+              </div>
+            )}
           </div>
         </section>
         <section className="w-full">

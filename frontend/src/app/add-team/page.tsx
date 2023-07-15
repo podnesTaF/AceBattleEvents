@@ -1,5 +1,6 @@
 "use client";
 
+import AddImageDialog from "@/components/admin/AddImageDialog";
 import AddPlayerInfo from "@/components/shared/AddPlayerInfo";
 import FormButton from "@/components/shared/FormButton";
 import FormField from "@/components/shared/FormField";
@@ -14,6 +15,7 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Button, Divider, IconButton } from "@mui/material";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
@@ -26,6 +28,13 @@ const AddTeam = () => {
   }>({
     [Date.now() + ""]: [{ distance: "", time: "", id: Date.now() }],
   });
+
+  const [avatarPreviews, setAvatarPreviews] = useState<{
+    [key: string]: { url: string; name: string };
+  }>();
+
+  const [playerDialogOpen, setPlayerDialogOpen] = useState<boolean>(false);
+
   const router = useRouter();
 
   const form = useForm({
@@ -53,6 +62,11 @@ const AddTeam = () => {
       [id]: [{ distance: "", time: "", id: Date.now() }],
     }));
 
+    setAvatarPreviews((prev: any) => ({
+      ...prev,
+      [id]: { url: "", name: "" },
+    }));
+
     append({
       name: "",
       surname: "",
@@ -78,6 +92,11 @@ const AddTeam = () => {
       delete newPbs[playerId];
       return newPbs;
     });
+    setAvatarPreviews((prev: any) => {
+      const newPreviews = { ...prev };
+      delete newPreviews[playerId];
+      return newPreviews;
+    });
   };
 
   const removePb = (playerId: string, pbIdx: number) => {
@@ -96,10 +115,13 @@ const AddTeam = () => {
   };
 
   useEffect(() => {
-    if (data) {
-      form.reset();
-    }
-  }, [data]);
+    setAvatarPreviews({
+      [Object.keys(personalBests)[0]]: {
+        url: "",
+        name: "",
+      },
+    });
+  }, []);
 
   const onSubmit = async (dto: any) => {
     try {
@@ -120,6 +142,8 @@ const AddTeam = () => {
           surname: player.surname,
           dateOfBirth: player.dateOfBirth,
           gender: player.gender,
+          worldAthleticsUrl: player.worldAthleticsUrl,
+          image: player.image,
           personalBests: player.personalBests.map((pb: any) => ({
             distance: pb.distance,
             timeInSeconds: pb.time,
@@ -127,7 +151,7 @@ const AddTeam = () => {
         })),
       });
 
-      router.back();
+      // router.back();
     } catch (error) {
       console.log(error);
     }
@@ -227,6 +251,36 @@ const AddTeam = () => {
                           formState?.errors?.players &&
                           formState?.errors?.players[index]
                         }
+                      />
+                      <div className="mx-auto">
+                        <ImageField
+                          title="upload avatar"
+                          name={`players[${index}].image`}
+                        />
+                      </div>
+                      {avatarPreviews && avatarPreviews[field.id].url && (
+                        <div className="mb-4 flex w-full justify-center gap-4">
+                          <h4 className="text-xl text-gray-500">
+                            {avatarPreviews[field.id].name}
+                          </h4>
+                          <Image
+                            src={avatarPreviews[field.id].url}
+                            alt={"avatar preview"}
+                            width={400}
+                            height={400}
+                          />
+                        </div>
+                      )}
+                      <AddImageDialog
+                        isOpen={playerDialogOpen}
+                        handleClose={() => setPlayerDialogOpen(false)}
+                        name={"image"}
+                        setIntroPreview={(preview: any) => {
+                          setAvatarPreviews((prev: any) => ({
+                            ...prev,
+                            [field.id]: preview,
+                          }));
+                        }}
                       />
                       <div className="my-3 w-full">
                         <h3 className="font-semibold text-2xl mb-3">
