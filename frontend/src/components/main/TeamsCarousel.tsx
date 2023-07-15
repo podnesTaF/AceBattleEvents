@@ -11,7 +11,7 @@ interface Props {
 }
 const TeamsCarousel: React.FC<Props> = ({ teams }) => {
   const [activeIndex, setActiveIndex] = useState(1);
-  const [translateDistance, setTranslateDistance] = useState(200);
+  const [translateDistance, setTranslateDistance] = useState(400);
   const [sliderWidth, setSliderWidth] = useState(0);
 
   const sliderRef = useRef<HTMLDivElement>(null);

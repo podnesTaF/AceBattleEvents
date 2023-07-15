@@ -60,11 +60,9 @@ const AddImageDialog: React.FC<Props> = ({
       const formData = new FormData();
       formData.append("image", image);
       const { data } = await axios.post<IMedia, any>(
-        "http://localhost:4000/api/v1/images",
+        "https://abe-server.up.railway.app/api/v1/images",
         formData
       );
-
-      console.log("worls", data);
 
       if (data) {
         setValue(name, data);

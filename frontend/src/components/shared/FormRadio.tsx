@@ -8,32 +8,25 @@ interface FormRadioProps {
     value: string;
     label: string;
   }[];
-  onChange: () => void;
-  selected?: string;
   name: string;
 }
 
-const FormRadio: React.FC<FormRadioProps> = ({
-  options,
-  onChange,
-  selected,
-  name,
-}) => {
+const FormRadio: React.FC<FormRadioProps> = ({ options, name }) => {
   const {
     register,
     formState: { errors },
     getValues,
   } = useFormContext();
+
   return (
     <RadioGroup name={name}>
       {options.map((option, i) => (
         <FormControlLabel
           key={i}
-          {...register(name)}
           control={
             <Radio
               value={option.value}
-              checked={getValues(name) === option.value}
+              {...register(name)}
               sx={{
                 color: red[600],
                 "&.Mui-checked": {

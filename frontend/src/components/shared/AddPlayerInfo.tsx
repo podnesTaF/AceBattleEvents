@@ -42,6 +42,7 @@ const AddPlayerInfo: React.FC<AddPlayerInfoProps> = ({
       <div className="w-full md:w-2/5">
         <FormField
           label="Date Of Birth*"
+          mask="99/99/9999"
           name={`${name}.dateOfBirth`}
           placeholder={"dd/mm/yyyy"}
         />
@@ -58,7 +59,6 @@ const AddPlayerInfo: React.FC<AddPlayerInfoProps> = ({
             { value: "male", label: "Male" },
             { value: "female", label: "Female" },
           ]}
-          onChange={() => {}}
           name={`${name}.gender`}
         />
         {errorState?.gender && (

@@ -58,7 +58,6 @@ const AddPlayerForm: React.FC<AddPlayerFormProps> = ({ player, onClose }) => {
         name: player.image?.title || "",
       });
 
-      console.log(player.image);
       setValue("name", player.name);
       setValue("surname", player.surname);
       setValue("dateOfBirth", player.dateOfBirth);
