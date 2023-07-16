@@ -32,8 +32,8 @@ const IntroSlide: React.FC<Props> = ({
     >
       <div className="absolute w-full md:w-3/4 lg:w-1/2 bottom-0 left-1/2 -translate-x-1/2 px-4 py-2 bg-gradient-to-b from-transparent to-black">
         <div className="flex justify-between w-full py-2 border-b-[1px] border-red-500 mb-4 w">
-          <h4 className="text-xl sm:text-2xl text-white uppercase font-semibold">
-            Team racing game
+          <h4 className="text-lg sm:text-xl text-white uppercase font-semibold">
+            Team running game
           </h4>
           <h5 className="text-lg sm:text-xl text-white uppercase font-semibold">
             Competitions
@@ -46,7 +46,7 @@ const IntroSlide: React.FC<Props> = ({
           {formatDate(event.startDateTime)}
         </h5>
         <div
-          className="w-full flex justify-around gap-4"
+          className="w-full flex justify-around gap-4 my-4 px-4"
           onClick={(e) => e.stopPropagation()}
         >
           {length > 1 &&

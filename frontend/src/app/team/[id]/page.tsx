@@ -20,6 +20,8 @@ const TeamPage: React.FC<Props> = ({ params: { id } }) => {
 
   if (isLoading) return <div>Loading...</div>;
 
+  console.log(team);
+
   return (
     <>
       <header className="w-full flex justify-center h-96 sm:h-[600px] bg-[url('/page-detail.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">
@@ -86,10 +88,7 @@ const TeamPage: React.FC<Props> = ({ params: { id } }) => {
                   />
                   <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
                     {player.worldAthleticsUrl ? (
-                      <a
-                        href="https://worldathletics.org/athletes/ukraine/oleksii-pidnebesnyi-14983870"
-                        target="_blank"
-                      >
+                      <a href={player.worldAthleticsUrl} target="_blank">
                         <h4 className={`text-2xl text-white underline`}>
                           {player.name} <br /> {player.surname}
                         </h4>

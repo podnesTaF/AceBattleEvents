@@ -214,7 +214,7 @@ const EventDetails: React.FC<Props> = ({ params }) => {
               </div>
             </div>
           </div>
-          <div className="w-full my-10 mx-4 xl:mx-0">
+          <div className="my-10 mx-4 xl:mx-0">
             <h2 className="text-4xl my-3 font-semibold">Registered Teams</h2>
             {event?.teams.length ? (
               <CustomTable

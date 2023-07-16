@@ -22,6 +22,10 @@ html {
   justify-content: center;
 }
 
+.h-calc-screen {
+  height: 320px;
+}
+
 @media screen and (min-width: 1180px) {
   .h-calc-screen-lg {
     height: calc(100vh - 90px) !important;
