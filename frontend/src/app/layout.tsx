@@ -23,7 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>Ace Battle events</title>
+        <title>ACE BATTLE EVENTS | home page</title>
+        <meta
+          name="description"
+          content="ACE BATTLE EVENTS is a website for running competitions. Running events have been transformed into epic battles between teams."
+        />
       </head>
       <body className={poppins.className}>
         <SessionProvider session={session}>
