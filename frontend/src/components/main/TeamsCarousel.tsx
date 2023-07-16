@@ -11,7 +11,7 @@ interface Props {
 }
 const TeamsCarousel: React.FC<Props> = ({ teams }) => {
   const [activeIndex, setActiveIndex] = useState(1);
-  const [translateDistance, setTranslateDistance] = useState(400);
+  const [translateDistance, setTranslateDistance] = useState(200);
   const [sliderWidth, setSliderWidth] = useState(0);
 
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -43,7 +43,7 @@ const TeamsCarousel: React.FC<Props> = ({ teams }) => {
   }, [translateDistance]);
 
   return (
-    <div className="my-4 w-full sm:w-[400px] h-96 relative flex justify-center items-center">
+    <div className="my-4 w-full sm:w-[400px] h-80 md:h-96 relative flex justify-center items-center">
       <div
         ref={sliderRef}
         className="slider-carousel"
@@ -63,12 +63,12 @@ const TeamsCarousel: React.FC<Props> = ({ teams }) => {
             <Image
               src={team.logo.mediaUrl}
               alt="team logo"
-              className="object-contain max-h-[350px]"
+              className="object-contain max-h-[250px] md:max-h-[350px]"
               width={350}
               height={350}
             />
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 px-4 py-2 bg-red-500">
-              <h3 className="text-xl uppercase font-semibold text-white">
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 px-3 py-1 md:px-4 md:py-2 bg-red-500">
+              <h3 className="text-lg md:text-xl uppercase font-semibold text-white">
                 {team.name}
               </h3>
             </div>
