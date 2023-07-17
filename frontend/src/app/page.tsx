@@ -7,9 +7,6 @@ import { useFetchEventsQuery } from "@/services/eventService";
 import { useFetchAllTeamsQuery } from "@/services/teamService";
 import { Skeleton } from "@mui/material";
 
-const textStyles =
-  "text-lg sm:text-xl text-white border-r-2 border-red-500 px-2 sm:px-4 w-1/4 uppercase text-center";
-
 export default function Home() {
   const { data, error, isLoading } = useFetchEventsQuery({
     params: "",
