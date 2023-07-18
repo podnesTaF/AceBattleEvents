@@ -39,6 +39,11 @@ export class PlayersController {
     return this.playersService.findAll(queries);
   }
 
+  @Get('count')
+  count() {
+    return this.playersService.count();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.playersService.findOne(+id);

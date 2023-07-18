@@ -11,7 +11,9 @@ export class CountryService {
   ) {}
 
   async returnIfExist(query: any) {
-    return this.repository.findOneOrFail({ where: { ...query } });
+    const country = await this.repository.findOne({ where: { ...query } });
+
+    return country || null;
   }
 
   async create(country: string) {

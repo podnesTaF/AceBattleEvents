@@ -195,7 +195,14 @@ export class TeamsService {
   findOne(id: number) {
     return this.repository.findOne({
       where: { id },
-      relations: ['events', 'players', 'coach', 'logo', 'country'],
+      relations: [
+        'events',
+        'players',
+        'coach',
+        'logo',
+        'country',
+        'players.image',
+      ],
     });
   }
 
@@ -205,5 +212,23 @@ export class TeamsService {
 
   remove(id: number) {
     return `This action removes a #${id} team`;
+  }
+
+  async count() {
+    const count = await this.repository.count();
+    return { 'Teams count': count };
+  }
+
+  async countAll() {
+    const res = [];
+    const playersCount = await this.playersService.count();
+    const usersCount = await this.userService.count();
+    const teamsCount = await this.count();
+    const eventsCount = await this.eventRepository.count();
+    res.push(playersCount, usersCount, teamsCount, {
+      'total events': eventsCount,
+    });
+
+    return res;
   }
 }

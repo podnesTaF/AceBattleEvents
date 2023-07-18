@@ -29,4 +29,9 @@ export class UserController {
   updateImage(@Request() req, @Body() body: { imageId: number }) {
     return this.userService.updateImage(req.user.id, body.imageId);
   }
+
+  @Get('count')
+  count() {
+    return this.userService.count();
+  }
 }

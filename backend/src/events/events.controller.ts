@@ -29,4 +29,9 @@ export class EventsController {
   findLast() {
     return this.eventsService.findLastEvent();
   }
+
+  @Get('count')
+  count() {
+    return this.eventsService.count();
+  }
 }

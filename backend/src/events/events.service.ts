@@ -158,4 +158,9 @@ export class EventsService {
   async findLastEvent() {
     return this.repository.findOne({ where: { id: 25 } });
   }
+
+  async count() {
+    const count = await this.repository.count();
+    return { 'Total Events': count };
+  }
 }
