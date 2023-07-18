@@ -31,18 +31,23 @@ export class PlayerEntity {
   @Column({ nullable: true })
   worldAthleticsUrl: string;
 
-  @ManyToOne(() => Country, (country) => country.players)
+  @ManyToOne(() => Country, (country) => country.players, {
+    onDelete: 'SET NULL',
+    nullable: true,
+  })
   country: Country;
 
   @ManyToOne(() => Media, { nullable: true })
   image: Media;
 
   @ManyToMany(() => Team, (team) => team.players, {
-    onDelete: 'NO ACTION',
-    onUpdate: 'NO ACTION',
+    nullable: true,
+    onDelete: 'CASCADE',
   })
   teams: Team[];
 
-  @OneToMany(() => PersonalBest, (personalBest) => personalBest.player)
+  @OneToMany(() => PersonalBest, (personalBest) => personalBest.player, {
+    onDelete: 'CASCADE',
+  })
   personalBests: PersonalBest[];
 }

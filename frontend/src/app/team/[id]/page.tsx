@@ -4,6 +4,7 @@ import CustomTable from "@/components/shared/CustomTable";
 import Pagination from "@/components/shared/Pagination";
 import { useFetchTeamQuery } from "@/services/teamService";
 import { raceRows } from "@/utils/tables-dummy-data";
+import { Skeleton } from "@mui/material";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -18,8 +19,6 @@ const TeamPage: React.FC<Props> = ({ params: { id } }) => {
 
   const { data: team, isLoading, isError } = useFetchTeamQuery(+id);
 
-  if (isLoading) return <div>Loading...</div>;
-
   console.log(team);
 
   return (
@@ -28,21 +27,34 @@ const TeamPage: React.FC<Props> = ({ params: { id } }) => {
         <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.4)] z-0"></div>
         <div className="h-3/5 mb-10 sm:mb-0 sm:h-1/2 ml-5 flex flex-col md:flex-row gap-4 justify-center items-center w-3/4 sm:w-3/5 md:w-[600px] z-10">
           <div className="w-96">
-            <Image
-              src={team?.logo.mediaUrl || ""}
-              alt="avatar"
-              width={300}
-              height={300}
-            />
+            {!isLoading ? (
+              <Image
+                src={team?.logo.mediaUrl || ""}
+                alt="avatar"
+                width={300}
+                height={300}
+              />
+            ) : (
+              <div className="w-64 h-64">
+                <Skeleton variant="rectangular" width="100%" height="100%" />
+              </div>
+            )}
           </div>
-          <div>
-            <h2 className="text-white uppercase font-semibold text-3xl sm:text-5xl mb-5">
-              {team?.name}
-            </h2>
-            <h4 className="text-white text-2xl uppercase">
-              club "{team?.club}"
-            </h4>
-          </div>
+          {!isLoading ? (
+            <div>
+              <h2 className="text-white uppercase font-semibold text-3xl sm:text-5xl mb-5">
+                {team?.name}
+              </h2>
+              <h4 className="text-white text-2xl uppercase">
+                club "{team?.club}"
+              </h4>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2">
+              <Skeleton variant="rectangular" width={200} height={50} />
+              <Skeleton variant="rectangular" width={100} height={50} />
+            </div>
+          )}
         </div>
       </header>
       <main>

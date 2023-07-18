@@ -49,7 +49,7 @@ const PlayersPage = () => {
           surname: player.surname,
           DOB: player.dateOfBirth,
           "World Athletics Page": {
-            link: "https://www.worldathletics.org/athletes/",
+            link: player.worldAthleticsUrl || "",
             value: "World Athletics Page",
           },
           edit: {

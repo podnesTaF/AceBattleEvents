@@ -49,7 +49,7 @@ const tabs = [
       },
       {
         title: "Add one",
-        link: "/admin/teams/add",
+        link: "/add-team",
       },
     ],
     name: "teams",
@@ -61,10 +61,6 @@ const tabs = [
       {
         title: "All players",
         link: "/admin/players",
-      },
-      {
-        title: "Add one",
-        link: "/admin/players/add",
       },
     ],
     name: "players",

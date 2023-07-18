@@ -33,4 +33,9 @@ export class UserService {
   findByCond(cond: LoginUserDto) {
     return this.repository.findOne({ where: { ...cond } });
   }
+
+  async count() {
+    const count = await this.repository.count();
+    return { 'Total users': count };
+  }
 }

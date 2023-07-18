@@ -67,4 +67,14 @@ export class TeamsController {
   findOne(@Param('id') id: string) {
     return this.teamsService.findOne(+id);
   }
+
+  @Get('count')
+  count() {
+    return this.teamsService.count();
+  }
+
+  @Get('count/all')
+  countAll() {
+    return this.teamsService.countAll();
+  }
 }
