@@ -8,6 +8,7 @@ import CustomTitle from "@/components/shared/CustomTitle";
 import Pagination from "@/components/shared/Pagination";
 import { countries, years } from "@/utils/events-filter-values";
 import { resultRows } from "@/utils/tables-dummy-data";
+import Script from "next/script";
 import { useState } from "react";
 
 const ResultsPage: React.FC = () => {
@@ -41,6 +42,18 @@ const ResultsPage: React.FC = () => {
   const removeFilter = (filter: string) => {
     setSearchValue("");
     setFilters((prev) => prev.filter((f) => f.type !== filter));
+  };
+
+  const onLoad = () => {
+    console.log(document.getElementById("divRRPublish"));
+    // @ts-ignore
+    var rrp = new RRPublish(
+      document.getElementById("divRRPublish"),
+      163493,
+      "results"
+    );
+    rrp.ShowTimerLogo = true;
+    rrp.ShowInfoText = false;
   };
 
   return (
@@ -108,6 +121,14 @@ const ResultsPage: React.FC = () => {
             />
           </div>
         </div>
+        <div id="divRRPublish" className="RRPublish"></div>
+
+        <Script
+          strategy="lazyOnload"
+          type="text/javascript"
+          onLoad={onLoad}
+          src="https://my.raceresult.com/RRPublish/load.js.php?lang=en"
+        />
       </main>
     </>
   );
