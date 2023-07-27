@@ -2,6 +2,11 @@
 
 > Market Place for Ace Battle Mile events for managers and / or team leaders.
 
+# Ace Battle Events version 2.0
+
+> - A platform for fans, runners, clubs, coaches and managers to monitor and ragister for Ace Battle Mile events over the world.
+> - All features you can find in planning-2.0.png
+
 ## Web3
 
 - The payment system build with smart contracts on ethereum.
@@ -24,8 +29,8 @@
 
 ### frontend:
 
-- NextJs / Typescript
-- MUI
+- NextJs / TypeScript
+- TailwindCss / Mui
 - Redux Toolkit / RTK query
 - Ethers
 
@@ -33,4 +38,5 @@
 
 - NestJs
 - mySql
+- Google Cloud
 - Solidity / hardhat
