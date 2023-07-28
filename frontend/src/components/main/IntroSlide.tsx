@@ -42,7 +42,7 @@ const IntroSlide: React.FC<Props> = ({
         <h4 className="text-2xl sm:text-4xl font-semibold text-white mb-2 md:mb-4">
           {event.title}
         </h4>
-        <h5 className="text-lg sm:text-2xl text-red-500 mb-4 md:mb-4 font-semibold">
+        <h5 className="text-lg sm:text-2xl text-green-500 mb-4 md:mb-4 font-semibold">
           {formatDate(event.startDateTime)}
         </h5>
         <div

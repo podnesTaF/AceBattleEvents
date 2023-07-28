@@ -99,7 +99,7 @@ const AppBar = () => {
               </Link>
               <Button
                 variant="contained"
-                color="error"
+                color="success"
                 className={"p-1"}
                 onClick={() => router.push("/profile")}
               >
@@ -118,16 +118,18 @@ const AppBar = () => {
             </>
           ) : session === null ? (
             <>
+              <div className="bg-green-700 rounded-md">
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => router.push("/auth/register")}
+                >
+                  Sign up
+                </Button>
+              </div>
               <Button
                 variant="outlined"
-                color="error"
-                onClick={() => router.push("/auth/register")}
-              >
-                Sign up
-              </Button>
-              <Button
-                variant="outlined"
-                color="warning"
+                color="success"
                 onClick={() => signIn()}
               >
                 Sign In

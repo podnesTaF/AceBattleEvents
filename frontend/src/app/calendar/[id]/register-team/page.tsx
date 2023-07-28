@@ -77,7 +77,7 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
   if (status === "success" || status === "error") {
     return (
       <div className="w-full">
-        <div className="w-full flex justify-center items-center relative h-40 md:h-60 bg-[url('/auth-intro.jpg')] bg-cover bg-center">
+        <div className="w-full flex justify-center items-center relative h-40 md:h-60 bg-[url('/register-team-sm.jpg')] md:bg-[url('/register-team-lg.jpg')] bg-cover bg-center">
           <div className="absolute left-0 top-0 h-full w-full bg-black/40"></div>
           <h2 className="text-3xl md:text-4xl text-white z-10 uppercase font-semibold">
             Register Team
@@ -89,7 +89,7 @@ const RegisterTeam: React.FC<RegisterTeamProps> = ({ params }) => {
   }
   return (
     <div className="w-full">
-      <div className="w-full flex justify-center items-center relative h-40 md:h-60 bg-[url('/auth-intro.jpg')] bg-cover bg-center">
+      <div className="w-full flex justify-center items-center relative h-40 md:h-60 bg-[url('/register-team-sm.jpg')] md:bg-[url('/register-team-lg.jpg')] bg-cover bg-center">
         <div className="absolute left-0 top-0 h-full w-full bg-black/40"></div>
         <h2 className="text-3xl md:text-4xl text-white z-10 uppercase font-semibold">
           Register Team

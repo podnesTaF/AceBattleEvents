@@ -58,7 +58,7 @@ const ResultsPage: React.FC = () => {
 
   return (
     <>
-      <header className="w-full flex justify-center items-center h-48 sm:h-56 bg-[url('/main-intro-sm.jpg')] md:bg-[url('/main-intro.jpg')] bg-fixed bg-cover bg-no-repeat bg-top relative flex-col ">
+      <header className="w-full flex justify-center items-center h-48 sm:h-56  md:bg-[url('/auth-intro.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">
         <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.4)] z-0"></div>
       </header>
       <CustomTitle title={"ACE BATTLE MILE"} subtitle="Battles' Results" />

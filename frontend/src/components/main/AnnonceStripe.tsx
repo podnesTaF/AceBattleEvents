@@ -7,7 +7,7 @@ const AnnonceStripe = () => {
         Ace Battle Mile
       </h4>
       <Link href="/calendar/2">
-        <h4 className="text-red-500 uppercase font-semibold pr-2 text-xl">
+        <h4 className="text-green-500 uppercase font-semibold pr-2 text-xl">
           mice of brussels <span className="lowercase">02 sep 2023</span>
         </h4>
       </Link>
