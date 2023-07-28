@@ -99,7 +99,7 @@ const Profile = () => {
   return (
     <>
       <header className="w-full flex flex-col md:h-[800px] relative">
-        <div className="absolute h-64 md:h-full bg-[url('/main-intro.jpg')] bg-fixed left-0 top-0 w-full bg-cover bg-no-repeat bg-top">
+        <div className="absolute h-64 md:h-full bg-[url('/profile-bg-sm.jpg')] md:bg-[url('/profile-bg-lg.jpg')] bg-fixed left-0 top-0 w-full bg-cover bg-no-repeat bg-top">
           <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.4)] z-0"></div>
         </div>
         <div className="mt-8 mx-auto z-10 h-1/5">
