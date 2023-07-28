@@ -13,8 +13,8 @@ const CustomTitle: React.FC<CustomTitleProps> = ({ title, subtitle }) => {
           {title}
         </h3>
       </div>
-      <div className="w-1/2 flex justify-start p-4 bg-[#FF0000] clip-title items-center">
-        <h3 className="text-xl sm:text-3xl text-white font-semibold uppercase">
+      <div className="w-1/2 flex justify-start p-4 bg-[#FCEF3C] clip-title items-center">
+        <h3 className="text-xl sm:text-3xl font-semibold uppercase">
           {subtitle}
         </h3>
       </div>
