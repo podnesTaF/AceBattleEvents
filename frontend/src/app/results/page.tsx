@@ -3,12 +3,8 @@
 import FilterBage from "@/components/events/FilterBage";
 import FilterSelect from "@/components/events/FilterSelect";
 import SearchField from "@/components/events/SearchField";
-import CustomTable from "@/components/shared/CustomTable";
 import CustomTitle from "@/components/shared/CustomTitle";
-import Pagination from "@/components/shared/Pagination";
 import { countries, years } from "@/utils/events-filter-values";
-import { resultRows } from "@/utils/tables-dummy-data";
-import Script from "next/script";
 import { useState } from "react";
 
 const ResultsPage: React.FC = () => {
@@ -112,23 +108,15 @@ const ResultsPage: React.FC = () => {
           </div>
         </div>
         <div className="my-4">
-          <CustomTable rows={resultRows} isLoading={false} />
-          <div className="flex justify-center">
-            <Pagination
-              pagesCount={1}
-              onChangePage={setCurrPage}
-              currPage={1}
-            />
-          </div>
+          <iframe
+            id="battleFrame"
+            src="https://app.battlemile.org/frames/battles.html"
+            rel="nofollow"
+            width="100%"
+            height={"100%"}
+            className="min-h-[700px]"
+          ></iframe>
         </div>
-        <div id="divRRPublish" className="RRPublish"></div>
-
-        <Script
-          strategy="lazyOnload"
-          type="text/javascript"
-          onLoad={onLoad}
-          src="https://my.raceresult.com/RRPublish/load.js.php?lang=en"
-        />
       </main>
     </>
   );
