@@ -14,7 +14,7 @@ export const Api = async (): Promise<ApiReturnType> => {
     ? { Authorization: "Bearer " + session.user.token }
     : {};
   const instance = axios.create({
-    baseURL: "https://abe-server.up.railway.app/api/v1",
+    baseURL: "http://localhost:4000/api/v1",
     headers,
   });
 

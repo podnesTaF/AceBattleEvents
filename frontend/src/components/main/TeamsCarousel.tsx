@@ -11,8 +11,8 @@ interface Props {
 }
 const TeamsCarousel: React.FC<Props> = ({ teams }) => {
   const [activeIndex, setActiveIndex] = useState(1);
-  const [translateDistance, setTranslateDistance] = useState(200);
-  const [sliderWidth, setSliderWidth] = useState(0);
+  const [translateDistance, setTranslateDistance] = useState(0);
+  const [sliderWidth, setSliderWidth] = useState(400);
 
   const sliderRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<any>([]);
@@ -33,6 +33,7 @@ const TeamsCarousel: React.FC<Props> = ({ teams }) => {
   useEffect(() => {
     if (teams) {
       setSliderWidth(teams.length * 100);
+      setTranslateDistance(teams.length % 2 ? 400 : 200);
     }
   }, [teams]);
 

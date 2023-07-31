@@ -62,38 +62,6 @@ export default function Home() {
             )}
           </div>
         </section>
-        <section className="w-full">
-          <div className="w-full bg-[url('/main-sect-bg-sm.jpg')] md:bg-[url('/main-sect-bg.jpg')] bg-fixed bg-cover bg-top min-h-[380px] md:min-h-[480px] lg:min-h-[580px] relative flex items-end">
-            <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.4)] z-0"></div>
-            <div className="p-5 sm:p-10 sm:bg-[#1E1C1F] w-full sm:w-3/4 md:w-1/2 z-10">
-              <div className="max-w-[240px] mb-5">
-                <h3 className="text-white text-2xl font-semibold">
-                  Join us in this extraordinary journey.
-                </h3>
-              </div>
-              <div className="hidden sm:flex sm:max-w-[300px] ml-auto">
-                <p className="text-white text-sm">
-                  Join us in this extraordinary journey, where passion meets
-                  competition and running transcends its boundaries. Step onto
-                  the battlefield, and let the Ace Battle Mile web3 marketplace
-                  become your gateway to an unparalleled running experience.
-                  Register your team today, and prepare to make history in the
-                  realm of running battles.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="block sm:hidden ml-auto p-8 bg-[#1E1C1F]">
-            <p className="text-white text-sm">
-              Join us in this extraordinary journey, where passion meets
-              competition and running transcends its boundaries. Step onto the
-              battlefield, and let the Ace Battle Mile web3 marketplace become
-              your gateway to an unparalleled running experience. Register your
-              team today, and prepare to make history in the realm of running
-              battles.
-            </p>
-          </div>
-        </section>
         <section className="m-8 bg-gray-100 p-4 sm:p-10 flex flex-col sm:flex-row justify-between">
           <div className="mr-5 w-full sm:w-1/2">
             <h3 className="text-2xl font-semibold mb-5">Ace Battle Websites</h3>

@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getSession } from "next-auth/react";
 
-const BASE_URL = "https://abe-server.up.railway.app/api/v1";
+const BASE_URL = "http://localhost:4000/api/v1";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,

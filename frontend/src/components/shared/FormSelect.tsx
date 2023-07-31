@@ -36,7 +36,9 @@ const FormSelect: React.FC<FormSelectProps> = ({
           {...register(name)}
           value={selected}
           id="small"
-          onChange={(e) => onChangeFilter(e.target.value)}
+          onChange={(e) => {
+            onChangeFilter(e.target.value);
+          }}
           className="block w-full text-sm text-gray-900 border rounded-md p-3 outline-none bg-gray-50 focus:border-2 border-red-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none"
         >
           <option value={undefined}>{placeholder}</option>

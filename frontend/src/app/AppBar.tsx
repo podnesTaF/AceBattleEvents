@@ -1,13 +1,12 @@
 "use client";
 
 import AnnonceStripe from "@/components/main/AnnonceStripe";
+import ProfileMenu from "@/components/shared/ProfileMenu";
 import { useAppDispatch } from "@/hooks/useTyped";
 import { addUser } from "@/redux/features/userSlice";
-import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
-import PersonIcon from "@mui/icons-material/Person";
-import { Button, IconButton, Skeleton } from "@mui/material";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { Avatar, Button, IconButton, Skeleton, Tooltip } from "@mui/material";
+import { signIn, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -18,6 +17,7 @@ const CustomDrawer = dynamic(() => import("@/components/CustomDrawer"));
 const AppBar = () => {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
@@ -27,6 +27,14 @@ const AppBar = () => {
       dispatch(addUser(session.user));
     }
   }, [session]);
+
+  const handleProfileClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <>
@@ -86,36 +94,47 @@ const AppBar = () => {
               Results
             </p>
           </Link>
+          <Link className="hover:opacity-80" href="/clubs">
+            <p
+              className={`text-lg uppercase ${
+                pathname === "/clubs" ? "text-[#FF0000]" : "text-white"
+              }`}
+            >
+              Clubs
+            </p>
+          </Link>
+          <Link className="hover:opacity-80" href="/athletes">
+            <p
+              className={`text-lg uppercase ${
+                pathname === "/athletes" ? "text-[#FF0000]" : "text-white"
+              }`}
+            >
+              Athletes
+            </p>
+          </Link>
+          <Link className="hover:opacity-80" href="/rules">
+            <p
+              className={`text-lg uppercase ${
+                pathname === "/rules" ? "text-[#FF0000]" : "text-white"
+              }`}
+            >
+              Rules
+            </p>
+          </Link>
           {session?.user ? (
-            <>
-              <Link className="hover:opacity-80" href="/add-team">
-                <p
-                  className={`text-lg uppercase ${
-                    pathname === "/add-team" ? "text-[#FF0000]" : "text-white"
-                  }`}
-                >
-                  Add Your Team
-                </p>
-              </Link>
-              <Button
-                variant="contained"
-                color="success"
-                className={"p-1"}
-                onClick={() => router.push("/profile")}
+            <Tooltip title="Profile">
+              <IconButton
+                onClick={handleProfileClick}
+                size="small"
+                aria-controls={open ? "account-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
               >
-                <PersonIcon className={"text-white"} fontSize={"large"} />
-              </Button>
-              <Button
-                variant="outlined"
-                color="error"
-                className={"p-1"}
-                onClick={() => {
-                  signOut().then(() => router.push("/"));
-                }}
-              >
-                <LogoutIcon className={"text-white"} fontSize={"large"} />
-              </Button>
-            </>
+                <Avatar sx={{ width: 40, height: 40 }}>
+                  {session.user.surname[0]}
+                </Avatar>
+              </IconButton>
+            </Tooltip>
           ) : session === null ? (
             <>
               <div className="bg-green-700 rounded-md">
@@ -144,17 +163,10 @@ const AppBar = () => {
             >
               <Skeleton
                 variant="circular"
-                width={50}
-                height={50}
+                width={40}
+                height={40}
                 animation="wave"
                 sx={{ marginRight: 4, bgcolor: "lightgray", opacity: 0.4 }}
-              />
-              <Skeleton
-                variant="text"
-                height={32}
-                width={150}
-                animation="wave"
-                sx={{ bgcolor: "lightgray", opacity: 0.4 }}
               />
             </div>
           )}
@@ -162,6 +174,7 @@ const AppBar = () => {
       </div>
       {pathname === "/" && <AnnonceStripe />}
       <CustomDrawer setOpen={setOpen} open={open} />
+      <ProfileMenu handleClose={handleClose} anchorEl={anchorEl} />
     </>
   );
 };

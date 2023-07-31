@@ -3,16 +3,21 @@
 import AgreeCheck from "@/components/shared/AgreeCheck";
 import FormButton from "@/components/shared/FormButton";
 import FormField from "@/components/shared/FormField";
+import FormRadio from "@/components/shared/FormRadio";
+import FormSelect from "@/components/shared/FormSelect";
 import { IUser } from "@/models/IUser";
+import { countries } from "@/utils/events-filter-values";
 import { RegisterSchema } from "@/utils/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 const RegisterPage = () => {
   const router = useRouter();
+  const [isRunner, setIsRunner] = useState<boolean>(false);
   const form = useForm({
     mode: "onChange",
     resolver: yupResolver(RegisterSchema),
@@ -21,7 +26,7 @@ const RegisterPage = () => {
   const onSubmit = async (dto: any) => {
     try {
       const { data } = await axios.post<any, { data: IUser }>(
-        "https://abe-server.up.railway.app/api/v1/auth/register",
+        "http://localhost:4000/api/v1/auth/register",
         dto
       );
       if (data.id) {
@@ -51,19 +56,57 @@ const RegisterPage = () => {
             label="Email*"
             placeholder="Enter your email"
           />
-          <FormField
-            name="club"
-            label="Club"
-            placeholder="Enter your club (optional)"
+          <FormSelect
+            name={"role"}
+            label={"Your role*"}
+            placeholder={"Choose role"}
+            values={Object.entries({
+              runner: "Runner",
+              manager: "Manager",
+              coach: "Coach",
+            })}
+            onChangeFilter={(value) => setIsRunner(value === "runner")}
           />
-          <div className="flex gap-3 w-full">
-            <FormField name="city" label="City" placeholder="Enter your city" />
-            <FormField
-              name="country"
-              label="Country"
-              placeholder="Choose country"
-            />
+          <div className="flex gap-4 w-full">
+            <div className="w-full">
+              <FormField
+                name="city"
+                label="City*"
+                placeholder="Enter your city"
+              />
+            </div>
+            <div className="w-full">
+              <FormSelect
+                name={"country"}
+                label={"Country*"}
+                placeholder={"Choose country"}
+                values={Object.entries(countries)}
+                onChangeFilter={() => {}}
+              />
+            </div>
           </div>
+          {isRunner && (
+            <div className="flex gap-4 w-full mt-4">
+              <div className="w-full">
+                <h3 className="text-xl">Gender</h3>
+                <FormRadio
+                  options={[
+                    { value: "male", label: "Male" },
+                    { value: "female", label: "Female" },
+                  ]}
+                  name={`${name}.gender`}
+                />
+              </div>
+              <div className="w-full">
+                <FormField
+                  label="Date Of Birth*"
+                  mask="99/99/9999"
+                  name={`${name}.dateOfBirth`}
+                  placeholder={"dd/mm/yyyy"}
+                />
+              </div>
+            </div>
+          )}
           <FormField
             name="password"
             type="password"

@@ -12,7 +12,7 @@ const MainAdminPage = () => {
     const getAdminStats = async () => {
       try {
         const { data } = await axios.get(
-          "https://abe-server.up.railway.app/api/v1/teams/count/all"
+          "http://localhost:4000/api/v1/teams/count/all"
         );
         setAdminStats(data);
       } catch (error) {
