@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 
 const CreateClubPage = () => {
-  const [createClub, { isLoading }] = useCreateClubMutation();
+  const [createClub, { isLoading, error }] = useCreateClubMutation();
   const { data: session, update } = useSession();
   const router = useRouter();
   const form = useForm({
@@ -25,31 +25,35 @@ const CreateClubPage = () => {
     resolver: yupResolver(createClubSchema),
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (dto: any) => {
     let logo;
-    if (data.logo) {
+    if (dto.logo) {
       try {
         const formData = new FormData();
-        formData.append("image", data.logo);
+        formData.append("image", dto.logo);
 
         const { data: resData } = await axios.post<IMedia, any>(
-          "https://abe-server.up.railway.app/api/v1/images",
+          "http://localhost:4000/api/v1/images",
           formData
         );
 
         logo = resData;
+
+        if (!logo) throw new Error("error uploading image");
       } catch (error) {
         console.log("error uploading image");
       }
     }
     try {
-      const res = await createClub({ ...data, logo });
-      if (res && session) {
+      // @ts-ignore
+      const { data } = await createClub({ ...dto, logo: logo });
+
+      if (!error && session) {
         await update({
           ...session,
           user: {
             ...session.user,
-            club: res,
+            club: data,
           },
         });
         router.push("/");
@@ -104,7 +108,7 @@ const CreateClubPage = () => {
             </FormPartsLayout>
             <div className="mx-5 md:w-1/2 lg:w-1/3 md:ml-auto">
               <FormButton
-                title="add team"
+                title="create club"
                 disabled={
                   !form.formState.isValid || form.formState.isSubmitting
                 }
