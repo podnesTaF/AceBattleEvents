@@ -5,7 +5,7 @@ interface FormLayoutProps {
   title: string;
 }
 
-const FormLayout: React.FC<FormLayoutProps> = ({ children, title }) => {
+const FormPartsLayout: React.FC<FormLayoutProps> = ({ children, title }) => {
   return (
     <div className="m-5">
       <h3 className="text-2xl font-semibold mb-3">{title}</h3>
@@ -16,4 +16,4 @@ const FormLayout: React.FC<FormLayoutProps> = ({ children, title }) => {
   );
 };
 
-export default FormLayout;
+export default FormPartsLayout;

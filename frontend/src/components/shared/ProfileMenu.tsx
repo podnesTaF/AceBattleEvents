@@ -10,10 +10,17 @@ import React from "react";
 
 interface ProfileMenuProps {
   handleClose: () => void;
+  isMember?: boolean;
+  role?: string;
   anchorEl: null | HTMLElement;
 }
 
-const ProfileMenu: React.FC<ProfileMenuProps> = ({ anchorEl, handleClose }) => {
+const ProfileMenu: React.FC<ProfileMenuProps> = ({
+  anchorEl,
+  isMember,
+  role,
+  handleClose,
+}) => {
   const router = useRouter();
   return (
     <Menu
@@ -59,36 +66,46 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ anchorEl, handleClose }) => {
           </div>
         </Link>
       </MenuItem>
-      <MenuItem>
-        <Link href="/profile">
-          <div className="flex items-center gap-2">
-            <Avatar sx={{ width: 40, height: 40 }} className="bg-yellow-400">
-              <GroupIcon className="text-black" />
-            </Avatar>
-            <p>My Club</p>
-          </div>
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link href="/profile">
-          <div className="flex items-center gap-2">
-            <Avatar sx={{ width: 40, height: 40 }} className="bg-yellow-400">
-              <GroupAddIcon className="text-black" />
-            </Avatar>
-            <p>Add Club</p>
-          </div>
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link href="/add-team">
-          <div className="flex items-center gap-2">
-            <Avatar sx={{ height: 40 }} className="bg-yellow-400">
-              <Image src={"/add-team.svg"} width={60} height={40} alt="image" />
-            </Avatar>
-            <p>Form a Team</p>
-          </div>
-        </Link>
-      </MenuItem>
+      {isMember && (
+        <MenuItem>
+          <Link href="/profile">
+            <div className="flex items-center gap-2">
+              <Avatar sx={{ width: 40, height: 40 }} className="bg-yellow-400">
+                <GroupIcon className="text-black" />
+              </Avatar>
+              <p>My Club</p>
+            </div>
+          </Link>
+        </MenuItem>
+      )}
+      {role === "manager" && isMember ? (
+        <MenuItem>
+          <Link href="/add-team">
+            <div className="flex items-center gap-2">
+              <Avatar sx={{ height: 40 }} className="bg-yellow-400">
+                <Image
+                  src={"/add-team.svg"}
+                  width={60}
+                  height={40}
+                  alt="image"
+                />
+              </Avatar>
+              <p>Form a Team</p>
+            </div>
+          </Link>
+        </MenuItem>
+      ) : (
+        <MenuItem>
+          <Link href="/create-club">
+            <div className="flex items-center gap-2">
+              <Avatar sx={{ width: 40, height: 40 }} className="bg-yellow-400">
+                <GroupAddIcon className="text-black" />
+              </Avatar>
+              <p>Add Club</p>
+            </div>
+          </Link>
+        </MenuItem>
+      )}
       <Divider />
       <MenuItem onClick={handleClose}>
         <ListItemIcon>
