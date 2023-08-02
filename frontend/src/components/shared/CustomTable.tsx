@@ -5,12 +5,14 @@ interface CustomTableProps {
   rows: any[];
   isLoading: boolean;
   onEdit?: (id: string) => void;
+  titleColor?: string;
 }
 
 const CustomTable: React.FC<CustomTableProps> = ({
   rows,
   isLoading,
   onEdit,
+  titleColor,
 }) => {
   return (
     <div className="relative sm:rounded-sm max-h-[500px] overflow-auto">
@@ -22,7 +24,11 @@ const CustomTable: React.FC<CustomTableProps> = ({
         </div>
       ) : (
         <table className="w-full text-sm text-left border-separate border-spacing-y-2">
-          <thead className="text-md text-white uppercase bg-red-500 clip-title-sm">
+          <thead
+            className={`text-md text-white uppercase ${
+              titleColor || "bg-red-500"
+            } clip-title-sm`}
+          >
             <tr>
               {Object.keys(rows[0]).map((t, i) => (
                 <th key={i} scope="col" className="px-6 py-3">

@@ -1,7 +1,14 @@
+import { IClub } from "@/models/IClub";
 import { api } from "./api";
 
 export const clubApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    fetchClubs: builder.query<IClub[], { params?: string }>({
+      query: ({ params }) => "/clubs?" + params,
+    }),
+    fetchClub: builder.query<IClub, { id: number | null }>({
+      query: ({ id }) => `/clubs/${id}`,
+    }),
     createClub: builder.mutation<
       any,
       { name: string; city: string; country: string; logo: any; phone: string }
@@ -15,4 +22,5 @@ export const clubApi = api.injectEndpoints({
   }),
 });
 
-export const { useCreateClubMutation } = clubApi;
+export const { useCreateClubMutation, useFetchClubsQuery, useFetchClubQuery } =
+  clubApi;

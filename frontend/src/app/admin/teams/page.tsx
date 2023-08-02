@@ -58,7 +58,7 @@ const TeamsPage = () => {
         onChangeInput={onChangeInput}
       >
         <div className="my-4 lg:my-6 mx-2 lg:mx-6">
-          <div className="flex gap-4 max-w-xl mb-4 flex-col sm:flex-row">
+          <div className="flex gap-4 max-w-xl mb-4 flex-col sm:flex-row w-full sm:w-2/5 md:w-full lg:w-2/5">
             <FilterSelect
               onChangeFilter={onChangeFilter}
               selected={filters.find((f) => f.type === "country")?.value || ""}

@@ -27,26 +27,34 @@ const CreateClubPage = () => {
 
   const onSubmit = async (dto: any) => {
     let logo;
-    if (dto.logo) {
+    let photo;
+    if (dto.logo || dto.photo) {
+      const files = [dto.logo, dto.photo];
       try {
-        const formData = new FormData();
-        formData.append("image", dto.logo);
+        for (let i = 0; i < files.length; i++) {
+          if (files[i]) {
+            const formData = new FormData();
+            formData.append("image", files[i]);
+            const { data: resData } = await axios.post<IMedia, any>(
+              "http://localhost:4000/api/v1/images",
+              formData
+            );
+            if (i === 0) {
+              logo = resData;
+            } else {
+              photo = resData;
+            }
+          }
+        }
 
-        const { data: resData } = await axios.post<IMedia, any>(
-          "http://localhost:4000/api/v1/images",
-          formData
-        );
-
-        logo = resData;
-
-        if (!logo) throw new Error("error uploading image");
+        if (!logo && !photo) throw new Error("error uploading image");
       } catch (error) {
         console.log("error uploading image");
       }
     }
     try {
       // @ts-ignore
-      const { data } = await createClub({ ...dto, logo: logo });
+      const { data } = await createClub({ ...dto, logo, photo });
 
       if (!error && session) {
         await update({
@@ -102,8 +110,11 @@ const CreateClubPage = () => {
               </div>
             </FormPartsLayout>
             <FormPartsLayout title="Media">
-              <div className="w-full">
+              <div className="w-full mb-6">
                 <ImagePicker name={"logo"} />
+              </div>
+              <div className="w-full">
+                <ImagePicker name={"photo"} />
               </div>
             </FormPartsLayout>
             <div className="mx-5 md:w-1/2 lg:w-1/3 md:ml-auto">

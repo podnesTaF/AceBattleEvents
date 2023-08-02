@@ -55,21 +55,25 @@ const AllEvents = () => {
         </div>
       </div>
       <div className="my-4 lg:my-6 mx-2 lg:mx-6">
-        <div className="flex gap-4 max-w-xl mb-4 flex-col sm:flex-row">
-          <FilterSelect
-            onChangeFilter={onChangeFilter}
-            selected={filters.find((f) => f.type === "country")?.value || ""}
-            label="country"
-            placeholder="Choose a country"
-            values={Object.entries(countries)}
-          />
-          <FilterSelect
-            onChangeFilter={onChangeFilter}
-            selected={filters.find((f) => f.type === "year")?.value || ""}
-            label="year"
-            placeholder="Choose a year"
-            values={Object.entries(years)}
-          />
+        <div className="flex gap-4 max-w-xl mb-4 flex-col sm:flex-row ">
+          <div className="w-full sm:w-2/5 md:w-full lg:w-2/5">
+            <FilterSelect
+              onChangeFilter={onChangeFilter}
+              selected={filters.find((f) => f.type === "country")?.value || ""}
+              label="country"
+              placeholder="Choose a country"
+              values={Object.entries(countries)}
+            />
+          </div>
+          <div className="w-full sm:w-2/5 md:w-full lg:w-2/5">
+            <FilterSelect
+              onChangeFilter={onChangeFilter}
+              selected={filters.find((f) => f.type === "year")?.value || ""}
+              label="year"
+              placeholder="Choose a year"
+              values={Object.entries(years)}
+            />
+          </div>
         </div>
         <div className="max-w-6xl mb-4">
           {isLoading ? (
