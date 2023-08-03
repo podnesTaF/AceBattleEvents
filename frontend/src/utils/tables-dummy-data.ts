@@ -392,3 +392,39 @@ export const teamRows = [
     },
   },
 ];
+
+export const fakeReslts = [
+  {
+    date: "02/09/2023",
+    event: "The Mace of Brussels",
+    category: "Male",
+    result: "20:00.30",
+    place: 1,
+    details: {
+      link: "/",
+      value: "race details",
+    },
+  },
+  {
+    date: "02/09/2023",
+    event: "The Mace of Brussels",
+    category: "Male",
+    result: "20:00.30",
+    place: 1,
+    details: {
+      link: "/",
+      value: "race details",
+    },
+  },
+  {
+    date: "02/09/2023",
+    event: "The Mace of Brussels",
+    category: "Male",
+    result: "20:00.30",
+    place: 1,
+    details: {
+      link: "/",
+      value: "race details",
+    },
+  },
+];

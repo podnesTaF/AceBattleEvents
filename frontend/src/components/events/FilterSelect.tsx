@@ -6,6 +6,7 @@ interface FilterSelectProps {
   values: any[];
   onChangeFilter: (type: string, value: string) => void;
   selected?: string;
+  labelHidden?: boolean;
 }
 
 const FilterSelect: React.FC<FilterSelectProps> = ({
@@ -14,21 +15,24 @@ const FilterSelect: React.FC<FilterSelectProps> = ({
   values,
   onChangeFilter,
   selected,
+  labelHidden,
 }) => {
   return (
-    <div className="w-full sm:w-2/5 md:w-full lg:w-2/5">
-      <label
-        htmlFor="small"
-        className="block mb-2 text-sm text-gray-900 dark:text-white uppercase font-thin"
-      >
-        {label}
-      </label>
-      <div className="relative">
+    <>
+      {!labelHidden && (
+        <label
+          htmlFor="small"
+          className="block mb-2 text-sm text-gray-900 dark:text-white uppercase font-thin"
+        >
+          {label}
+        </label>
+      )}
+      <div className="relative w-full">
         <select
           value={selected}
           id="small"
           onChange={(e) => onChangeFilter(label, e.target.value)}
-          className="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-sm bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none"
+          className="block w-full p-2 mb-2 text-sm text-gray-900 border border-gray-300 rounded-sm bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none"
         >
           <option value={""}>{placeholder}</option>
           {values.map((v, i) => (
@@ -53,7 +57,7 @@ const FilterSelect: React.FC<FilterSelectProps> = ({
           </svg>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

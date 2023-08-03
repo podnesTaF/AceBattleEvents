@@ -1,7 +1,8 @@
 "use client";
 
+import CarouselItem from "@/components/main/CarouselItem";
 import IntroSlider from "@/components/main/IntroSlider";
-import TeamsCarousel from "@/components/main/TeamsCarousel";
+import CustomCarousel from "@/components/shared/CustomCarousel";
 import CustomTitle from "@/components/shared/CustomTitle";
 import { useFetchEventsQuery } from "@/services/eventService";
 import { useFetchAllTeamsQuery } from "@/services/teamService";
@@ -54,7 +55,7 @@ export default function Home() {
               Teams
             </h3>
             {teamsData ? (
-              <TeamsCarousel teams={teamsData.teams} />
+              <CustomCarousel items={teamsData.teams} ItemCard={CarouselItem} />
             ) : (
               <div className="my-4 w-full sm:w-[400px] h-96">
                 <Skeleton variant="rectangular" width="100%" height="100%" />

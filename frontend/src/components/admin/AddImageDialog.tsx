@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React from "react";
 import { useFormContext } from "react-hook-form";
 import ImagePicker from "./ImagePicker";
 
@@ -23,6 +23,7 @@ interface Props {
   name: string;
   setIntroPreview: Function;
   instantUpload?: boolean;
+  storageUnavailable?: boolean;
 }
 
 const tabs = [
@@ -40,6 +41,7 @@ const AddImageDialog: React.FC<Props> = ({
   name,
   setIntroPreview,
   instantUpload,
+  storageUnavailable,
 }) => {
   const [activeTab, setActiveTab] = React.useState(0);
   const { data: images, isLoading } = useGetImagesQuery();
@@ -78,13 +80,6 @@ const AddImageDialog: React.FC<Props> = ({
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    if (activeTab === 1) {
-      setPicked(null);
-      setValue(name, {});
-    }
-  }, [activeTab]);
 
   const onAdd = () => {
     setIntroPreview({

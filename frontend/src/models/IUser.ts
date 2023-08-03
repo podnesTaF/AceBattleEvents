@@ -10,7 +10,9 @@ export interface IUser {
   country: string;
   balance: number;
   token: string;
+  isMember?: boolean;
   image?: IMedia;
+  role?: string;
 }
 
 export interface ITransaction {

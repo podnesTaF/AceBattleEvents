@@ -38,6 +38,8 @@ export const authOptions: NextAuthOptions = {
           token.user.balance = session.user.balance;
         } else if (session.user.image) {
           token.user.image = session.user.image;
+        } else if (session.user.club) {
+          token.user.club = session.user.club;
         }
       }
       user && (token.user = user);

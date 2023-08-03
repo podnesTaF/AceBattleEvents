@@ -2,6 +2,7 @@
 
 import AddImageDialog from "@/components/admin/AddImageDialog";
 import AddPlayerInfo from "@/components/shared/AddPlayerInfo";
+import CreatePagesTitle from "@/components/shared/CreatePagesTitle";
 import FormButton from "@/components/shared/FormButton";
 import FormField from "@/components/shared/FormField";
 import FormSelect from "@/components/shared/FormSelect";
@@ -19,7 +20,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
-import FormLayout from "./FormLayout";
+import FormPartsLayout from "../../components/shared/FormPartsLayout";
 
 const AddTeam = () => {
   const [addTeam, { data, isLoading, error }] = useAddTeamMutation();
@@ -159,16 +160,11 @@ const AddTeam = () => {
 
   return (
     <>
-      <header className="w-full flex justify-center items-center h-48 sm:h-56 bg-[url('/add-team-sm.jpg')] md:bg-[url('/add-team.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">
-        <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.4)] z-0"></div>
-        <h2 className="text-white text-3xl uppercase semibold z-10">
-          Add team
-        </h2>
-      </header>
+      <CreatePagesTitle title="Add team" />
       <main className="mx-auto my-5 sm:my-8 max-w-5xl">
         <FormProvider {...form}>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <FormLayout title="Team details">
+            <FormPartsLayout title="Team details">
               <div className="w-full md:w-2/5">
                 <FormField
                   label="Team name*"
@@ -208,8 +204,8 @@ const AddTeam = () => {
                   onChangeFilter={() => {}}
                 />
               </div>
-            </FormLayout>
-            <FormLayout title="Coach">
+            </FormPartsLayout>
+            <FormPartsLayout title="Coach">
               <div className="w-full md:w-2/5">
                 <FormField
                   label="First name*"
@@ -224,7 +220,7 @@ const AddTeam = () => {
                   placeholder={"Enter surname here..."}
                 />
               </div>
-            </FormLayout>
+            </FormPartsLayout>
             <div className="m-4">
               <h3 className="text-center mb-3 text-2xl font-semibold">
                 Players
@@ -367,7 +363,7 @@ const AddTeam = () => {
                 Team has to consist of at least 5 players*
               </p>
             </div>
-            <FormLayout title="Media">
+            <FormPartsLayout title="Media">
               <div className="w-full">
                 <ImageField title="upload team logo" name="logo" />
               </div>
@@ -377,7 +373,7 @@ const AddTeam = () => {
                   <ImageField title="upload Team Image" name="teamImage" />
                 </div>
               </div>
-            </FormLayout>
+            </FormPartsLayout>
             <div className="mx-5 md:w-1/2 lg:w-1/3 md:ml-auto">
               <FormButton
                 title="add team"

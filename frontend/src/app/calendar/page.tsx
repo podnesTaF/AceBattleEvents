@@ -90,27 +90,35 @@ const CalendarPage = () => {
             </div>
           </div>
           <div className="w-full md:w-1/2 flex flex-wrap gap-x-2 justify-around items-center my-4">
-            <FilterSelect
-              onChangeFilter={onChangeFilter}
-              selected={filters.find((f) => f.type === "country")?.value || ""}
-              label="country"
-              placeholder="Choose a country"
-              values={Object.entries(countries)}
-            />
-            <FilterSelect
-              onChangeFilter={onChangeFilter}
-              selected={filters.find((f) => f.type === "year")?.value || ""}
-              label="year"
-              placeholder="Choose a year"
-              values={Object.entries(years)}
-            />
-            <FilterSelect
-              onChangeFilter={onChangeFilter}
-              selected={filters.find((f) => f.type === "month")?.value || ""}
-              label="month"
-              placeholder="Choose month"
-              values={Object.entries(months)}
-            />
+            <div className="w-full sm:w-2/5 md:w-full lg:w-2/5">
+              <FilterSelect
+                onChangeFilter={onChangeFilter}
+                selected={
+                  filters.find((f) => f.type === "country")?.value || ""
+                }
+                label="country"
+                placeholder="Choose a country"
+                values={Object.entries(countries)}
+              />
+            </div>
+            <div className="w-full sm:w-2/5 md:w-full lg:w-2/5">
+              <FilterSelect
+                onChangeFilter={onChangeFilter}
+                selected={filters.find((f) => f.type === "year")?.value || ""}
+                label="year"
+                placeholder="Choose a year"
+                values={Object.entries(years)}
+              />
+            </div>
+            <div className="w-full sm:w-2/5 md:w-full lg:w-2/5">
+              <FilterSelect
+                onChangeFilter={onChangeFilter}
+                selected={filters.find((f) => f.type === "month")?.value || ""}
+                label="month"
+                placeholder="Choose month"
+                values={Object.entries(months)}
+              />
+            </div>
             <div className="w-full sm:w-2/5 md:w-full lg:w-2/5">
               <div className="flex items-center">
                 <input

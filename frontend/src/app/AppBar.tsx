@@ -174,7 +174,12 @@ const AppBar = () => {
       </div>
       {pathname === "/" && <AnnonceStripe />}
       <CustomDrawer setOpen={setOpen} open={open} />
-      <ProfileMenu handleClose={handleClose} anchorEl={anchorEl} />
+      <ProfileMenu
+        isMember={session?.user.isMember}
+        role={session?.user.role}
+        handleClose={handleClose}
+        anchorEl={anchorEl}
+      />
     </>
   );
 };

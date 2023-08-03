@@ -6,9 +6,10 @@ import AddImageDialog from "../admin/AddImageDialog";
 interface Props {
   title: string;
   name: string;
+  storageUnavailable?: boolean;
 }
 
-const ImageField: React.FC<Props> = ({ title, name }) => {
+const ImageField: React.FC<Props> = ({ title, name, storageUnavailable }) => {
   const [imageDialogOpen, setImageDialogOpen] = useState<boolean>(false);
   const [imagePreview, setImagePreview] = useState<{
     url: string;
@@ -45,6 +46,7 @@ const ImageField: React.FC<Props> = ({ title, name }) => {
         handleClose={() => setImageDialogOpen(false)}
         name={name}
         setIntroPreview={setImagePreview}
+        storageUnavailable={storageUnavailable}
       />
     </>
   );
