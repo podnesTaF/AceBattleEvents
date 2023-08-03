@@ -175,7 +175,7 @@ const AppBar = () => {
       {pathname === "/" && <AnnonceStripe />}
       <CustomDrawer setOpen={setOpen} open={open} />
       <ProfileMenu
-        isMember={session?.user.isMember}
+        isMember={!!session?.user.clubId}
         role={session?.user.role}
         handleClose={handleClose}
         anchorEl={anchorEl}

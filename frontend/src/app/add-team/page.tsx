@@ -6,7 +6,9 @@ import CreatePagesTitle from "@/components/shared/CreatePagesTitle";
 import FormButton from "@/components/shared/FormButton";
 import FormField from "@/components/shared/FormField";
 import FormSelect from "@/components/shared/FormSelect";
+import GrayedInput from "@/components/shared/GrayedInput";
 import ImageField from "@/components/shared/ImageField";
+import { useFetchClubQuery } from "@/services/clubService";
 import { useAddTeamMutation } from "@/services/teamService";
 import { countries, teamTypes } from "@/utils/events-filter-values";
 import { AddTeamSchema } from "@/utils/validators";
@@ -16,6 +18,7 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Button, Divider, IconButton } from "@mui/material";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -24,6 +27,12 @@ import FormPartsLayout from "../../components/shared/FormPartsLayout";
 
 const AddTeam = () => {
   const [addTeam, { data, isLoading, error }] = useAddTeamMutation();
+  const { data: session } = useSession();
+  const {
+    data: club,
+    isLoading: clubLoading,
+    error: clubError,
+  } = useFetchClubQuery({ id: session?.user.clubId || 0 });
   const [personalBests, setPersonalBests] = useState<{
     [key: string]: { distance: string; time: string; id: number }[];
   }>({
@@ -173,10 +182,10 @@ const AddTeam = () => {
                 />
               </div>
               <div className="w-full md:w-2/5">
-                <FormField
-                  label="Club"
+                <GrayedInput
                   name={"club"}
-                  placeholder={"Enter club here (optional)..."}
+                  value={"Royal Racing club"}
+                  label={"Club"}
                 />
               </div>
               <div className="w-full md:w-2/5">

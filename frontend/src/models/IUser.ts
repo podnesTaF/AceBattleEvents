@@ -10,7 +10,7 @@ export interface IUser {
   country: string;
   balance: number;
   token: string;
-  isMember?: boolean;
+  clubId?: number;
   image?: IMedia;
   role?: string;
   gender?: string;

@@ -62,13 +62,14 @@ const JoinRequestsPage: NextPage<Props> = ({ params: { id } }) => {
           <div className="w-full md:w-[300px]">
             <FilterSelect
               onChangeFilter={onChangeFilter}
-              selected={filters.find((f) => f.type === "country")?.value || ""}
-              label=""
+              selected={filters.find((f) => f.type === "")?.value || ""}
+              label="sort by"
               placeholder="sort by"
               values={[
                 ["latest", "Latest"],
                 ["oldest", "Oldest"],
               ]}
+              labelHidden={true}
             />
           </div>
         </div>
