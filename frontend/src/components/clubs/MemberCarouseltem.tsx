@@ -7,7 +7,7 @@ interface Props {
 
 const MemberCarouseltem: React.FC<Props> = ({ item }) => {
   return (
-    <div className="max-w-xs max-h-sm w-full overflow-hidden relative cursor-pointer active:scale-95 flex justify-center items-center">
+    <div className="max-w-xs max-h-sm w-full relative cursor-pointer active:scale-95 flex justify-center items-center shadow-md rounded-md">
       <Image
         src={
           item.image
@@ -31,6 +31,9 @@ const MemberCarouseltem: React.FC<Props> = ({ item }) => {
             {item.name} <br /> {item.surname}
           </h4>
         )}
+      </div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-2 bg-red-500">
+        <h4 className="text-white font-semiblod text-xl">{item.role}</h4>
       </div>
     </div>
   );

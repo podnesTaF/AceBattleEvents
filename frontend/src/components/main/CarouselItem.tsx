@@ -20,7 +20,7 @@ const CarouselItem: React.FC<Props> = ({ item }) => {
         width={350}
         height={350}
       />
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 px-3 py-1 md:px-4 md:py-2 bg-red-500">
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 px-3 py-1 md:px-4 md:py-1 bg-red-500 rounded-md">
         <h3 className="text-lg md:text-xl uppercase font-semibold text-white">
           {item.name}
         </h3>

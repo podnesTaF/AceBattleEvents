@@ -13,6 +13,8 @@ export interface IUser {
   isMember?: boolean;
   image?: IMedia;
   role?: string;
+  gender?: string;
+  dateOfBirth?: string;
 }
 
 export interface ITransaction {

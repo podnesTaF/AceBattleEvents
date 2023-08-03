@@ -13,3 +13,11 @@ export type IClub = {
   logo?: IMedia;
   photo?: IMedia;
 };
+
+export type JoinRequest = {
+  id: number;
+  club: IClub;
+  user: IUser;
+  status: string;
+  created_at: string;
+};

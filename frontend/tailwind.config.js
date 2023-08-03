@@ -15,7 +15,7 @@ module.exports = {
         "auth-card": "url('/auth-card.jpg')",
       },
       boxShadow: {
-        md: "0 0px 6px rgba(0, 0, 0, 0.3)",
+        md: "0 0 8px rgba(0, 0, 0, 0.1)",
       },
       fontSize: {
         "4xl": ["2.25rem"],

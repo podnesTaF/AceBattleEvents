@@ -1,5 +1,5 @@
 import { Checkbox, FormControlLabel } from "@mui/material";
-import { pink } from "@mui/material/colors";
+import { green } from "@mui/material/colors";
 import React from "react";
 
 interface AgreeCheckProps {
@@ -12,9 +12,9 @@ const AgreeCheck: React.FC<AgreeCheckProps> = ({ message }) => {
       control={
         <Checkbox
           sx={{
-            color: pink[800],
+            color: green[800],
             "&.Mui-checked": {
-              color: pink[600],
+              color: green[600],
             },
           }}
         />
