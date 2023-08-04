@@ -7,7 +7,10 @@ import CustomCarousel from "@/components/shared/CustomCarousel";
 import CustomTable from "@/components/shared/CustomTable";
 import FormButton from "@/components/shared/FormButton";
 import { useFilter } from "@/hooks/useFilter";
-import { useFetchClubQuery } from "@/services/clubService";
+import {
+  useFetchClubQuery,
+  useSendJoinRequestMutation,
+} from "@/services/clubService";
 import { years } from "@/utils/events-filter-values";
 import { fakeNews, fakeReslts } from "@/utils/tables-dummy-data";
 import Image from "next/image";
@@ -19,16 +22,33 @@ interface Props {
   };
 }
 const ClubPage: React.FC<Props> = ({ params: { id } }) => {
+  const [joinMotivation, setJoinMotivation] = React.useState("");
+  const [successAlertOpen, setSuccessAlertOpen] = React.useState(false);
   const { filters, searchValue, setSearchValue, onChangeFilter } = useFilter();
   const {
     data: club,
     isLoading,
     error,
   } = useFetchClubQuery({ id: +id || null });
+  const [sendJoinRequest] = useSendJoinRequestMutation();
 
   if (isLoading || !club) return <div>loading...</div>;
 
-  console.log(club.members);
+  const createJoinRequest = async () => {
+    try {
+      // @ts-ignore
+      const { data } = await sendJoinRequest({
+        clubId: club.id,
+        motivation: joinMotivation,
+      });
+      if (data) {
+        setSuccessAlertOpen(true);
+        setJoinMotivation("");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -83,7 +103,7 @@ const ClubPage: React.FC<Props> = ({ params: { id } }) => {
                 <h4 className="text-white text-lg font-semibold border-b-[1px] border-red-500">
                   Members:
                 </h4>
-                <h3 className="text-2xl text-white">23</h3>
+                <h3 className="text-2xl text-white">{club.members.length}</h3>
               </div>
               <div className="flex flex-col gap-4 items-center">
                 <h4 className="text-white text-lg font-semibold border-b-[1px] border-red-500">
@@ -179,17 +199,18 @@ const ClubPage: React.FC<Props> = ({ params: { id } }) => {
                 </label>
                 <textarea
                   id="motivation"
+                  value={joinMotivation}
+                  onChange={(e) => setJoinMotivation(e.target.value)}
                   rows={5}
                   className="w-full border-[1px] border-gray-300 rounded-md p-2"
                   placeholder="Write your motivation to become the club member (min 10 words)..."
                 ></textarea>
-                <div className="flex items-center">
-                  <AgreeCheck />
-                  <p className="text-sm">
-                    I agree with rules and terms of club membership
-                  </p>
-                </div>
-                <FormButton isLoading={false} title={"Send an application"} />
+                <AgreeCheck message="I agree with rules and terms of club membership" />
+                <FormButton
+                  isLoading={false}
+                  title={"Send an application"}
+                  onClick={createJoinRequest}
+                />
               </div>
             </div>
           </div>

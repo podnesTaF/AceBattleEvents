@@ -17,7 +17,7 @@ const GrayedInput: React.FC<GrayedInputProps> = ({ name, value, label }) => {
       </label>
       <input
         value={value}
-        className="border-[1px] rounded-lg border-gray-400 bg-gray-200  w-full p-2.5 text-gray-400 text-sm"
+        className="border-[1px] rounded-lg border-gray-400 bg-gray-200 w-full p-2.5 text-gray-400 text-sm"
         disabled
       />
     </div>

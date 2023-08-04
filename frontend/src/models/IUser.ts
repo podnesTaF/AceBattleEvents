@@ -15,6 +15,7 @@ export interface IUser {
   role?: string;
   gender?: string;
   dateOfBirth?: string;
+  worldAthleticsUrl?: string;
 }
 
 export interface ITransaction {

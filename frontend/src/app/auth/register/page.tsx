@@ -24,6 +24,7 @@ const RegisterPage = () => {
   });
 
   const onSubmit = async (dto: any) => {
+    console.log(dto);
     try {
       const { data } = await axios.post<any, { data: IUser }>(
         "http://localhost:4000/api/v1/auth/register",
@@ -86,26 +87,36 @@ const RegisterPage = () => {
             </div>
           </div>
           {isRunner && (
-            <div className="flex gap-4 w-full mt-4">
-              <div className="w-full">
-                <h3 className="text-xl">Gender</h3>
-                <FormRadio
-                  options={[
-                    { value: "male", label: "Male" },
-                    { value: "female", label: "Female" },
-                  ]}
-                  name={`${name}.gender`}
-                />
+            <>
+              <div className="flex gap-4 w-full mt-4">
+                <div className="w-full">
+                  <h3 className="text-xl">Gender</h3>
+                  <FormRadio
+                    options={[
+                      { value: "male", label: "Male" },
+                      { value: "female", label: "Female" },
+                    ]}
+                    name={`${name}.gender`}
+                  />
+                </div>
+                <div className="w-full">
+                  <FormField
+                    label="Date Of Birth*"
+                    mask="99/99/9999"
+                    name={`${name}.dateOfBirth`}
+                    placeholder={"dd/mm/yyyy"}
+                  />
+                </div>
               </div>
               <div className="w-full">
                 <FormField
-                  label="Date Of Birth*"
-                  mask="99/99/9999"
-                  name={`${name}.dateOfBirth`}
-                  placeholder={"dd/mm/yyyy"}
+                  label="World Athletics URL"
+                  name={`${name}.worldAthleticsUrl`}
+                  placeholder={"Enter World Athletics URL here..."}
+                  type="url"
                 />
               </div>
-            </div>
+            </>
           )}
           <FormField
             name="password"

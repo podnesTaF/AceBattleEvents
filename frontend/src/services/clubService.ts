@@ -1,4 +1,4 @@
-import { IClub } from "@/models/IClub";
+import { IClub, JoinRequest } from "@/models/IClub";
 import { api } from "./api";
 
 export const clubApi = api.injectEndpoints({
@@ -19,8 +19,22 @@ export const clubApi = api.injectEndpoints({
         body: { name, city, country, logo, phone },
       }),
     }),
+    sendJoinRequest: builder.mutation<
+      JoinRequest,
+      { motivation: string; clubId: number }
+    >({
+      query: ({ motivation, clubId }) => ({
+        url: "/club-requests",
+        method: "POST",
+        body: { motivation, clubId },
+      }),
+    }),
   }),
 });
 
-export const { useCreateClubMutation, useFetchClubsQuery, useFetchClubQuery } =
-  clubApi;
+export const {
+  useCreateClubMutation,
+  useFetchClubsQuery,
+  useFetchClubQuery,
+  useSendJoinRequestMutation,
+} = clubApi;
