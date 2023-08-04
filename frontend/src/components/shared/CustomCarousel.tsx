@@ -46,7 +46,7 @@ const CustomCarousel: React.FC<CustomCarouselProps> = ({ items, ItemCard }) => {
           <div
             key={item.id}
             ref={(el) => (itemRefs.current[index] = el)}
-            className={`w-full overflow-hidden ${
+            className={`w-full  ${
               index === activeIndex
                 ? "opacity-100 scale-100"
                 : "opacity-60 scale-50"

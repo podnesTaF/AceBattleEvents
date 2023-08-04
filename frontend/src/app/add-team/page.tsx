@@ -6,9 +6,12 @@ import CreatePagesTitle from "@/components/shared/CreatePagesTitle";
 import FormButton from "@/components/shared/FormButton";
 import FormField from "@/components/shared/FormField";
 import FormSelect from "@/components/shared/FormSelect";
+import GrayedInput from "@/components/shared/GrayedInput";
 import ImageField from "@/components/shared/ImageField";
+import PickList from "@/components/shared/PickList";
+import { useFetchClubQuery } from "@/services/clubService";
 import { useAddTeamMutation } from "@/services/teamService";
-import { countries, teamTypes } from "@/utils/events-filter-values";
+import { teamTypes } from "@/utils/events-filter-values";
 import { AddTeamSchema } from "@/utils/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
@@ -16,6 +19,7 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Button, Divider, IconButton } from "@mui/material";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -24,6 +28,14 @@ import FormPartsLayout from "../../components/shared/FormPartsLayout";
 
 const AddTeam = () => {
   const [addTeam, { data, isLoading, error }] = useAddTeamMutation();
+  const { data: session } = useSession();
+  const {
+    data: club,
+    isLoading: clubLoading,
+    error: clubError,
+  } = useFetchClubQuery({ id: session?.user.clubId || 0 });
+
+  const [athleteList, setAthleteList] = useState<any[]>([]);
   const [personalBests, setPersonalBests] = useState<{
     [key: string]: { distance: string; time: string; id: number }[];
   }>({
@@ -85,6 +97,10 @@ const AddTeam = () => {
     control,
     name: "players",
   });
+
+  const onAltheleListChange = (newItemList: any) => {
+    setAthleteList(newItemList.map((item: any) => item.id));
+  };
 
   const removePlayer = (playerId: string, index: number) => {
     remove(index);
@@ -173,19 +189,17 @@ const AddTeam = () => {
                 />
               </div>
               <div className="w-full md:w-2/5">
-                <FormField
-                  label="Club"
+                <GrayedInput
                   name={"club"}
-                  placeholder={"Enter club here (optional)..."}
+                  value={club?.name || ""}
+                  label={"Club"}
                 />
               </div>
               <div className="w-full md:w-2/5">
-                <FormSelect
+                <GrayedInput
                   name={"country"}
-                  label={"Country*"}
-                  placeholder={"Choose country"}
-                  values={Object.entries(countries)}
-                  onChangeFilter={() => {}}
+                  value={club?.country || ""}
+                  label={"Country"}
                 />
               </div>
               <div className="w-full md:w-2/5">
@@ -222,9 +236,32 @@ const AddTeam = () => {
               </div>
             </FormPartsLayout>
             <div className="m-4">
-              <h3 className="text-center mb-3 text-2xl font-semibold">
-                Players
-              </h3>
+              <h3 className="mb-3 text-2xl font-semibold">Players</h3>
+              <PickList
+                title={"Athletes from the club"}
+                items={
+                  club?.members
+                    .filter((member) => member.role === "runner")
+                    .map((item) => ({
+                      id: item.id,
+                      title: item.name + " " + item.surname,
+                      additionalInfo: item.dateOfBirth,
+                    })) || []
+                }
+                tabs={["Male", "Female"]}
+                onSelectedListChange={onAltheleListChange}
+              />
+            </div>
+            <div className="mx-4 my-6">
+              <div className="flex flex-col w-full sm:flex-row justify-between mb-3">
+                <h3 className=" mb-3 text-xl font-semibold">
+                  Add unregistered athletes*
+                </h3>
+                <p className="max-w-sm">
+                  *We will send password to each players&apos; email. The player
+                  will become a member of your club.
+                </p>
+              </div>
               {watch("players").map((field, index) => {
                 return (
                   <div key={field.id} className="rounded shadow-md p-4 my-5">

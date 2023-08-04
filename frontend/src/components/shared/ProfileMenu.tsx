@@ -78,30 +78,46 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({
           </Link>
         </MenuItem>
       )}
-      {role === "manager" && isMember ? (
-        <MenuItem>
-          <Link href="/add-team">
-            <div className="flex items-center gap-2">
-              <Avatar sx={{ height: 40 }} className="bg-yellow-400">
-                <Image
-                  src={"/add-team.svg"}
-                  width={60}
-                  height={40}
-                  alt="image"
-                />
-              </Avatar>
-              <p>Form a Team</p>
-            </div>
-          </Link>
-        </MenuItem>
+      {role === "manager" ? (
+        isMember ? (
+          <MenuItem>
+            <Link href="/add-team">
+              <div className="flex items-center gap-2">
+                <Avatar sx={{ height: 40 }} className="bg-yellow-400">
+                  <Image
+                    src={"/add-team.svg"}
+                    width={60}
+                    height={40}
+                    alt="image"
+                  />
+                </Avatar>
+                <p>Form a Team</p>
+              </div>
+            </Link>
+          </MenuItem>
+        ) : (
+          <MenuItem>
+            <Link href="/create-club">
+              <div className="flex items-center gap-2">
+                <Avatar
+                  sx={{ width: 40, height: 40 }}
+                  className="bg-yellow-400"
+                >
+                  <GroupAddIcon className="text-black" />
+                </Avatar>
+                <p>Add Club</p>
+              </div>
+            </Link>
+          </MenuItem>
+        )
       ) : (
         <MenuItem>
-          <Link href="/create-club">
+          <Link href="/clubs">
             <div className="flex items-center gap-2">
               <Avatar sx={{ width: 40, height: 40 }} className="bg-yellow-400">
-                <GroupAddIcon className="text-black" />
+                <GroupIcon className="text-black" />
               </Avatar>
-              <p>Add Club</p>
+              <p>Find a Club</p>
             </div>
           </Link>
         </MenuItem>

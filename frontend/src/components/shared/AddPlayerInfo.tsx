@@ -1,6 +1,8 @@
+import { countries } from "@/utils/events-filter-values";
 import React from "react";
 import FormField from "./FormField";
 import FormRadio from "./FormRadio";
+import FormSelect from "./FormSelect";
 
 interface AddPlayerInfoProps {
   errorState: any;
@@ -64,6 +66,32 @@ const AddPlayerInfo: React.FC<AddPlayerInfoProps> = ({
         {errorState?.gender && (
           <p className="mt-2 text-sm text-red-600 dark:text-red-500">
             {errorInstance.gender?.message}
+          </p>
+        )}
+      </div>
+      <div className="w-full md:w-2/5">
+        <FormField
+          label="email*"
+          name={`${name}.email`}
+          placeholder={"Enter name here..."}
+        />
+        {errorState?.name && (
+          <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+            {errorInstance.name.message}
+          </p>
+        )}
+      </div>
+      <div className="w-full md:w-2/5">
+        <FormSelect
+          name={`${name}.country`}
+          label={"Country*"}
+          placeholder={"Choose Country..."}
+          values={Object.entries(countries)}
+          onChangeFilter={() => {}}
+        />
+        {errorState?.surname && (
+          <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+            {errorInstance.surname.message}
           </p>
         )}
       </div>

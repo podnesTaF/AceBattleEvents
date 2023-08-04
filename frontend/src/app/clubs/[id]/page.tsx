@@ -1,12 +1,18 @@
 "use client";
 import MemberCarouseltem from "@/components/clubs/MemberCarouseltem";
 import FilterSelect from "@/components/events/FilterSelect";
+import NewsCard from "@/components/news/NewsCard";
+import AgreeCheck from "@/components/shared/AgreeCheck";
 import CustomCarousel from "@/components/shared/CustomCarousel";
 import CustomTable from "@/components/shared/CustomTable";
+import FormButton from "@/components/shared/FormButton";
 import { useFilter } from "@/hooks/useFilter";
-import { useFetchClubQuery } from "@/services/clubService";
+import {
+  useFetchClubQuery,
+  useSendJoinRequestMutation,
+} from "@/services/clubService";
 import { years } from "@/utils/events-filter-values";
-import { fakeReslts } from "@/utils/tables-dummy-data";
+import { fakeNews, fakeReslts } from "@/utils/tables-dummy-data";
 import Image from "next/image";
 import React from "react";
 
@@ -16,16 +22,33 @@ interface Props {
   };
 }
 const ClubPage: React.FC<Props> = ({ params: { id } }) => {
+  const [joinMotivation, setJoinMotivation] = React.useState("");
+  const [successAlertOpen, setSuccessAlertOpen] = React.useState(false);
   const { filters, searchValue, setSearchValue, onChangeFilter } = useFilter();
   const {
     data: club,
     isLoading,
     error,
   } = useFetchClubQuery({ id: +id || null });
+  const [sendJoinRequest] = useSendJoinRequestMutation();
 
   if (isLoading || !club) return <div>loading...</div>;
 
-  console.log(club.members);
+  const createJoinRequest = async () => {
+    try {
+      // @ts-ignore
+      const { data } = await sendJoinRequest({
+        clubId: club.id,
+        motivation: joinMotivation,
+      });
+      if (data) {
+        setSuccessAlertOpen(true);
+        setJoinMotivation("");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -80,7 +103,7 @@ const ClubPage: React.FC<Props> = ({ params: { id } }) => {
                 <h4 className="text-white text-lg font-semibold border-b-[1px] border-red-500">
                   Members:
                 </h4>
-                <h3 className="text-2xl text-white">23</h3>
+                <h3 className="text-2xl text-white">{club.members.length}</h3>
               </div>
               <div className="flex flex-col gap-4 items-center">
                 <h4 className="text-white text-lg font-semibold border-b-[1px] border-red-500">
@@ -94,8 +117,10 @@ const ClubPage: React.FC<Props> = ({ params: { id } }) => {
         <section className="w-full bg-[url('/club-results.jpg')] bg-cover bg-no-repeat">
           <div className="max-w-5xl mx-4 lg:mx-auto rounded-t-xl overflow-hidden pt-6">
             <div className="bg-red-600 px-3 py-3 md:px-6 flex rounded-t-xl flex-col md:flex-row items-center justify-between">
-              <h4 className="text-white font-semibold text-xl">Results:</h4>
-              <div className="flex gap-4 flex-col md:flex-row">
+              <h4 className="text-white font-semibold text-xl mb-4 md:mb-0">
+                Results:
+              </h4>
+              <div className="flex gap-4 flex-col md:flex-row w-full">
                 <div className="w-full md:w-[200px]">
                   <FilterSelect
                     onChangeFilter={onChangeFilter}
@@ -147,9 +172,59 @@ const ClubPage: React.FC<Props> = ({ params: { id } }) => {
           </div>
         </section>
         <section className="my-8">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-7xl mx-auto overflow-hidden">
             <h2 className="text-3xl font-semibold">Members</h2>
             <CustomCarousel items={club.members} ItemCard={MemberCarouseltem} />
+          </div>
+        </section>
+        <section className="my-16 w-full">
+          <div className="max-w-6xl mx-4 lg:mx-auto flex flex-col md:flex-row justify-between items-center gap-5">
+            <div className="w-full md:w-2/5 flex flex-col gap-5">
+              <h2 className="text-2xl font-semibold mb-3">
+                Join &quot;{club.name}&quot; right now
+              </h2>
+              <p className="mb-4">
+                Fill in an application letter. It will be sent to club&apos;s
+                manager / coach. After their approval you become a club of
+                &quot;{club.name}&quot;.
+              </p>
+              <h4 className="text-lg font-semibold underline">
+                What does it mean to become a club member?
+              </h4>
+            </div>
+            <div className="w-full md:w-2/5">
+              <div className="flex flex-col gap-3">
+                <label htmlFor="motivation" className="text-xl font-semibold">
+                  Your motivation*
+                </label>
+                <textarea
+                  id="motivation"
+                  value={joinMotivation}
+                  onChange={(e) => setJoinMotivation(e.target.value)}
+                  rows={5}
+                  className="w-full border-[1px] border-gray-300 rounded-md p-2"
+                  placeholder="Write your motivation to become the club member (min 10 words)..."
+                ></textarea>
+                <AgreeCheck message="I agree with rules and terms of club membership" />
+                <FormButton
+                  isLoading={false}
+                  title={"Send an application"}
+                  onClick={createJoinRequest}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="w-full bg-[#1E1C1F] p-6">
+          <div className="max-w-7xl mx-4 lg:mx-auto">
+            <h3 className="text-2xl text-white border-b-2 border-red-500 font-semibold mb-6 md:mb-16">
+              Club related news
+            </h3>
+            <div className="flex flex-wrap gap-8 w-full justify-center items-center">
+              {fakeNews.map((news: any) => (
+                <NewsCard key={news.id} news={news} />
+              ))}
+            </div>
           </div>
         </section>
       </main>

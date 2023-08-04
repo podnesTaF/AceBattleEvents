@@ -61,7 +61,7 @@ const CreateClubPage = () => {
           ...session,
           user: {
             ...session.user,
-            club: data,
+            clubId: data.id,
           },
         });
         router.push("/");
