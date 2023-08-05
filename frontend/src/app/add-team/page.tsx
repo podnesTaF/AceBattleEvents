@@ -11,6 +11,7 @@ import ImageField from "@/components/shared/ImageField";
 import PickList from "@/components/shared/PickList";
 import { useFetchClubQuery } from "@/services/clubService";
 import { useAddTeamMutation } from "@/services/teamService";
+import { getCategoryByDoB } from "@/utils/date-formater";
 import { teamTypes } from "@/utils/events-filter-values";
 import { AddTeamSchema } from "@/utils/validators";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -21,19 +22,24 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Button, Divider, IconButton } from "@mui/material";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import FormPartsLayout from "../../components/shared/FormPartsLayout";
 
+const defaultPlayer = {
+  name: "",
+  surname: "",
+  dateOfBirth: "",
+  gender: "",
+  worldAthleticsUrl: "",
+  id: Date.now().toString(),
+  personalBests: [{ distance: "", time: "", id: Date.now() }],
+};
+
 const AddTeam = () => {
-  const [addTeam, { data, isLoading, error }] = useAddTeamMutation();
+  const [addTeam, { isLoading }] = useAddTeamMutation();
   const { data: session } = useSession();
-  const {
-    data: club,
-    isLoading: clubLoading,
-    error: clubError,
-  } = useFetchClubQuery({ id: session?.user.clubId || 0 });
+  const { data: club } = useFetchClubQuery({ id: session?.user.clubId || 0 });
 
   const [athleteList, setAthleteList] = useState<any[]>([]);
   const [personalBests, setPersonalBests] = useState<{
@@ -48,25 +54,56 @@ const AddTeam = () => {
 
   const [playerDialogOpen, setPlayerDialogOpen] = useState<boolean>(false);
 
-  const router = useRouter();
-
   const form = useForm({
     mode: "onChange",
     resolver: yupResolver(AddTeamSchema),
     defaultValues: {
-      players: [
-        {
-          name: "",
-          surname: "",
-          dateOfBirth: "",
-          gender: "",
-          worldAthleticsUrl: "",
-          id: Object.keys(personalBests)[0],
-          personalBests: personalBests[Object.keys(personalBests)[0]],
-        },
-      ],
+      players: [defaultPlayer],
     },
   });
+
+  const { control, handleSubmit, watch, formState } = form;
+
+  const { append, remove } = useFieldArray({
+    control,
+    name: "players",
+  });
+
+  const onAltheleListChange = useCallback((newItemList: any) => {
+    setAthleteList(newItemList.map((item: any) => item.id));
+  }, []);
+
+  const removePlayer = useCallback((playerId: string, index: number) => {
+    remove(index);
+    setPersonalBests((prev) => {
+      const newPbs = { ...prev };
+      delete newPbs[playerId];
+      return newPbs;
+    });
+    setAvatarPreviews((prev) => {
+      const newPreviews = { ...prev };
+      delete newPreviews[playerId];
+      return newPreviews;
+    });
+  }, []);
+
+  const removePb = useCallback((playerId: string, pbIdx: number) => {
+    setPersonalBests((prev) => ({
+      ...prev,
+      [playerId]: prev[playerId].filter((pb: any, i: number) => i !== pbIdx),
+    }));
+  }, []);
+
+  const appendPb = useCallback((playerId: string) => {
+    setPersonalBests((prev) => ({
+      ...prev,
+      [playerId]: prev[playerId].concat({
+        distance: "",
+        time: "",
+        id: Date.now(),
+      }),
+    }));
+  }, []);
 
   const appendPlayer = () => {
     const id = Date.now() + "";
@@ -89,46 +126,6 @@ const AddTeam = () => {
       id,
       personalBests: [{ distance: "", time: "", id: Date.now() }],
     });
-  };
-
-  const { control, formState, handleSubmit, watch } = form;
-
-  const { append, remove } = useFieldArray({
-    control,
-    name: "players",
-  });
-
-  const onAltheleListChange = (newItemList: any) => {
-    setAthleteList(newItemList.map((item: any) => item.id));
-  };
-
-  const removePlayer = (playerId: string, index: number) => {
-    remove(index);
-    setPersonalBests((prev: any) => {
-      const newPbs = { ...prev };
-      delete newPbs[playerId];
-      return newPbs;
-    });
-    setAvatarPreviews((prev: any) => {
-      const newPreviews = { ...prev };
-      delete newPreviews[playerId];
-      return newPreviews;
-    });
-  };
-
-  const removePb = (playerId: string, pbIdx: number) => {
-    setPersonalBests((prev: any) => ({
-      ...prev,
-      [playerId]: prev[playerId].filter((pb: any, i: number) => i !== pbIdx),
-    }));
-  };
-
-  const appendPb = (playerId: string) => {
-    const updatedPbs = personalBests[playerId];
-    setPersonalBests((prev: any) => ({
-      ...prev,
-      [playerId]: updatedPbs.concat({ distance: "", time: "", id: Date.now() }),
-    }));
   };
 
   useEffect(() => {
@@ -167,8 +164,6 @@ const AddTeam = () => {
           })),
         })),
       });
-
-      // router.back();
     } catch (error) {
       console.log(error);
     }
@@ -245,7 +240,7 @@ const AddTeam = () => {
                     .map((item) => ({
                       id: item.id,
                       title: item.name + " " + item.surname,
-                      additionalInfo: item.dateOfBirth,
+                      additionalInfo: getCategoryByDoB(item.dateOfBirth),
                     })) || []
                 }
                 tabs={["Male", "Female"]}
@@ -291,7 +286,7 @@ const AddTeam = () => {
                           name={`players[${index}].image`}
                         />
                       </div>
-                      {avatarPreviews && avatarPreviews[field.id].url && (
+                      {avatarPreviews && avatarPreviews[field.id]?.url && (
                         <div className="mb-4 flex w-full justify-center gap-4">
                           <h4 className="text-xl text-gray-500">
                             {avatarPreviews[field.id].name}

@@ -1,23 +1,24 @@
 import { Logout, Settings } from "@mui/icons-material";
 import GroupIcon from "@mui/icons-material/Group";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import Groups3OutlinedIcon from "@mui/icons-material/Groups3Outlined";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { Avatar, Divider, ListItemIcon, Menu, MenuItem } from "@mui/material";
 import { signOut } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 interface ProfileMenuProps {
   handleClose: () => void;
-  isMember?: boolean;
+  clubId?: number;
   role?: string;
   anchorEl: null | HTMLElement;
 }
 
 const ProfileMenu: React.FC<ProfileMenuProps> = ({
   anchorEl,
-  isMember,
+  clubId,
   role,
   handleClose,
 }) => {
@@ -60,38 +61,35 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({
     >
       <MenuItem className="w-[200px]">
         <Link href="/profile">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <Avatar sx={{ width: 40, height: 40 }} />
             <p>My account</p>
           </div>
         </Link>
       </MenuItem>
-      {isMember && (
+      {clubId && (
         <MenuItem>
-          <Link href="/profile">
+          <Link href={`/clubs/${clubId}`}>
             <div className="flex items-center gap-2">
-              <Avatar sx={{ width: 40, height: 40 }} className="bg-yellow-400">
-                <GroupIcon className="text-black" />
-              </Avatar>
+              <GroupIcon className="text-gray-400" />
               <p>My Club</p>
             </div>
           </Link>
         </MenuItem>
       )}
       {role === "manager" ? (
-        isMember ? (
+        clubId ? (
           <MenuItem>
             <Link href="/add-team">
               <div className="flex items-center gap-2">
-                <Avatar sx={{ height: 40 }} className="bg-yellow-400">
-                  <Image
-                    src={"/add-team.svg"}
-                    width={60}
-                    height={40}
-                    alt="image"
-                  />
-                </Avatar>
+                <Groups3OutlinedIcon className="text-gray-400" />
                 <p>Form a Team</p>
+              </div>
+            </Link>
+            <Link href={`/clubs/${clubId}/join-requests`}>
+              <div className="flex items-center gap-2">
+                <PersonAddIcon className="text-gray-400" />
+                <p>Join Requests</p>
               </div>
             </Link>
           </MenuItem>

@@ -7,9 +7,10 @@ import React from "react";
 
 interface Props {
   request: JoinRequest;
+  onStatusChange: (status: string, userId: number) => void;
 }
 
-const JoinRequestCard: React.FC<Props> = ({ request }) => {
+const JoinRequestCard: React.FC<Props> = ({ request, onStatusChange }) => {
   return (
     <div className="border-b-[1px] border-x-[1px] border-gray-200 px-4 py-2 flex flex-col md:flex-row justify-between items-center gap-10">
       <div className="flex gap-6 w-full md:w-1/2 lg:1/3 items-center">
@@ -39,10 +40,18 @@ const JoinRequestCard: React.FC<Props> = ({ request }) => {
           </div>
         </div>
         <div className="flex gap-4">
-          <IconButton color="success" size={"large"}>
+          <IconButton
+            onClick={onStatusChange.bind(null, "accept", request.user.id)}
+            color="success"
+            size={"large"}
+          >
             <CheckCircleOutlineOutlinedIcon fontSize={"large"} />
           </IconButton>
-          <IconButton color="error" size={"large"}>
+          <IconButton
+            onClick={onStatusChange.bind(null, "reject", request.user.id)}
+            color="error"
+            size={"large"}
+          >
             <CancelOutlinedIcon fontSize={"large"} />
           </IconButton>
         </div>

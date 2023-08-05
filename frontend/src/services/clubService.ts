@@ -5,9 +5,11 @@ export const clubApi = api.injectEndpoints({
   endpoints: (builder) => ({
     fetchClubs: builder.query<IClub[], { params?: string }>({
       query: ({ params }) => "/clubs?" + params,
+      providesTags: ["Club"],
     }),
     fetchClub: builder.query<IClub, { id: number | null }>({
       query: ({ id }) => `/clubs/${id}`,
+      providesTags: ["Club"],
     }),
     createClub: builder.mutation<
       any,
@@ -18,6 +20,7 @@ export const clubApi = api.injectEndpoints({
         method: "POST",
         body: { name, city, country, logo, phone },
       }),
+      invalidatesTags: ["Club"],
     }),
     sendJoinRequest: builder.mutation<
       JoinRequest,
@@ -28,6 +31,31 @@ export const clubApi = api.injectEndpoints({
         method: "POST",
         body: { motivation, clubId },
       }),
+      invalidatesTags: ["JoinRequest"],
+    }),
+    getJoinRequests: builder.query<JoinRequest[], { clubId: number | null }>({
+      query: ({ clubId }) => `/club-requests/club/${clubId}`,
+      providesTags: ["JoinRequest"],
+    }),
+    rejectJoinRequest: builder.mutation<
+      { message: string },
+      { clubId: number; userId: number }
+    >({
+      query: ({ clubId, userId }) => ({
+        url: `/club-requests/club/${clubId}/decline`,
+        method: "post",
+        body: { userId },
+      }),
+    }),
+    acceptJoinRequest: builder.mutation<
+      { message: string },
+      { clubId: number; userId: number }
+    >({
+      query: ({ clubId, userId }) => ({
+        url: `/club-requests/club/${clubId}/accept`,
+        method: "post",
+        body: { userId },
+      }),
     }),
   }),
 });
@@ -37,4 +65,7 @@ export const {
   useFetchClubsQuery,
   useFetchClubQuery,
   useSendJoinRequestMutation,
+  useGetJoinRequestsQuery,
+  useRejectJoinRequestMutation,
+  useAcceptJoinRequestMutation,
 } = clubApi;
