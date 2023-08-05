@@ -84,27 +84,37 @@ const ResultsPage: React.FC = () => {
             </div>
           </div>
           <div className="w-full md:w-1/2 flex flex-wrap gap-x-2 justify-around items-center my-4">
-            <FilterSelect
-              onChangeFilter={onChangeFilter}
-              selected={filters.find((f) => f.type === "category")?.value || ""}
-              label="category"
-              placeholder="Choose category"
-              values={Object.entries(["indoor", "outdoor"])}
-            />
-            <FilterSelect
-              onChangeFilter={onChangeFilter}
-              selected={filters.find((f) => f.type === "country")?.value || ""}
-              label="country"
-              placeholder="Choose a country"
-              values={Object.entries(countries)}
-            />
-            <FilterSelect
-              onChangeFilter={onChangeFilter}
-              selected={filters.find((f) => f.type === "year")?.value || ""}
-              label="year"
-              placeholder="Choose a year"
-              values={Object.entries(years)}
-            />
+            <div className="w-full md:w-2/5">
+              <FilterSelect
+                onChangeFilter={onChangeFilter}
+                selected={
+                  filters.find((f) => f.type === "category")?.value || ""
+                }
+                label="category"
+                placeholder="Choose category"
+                values={Object.entries(["indoor", "outdoor"])}
+              />
+            </div>
+            <div className="w-full md:w-2/5">
+              <FilterSelect
+                onChangeFilter={onChangeFilter}
+                selected={
+                  filters.find((f) => f.type === "country")?.value || ""
+                }
+                label="country"
+                placeholder="Choose a country"
+                values={Object.entries(countries)}
+              />
+            </div>
+            <div className="w-full md:w-2/5">
+              <FilterSelect
+                onChangeFilter={onChangeFilter}
+                selected={filters.find((f) => f.type === "year")?.value || ""}
+                label="year"
+                placeholder="Choose a year"
+                values={Object.entries(years)}
+              />
+            </div>
           </div>
         </div>
         <div className="my-4">

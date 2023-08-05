@@ -59,8 +59,8 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
             }
             alt={"club"}
             width={250}
-            height={300}
-            className="w-full"
+            height={250}
+            className="w-full max-h-[300px] object-contain"
           />
         </div>
       </div>
