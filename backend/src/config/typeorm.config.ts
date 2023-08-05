@@ -1,5 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { config as evnconfig } from 'dotenv';
+import { JoinRequest } from 'src/club-requests/entities/club-request.entity';
 import { Club } from 'src/club/entities/club.entity';
 import { Coach } from 'src/coach/entities/coach.entity';
 import { Country } from 'src/country/entity/country.entity';
@@ -32,6 +33,7 @@ const config: TypeOrmModuleOptions = {
     PersonalBest,
     PrizeEntity,
     Media,
+    JoinRequest,
   ],
   synchronize: true,
 };

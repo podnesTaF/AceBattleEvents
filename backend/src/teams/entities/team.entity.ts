@@ -37,7 +37,7 @@ export class Team {
   @ManyToOne(() => User, (user) => user.teams, { onDelete: 'CASCADE' })
   manager: User;
 
-  @OneToMany(() => Club, (club) => club.team, { nullable: true })
+  @OneToMany(() => Club, (club) => club.teams, { nullable: true })
   clubs: Club[];
 
   @Column()
