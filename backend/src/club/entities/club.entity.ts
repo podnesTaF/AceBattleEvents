@@ -1,11 +1,15 @@
+import { JoinRequest } from 'src/club-requests/entities/club-request.entity';
+import { Media } from 'src/media/entities/media.entity';
 import { Team } from 'src/teams/entities/team.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
-  OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -24,11 +28,21 @@ export class Club {
   @Column()
   country: string;
 
-  @OneToOne(() => User, (user) => user.club)
-  manager: User;
+  @OneToMany(() => User, (user) => user.club)
+  members: User[];
 
-  @ManyToOne(() => Team, (team) => team.clubs)
-  team: Team;
+  @OneToMany(() => Team, (team) => team.clubs)
+  teams: Team[];
+
+  @ManyToOne(() => Media, { nullable: true })
+  logo: Media;
+
+  @ManyToOne(() => Media, { nullable: true })
+  photo: Media;
+
+  @ManyToMany(() => JoinRequest, (joinRequest) => joinRequest.club)
+  @JoinTable()
+  joinRequests: JoinRequest[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

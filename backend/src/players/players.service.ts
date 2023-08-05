@@ -1,18 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PersonalBestsService } from 'src/personal-bests/personal-bests.service';
+import { createDateFromDDMMYYYY } from 'src/utils/date-formater';
 import { Repository } from 'typeorm';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { PlayerEntity } from './entities/player.entity';
-
-function createDateFromDDMMYYYY(dateString: string) {
-  const parts = dateString.split('/');
-  const day = parseInt(parts[0], 10);
-  const month = parseInt(parts[1], 10) - 1;
-  const year = parseInt(parts[2], 10);
-
-  return new Date(year, month, day);
-}
 
 @Injectable()
 export class PlayersService {

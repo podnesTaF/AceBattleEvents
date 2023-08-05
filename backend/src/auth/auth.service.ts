@@ -1,6 +1,9 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { CountryService } from 'src/country/country.service';
+import { Country } from 'src/country/entity/country.entity';
+import { createDateFromDDMMYYYY } from 'src/utils/date-formater';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
@@ -10,6 +13,7 @@ export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
+    private countryService: CountryService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
@@ -42,14 +46,28 @@ export class AuthService {
   async register(dto: CreateUserDto) {
     try {
       const hashedPassword = await bcrypt.hash(dto.password, 10);
+      const countryIfExist = await this.countryService.returnIfExist({
+        name: dto.country,
+      });
+      let country: Country | null;
+      if (!countryIfExist) {
+        country = await this.countryService.create(dto.country);
+      } else {
+        country = countryIfExist;
+      }
       const { password, ...userData } = await this.userService.create({
         email: dto.email,
         name: dto.name,
         surname: dto.surname,
         city: dto.city,
-        country: dto.country,
+        country,
         password: hashedPassword,
         image: dto.image || null,
+        role: dto.role,
+        dateOfBirth: createDateFromDDMMYYYY(dto.dateOfBirth),
+        worldAthleticsUrl: dto.worldAthleticsUrl || null,
+        gender: dto.gender || null,
+        club: dto.club || null,
       });
       return {
         ...userData,

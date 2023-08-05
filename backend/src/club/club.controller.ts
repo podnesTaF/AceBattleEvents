@@ -1,20 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ClubService } from './club.service';
 import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
 
-@Controller('club')
+@Controller('clubs')
 export class ClubController {
   constructor(private readonly clubService: ClubService) {}
 
   @Post()
-  create(@Body() createClubDto: CreateClubDto) {
-    return this.clubService.create(createClubDto);
+  @UseGuards(JwtAuthGuard)
+  create(@Request() req, @Body() createClubDto: CreateClubDto) {
+    return this.clubService.create(createClubDto, +req.user.id);
   }
 
   @Get()
-  findAll() {
-    return this.clubService.findAll();
+  findAll(@Query() queries: any) {
+    return this.clubService.findAll(queries);
   }
 
   @Get(':id')
