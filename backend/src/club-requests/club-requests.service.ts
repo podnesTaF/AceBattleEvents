@@ -54,6 +54,40 @@ export class ClubRequestsService {
     return joinRequests;
   }
 
+  async acceptJoinRequest(clubId: number, userId: number) {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+
+    const club = await this.clubRepository.findOne({
+      where: { id: clubId },
+      relations: ['members'],
+    });
+
+    // Remove the user from the club's join requests
+    await this.joinRequestRepository.delete({ user, club });
+
+    // Add the user to the club's members
+    club.members.push(user);
+
+    // Save the club
+    await this.clubRepository.save(club);
+
+    return { message: `${user.role} ${user.name} added to the club` };
+  }
+
+  async declineJoinRequest(clubId: number, userId: number) {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+
+    const club = await this.clubRepository.findOne({
+      where: { id: clubId },
+      relations: ['members'],
+    });
+
+    // Remove the user from the club's join requests
+    await this.joinRequestRepository.delete({ user, club });
+
+    return { message: `${user.role} ${user.name} declined to join the club` };
+  }
+
   findAll() {
     return `This action returns all clubRequests`;
   }
