@@ -29,6 +29,24 @@ export class ClubRequestsController {
     return this.clubRequestsService.getJoinRequestsForClub(+id);
   }
 
+  @Post('club/:id/accept')
+  @UseGuards(JwtAuthGuard)
+  acceptJoinRequest(
+    @Param('id') id: string,
+    @Body() { userId }: { userId: number },
+  ) {
+    return this.clubRequestsService.acceptJoinRequest(+id, userId);
+  }
+
+  @Post('club/:id/decline')
+  @UseGuards(JwtAuthGuard)
+  declineJoinRequest(
+    @Param('id') id: string,
+    @Body() { userId }: { userId: number },
+  ) {
+    return this.clubRequestsService.declineJoinRequest(+id, userId);
+  }
+
   @Get()
   findAll() {
     return this.clubRequestsService.findAll();

@@ -4,10 +4,16 @@ import JoinRequestCard from "@/components/clubs/JoinRequestCard";
 import FilterSelect from "@/components/events/FilterSelect";
 import SearchField from "@/components/events/SearchField";
 import { useFilter } from "@/hooks/useFilter";
-import { useFetchClubQuery } from "@/services/clubService";
-import { FakeRequests } from "@/utils/tables-dummy-data";
+import {
+  useAcceptJoinRequestMutation,
+  useFetchClubQuery,
+  useGetJoinRequestsQuery,
+  useRejectJoinRequestMutation,
+} from "@/services/clubService";
+import { Snackbar } from "@mui/material";
 import { NextPage } from "next";
 import Image from "next/image";
+import { useState } from "react";
 
 interface Props {
   params: {
@@ -16,24 +22,53 @@ interface Props {
 }
 
 const JoinRequestsPage: NextPage<Props> = ({ params: { id } }) => {
-  const {
-    filters,
-    checkValue,
-    searchValue,
-    onChangeFilter,
-    removeFilter,
-    setCheckValue,
-    setSearchValue,
-  } = useFilter();
+  const [statusAlert, setStatusAlert] = useState<{
+    message: string;
+    isOpen: boolean;
+  }>({ message: "", isOpen: false });
+
+  const { filters, searchValue, onChangeFilter, setSearchValue } = useFilter();
   const {
     data: club,
     isLoading,
     error,
   } = useFetchClubQuery({ id: +id || null });
+  const {
+    data: requests,
+    isLoading: isLoadingRequests,
+    error: errorRequests,
+  } = useGetJoinRequestsQuery({ clubId: +id || null });
+  const [rejectJoinRequest, { data: rejectResponse }] =
+    useRejectJoinRequestMutation();
+  const [acceptJoinRequest, { data }] = useAcceptJoinRequestMutation();
 
   const onChangeInput = (newValue: string) => {
     setSearchValue(newValue);
     onChangeFilter("name", newValue);
+  };
+
+  const onStatusChange = async (status: string, userId: number) => {
+    if (status === "accept") {
+      try {
+        await acceptJoinRequest({ userId, clubId: +id });
+        setStatusAlert({
+          message: data?.message || "User accepted",
+          isOpen: true,
+        });
+      } catch (error) {
+        console.log("error accepting");
+      }
+    } else {
+      try {
+        await rejectJoinRequest({ userId, clubId: +id });
+        setStatusAlert({
+          message: rejectResponse?.message || "User declined",
+          isOpen: true,
+        });
+      } catch (error) {
+        console.log("error rejecting");
+      }
+    }
   };
 
   if (isLoading || !club) return <div>loading...</div>;
@@ -74,10 +109,20 @@ const JoinRequestsPage: NextPage<Props> = ({ params: { id } }) => {
           </div>
         </div>
         <div className="w-full my-6 border-y-[1px] border-gray-200 rounded-md overflow-hidden">
-          {FakeRequests.map((req: any) => (
-            <JoinRequestCard request={req} />
+          {requests?.map((req: any) => (
+            <JoinRequestCard
+              key={req.id}
+              onStatusChange={onStatusChange}
+              request={req}
+            />
           ))}
         </div>
+        <Snackbar
+          open={statusAlert.isOpen}
+          autoHideDuration={3000}
+          onClose={() => setStatusAlert({ message: "", isOpen: false })}
+          message={statusAlert.message}
+        />
       </main>
     </>
   );
