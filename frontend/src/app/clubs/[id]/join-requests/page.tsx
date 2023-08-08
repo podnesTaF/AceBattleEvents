@@ -109,13 +109,26 @@ const JoinRequestsPage: NextPage<Props> = ({ params: { id } }) => {
           </div>
         </div>
         <div className="w-full my-6 border-y-[1px] border-gray-200 rounded-md overflow-hidden">
-          {requests?.map((req: any) => (
-            <JoinRequestCard
-              key={req.id}
-              onStatusChange={onStatusChange}
-              request={req}
-            />
-          ))}
+          {isLoadingRequests ? (
+            <div>
+              <h3 className="text-xl font-semibold">Loading...</h3>
+            </div>
+          ) : requests?.length ? (
+            requests?.map((req: any) => (
+              <JoinRequestCard
+                key={req.id}
+                onStatusChange={onStatusChange}
+                request={req}
+              />
+            ))
+          ) : (
+            <div className="flex flex-col items-center justify-center py-8">
+              <h3 className="text-xl font-semibold">No requests</h3>
+              <p className="text-gray-500">
+                There are no requests to join this club
+              </p>
+            </div>
+          )}
         </div>
         <Snackbar
           open={statusAlert.isOpen}

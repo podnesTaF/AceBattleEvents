@@ -13,8 +13,10 @@ import {
 } from "@/services/clubService";
 import { years } from "@/utils/events-filter-values";
 import { fakeNews, fakeReslts } from "@/utils/tables-dummy-data";
+import CloseIcon from "@mui/icons-material/Close";
+import { IconButton, Snackbar } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 interface Props {
   params: {
@@ -22,8 +24,12 @@ interface Props {
   };
 }
 const ClubPage: React.FC<Props> = ({ params: { id } }) => {
-  const [joinMotivation, setJoinMotivation] = React.useState("");
-  const [successAlertOpen, setSuccessAlertOpen] = React.useState(false);
+  const [joinMotivation, setJoinMotivation] = useState("");
+  const [statusAlert, setStatusAlert] = useState({
+    message: "",
+    isOpen: false,
+  });
+  const [checkValue, setCheckValue] = useState(false);
   const { filters, searchValue, setSearchValue, onChangeFilter } = useFilter();
   const {
     data: club,
@@ -42,10 +48,16 @@ const ClubPage: React.FC<Props> = ({ params: { id } }) => {
         motivation: joinMotivation,
       });
       if (data) {
-        setSuccessAlertOpen(true);
+        console.log(data);
+        setStatusAlert({
+          message: "The request has sent successfully",
+          isOpen: true,
+        });
         setJoinMotivation("");
+        setCheckValue(false);
       }
     } catch (error) {
+      setStatusAlert({ message: "problem sending request", isOpen: true });
       console.log(error);
     }
   };
@@ -205,7 +217,11 @@ const ClubPage: React.FC<Props> = ({ params: { id } }) => {
                   className="w-full border-[1px] border-gray-300 rounded-md p-2"
                   placeholder="Write your motivation to become the club member (min 10 words)..."
                 ></textarea>
-                <AgreeCheck message="I agree with rules and terms of club membership" />
+                <AgreeCheck
+                  checked={checkValue}
+                  onChange={setCheckValue}
+                  message="I agree with rules and terms of club membership"
+                />
                 <FormButton
                   isLoading={false}
                   title={"Send an application"}
@@ -227,6 +243,22 @@ const ClubPage: React.FC<Props> = ({ params: { id } }) => {
             </div>
           </div>
         </section>
+        <Snackbar
+          open={statusAlert.isOpen}
+          autoHideDuration={3000}
+          onClose={() => setStatusAlert({ message: "", isOpen: false })}
+          message={statusAlert.message}
+          action={
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={() => setStatusAlert({ message: "", isOpen: false })}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          }
+        />
       </main>
     </>
   );
