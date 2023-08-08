@@ -46,6 +46,7 @@ export const clubApi = api.injectEndpoints({
         method: "post",
         body: { userId },
       }),
+      invalidatesTags: ["JoinRequest"],
     }),
     acceptJoinRequest: builder.mutation<
       { message: string },
@@ -56,6 +57,7 @@ export const clubApi = api.injectEndpoints({
         method: "post",
         body: { userId },
       }),
+      invalidatesTags: ["JoinRequest"],
     }),
   }),
 });

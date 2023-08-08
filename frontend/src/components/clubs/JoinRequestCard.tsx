@@ -3,7 +3,8 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { Avatar, IconButton } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
+import MessageDialog from "../shared/MessageDialog";
 
 interface Props {
   request: JoinRequest;
@@ -11,6 +12,8 @@ interface Props {
 }
 
 const JoinRequestCard: React.FC<Props> = ({ request, onStatusChange }) => {
+  const [messageDialogOpen, setMessageDialogOpen] = useState(false);
+
   return (
     <div className="border-b-[1px] border-x-[1px] border-gray-200 px-4 py-2 flex flex-col md:flex-row justify-between items-center gap-10">
       <div className="flex gap-6 w-full md:w-1/2 lg:1/3 items-center">
@@ -34,7 +37,10 @@ const JoinRequestCard: React.FC<Props> = ({ request, onStatusChange }) => {
       <div className="flex gap-6 md:items-center items-end">
         <div className="flex flex-col gap-3">
           <p>Wants to join your club</p>
-          <div className="flex gap-1 cursor-pointer">
+          <div
+            className="flex gap-1 cursor-pointer"
+            onClick={() => setMessageDialogOpen(true)}
+          >
             <InfoOutlinedIcon color="info" />
             <p className="underline">read motivation</p>
           </div>
@@ -56,6 +62,12 @@ const JoinRequestCard: React.FC<Props> = ({ request, onStatusChange }) => {
           </IconButton>
         </div>
       </div>
+      <MessageDialog
+        open={messageDialogOpen}
+        handleClose={() => setMessageDialogOpen(false)}
+        title={"Runner message"}
+        message={request.motivation}
+      />
     </div>
   );
 };

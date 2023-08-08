@@ -79,20 +79,24 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({
       )}
       {role === "manager" ? (
         clubId ? (
-          <MenuItem>
-            <Link href="/add-team">
-              <div className="flex items-center gap-2">
-                <Groups3OutlinedIcon className="text-gray-400" />
-                <p>Form a Team</p>
-              </div>
-            </Link>
-            <Link href={`/clubs/${clubId}/join-requests`}>
-              <div className="flex items-center gap-2">
-                <PersonAddIcon className="text-gray-400" />
-                <p>Join Requests</p>
-              </div>
-            </Link>
-          </MenuItem>
+          <div>
+            <MenuItem>
+              <Link href="/add-team">
+                <div className="flex items-center gap-2">
+                  <Groups3OutlinedIcon className="text-gray-400" />
+                  <p>Form a Team</p>
+                </div>
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link href={`/clubs/${clubId}/join-requests`}>
+                <div className="flex items-center gap-2">
+                  <PersonAddIcon className="text-gray-400" />
+                  <p>Join Requests</p>
+                </div>
+              </Link>
+            </MenuItem>
+          </div>
         ) : (
           <MenuItem>
             <Link href="/create-club">
