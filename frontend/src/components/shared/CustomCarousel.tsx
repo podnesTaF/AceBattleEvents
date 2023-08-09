@@ -6,12 +6,17 @@ import React, { useEffect, useRef, useState } from "react";
 interface CustomCarouselProps {
   items: any[];
   ItemCard: any;
+  initTranslate?: number;
 }
 
-const CustomCarousel: React.FC<CustomCarouselProps> = ({ items, ItemCard }) => {
-  const [activeIndex, setActiveIndex] = useState(items.length > 1 ? 1 : 0);
+const CustomCarousel: React.FC<CustomCarouselProps> = ({
+  items,
+  ItemCard,
+  initTranslate,
+}) => {
+  const [activeIndex, setActiveIndex] = useState(1);
   const [translateDistance, setTranslateDistance] = useState(
-    items.length % 2 ? 400 : 200
+    initTranslate || 0
   );
   const [sliderWidth, setSliderWidth] = useState(items.length * 100);
 
@@ -66,7 +71,7 @@ const CustomCarousel: React.FC<CustomCarouselProps> = ({ items, ItemCard }) => {
           <ChevronLeftIcon />
         </IconButton>
       )}
-      {activeIndex < itemRefs.current.length - 1 && (
+      {activeIndex < items.length - 1 && (
         <IconButton
           onClick={() => slide("next")}
           style={{ position: "absolute", backgroundColor: "white" }}

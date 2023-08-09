@@ -53,31 +53,13 @@ const LoginPage = ({ searchParams }: IProps) => {
           />
           <p>
             Don't have an account yet?{" "}
-            <Link href="auth/register" className="underline text-red-500">
+            <Link href="/auth/register" className="underline text-red-500">
               Sign up
             </Link>
           </p>
         </form>
       </FormProvider>
     </div>
-    // <div
-    //   className={
-    //     "flex flex-col justify-center items-center  h-screen bg-gradient-to-br gap-1 from-cyan-300 to-sky-600"
-    //   }
-    // >
-    //   <div className="px-7 py-4 shadow bg-white rounded-md flex flex-col gap-2">
-    //     <FormField
-    //       lableText="Email"
-    //       onChange={(e) => (email.current = e.target.value)}
-    //     />
-    //     <FormField
-    //       lableText="Password"
-    //       type={"password"}
-    //       onChange={(e) => (pass.current = e.target.value)}
-    //     />
-    //     <Button onClick={onSubmit}>Login</Button>
-    //   </div>
-    // </div>
   );
 };
 
