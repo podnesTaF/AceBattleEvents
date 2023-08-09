@@ -113,16 +113,16 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({
           </MenuItem>
         )
       ) : (
-        <MenuItem>
-          <Link href="/clubs">
-            <div className="flex items-center gap-2">
-              <Avatar sx={{ width: 40, height: 40 }} className="bg-yellow-400">
+        !clubId && (
+          <MenuItem>
+            <Link href="/clubs">
+              <div className="flex items-center gap-2">
                 <GroupIcon className="text-black" />
-              </Avatar>
-              <p>Find a Club</p>
-            </div>
-          </Link>
-        </MenuItem>
+                <p>Find a Club</p>
+              </div>
+            </Link>
+          </MenuItem>
+        )
       )}
       <Divider />
       <MenuItem onClick={handleClose}>

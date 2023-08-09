@@ -7,7 +7,7 @@ interface Props {
 
 const MemberCarouseltem: React.FC<Props> = ({ item }) => {
   return (
-    <div className="max-w-xs max-h-sm w-full relative cursor-pointer active:scale-95 flex justify-center items-center shadow-md rounded-md">
+    <div className="max-w-xs max-h-sm mx-auto w-full relative cursor-pointer active:scale-95 flex justify-center items-center shadow-md rounded-md">
       <Image
         src={
           item.image

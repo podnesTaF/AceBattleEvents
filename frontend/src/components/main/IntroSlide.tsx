@@ -74,7 +74,7 @@ const IntroSlide: React.FC<Props> = ({
           "https://storage.googleapis.com/abe_cloud_storage/image/large/dccfea3d-a639-4569-9c06-b37bbbb37130.jpg"
         }
         alt="bg"
-        className="object-cover xl:object-contain w-full h-full shadow-md"
+        className="object-cover w-full h-full shadow-md"
         width={1920}
         height={980}
       />
