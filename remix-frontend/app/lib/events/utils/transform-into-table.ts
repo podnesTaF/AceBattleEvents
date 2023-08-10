@@ -15,7 +15,7 @@ export const transformIntoEventsTable = (data: IEvent[]) => {
       country: location.country,
       organisators: "ACE BATTLE ASSOCIATION",
       details: {
-        link: "/calendar/" + id,
+        link: "/events/" + id,
         value: "details",
       },
     };

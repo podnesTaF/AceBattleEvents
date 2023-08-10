@@ -23,3 +23,16 @@ export const getEvents = async ({
     return { events: [], totalPages: 0, error: true };
   }
 };
+
+export const getEvent = async (id: string): Promise<IEvent | null> => {
+  try {
+    const { data: eventData } = await axios.get<IEvent>(
+      `http://localhost:4000/api/v1/events/${id}`
+    );
+
+    return eventData;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};

@@ -7,8 +7,9 @@ import FilterSelect from "~/components/shared/forms/FilterSelect";
 import SearchField from "~/components/shared/forms/SearchField";
 import CustomTable from "~/components/shared/tables/CustomTable";
 import Pagination from "~/components/shared/tables/Pagination";
-import { getEvents } from "~/lib/events/utils/get-events.server";
+import { getEvents } from "~/lib/events/utils/events-requests.server";
 import { transformIntoEventsTable } from "~/lib/events/utils/transform-into-table";
+import { getNewParams } from "~/lib/events/utils/update-params";
 import { countries } from "~/lib/shared/data/countries";
 import { months, years } from "~/lib/shared/data/date-data";
 import { useFilter } from "~/lib/shared/hooks/useFilter";
@@ -47,15 +48,8 @@ const EventsIndexPage = () => {
   };
 
   useEffect(() => {
-    const params = new URLSearchParams({
-      page: currPage.toString(),
-      ...filters.reduce(
-        (acc, curr) => ({ ...acc, [curr.type]: curr.value }),
-        {}
-      ),
-      check: checkValue ? "true" : "false",
-    }).toString();
-
+    const params = getNewParams(currPage, filters, checkValue);
+    console.log(params);
     navigate(`${location.pathname}?${params}`);
   }, [filters]);
 

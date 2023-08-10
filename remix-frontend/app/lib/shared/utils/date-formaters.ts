@@ -37,3 +37,16 @@ export const getCategoryByDoB = (date?: string) => {
   if (age < 23) return "U23";
   return "Senior";
 };
+
+export const getAgeCategory = (dateOfBirth: string): string => {
+  const age = new Date().getFullYear() - new Date(dateOfBirth).getFullYear();
+  if (age < 18) {
+    return "U18";
+  } else if (age < 20) {
+    return "U20";
+  } else if (age < 23) {
+    return "U23";
+  } else {
+    return "Senior";
+  }
+};

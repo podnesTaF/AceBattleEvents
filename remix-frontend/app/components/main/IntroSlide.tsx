@@ -1,7 +1,7 @@
 import { useNavigate } from "@remix-run/react";
 import React from "react";
 import { IEvent } from "~/lib/events/types";
-import { formatDate } from "~/lib/events/utils/formatDate";
+import { formatDate } from "~/lib/events/utils/format-date";
 
 interface Props {
   event: IEvent;
