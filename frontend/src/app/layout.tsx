@@ -20,18 +20,6 @@ export default function RootLayout({
   children: React.ReactNode;
   session: any;
 }) {
-  // const onLoad = () => {
-  //   console.log(document.getElementById("divRRPublish"));
-  //   // @ts-ignore
-  //   var rrp = new RRPublish(
-  //     document.getElementById("divRRPublish"),
-  //     163493,
-  //     "results"
-  //   );
-  //   rrp.ShowTimerLogo = true;
-  //   rrp.ShowInfoText = false;
-  // };
-
   return (
     <html lang="en">
       <head>

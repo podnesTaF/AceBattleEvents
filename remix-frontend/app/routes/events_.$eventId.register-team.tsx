@@ -1,12 +1,7 @@
 import { Checkbox, FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { red } from "@mui/material/colors";
-import { ActionArgs, LoaderArgs, json } from "@remix-run/node";
-import {
-  useActionData,
-  useLoaderData,
-  useLocation,
-  useNavigate,
-} from "@remix-run/react";
+import { LoaderArgs, json } from "@remix-run/node";
+import { useLoaderData, useLocation, useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { Api } from "~/api/axiosInstance";
 import NoTeams from "~/components/teams/NoTeams";
@@ -36,38 +31,32 @@ export const loader = async ({ params }: LoaderArgs) => {
   return json({ event, teams });
 };
 
-export const action = async ({ request, params }: ActionArgs) => {
-  const form = await request.formData();
-  const teamId = form.get("teamId");
-  const agreement = form.get("agreement");
-  const { eventId } = params;
+// export const action = async ({ request, params }: ActionArgs) => {
+//   const form = await request.formData();
+//   const teamId = form.get("teamId");
+//   const agreement = form.get("agreement");
+//   const { eventId } = params;
 
-  console.log(eventId, teamId);
-  if (!teamId || !eventId) {
-    return json({ status: "error" }, { status: 400 });
-  }
+//   console.log(eventId, teamId);
+//   if (!teamId || !eventId) {
+//     return json({ status: "error" }, { status: 400 });
+//   }
 
-  try {
-    console.log(agreement, teamId, eventId);
-    // await Api().teams.registerTeam({
-    //   teamId: +teamId,
-    //   eventId: +eventId,
-    //   txHash: "123",
-    //   wallet: "123",
-    // });
+//   try {
+//     console.log(agreement, teamId, eventId);
 
-    return json({ status: "success", teamId, eventId });
-  } catch (error) {
-    return json({ status: "success", teamId, eventId });
-  }
-};
+//     return json({ status: "success", teamId, eventId });
+//   } catch (error) {
+//     return json({ status: "success", teamId, eventId });
+//   }
+// };
 
 const RegisterTeamIndex = () => {
   const { event, teams } = useLoaderData<typeof loader>();
-  const actionData = useActionData<typeof action>();
 
   const [teamId, setTeamId] = useState(0);
   const [choosenTeam, setChoosenTeam] = useState<ITeam | null>(null);
+  const [status, setStatus] = useState("");
   const [activeTab, setActiveTab] = useState(0);
 
   const navigate = useNavigate();
@@ -84,7 +73,35 @@ const RegisterTeamIndex = () => {
     }
   }, [teamId]);
 
-  if (actionData?.status === "success" || actionData?.status === "error") {
+  const handleRegisterTeam = async () => {
+    // if (!session?.user) return;
+    if (teamId > 0 && event?.id) {
+      try {
+        await onSuccessRegister(123);
+        setStatus("success");
+      } catch (error) {
+        setStatus("error");
+      }
+    }
+  };
+
+  const onSuccessRegister = async (tx: any) => {
+    // if (!session?.user || !event?.id) return;
+    await Api().teams.registerTeam({
+      teamId: +teamId,
+      eventId: +event.id,
+      txHash: "123",
+      wallet: "123",
+    });
+  };
+
+  useEffect(() => {
+    if (teamId > 0) {
+      setChoosenTeam(teams?.find((team: any) => team.id === teamId) || null);
+    }
+  }, [teamId]);
+
+  if (status === "success" || status === "error") {
     return (
       <div className="w-full">
         <div className="w-full flex justify-center items-center relative h-40 md:h-60 bg-[url('/register-team-sm.jpg')] md:bg-[url('/register-team-lg.jpg')] bg-cover bg-center">
@@ -93,7 +110,7 @@ const RegisterTeamIndex = () => {
             Register Team
           </h2>
         </div>
-        <StatusCard status={actionData.status} eventId={event.id} />
+        <StatusCard status={status} eventId={event.id} />
       </div>
     );
   }
@@ -226,7 +243,7 @@ const RegisterTeamIndex = () => {
                   Cancel
                 </button>
                 <button
-                  type="submit"
+                  onClick={handleRegisterTeam}
                   className="hover:bg-slate-800 bg-black text-white font-bold py-2 px-4 border border-slate-800 rounded disabled:opacity-80 disabled:cursor-not-allowed"
                 >
                   {/* <svg

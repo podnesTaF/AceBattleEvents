@@ -110,12 +110,16 @@ const AppBar = () => {
             <Button
               variant="contained"
               color="success"
-              onClick={() => navigate("/auth/register")}
+              onClick={() => navigate("/register")}
             >
               Sign up
             </Button>
           </div>
-          <Button variant="outlined" color="success" onClick={() => {}}>
+          <Button
+            variant="outlined"
+            color="success"
+            onClick={() => navigate("/auth/login")}
+          >
             Sign In
           </Button>
           <div

@@ -53,7 +53,7 @@ const LoginPage = ({ searchParams }: IProps) => {
           />
           <p>
             Don't have an account yet?{" "}
-            <Link href="auth/register" className="underline text-red-500">
+            <Link href="/auth/register" className="underline text-red-500">
               Sign up
             </Link>
           </p>
