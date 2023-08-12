@@ -19,3 +19,23 @@ export type ITeam = {
   players: IUser[];
   events: IEvent[];
 };
+
+export type ReqTeam = {
+  name: string;
+  country: string;
+  city: string;
+  clubId: number;
+  gender: string;
+  logo: IMedia;
+  teamImage: IMedia;
+  coach: {
+    surname: string;
+    name: string;
+  };
+  players: {
+    surname: string;
+    name: string;
+    dateOfBirth: string;
+    gender: string;
+  }[];
+};

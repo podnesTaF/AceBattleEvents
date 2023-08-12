@@ -12,7 +12,6 @@ import { ITeam } from "~/lib/teams/types";
 
 export const loader = async ({ params }: LoaderArgs) => {
   const { eventId } = params;
-  console.log(eventId);
   const event = await Api().events.getEvent(eventId || "");
   const { teams } = await Api().teams.getTeams({ params: "" });
 

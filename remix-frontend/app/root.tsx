@@ -9,7 +9,7 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 
-import AppBar from "./components/shared/AppBar";
+import AppBar from "./components/shared/header/AppBar";
 
 import globalStyles from "~/styles/global.css";
 import stylesheet from "~/tailwind.css";
@@ -23,8 +23,6 @@ export const links: LinksFunction = () => [
 
 export const loader = async ({ request }: LoaderArgs) => {
   const user = await authenticator.isAuthenticated(request);
-
-  console.log("user", user);
 
   return json({ user });
 };
