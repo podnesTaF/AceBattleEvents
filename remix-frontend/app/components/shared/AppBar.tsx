@@ -3,9 +3,15 @@ import { useState } from "react";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import { Button, IconButton } from "@mui/material";
+import { IUser } from "~/lib/user/types/IUser";
 import AnnonceStripe from "../main/AnnonceStripe";
 
-const AppBar = () => {
+interface AppBarProps {
+  user: IUser;
+}
+
+const AppBar: React.FC<AppBarProps> = ({ user }) => {
+  console.log(user);
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const router = useLocation();
@@ -110,7 +116,7 @@ const AppBar = () => {
             <Button
               variant="contained"
               color="success"
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/auth/register")}
             >
               Sign up
             </Button>
