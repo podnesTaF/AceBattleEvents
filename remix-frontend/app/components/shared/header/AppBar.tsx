@@ -2,10 +2,17 @@ import { Link, useLocation, useNavigate } from "@remix-run/react";
 import { useState } from "react";
 
 import MenuIcon from "@mui/icons-material/Menu";
-import { Button, IconButton } from "@mui/material";
-import AnnonceStripe from "../main/AnnonceStripe";
+import { Avatar, Button, IconButton, Tooltip } from "@mui/material";
+import { IUser } from "~/lib/user/types/IUser";
+import AnnonceStripe from "../../main/AnnonceStripe";
+import CustomDrawer from "./CustomDrawer";
+import ProfileMenu from "./ProfileMenu";
 
-const AppBar = () => {
+interface AppBarProps {
+  user: IUser | null;
+}
+
+const AppBar: React.FC<AppBarProps> = ({ user }) => {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const router = useLocation();
@@ -105,23 +112,44 @@ const AppBar = () => {
               Rules
             </p>
           </Link>
+          {user ? (
+            <Tooltip title="Profile">
+              <IconButton
+                onClick={handleProfileClick}
+                size="small"
+                aria-controls={open ? "account-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+              >
+                <Avatar
+                  src={user?.image?.smallUrl}
+                  sx={{ width: 40, height: 40 }}
+                >
+                  {user.surname[0]}
+                </Avatar>
+              </IconButton>
+            </Tooltip>
+          ) : (
+            <>
+              <div className="bg-green-700 rounded-md">
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => navigate("/auth/register")}
+                >
+                  Sign up
+                </Button>
+              </div>
+              <Button
+                variant="outlined"
+                color="success"
+                onClick={() => navigate("/auth/login")}
+              >
+                Sign In
+              </Button>
+            </>
+          )}
 
-          <div className="bg-green-700 rounded-md">
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => navigate("/register")}
-            >
-              Sign up
-            </Button>
-          </div>
-          <Button
-            variant="outlined"
-            color="success"
-            onClick={() => navigate("/auth/login")}
-          >
-            Sign In
-          </Button>
           <div
             style={{
               display: "flex",
@@ -131,6 +159,13 @@ const AppBar = () => {
         </nav>
       </div>
       {pathname === "/" && <AnnonceStripe />}
+      <CustomDrawer setOpen={setOpen} open={open} user={user} />
+      <ProfileMenu
+        clubId={user?.clubId}
+        role={user?.role}
+        handleClose={handleClose}
+        anchorEl={anchorEl}
+      />
     </>
   );
 };

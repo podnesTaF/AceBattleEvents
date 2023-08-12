@@ -1,22 +1,25 @@
+import { LoaderArgs } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { makeDomainFunction } from "domain-functions";
 import { RemixForm } from "~/components/shared/forms/CustomForm";
+import { authenticator } from "~/lib/auth/utils/auth.server";
 import { loginSchema } from "~/lib/auth/utils/login-form";
-import { formAction } from "~/lib/shared/utils/form-action.server";
 
-const mutation = makeDomainFunction(loginSchema)(
-  async (values) =>
-    console.log(values) /* or anything else, like saveMyValues(values) */
-);
+const mutation = makeDomainFunction(loginSchema)(async (values) => {});
 
 export const action = async ({ request }: { request: Request }) => {
-  return formAction({
-    request,
-    schema: loginSchema,
-    mutation,
-    successPath: `/` /* path to redirect on success */,
+  return authenticator.authenticate("user-pass", request, {
+    successRedirect: "/",
+    failureRedirect: "/login",
   });
 };
+
+export async function loader({ request }: LoaderArgs) {
+  // If the user is already authenticated redirect to /dashboard directly
+  return await authenticator.isAuthenticated(request, {
+    successRedirect: "/",
+  });
+}
 
 const LoginPage = () => {
   return (

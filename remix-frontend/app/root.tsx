@@ -1,4 +1,4 @@
-import type { LinksFunction } from "@remix-run/node";
+import { json, type LinksFunction, type LoaderArgs } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -6,20 +6,29 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "@remix-run/react";
 
-import AppBar from "./components/shared/AppBar";
+import AppBar from "./components/shared/header/AppBar";
 
 import globalStyles from "~/styles/global.css";
 import stylesheet from "~/tailwind.css";
 import Footer from "./components/shared/Footer";
+import { authenticator } from "./lib/auth/utils/auth.server";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
   { rel: "stylesheet", href: globalStyles },
 ];
 
+export const loader = async ({ request }: LoaderArgs) => {
+  const user = await authenticator.isAuthenticated(request);
+
+  return json({ user });
+};
+
 export default function App() {
+  const { user } = useLoaderData();
   return (
     <html lang="en">
       <head>
@@ -29,7 +38,7 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <AppBar />
+        <AppBar user={user} />
         <Outlet />
         <Footer />
         <ScrollRestoration />

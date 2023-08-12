@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ClubService } from 'src/club/club.service';
 import { CoachService } from 'src/coach/coach.service';
 import { CountryService } from 'src/country/country.service';
 import { Event } from 'src/events/entities/event.entity';
@@ -21,6 +22,7 @@ export class TeamsService {
     private coachService: CoachService,
     private userService: UserService,
     private countryService: CountryService,
+    private clubService: ClubService,
   ) {}
 
   async create(dto: CreateTeamDto, managerId: number) {
@@ -33,13 +35,15 @@ export class TeamsService {
 
     const coach = await this.coachService.create(dto.coach);
 
+    const club = await this.clubService.findPure(dto.clubId);
+
     const manager = await this.userService.findById(managerId);
 
     const country = await this.countryService.findById(dto.countryId);
 
     return this.repository.save({
       name: dto.name,
-      club: dto.club,
+      club: club,
       city: dto.city,
       gender: dto.gender,
       country,

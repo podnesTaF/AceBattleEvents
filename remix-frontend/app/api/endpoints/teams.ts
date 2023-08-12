@@ -1,5 +1,6 @@
 import { AxiosInstance } from "axios";
 import { ITeam } from "~/lib/teams/types";
+import { ReqTeam } from "~/lib/teams/types/ITeam";
 
 export const TeamsApi = (instance: AxiosInstance) => ({
   async getTeams({ params, page }: { params?: string; page?: number }) {
@@ -36,6 +37,15 @@ export const TeamsApi = (instance: AxiosInstance) => ({
         `/teams/register`,
         props
       );
+
+      return teamsData;
+    } catch (error: any) {
+      throw new Error("Failed to fetch data: " + error.message);
+    }
+  },
+  async addTeam(data: ReqTeam) {
+    try {
+      const { data: teamsData } = await instance.post<ReqTeam>(`/teams`, data);
 
       return teamsData;
     } catch (error: any) {

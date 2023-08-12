@@ -58,6 +58,14 @@ export class ClubService {
     return club;
   }
 
+  async findPure(id: number) {
+    const club = await this.repository.findOne({
+      where: { id },
+    });
+
+    return club;
+  }
+
   update(id: number, updateClubDto: UpdateClubDto) {
     return `This action updates a #${id} club`;
   }

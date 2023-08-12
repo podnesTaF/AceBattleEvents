@@ -12,7 +12,6 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
-  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -37,11 +36,8 @@ export class Team {
   @ManyToOne(() => User, (user) => user.teams, { onDelete: 'CASCADE' })
   manager: User;
 
-  @OneToMany(() => Club, (club) => club.teams, { nullable: true })
-  clubs: Club[];
-
-  @Column()
-  club: string;
+  @ManyToOne(() => Club, (club) => club.teams, { nullable: true })
+  club: Club;
 
   @OneToOne(() => Coach, {
     onDelete: 'CASCADE',
