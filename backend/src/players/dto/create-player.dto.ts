@@ -1,6 +1,5 @@
-import { IsArray, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { Media } from 'src/media/entities/media.entity';
-import { CreatePersonalBestDto } from 'src/personal-bests/dto/create-personal-best.dto';
 
 export class CreatePlayerDto {
   @IsString()
@@ -11,9 +10,6 @@ export class CreatePlayerDto {
 
   @IsString()
   dateOfBirth: string;
-
-  @IsArray()
-  personalBests: CreatePersonalBestDto[];
 
   @IsString()
   gender: string;

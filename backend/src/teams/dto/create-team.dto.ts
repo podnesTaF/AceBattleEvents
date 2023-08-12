@@ -14,8 +14,7 @@ export class CreateTeamDto {
   name: string;
 
   @IsString()
-  @IsOptional()
-  club?: string;
+  clubId: number;
 
   @IsString()
   gender: string;

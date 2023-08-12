@@ -31,7 +31,7 @@ export class Club {
   @OneToMany(() => User, (user) => user.club)
   members: User[];
 
-  @OneToMany(() => Team, (team) => team.clubs)
+  @OneToMany(() => Team, (team) => team.club)
   teams: Team[];
 
   @ManyToOne(() => Media, { nullable: true })

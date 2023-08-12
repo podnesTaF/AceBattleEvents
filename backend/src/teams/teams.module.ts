@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ClubService } from 'src/club/club.service';
+import { Club } from 'src/club/entities/club.entity';
 import { CoachService } from 'src/coach/coach.service';
 import { Coach } from 'src/coach/entities/coach.entity';
 import { CountryService } from 'src/country/country.service';
@@ -36,6 +38,7 @@ import { TeamsService } from './teams.service';
       PrizeEntity,
       PersonalBest,
       Media,
+      Club,
     ]),
   ],
   controllers: [TeamsController],
@@ -51,6 +54,7 @@ import { TeamsService } from './teams.service';
     FileService,
     PersonalBestsService,
     MediaService,
+    ClubService,
   ],
   exports: [TeamsService],
 })
