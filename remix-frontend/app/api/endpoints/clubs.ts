@@ -1,11 +1,9 @@
-import axios, { AxiosInstance } from "axios";
-import { IClub } from "~/lib/clubs/types";
+import { AxiosInstance } from "axios";
+import { IClub, JoinRequest } from "~/lib/clubs/types";
 
 export const ClubApi = (instance: AxiosInstance) => ({
   async getClubs(params?: string, currPage?: number) {
-    const { data: clubsData } = await axios.get<IClub[]>(
-      "http://localhost:4000/api/v1/clubs"
-    );
+    const { data: clubsData } = await instance.get<IClub[]>("/clubs");
 
     if (!clubsData) {
       return null;
@@ -13,16 +11,94 @@ export const ClubApi = (instance: AxiosInstance) => ({
       return clubsData;
     }
   },
-  async getClub(id?: number) {
+  async getClub(id?: string) {
     if (!id) return null;
-    const { data: clubData } = await axios.get<IClub>(
-      `http://localhost:4000/api/v1/clubs/${id}`
-    );
+    const { data: clubData } = await instance.get<IClub>(`/clubs/${id}`);
 
     if (!clubData) {
       return null;
     } else {
       return clubData;
+    }
+  },
+  async sendJoinRequest(motivation: string, clubId: number) {
+    try {
+      const { data: JoinRequest } = await instance.post<JoinRequest>(
+        "/club-requests",
+        {
+          motivation,
+          clubId,
+        }
+      );
+
+      return JoinRequest;
+    } catch (error: any) {
+      throw new Error(error.response.data.message);
+    }
+  },
+  async getJoinRequests(clubId: string) {
+    try {
+      const { data: JoinRequests } = await instance.get<JoinRequest[]>(
+        `/club-requests/club/${clubId}`
+      );
+
+      return JoinRequests;
+    } catch (error: any) {
+      throw new Error(error.response.data.message);
+    }
+  },
+  async acceptJoinRequest({
+    clubId,
+    userId,
+  }: {
+    clubId: string;
+    userId: string;
+  }) {
+    try {
+      const { data: response } = await instance.post<{ message: string }>(
+        `/club-requests/club/${clubId}/accept`,
+        {
+          userId,
+        }
+      );
+
+      return response;
+    } catch (error: any) {
+      throw new Error(error.response.data.message);
+    }
+  },
+  async rejectJoinRequest({
+    clubId,
+    userId,
+  }: {
+    clubId: string;
+    userId: string;
+  }) {
+    try {
+      const { data: response } = await instance.post<{ message: string }>(
+        `/club-requests/club/${clubId}/decline`,
+        { userId }
+      );
+
+      return response;
+    } catch (error: any) {
+      throw new Error(error.response.data.message);
+    }
+  },
+  async createClub(dto: {
+    name: string;
+    city: string;
+    country: string;
+    logo: any;
+    phone: string;
+    photo: any;
+  }) {
+    try {
+      const { data: clubData } = await instance.post<IClub>("/clubs", dto);
+
+      return clubData;
+    } catch (error: any) {
+      throw new Error(error.response.data.message);
     }
   },
 });

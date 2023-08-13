@@ -34,4 +34,22 @@ export const UserApi = (instance: AxiosInstance) => ({
       throw new Error("Failed to fetch data: " + error.message);
     }
   },
+  async getUserProfile(id: string) {
+    try {
+      const { data: userData } = await instance.get<IUser>(`/users/${id}`);
+      return userData;
+    } catch (error: any) {
+      throw new Error("Failed to fetch data: " + error.message);
+    }
+  },
+  async updateImage(imageId: number) {
+    try {
+      const { data: userData } = await instance.patch<IUser>(`/users/image`, {
+        imageId,
+      });
+      return userData;
+    } catch (error: any) {
+      throw new Error("Failed to update image: " + error.message);
+    }
+  },
 });

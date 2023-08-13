@@ -130,7 +130,7 @@ const RegisterPage = () => {
           />
           <p>
             Already have an account?{" "}
-            <Link to="auth/login" className="underline text-red-500">
+            <Link to="/auth/login" className="underline text-red-500">
               Sign in
             </Link>
           </p>

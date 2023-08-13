@@ -10,7 +10,7 @@ const mutation = makeDomainFunction(loginSchema)(async (values) => {});
 export const action = async ({ request }: { request: Request }) => {
   return authenticator.authenticate("user-pass", request, {
     successRedirect: "/",
-    failureRedirect: "/login",
+    failureRedirect: "/auth/login",
   });
 };
 
@@ -65,7 +65,7 @@ const LoginPage = () => {
       </RemixForm>
       <p>
         Don't have an account yet?{" "}
-        <Link to="auth/register" className="underline text-red-500">
+        <Link to="/auth/register" className="underline text-red-500">
           Sign up
         </Link>
       </p>

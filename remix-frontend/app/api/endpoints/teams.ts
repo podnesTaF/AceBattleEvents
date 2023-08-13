@@ -1,6 +1,7 @@
 import { AxiosInstance } from "axios";
 import { ITeam } from "~/lib/teams/types";
 import { ReqTeam } from "~/lib/teams/types/ITeam";
+import { ITeamEvent } from "~/lib/teams/types/Registrations";
 
 export const TeamsApi = (instance: AxiosInstance) => ({
   async getTeams({ params, page }: { params?: string; page?: number }) {
@@ -50,6 +51,27 @@ export const TeamsApi = (instance: AxiosInstance) => ({
       return teamsData;
     } catch (error: any) {
       throw new Error("Failed to fetch data: " + error.message);
+    }
+  },
+  async getRegitrations({ page, limit }: { page: string; limit: string }) {
+    try {
+      const { data: registrations } = await instance.get<{
+        teamsForEvents: ITeamEvent[];
+        totalPages: number;
+      }>(`/teams/registrations?page=${page}&limit=${limit}`);
+
+      return registrations;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async getTeamByUserId() {
+    try {
+      const { data: team } = await instance.get<ITeam[]>(`/teams/user`);
+
+      return team;
+    } catch (error) {
+      console.log(error);
     }
   },
 });
