@@ -12,6 +12,7 @@ export default {
         "auth-card": "url('/auth-card.jpg')",
       },
       boxShadow: {
+        sm: "0 0 4px rgba(0, 0, 0, 0.1)",
         md: "0 0 8px rgba(0, 0, 0, 0.1)",
       },
       fontSize: {

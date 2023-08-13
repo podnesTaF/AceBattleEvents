@@ -27,7 +27,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
     <div className="my-2">
       <label
         htmlFor="small"
-        className="block mb-2 text-lg lg:text-xl font-medium text-gray-900 dark:text-white"
+        className="block mb-2 text-md lg:text-lg font-medium text-gray-900 dark:text-white"
       >
         {label}
       </label>
@@ -39,7 +39,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
           onChange={(e) => {
             onChangeFilter(e.target.value);
           }}
-          className="block w-full text-sm text-gray-900 border rounded-md p-3 outline-none bg-gray-50 focus:border-2 border-red-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none"
+          className="block w-full text-sm shadow-sm text-gray-900 border rounded-md  p-2.5 outline-none bg-gray-50 focus:border-[1px]  dark:bg-gray-700 dark:border-gray-600 focus:border-blue-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none"
         >
           <option value={undefined}>{placeholder}</option>
           {values.map((v, i) => (

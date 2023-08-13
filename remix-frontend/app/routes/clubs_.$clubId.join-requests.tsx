@@ -84,7 +84,7 @@ const ClubJoinRequest = () => {
   return (
     <>
       <header className="w-full flex flex-col-reverse md:flex-row">
-        <div className="bg-yellow-400 p-4 md:h-[350px] flex justify-center items-center w-full md:w-1/2 lg:w-1/3">
+        <div className="bg-yellow-300 p-4 md:h-[350px] flex justify-center items-center w-full md:w-1/2 lg:w-1/3">
           <h3 className="text-2xl md:text-3xl font-semibold">
             Club Membership Requests
           </h3>

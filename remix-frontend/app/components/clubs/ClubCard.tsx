@@ -45,7 +45,7 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
           </div>
           <button
             onClick={() => navigate("/clubs/" + club.id)}
-            className="w-full bg-yellow-400 hover:bg-yellow-600 active:scale-95 font-semibold py-4 rounded-md"
+            className="w-full bg-yellow-300 hover:bg-yellow-600 active:scale-95 font-semibold py-4 rounded-md"
           >
             Club&apos;s page
           </button>

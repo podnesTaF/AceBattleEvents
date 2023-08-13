@@ -1,5 +1,9 @@
 import { AxiosInstance } from "axios";
 import { IEvent } from "~/lib/events/types";
+import {
+  CreateViewer,
+  IViewer,
+} from "~/lib/registrations/types/ViewerRegister";
 
 export const EventsApi = (instance: AxiosInstance) => ({
   async getEvents(params?: string, currPage?: number) {
@@ -23,6 +27,20 @@ export const EventsApi = (instance: AxiosInstance) => ({
   async getEvent(id: string) {
     try {
       const { data } = await instance.get<IEvent>(`events/${id}`);
+
+      return data;
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  },
+
+  async registerViewer(dto: CreateViewer) {
+    try {
+      const { data } = await instance.post<IViewer>(
+        `/viewer-registrations`,
+        dto
+      );
 
       return data;
     } catch (e) {

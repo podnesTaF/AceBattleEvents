@@ -103,7 +103,7 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({
               <div className="flex items-center gap-2">
                 <Avatar
                   sx={{ width: 40, height: 40 }}
-                  className="bg-yellow-400"
+                  className="bg-yellow-300"
                 >
                   <GroupAddIcon className="text-black" />
                 </Avatar>
@@ -119,7 +119,7 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({
               <div className="flex items-center gap-2">
                 <Avatar
                   sx={{ width: 40, height: 40 }}
-                  className="bg-yellow-400"
+                  className="bg-yellow-300"
                 >
                   <GroupIcon className="text-black" />
                 </Avatar>
