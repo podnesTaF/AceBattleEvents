@@ -12,12 +12,14 @@ interface ProfileMenuProps {
   clubId?: number;
   role?: string;
   anchorEl: null | HTMLElement;
+  userId?: number;
 }
 
 const ProfileMenu: React.FC<ProfileMenuProps> = ({
   anchorEl,
   clubId,
   role,
+  userId,
   handleClose,
 }) => {
   const navigate = useNavigate();
@@ -58,7 +60,7 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
       <MenuItem className="w-[200px]">
-        <Link to="/profile">
+        <Link to={`/profile/${userId}`}>
           <div className="flex items-center gap-1">
             <Avatar sx={{ width: 40, height: 40 }} />
             <p>My account</p>
@@ -111,16 +113,21 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({
           </MenuItem>
         )
       ) : (
-        <MenuItem>
-          <Link to="/clubs">
-            <div className="flex items-center gap-2">
-              <Avatar sx={{ width: 40, height: 40 }} className="bg-yellow-400">
-                <GroupIcon className="text-black" />
-              </Avatar>
-              <p>Find a Club</p>
-            </div>
-          </Link>
-        </MenuItem>
+        !clubId && (
+          <MenuItem>
+            <Link to="/clubs">
+              <div className="flex items-center gap-2">
+                <Avatar
+                  sx={{ width: 40, height: 40 }}
+                  className="bg-yellow-400"
+                >
+                  <GroupIcon className="text-black" />
+                </Avatar>
+                <p>Find a Club</p>
+              </div>
+            </Link>
+          </MenuItem>
+        )
       )}
       <Divider />
       <MenuItem onClick={handleClose}>

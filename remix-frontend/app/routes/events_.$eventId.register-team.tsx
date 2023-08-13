@@ -7,13 +7,22 @@ import { Api } from "~/api/axiosInstance";
 import NoTeams from "~/components/teams/NoTeams";
 import StatusCard from "~/components/teams/StatusCard";
 import TeamCard from "~/components/teams/TeamCard";
+import { authenticator } from "~/lib/auth/utils/auth.server";
 import { formatDate } from "~/lib/shared/utils/date-formaters";
 import { ITeam } from "~/lib/teams/types";
 
-export const loader = async ({ params }: LoaderArgs) => {
+export const loader = async ({ params, request }: LoaderArgs) => {
   const { eventId } = params;
   const event = await Api().events.getEvent(eventId || "");
   const { teams } = await Api().teams.getTeams({ params: "" });
+
+  const user = await authenticator.isAuthenticated(request);
+
+  if (!user) {
+    throw new Response("User not found.", {
+      status: 404,
+    });
+  }
 
   if (!event) {
     throw new Response("Event not found.", {
@@ -27,31 +36,11 @@ export const loader = async ({ params }: LoaderArgs) => {
     });
   }
 
-  return json({ event, teams });
+  return json({ event, teams, user });
 };
 
-// export const action = async ({ request, params }: ActionArgs) => {
-//   const form = await request.formData();
-//   const teamId = form.get("teamId");
-//   const agreement = form.get("agreement");
-//   const { eventId } = params;
-
-//   console.log(eventId, teamId);
-//   if (!teamId || !eventId) {
-//     return json({ status: "error" }, { status: 400 });
-//   }
-
-//   try {
-//     console.log(agreement, teamId, eventId);
-
-//     return json({ status: "success", teamId, eventId });
-//   } catch (error) {
-//     return json({ status: "success", teamId, eventId });
-//   }
-// };
-
 const RegisterTeamIndex = () => {
-  const { event, teams } = useLoaderData<typeof loader>();
+  const { event, teams, user } = useLoaderData<typeof loader>();
 
   const [teamId, setTeamId] = useState(0);
   const [choosenTeam, setChoosenTeam] = useState<ITeam | null>(null);
@@ -85,7 +74,7 @@ const RegisterTeamIndex = () => {
   };
 
   const onSuccessRegister = async (tx: any) => {
-    // if (!session?.user || !event?.id) return;
+    if (!user || !event?.id) return;
     await Api().teams.registerTeam({
       teamId: +teamId,
       eventId: +event.id,
@@ -245,23 +234,6 @@ const RegisterTeamIndex = () => {
                   onClick={handleRegisterTeam}
                   className="hover:bg-slate-800 bg-black text-white font-bold py-2 px-4 border border-slate-800 rounded disabled:opacity-80 disabled:cursor-not-allowed"
                 >
-                  {/* <svg
-                aria-hidden="true"
-                role="status"
-                className="inline w-4 h-4 mr-3 text-white animate-spin"
-                viewBox="0 0 100 101"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                  fill="#E5E7EB"
-                />
-                <path
-                  d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                  fill="currentColor"
-                />
-              </svg> */}
                   Confirm
                 </button>
               </div>

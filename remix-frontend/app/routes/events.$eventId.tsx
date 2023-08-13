@@ -5,6 +5,7 @@ import axios from "axios";
 import Map from "~/components/events/Map";
 import StatisticCards from "~/components/events/StatisticCards";
 import CustomTable from "~/components/shared/tables/CustomTable";
+import { authenticator } from "~/lib/auth/utils/auth.server";
 import { IEvent } from "~/lib/events/types";
 import { formatDate } from "~/lib/shared/utils/date-formaters";
 import {
@@ -26,15 +27,19 @@ export const loader = async ({ params, request }: LoaderArgs) => {
     });
   }
 
+  const user = await authenticator.isAuthenticated(request);
+
   return json({
     event: event,
     googleMapsKey: process.env.GOOGLE_MAPS_KEY || "",
+    user,
   });
 };
 
 const EventPage = () => {
-  const { event, googleMapsKey } = useLoaderData<typeof loader>();
-  const natigate = useNavigate();
+  const { event, googleMapsKey, user } = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
+
   return (
     <>
       <header
@@ -65,14 +70,14 @@ const EventPage = () => {
             {event.description}
           </h3>
         </div>
-        {/* {session?.user && (
-        <button
-          onClick={() => router.push(`/calendar/${params.id}/register-team`)}
-          className="hover:bg-red-800 bg-red-500 text-white font-bold py-2 px-3 sm:py-4 sm:px-6 border border-red-800 rounded absolute top-6 right-6 active:scale-95"
-        >
-          Register Your Team
-        </button>
-      )} */}
+        {user && (
+          <button
+            onClick={() => navigate(`/events/${event.id}/register-team`)}
+            className="hover:bg-red-800 bg-red-500 text-white font-bold py-2 px-3 sm:py-4 sm:px-6 border border-red-800 rounded absolute top-6 right-6 active:scale-95"
+          >
+            Register Your Team
+          </button>
+        )}
       </header>
       <main>
         <div className="px-5 sm:px-10 py-5 bg-red-500">
@@ -214,7 +219,11 @@ const EventPage = () => {
               </h2>
               <button
                 onClick={() => {
-                  natigate(`/auth/login`);
+                  if (user) {
+                    navigate(`/events/${event.id}/register-team`);
+                  } else {
+                    navigate(`/auth/login`);
+                  }
                 }}
                 className="bg-red-500 text-white uppercase font-semibold rounded-lg w-3/4 py-3"
               >

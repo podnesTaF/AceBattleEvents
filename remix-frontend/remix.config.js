@@ -15,10 +15,5 @@ module.exports = {
     v2_routeConvention: true,
   },
   tailwind: true,
-  serverDependenciesToBundle: [
-    /^rehype.*/,
-    /^remark.*/,
-    /^unified.*/,
-    "@sindresorhus/slugify",
-  ],
+  serverDependenciesToBundle: [/^rehype.*/, /^remark.*/, /^unified.*/, "all"],
 };

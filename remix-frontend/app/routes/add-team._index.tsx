@@ -24,10 +24,10 @@ import { IUser } from "~/lib/user/types/IUser";
 
 export const loader = async ({ request }: LoaderArgs) => {
   let user = await authenticator.isAuthenticated(request, {
-    failureRedirect: "/login",
+    failureRedirect: "/auth/login",
   });
 
-  const club = await Api().clubs.getClub(user?.clubId);
+  const club = await Api().clubs.getClub(user?.clubId?.toString());
 
   return json({ club, user });
 };

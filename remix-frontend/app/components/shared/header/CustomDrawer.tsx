@@ -1,7 +1,9 @@
 "use client";
 
 import CloseIcon from "@mui/icons-material/Close";
+import GroupIcon from "@mui/icons-material/Group";
 import LogoutIcon from "@mui/icons-material/Logout";
+
 import {
   Avatar,
   Button,
@@ -38,38 +40,46 @@ const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen, user }) => {
           </IconButton>
         </div>
         {user ? (
-          <div className={"py-5 px-3 flex justify-center w-full relative"}>
-            <Tooltip title="Profile">
-              <IconButton
-                onClick={() => navigate("/profile")}
-                size="small"
-                aria-controls={open ? "account-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-              >
-                <Avatar
-                  src={user?.image?.smallUrl}
-                  sx={{ width: 40, height: 40 }}
+          <>
+            <div className={"py-5 px-3 flex justify-center w-full relative"}>
+              <Tooltip title="Profile">
+                <IconButton
+                  onClick={() => navigate("/profile/" + user.id)}
+                  size="small"
+                  aria-controls={open ? "account-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
                 >
-                  {user.surname[0]}
-                </Avatar>
-              </IconButton>
-            </Tooltip>
-            <div className={"flex flex-col justify-between mr-3"}>
-              <p className={"text-lg text-gray-600"}>manager</p>
-              <p className={"text-lg text-white"}>
-                {user.name} {user.surname}
-              </p>
+                  <Avatar
+                    src={user?.image?.smallUrl}
+                    sx={{ width: 40, height: 40 }}
+                  >
+                    {user.surname[0]}
+                  </Avatar>
+                </IconButton>
+              </Tooltip>
+              <div className={"flex flex-col justify-between mr-3"}>
+                <p className={"text-lg text-gray-600"}>manager</p>
+                <p className={"text-lg text-white"}>
+                  {user.name} {user.surname}
+                </p>
+              </div>
+              <div className={"flex items-end"}>
+                <button
+                  className={"p-2 rounded-sm border-red-500 bg-red-500"}
+                  onClick={() => navigate("/logout")}
+                >
+                  <LogoutIcon className={"text-white"} />
+                </button>
+              </div>
             </div>
-            <div className={"flex items-end"}>
-              <button
-                className={"p-2 rounded-sm border-red-500 bg-red-500"}
-                onClick={() => navigate("/logout")}
-              >
-                <LogoutIcon className={"text-white"} />
+            {user.clubId && (
+              <button className="text-lg py-1.5 bg-yellow-400 flex gap-2 rounded-md px-4 w-5/6 mx-auto mb-4 hover:bg-yellow-500">
+                <GroupIcon />
+                <Link to={`/clubs/${user.clubId}`}>My Club</Link>
               </button>
-            </div>
-          </div>
+            )}
+          </>
         ) : (
           <div className={"flex gap-3 my-5 p-3 w-full"}>
             <Button
@@ -104,7 +114,9 @@ const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen, user }) => {
           <Link to="/events">
             <p
               className={`hover:opacity-80 py-2 border-b-2 border-solid border-red-300/10 text-xl uppercase ${
-                pathname === "/events" ? "text-[#FF0000]" : "text-white"
+                pathname.split("/")[1] === "events"
+                  ? "text-[#FF0000]"
+                  : "text-white"
               }`}
             >
               Calendar
@@ -113,7 +125,9 @@ const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen, user }) => {
           <Link to="/close-events">
             <p
               className={`hover:opacity-80 py-2 border-b-2 border-solid border-red-300/10 text-xl uppercase ${
-                pathname === "/close-events" ? "text-[#FF0000]" : "text-white"
+                pathname.split("/")[1] === "close-events"
+                  ? "text-[#FF0000]"
+                  : "text-white"
               }`}
             >
               Close Events
@@ -122,7 +136,9 @@ const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen, user }) => {
           <Link to="/results">
             <p
               className={`hover:opacity-80 py-2 border-b-2 border-solid border-red-300/10 text-xl uppercase ${
-                pathname === "/results" ? "text-[#FF0000]" : "text-white"
+                pathname.split("/")[1] === "results"
+                  ? "text-[#FF0000]"
+                  : "text-white"
               }`}
             >
               Results
@@ -131,7 +147,9 @@ const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen, user }) => {
           <Link className="hover:opacity-80" to="/clubs">
             <p
               className={`hover:opacity-80 py-2 border-b-2 border-solid border-red-300/10 text-xl uppercase ${
-                pathname === "/clubs" ? "text-[#FF0000]" : "text-white"
+                pathname.split("/")[1] === "clubs"
+                  ? "text-[#FF0000]"
+                  : "text-white"
               }`}
             >
               Clubs
@@ -140,7 +158,9 @@ const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen, user }) => {
           <Link className="hover:opacity-80" to="/athletes">
             <p
               className={`hover:opacity-80 py-2 border-b-2 border-solid border-red-300/10 text-xl uppercase ${
-                pathname === "/rules" ? "text-[#FF0000]" : "text-white"
+                pathname.split("/")[1] === "athletes"
+                  ? "text-[#FF0000]"
+                  : "text-white"
               }`}
             >
               Athletes
@@ -149,7 +169,9 @@ const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen, user }) => {
           <Link className="hover:opacity-80" to="/rules">
             <p
               className={`hover:opacity-80 py-2 border-b-2 border-solid border-red-300/10 text-xl uppercase ${
-                pathname === "/rules" ? "text-[#FF0000]" : "text-white"
+                pathname.split("/")[1] === "rules"
+                  ? "text-[#FF0000]"
+                  : "text-white"
               }`}
             >
               Rules
@@ -159,7 +181,9 @@ const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen, user }) => {
             <Link className="hover:opacity-80" to="/add-team">
               <p
                 className={`text-xl uppercase py-2 ${
-                  pathname === "/add-team" ? "text-[#FF0000]" : "text-white"
+                  pathname.split("/")[1] === "add-team"
+                    ? "text-[#FF0000]"
+                    : "text-white"
                 }`}
               >
                 Add team

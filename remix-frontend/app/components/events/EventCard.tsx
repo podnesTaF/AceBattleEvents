@@ -6,12 +6,14 @@ import { IEvent } from "~/lib/events/types";
 import { formatDate, isPassed } from "~/lib/shared/utils/date-formaters";
 import { getGoogleMapsLink } from "~/lib/shared/utils/get-google-maps";
 import { ITeam } from "~/lib/teams/types";
+import { IUser } from "~/lib/user/types/IUser";
 
 interface EventCardProps {
   event: IEvent;
   idx: number;
   isYourRegister?: boolean;
   team?: ITeam;
+  user?: IUser | null;
 }
 
 const EventCard: React.FC<EventCardProps> = ({
@@ -19,8 +21,25 @@ const EventCard: React.FC<EventCardProps> = ({
   idx,
   isYourRegister,
   team,
+  user,
 }) => {
   const navigate = useNavigate();
+
+  const showRegisterButton = () => {
+    if (!user || !user.clubId || user.role !== "manager") {
+      return false;
+    }
+
+    if (isYourRegister) {
+      return false;
+    }
+
+    if (isPassed(event.startDateTime)) {
+      return false;
+    }
+
+    return true;
+  };
 
   return (
     <div className="my-10">
@@ -88,17 +107,17 @@ const EventCard: React.FC<EventCardProps> = ({
             </div>
           </div>
           <div className="w-full flex justify-around my-4 gap-3">
-            {!isYourRegister && !isPassed(event.startDateTime) && false && (
+            {showRegisterButton() && (
               <button
                 onClick={() => navigate(`/events/${event.id}/register-team`)}
-                className="p-4 bg-red-500 text-lg sm:text-xl uppercase text-white rounded hover:bg-red-700 drop-shadow-lg active:scale-95"
+                className="p-4 bg-green-500 text-lg sm:text-xl uppercase text-white rounded hover:bg-green-700 drop-shadow-lg active:scale-95"
               >
                 Register your team
               </button>
             )}
             <button
               onClick={() => navigate("/events/" + event.id)}
-              className="p-4 border-[1px] border-red-500 text-lg sm:text-xl uppercase rounded hover:bg-gray-100 drop-shadow-lg active:scale-95"
+              className="p-4 border-[1px] border-green-500 text-lg sm:text-xl uppercase rounded hover:bg-gray-100 drop-shadow-lg active:scale-95"
             >
               See details
             </button>

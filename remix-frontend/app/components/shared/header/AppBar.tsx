@@ -36,7 +36,7 @@ const AppBar: React.FC<AppBarProps> = ({ user }) => {
               onClick={() => setOpen(true)}
               className={"text-white items-center"}
             >
-              <MenuIcon sx={{ fontSize: 40 }} />
+              <MenuIcon sx={{ fontSize: 40, color: "white" }} />
             </IconButton>
           </div>
           <h2
@@ -61,7 +61,9 @@ const AppBar: React.FC<AppBarProps> = ({ user }) => {
           <Link className="hover:opacity-80" to="/events">
             <p
               className={`text-lg uppercase ${
-                pathname === "/events" ? "text-[#FF0000]" : "text-white"
+                pathname.split("/")[1] === "events"
+                  ? "text-[#FF0000]"
+                  : "text-white"
               }`}
             >
               Calendar
@@ -70,7 +72,9 @@ const AppBar: React.FC<AppBarProps> = ({ user }) => {
           <Link className="hover:opacity-80" to="/close-events">
             <p
               className={`text-lg uppercase ${
-                pathname === "/close-events" ? "text-[#FF0000]" : "text-white"
+                pathname.split("/")[1] === "close-events"
+                  ? "text-[#FF0000]"
+                  : "text-white"
               }`}
             >
               Close Events
@@ -79,7 +83,9 @@ const AppBar: React.FC<AppBarProps> = ({ user }) => {
           <Link className="hover:opacity-80" to="/results">
             <p
               className={`text-lg uppercase ${
-                pathname === "/results" ? "text-[#FF0000]" : "text-white"
+                pathname.split("/")[1] === "results"
+                  ? "text-[#FF0000]"
+                  : "text-white"
               }`}
             >
               Results
@@ -88,7 +94,9 @@ const AppBar: React.FC<AppBarProps> = ({ user }) => {
           <Link className="hover:opacity-80" to="/clubs">
             <p
               className={`text-lg uppercase ${
-                pathname === "/clubs" ? "text-[#FF0000]" : "text-white"
+                pathname.split("/")[1] === "clubs"
+                  ? "text-[#FF0000]"
+                  : "text-white"
               }`}
             >
               Clubs
@@ -97,7 +105,9 @@ const AppBar: React.FC<AppBarProps> = ({ user }) => {
           <Link className="hover:opacity-80" to="/athletes">
             <p
               className={`text-lg uppercase ${
-                pathname === "/athletes" ? "text-[#FF0000]" : "text-white"
+                pathname.split("/")[1] === "athletes"
+                  ? "text-[#FF0000]"
+                  : "text-white"
               }`}
             >
               Athletes
@@ -106,7 +116,9 @@ const AppBar: React.FC<AppBarProps> = ({ user }) => {
           <Link className="hover:opacity-80" to="/rules">
             <p
               className={`text-lg uppercase ${
-                pathname === "/rules" ? "text-[#FF0000]" : "text-white"
+                pathname.split("/")[1] === "rules"
+                  ? "text-[#FF0000]"
+                  : "text-white"
               }`}
             >
               Rules
@@ -163,6 +175,7 @@ const AppBar: React.FC<AppBarProps> = ({ user }) => {
       <ProfileMenu
         clubId={user?.clubId}
         role={user?.role}
+        userId={user?.id}
         handleClose={handleClose}
         anchorEl={anchorEl}
       />
