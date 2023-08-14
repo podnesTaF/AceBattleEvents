@@ -13,7 +13,7 @@ export const transformIntoTeamsTable = (data: ITeam[]) => {
       club: club || "no club",
       coach: coach.name + " " + coach.surname,
       details: {
-        link: "/team/" + team.id,
+        link: "/teams/" + team.id,
         value: "details",
       },
     };

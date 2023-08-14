@@ -101,4 +101,17 @@ export const ClubApi = (instance: AxiosInstance) => ({
       throw new Error(error.response.data.message);
     }
   },
+  async findClubsSnippet() {
+    try {
+      const { data } = await instance.get<{ id: number; name: string }[]>(
+        "/clubs/snippet"
+      );
+      return { clubs: data, error: null };
+    } catch (e: any) {
+      return {
+        clubs: [],
+        error: e.response.data.message,
+      };
+    }
+  },
 });

@@ -24,7 +24,7 @@ const IntroSlide: React.FC<Props> = ({
 
   return (
     <div
-      onClick={() => navigate("calendar/" + event.id)}
+      onClick={() => navigate("events/" + event.id)}
       className={`${
         isActive ? "block" : "hidden"
       } w-full h-full relative cursor-pointer`}

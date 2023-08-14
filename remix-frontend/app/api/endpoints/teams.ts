@@ -17,6 +17,16 @@ export const TeamsApi = (instance: AxiosInstance) => ({
     }
   },
 
+  async getTeamById(id?: string) {
+    try {
+      const { data: teamsData } = await instance.get<ITeam>(`teams/${id}`);
+
+      return teamsData;
+    } catch (error: any) {
+      throw new Error("Failed to fetch data: " + error.message);
+    }
+  },
+
   async getTeamsByUserId() {
     try {
       const { data: teamsData } = await instance.get<ITeam[]>(`teams/user`);

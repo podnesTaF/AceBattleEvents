@@ -6,6 +6,7 @@ interface CustomTableProps {
   isLoading: boolean;
   onEdit?: (id: string) => void;
   titleColor?: string;
+  isTitleStraight?: boolean;
 }
 
 const CustomTable: React.FC<CustomTableProps> = ({
@@ -13,6 +14,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
   isLoading,
   onEdit,
   titleColor,
+  isTitleStraight,
 }) => {
   return (
     <div className="relative sm:rounded-sm max-h-[500px] overflow-auto">
@@ -23,11 +25,11 @@ const CustomTable: React.FC<CustomTableProps> = ({
           <h2>No events found.</h2>
         </div>
       ) : (
-        <table className="w-full text-sm text-left border-separate border-spacing-y-2">
+        <table className="w-full text-sm text-left border-separate border-spacing-y-1">
           <thead
             className={`text-md text-white uppercase ${
               titleColor || "bg-red-500"
-            } clip-title-sm`}
+            } ${!isTitleStraight && "clip-title-sm"}`}
           >
             <tr>
               {Object.keys(rows[0]).map((t, i) => (
@@ -41,7 +43,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
             {rows.map((r, i) => (
               <tr
                 key={i}
-                className="bg-white drop-shadow dark:bg-gray-900 dark:border-gray-700 uppercase"
+                className="bg-white shadow-sm dark:bg-gray-900 dark:border-gray-700 uppercase"
               >
                 {Object.keys(rows[0]).map((t, i) => {
                   if (typeof r[t] === "object") {
