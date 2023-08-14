@@ -1,5 +1,9 @@
 import { LoaderArgs, json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import {
+  isRouteErrorResponse,
+  useLoaderData,
+  useRouteError,
+} from "@remix-run/react";
 import EventCard from "~/components/events/EventCard";
 import { authenticator } from "~/lib/auth/utils/auth.server";
 import { getEvents } from "~/lib/events/utils/events-requests.server";
@@ -27,5 +31,32 @@ const CloseEventsIndex = () => {
     </main>
   );
 };
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div className="error-container">
+        <div className="max-w-[400px] w-full py-4">
+          <h3 className="text-xl font-semibold">
+            There was an error loading close events. {error.status}{" "}
+            {error.statusText}
+          </h3>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="error-container">
+      <div className="max-w-[400px] w-full py-4">
+        <h3 className="text-xl font-semibold">
+          There was an error loading close events.
+        </h3>
+      </div>
+    </div>
+  );
+}
 
 export default CloseEventsIndex;

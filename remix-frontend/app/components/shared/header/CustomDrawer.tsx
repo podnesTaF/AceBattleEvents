@@ -74,7 +74,7 @@ const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen, user }) => {
               </div>
             </div>
             {user.clubId && (
-              <button className="text-lg py-1.5 bg-yellow-400 flex gap-2 rounded-md px-4 w-5/6 mx-auto mb-4 hover:bg-yellow-500">
+              <button className="text-lg py-1.5 bg-yellow-300 flex gap-2 rounded-md px-4 w-5/6 mx-auto mb-4 hover:bg-yellow-500">
                 <GroupIcon />
                 <Link to={`/clubs/${user.clubId}`}>My Club</Link>
               </button>

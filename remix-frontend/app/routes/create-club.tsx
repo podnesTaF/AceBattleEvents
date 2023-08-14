@@ -1,6 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoaderArgs, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import {
+  isRouteErrorResponse,
+  useLoaderData,
+  useRouteError,
+} from "@remix-run/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Api } from "~/api/axiosInstance";
 import ImagePicker from "~/components/media/ImagePicker";
@@ -143,5 +147,36 @@ const CreateClubPage = () => {
     </>
   );
 };
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    if (error.status === 403) {
+      return (
+        <div className="error-container">
+          <h3 className="text-3xl font-semibold">
+            {error.status} Unauthorized
+          </h3>
+        </div>
+      );
+    }
+    return (
+      <div className="max-w-[400px] w-full py-4 border-red-500 border-2 rounded-md">
+        <h3 className="text-xl font-semibold">
+          {error.status} {error.statusText}
+        </h3>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-[400px] w-full py-4 border-red-500 border-2 rounded-md">
+      <h3 className="text-xl font-semibold">
+        There was an error loading close events.
+      </h3>
+    </div>
+  );
+}
 
 export default CreateClubPage;
