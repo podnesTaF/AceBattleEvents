@@ -1,6 +1,12 @@
 import { Divider, Skeleton } from "@mui/material";
 import { LoaderArgs, json } from "@remix-run/node";
-import { useLoaderData, useNavigate } from "@remix-run/react";
+import {
+  isRouteErrorResponse,
+  useLoaderData,
+  useNavigate,
+  useParams,
+  useRouteError,
+} from "@remix-run/react";
 import axios from "axios";
 import Map from "~/components/events/Map";
 import StatisticCards from "~/components/events/StatisticCards";
@@ -236,5 +242,29 @@ const EventPage = () => {
     </>
   );
 };
+
+export function ErrorBoundary() {
+  const { eventId } = useParams();
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    if (error.status === 404) {
+      return (
+        <div className="error-container">
+          <h3 className="text-xl font-semibold">
+            Cannot find event by with this id: "{eventId}"?
+          </h3>
+        </div>
+      );
+    }
+  }
+  return (
+    <div className="error-container">
+      <h3 className="text-xl font-semibold">
+        There was an error loading event by the id {eventId}. Sorry.
+      </h3>
+    </div>
+  );
+}
 
 export default EventPage;

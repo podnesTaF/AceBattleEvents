@@ -3,7 +3,13 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import { Button, Divider, IconButton } from "@mui/material";
 import { LoaderArgs, json } from "@remix-run/node";
-import { useLoaderData, useNavigate } from "@remix-run/react";
+import {
+  Link,
+  isRouteErrorResponse,
+  useLoaderData,
+  useNavigate,
+  useRouteError,
+} from "@remix-run/react";
 import { useCallback, useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { Api } from "~/api/axiosInstance";
@@ -28,6 +34,10 @@ export const loader = async ({ request }: LoaderArgs) => {
   });
 
   const club = await Api().clubs.getClub(user?.clubId?.toString());
+
+  if (!club) {
+    throw new Response("Club not found", { status: 404 });
+  }
 
   return json({ club, user });
 };
@@ -125,8 +135,10 @@ const AddTeamIndex = () => {
       if (team) {
         navigate("/");
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      throw new Response(`An error occurs while creating team`, {
+        status: error.response.status,
+      });
     }
   };
   return (
@@ -312,3 +324,40 @@ const AddTeamIndex = () => {
 };
 
 export default AddTeamIndex;
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    if (error.status === 404) {
+      return (
+        <div className="error-container">
+          <div className="max-w-[400px] w-full py-4 mx-auto">
+            <h3 className="text-3xl font-semibold">
+              You don&apos; have a club yet. <br /> Maybe{" "}
+              <Link to="/create-club" className="underline">
+                create one
+              </Link>
+              ?
+            </h3>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="error-container">
+        <div className="max-w-[400px] w-full py-4 border-red-500 border-2 rounded-md">
+          <h3 className="text-3xl font-semibold">{error.status}</h3>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-[400px] w-full py-4 border-red-500 border-2 rounded-md">
+      <h3 className="text-xl font-semibold">
+        There was an error loading close events.
+      </h3>
+    </div>
+  );
+}

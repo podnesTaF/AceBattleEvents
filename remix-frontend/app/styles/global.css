@@ -18,6 +18,16 @@ html {
   justify-content: center;
 }
 
+.error-container {
+  width: 100%;
+  height: calc(100vh - 90px);
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  justify-content: center;
+  align-items: center;
+}
+
 .h-calc-screen {
   height: 320px;
 }
