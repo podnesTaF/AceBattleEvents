@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Patch,
   Request,
   UseGuards,
@@ -22,6 +23,11 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   getMe(@Request() req) {
     return this.userService.findById(req.user.id);
+  }
+
+  @Get(':id')
+  getUserProfile(@Param('id') id: number) {
+    return this.userService.findById(id);
   }
 
   @Patch('/image')

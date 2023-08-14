@@ -24,6 +24,7 @@ import { HashtagModule } from './hashtag/hashtag.module';
 import { ContentModule } from './content/content.module';
 import { IntegrationModule } from './integration/integration.module';
 import { ClubRequestsModule } from './club-requests/club-requests.module';
+import { ViewerRegistrationsModule } from './viewer-registrations/viewer-registrations.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { ClubRequestsModule } from './club-requests/club-requests.module';
     ContentModule,
     IntegrationModule,
     ClubRequestsModule,
+    ViewerRegistrationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

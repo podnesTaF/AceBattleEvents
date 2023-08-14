@@ -2,6 +2,7 @@ import { Location } from 'src/locations/entities/locations.entity';
 import { Media } from 'src/media/entities/media.entity';
 import { PrizeEntity } from 'src/prizes/entities/prize.entity';
 import { Team } from 'src/teams/entities/team.entity';
+import { ViewerRegistration } from 'src/viewer-registrations/entities/viewer-registration.entity';
 import {
   Column,
   Entity,
@@ -44,6 +45,12 @@ export class Event {
 
   @OneToMany(() => PrizeEntity, (prize) => prize.event, { onDelete: 'CASCADE' })
   prizes: PrizeEntity[];
+
+  @OneToMany(
+    () => ViewerRegistration,
+    (viewerRegistration) => viewerRegistration.event,
+  )
+  viewerRegistrations: ViewerRegistration[];
 
   @ManyToMany(() => Team, (team) => team.events, {
     onDelete: 'NO ACTION',

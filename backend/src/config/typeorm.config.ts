@@ -12,6 +12,7 @@ import { PlayerEntity } from 'src/players/entities/player.entity';
 import { PrizeEntity } from 'src/prizes/entities/prize.entity';
 import { Team } from 'src/teams/entities/team.entity';
 import { User } from 'src/user/entities/user.entity';
+import { ViewerRegistration } from 'src/viewer-registrations/entities/viewer-registration.entity';
 evnconfig();
 
 const config: TypeOrmModuleOptions = {
@@ -33,6 +34,7 @@ const config: TypeOrmModuleOptions = {
     PersonalBest,
     PrizeEntity,
     Media,
+    ViewerRegistration,
     JoinRequest,
   ],
   synchronize: true,
