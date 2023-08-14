@@ -30,6 +30,11 @@ export class ClubController {
     return this.clubService.findAll(queries);
   }
 
+  @Get('snippet')
+  findAllSnippet() {
+    return this.clubService.findAllSnippet();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.clubService.findOne(+id);

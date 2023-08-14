@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Patch,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -17,6 +18,11 @@ export class UserController {
   @Get()
   getAllUsers() {
     return this.userService.findAll();
+  }
+
+  @Get('/athletes')
+  getAllRunners(@Query() queries: any) {
+    return this.userService.findAllRunners(queries);
   }
 
   @Get('/me')

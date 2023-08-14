@@ -49,6 +49,12 @@ export class ClubService {
     return qb.getMany();
   }
 
+  findAllSnippet() {
+    return this.repository.find({
+      select: ['id', 'name'],
+    });
+  }
+
   async findOne(id: number) {
     const club = await this.repository.findOne({
       where: { id },
