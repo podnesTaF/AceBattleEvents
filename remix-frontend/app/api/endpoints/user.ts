@@ -1,4 +1,5 @@
 import { AxiosInstance } from "axios";
+import { IClub } from "~/lib/clubs/types";
 import { IViewer } from "~/lib/registrations/types/ViewerRegister";
 import { IUser } from "~/lib/user/types/IUser";
 
@@ -59,6 +60,16 @@ export const UserApi = (instance: AxiosInstance) => ({
         `/viewer-registrations/my-registrations`
       );
       return registrations;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async getFavoriteClubs(id: number) {
+    try {
+      const { data: clubs } = await instance.get<IClub[]>(
+        `/users/${id}/favorite-clubs`
+      );
+      return clubs;
     } catch (error) {
       console.log(error);
     }

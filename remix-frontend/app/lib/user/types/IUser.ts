@@ -18,4 +18,5 @@ export interface IUser {
   gender?: string;
   dateOfBirth?: string;
   worldAthleticsUrl?: string;
+  favoriteClubs?: IClub;
 }

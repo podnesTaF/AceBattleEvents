@@ -7,6 +7,7 @@ import { Api } from "~/api/axiosInstance";
 import ClubHeader from "~/components/clubs/ClubHeader";
 import ClubInfo from "~/components/clubs/ClubInfo";
 import ClubResultsFilter from "~/components/clubs/ClubResultsFilter";
+import FavoriteClubButton from "~/components/clubs/FavoriteClubButton";
 import JoinClubForm from "~/components/clubs/JoinClubForm";
 import MemberCarouseltem from "~/components/clubs/MemberCarouseltem";
 import NewsCard from "~/components/news/NewsCard";
@@ -36,6 +37,7 @@ const ClubPage = () => {
     isOpen: false,
   });
   const [filters, setFilters] = useState();
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const getFilters = (filters: any) => {
     setFilters(filters);
@@ -48,7 +50,7 @@ const ClubPage = () => {
   ) => {
     try {
       if (!user) throw new Error("You must be logged in to send a request");
-      // @ts-ignore
+
       const joinRequest = await Api(user.token).clubs.sendJoinRequest(
         motivation,
         clubId
@@ -61,6 +63,26 @@ const ClubPage = () => {
         });
 
         return joinRequest;
+      }
+    } catch (error) {
+      setStatusAlert({ message: "problem sending request", isOpen: true });
+      console.log(error);
+    }
+  };
+
+  const handleFavorites = async (action: string) => {
+    try {
+      if (!user) throw new Error("You must be logged in to send a request");
+
+      const { message } = await Api(user.token).clubs.handleFavorites(
+        club.id,
+        action
+      );
+
+      if (!isFavorite) {
+        setIsFavorite(true);
+      } else {
+        setIsFavorite(false);
       }
     } catch (error) {
       setStatusAlert({ message: "problem sending request", isOpen: true });
@@ -106,7 +128,7 @@ const ClubPage = () => {
         </section>
         <Snackbar
           open={statusAlert.isOpen}
-          autoHideDuration={3000}
+          autoHideDuration={2000}
           onClose={() => setStatusAlert({ message: "", isOpen: false })}
           message={statusAlert.message}
           action={
@@ -121,6 +143,12 @@ const ClubPage = () => {
           }
         />
       </main>
+      {user?.role === "viewer" && (
+        <FavoriteClubButton
+          isFavorite={isFavorite}
+          handleFavorites={handleFavorites}
+        />
+      )}
     </>
   );
 };

@@ -114,4 +114,16 @@ export const ClubApi = (instance: AxiosInstance) => ({
       };
     }
   },
+  async handleFavorites(clubId: number, action: string) {
+    try {
+      const { data } = await instance.post<{ message: string }>(
+        `/clubs/${clubId}/handle-favorite`,
+        { action }
+      );
+
+      return data;
+    } catch (e: any) {
+      throw new Error(e.response.data.message);
+    }
+  },
 });

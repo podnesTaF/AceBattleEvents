@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Api } from "~/api/axiosInstance";
 import TeamCard from "~/components/teams/TeamCard";
 import { authenticator } from "~/lib/auth/utils/auth.server";
+import { IClub } from "~/lib/clubs/types";
 import { IViewer } from "~/lib/registrations/types/ViewerRegister";
 import { ITeam } from "~/lib/teams/types";
 import { ITeamEvent } from "~/lib/teams/types/Registrations";
@@ -16,6 +17,7 @@ type TabReturnData = {
   teams?: ITeam[];
   viewerRegistrations?: IViewer[];
   teamRegistrations?: ITeamEvent[];
+  favoriteClubs?: IClub[];
 };
 
 export const loader = async ({ params, request }: LoaderArgs) => {
@@ -60,12 +62,26 @@ export const loader = async ({ params, request }: LoaderArgs) => {
     }
   }
 
+  if (tab === "Favorites") {
+    if (user.role === "viewer") {
+      const favorites = await Api().users.getFavoriteClubs(user.id);
+      returnData.favoriteClubs = favorites;
+    }
+  }
+
   return json(returnData);
 };
 
 const ProfileTab = () => {
-  const { tab, scrollY, teams, viewerRegistrations, teamRegistrations, user } =
-    useLoaderData<typeof loader>();
+  const {
+    tab,
+    scrollY,
+    teams,
+    viewerRegistrations,
+    teamRegistrations,
+    user,
+    favoriteClubs,
+  } = useLoaderData<typeof loader>();
 
   useEffect(() => {
     if (!scrollY) return;
@@ -113,6 +129,26 @@ const ProfileTab = () => {
                   <p>{registration.team.name}</p>
                 </li>
               ))}
+            </ul>
+          )}
+        </>
+      )}
+      {tab === "Favorites" && (
+        <>
+          <h2 className="text-3xl font-semibold mb-4 text-center">
+            Your favorite clubs
+          </h2>
+          {user.role === "viewer" && (
+            <ul>
+              {favoriteClubs?.length ? (
+                favoriteClubs.map((club) => (
+                  <li key={club.id}>
+                    <p>{club.name}</p>
+                  </li>
+                ))
+              ) : (
+                <h3 className="text-2xl">No favorite clubs yet</h3>
+              )}
             </ul>
           )}
         </>
