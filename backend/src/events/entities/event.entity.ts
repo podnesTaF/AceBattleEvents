@@ -1,3 +1,4 @@
+import { Hashtag } from 'src/hashtag/entities/hashtag.entity';
 import { Location } from 'src/locations/entities/locations.entity';
 import { Media } from 'src/media/entities/media.entity';
 import { PrizeEntity } from 'src/prizes/entities/prize.entity';
@@ -57,4 +58,11 @@ export class Event {
     onUpdate: 'NO ACTION',
   })
   teams: Team[];
+
+  @ManyToMany(() => Hashtag, (hashtag) => hashtag.events, {
+    onDelete: 'NO ACTION',
+    onUpdate: 'NO ACTION',
+    nullable: true,
+  })
+  hashtags: Hashtag[];
 }

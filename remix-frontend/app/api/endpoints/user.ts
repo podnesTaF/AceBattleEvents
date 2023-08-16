@@ -1,4 +1,6 @@
 import { AxiosInstance } from "axios";
+import { IClub } from "~/lib/clubs/types";
+import { IViewer } from "~/lib/registrations/types/ViewerRegister";
 import { IUser } from "~/lib/user/types/IUser";
 
 export const UserApi = (instance: AxiosInstance) => ({
@@ -50,6 +52,26 @@ export const UserApi = (instance: AxiosInstance) => ({
       return userData;
     } catch (error: any) {
       throw new Error("Failed to update image: " + error.message);
+    }
+  },
+  async getMyRegistrations() {
+    try {
+      const { data: registrations } = await instance.get<IViewer[]>(
+        `/viewer-registrations/my-registrations`
+      );
+      return registrations;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async getFavoriteClubs(id: number) {
+    try {
+      const { data: clubs } = await instance.get<IClub[]>(
+        `/users/${id}/favorite-clubs`
+      );
+      return clubs;
+    } catch (error) {
+      console.log(error);
     }
   },
 });

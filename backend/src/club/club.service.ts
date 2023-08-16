@@ -49,6 +49,12 @@ export class ClubService {
     return qb.getMany();
   }
 
+  findAllSnippet() {
+    return this.repository.find({
+      select: ['id', 'name'],
+    });
+  }
+
   async findOne(id: number) {
     const club = await this.repository.findOne({
       where: { id },
@@ -64,6 +70,12 @@ export class ClubService {
     });
 
     return club;
+  }
+
+  async handleFavorite(userId: number, clubId: number, action: string) {
+    const club = await this.repository.findOne({ where: { id: clubId } });
+
+    return this.userService.handleFavorites(userId, club, action);
   }
 
   update(id: number, updateClubDto: UpdateClubDto) {

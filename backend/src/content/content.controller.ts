@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ContentService } from './content.service';
 import { CreateContentDto } from './dto/create-content.dto';
 import { UpdateContentDto } from './dto/update-content.dto';
@@ -9,7 +17,7 @@ export class ContentController {
 
   @Post()
   create(@Body() createContentDto: CreateContentDto) {
-    return this.contentService.create(createContentDto);
+    return this.contentService.create(createContentDto, 1);
   }
 
   @Get()

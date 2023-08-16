@@ -19,17 +19,16 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
   if (!user) throw new Error("User not found");
 
-  console.log(limit, page);
-
   const registrations = await Api(authorizedUser?.token).teams.getRegitrations({
     limit,
     page,
   });
-  const teams = await Api(authorizedUser?.token).teams.getTeamByUserId();
+  const teams = await Api(authorizedUser?.token).teams.getTeamsByUserId(userId);
 
   return {
     user,
     isMe: authorizedUser?.id === user.id,
+    currentUser: authorizedUser,
     token: authorizedUser?.token,
     registrations,
     teams,
@@ -37,7 +36,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 };
 
 const UserProfilePage = () => {
-  const { user, isMe, token, registrations, teams } =
+  const { user, isMe, token, registrations, teams, currentUser } =
     useLoaderData<typeof loader>();
 
   return (
@@ -46,7 +45,8 @@ const UserProfilePage = () => {
       <ProfileTabs
         registrations={registrations}
         teams={teams}
-        userId={user.id}
+        user={user}
+        currentUser={currentUser}
       />
     </>
   );

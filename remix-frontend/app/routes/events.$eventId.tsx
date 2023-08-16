@@ -1,4 +1,4 @@
-import { Divider, Skeleton } from "@mui/material";
+import { Divider } from "@mui/material";
 import { LoaderArgs, json } from "@remix-run/node";
 import {
   isRouteErrorResponse,
@@ -8,6 +8,8 @@ import {
   useRouteError,
 } from "@remix-run/react";
 import axios from "axios";
+import EventHeader from "~/components/events/EventHeader";
+import EventUsersAction from "~/components/events/EventUsersAction";
 import Map from "~/components/events/Map";
 import StatisticCards from "~/components/events/StatisticCards";
 import CustomTable from "~/components/shared/tables/CustomTable";
@@ -48,43 +50,7 @@ const EventPage = () => {
 
   return (
     <>
-      <header
-        className={`w-full flex justify-center h-[400px] sm:h-[640px] md:h-[720px] lg:h-[800px] h-calc-screen-lg relative flex-col`}
-      >
-        {event ? (
-          <img
-            src={event.introImage?.mediaUrl || "/page-detail.jpg"}
-            alt="intro image"
-            width={1280}
-            height={980}
-            className="w-full h-full absolute object-cover"
-          />
-        ) : (
-          <Skeleton variant="rectangular" width="100%" height="100%" />
-        )}
-        <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.4)] z-0"></div>
-        <div className="h-3/5 mb-10 sm:mb-0 sm:h-1/2 ml-5 flex flex-col justify-center items-center w-3/4 sm:w-3/5 md:w-[500px] z-10">
-          <h2 className="text-white uppercase font-semibold text-3xl sm:text-5xl mb-3 sm:mb-5 text-center ml-2 md:ml-0">
-            {event.title}
-          </h2>
-          <h4 className="text-white text-xl sm:text-2xl uppercase">
-            Share your energy with us!
-          </h4>
-        </div>
-        <div className="absolute w-full sm:w-1/2 md:w-[500px] sm:h-1/4 bg-black/60 bottom-0 right-0 flex justify-center items-center z-10">
-          <h3 className="uppercase text-lg sm:text-xl font-thin text-white w-4/5 my-2">
-            {event.description}
-          </h3>
-        </div>
-        {user && (
-          <button
-            onClick={() => navigate(`/events/${event.id}/register-team`)}
-            className="hover:bg-red-800 bg-red-500 text-white font-bold py-2 px-3 sm:py-4 sm:px-6 border border-red-800 rounded absolute top-6 right-6 active:scale-95"
-          >
-            Register Your Team
-          </button>
-        )}
-      </header>
+      <EventHeader userRole={user?.role} event={event} />
       <main>
         <div className="px-5 sm:px-10 py-5 bg-red-500">
           <h3 className="text-3xl text-white font-semibold">ABOUT EVENT</h3>
@@ -197,6 +163,8 @@ const EventPage = () => {
             <h2 className="text-4xl my-3 font-semibold">Registered Teams</h2>
             {event?.teams.length ? (
               <CustomTable
+                titleColor="bg-black"
+                isTitleStraight={true}
                 rows={transformIntoTeamsTable(event?.teams)}
                 isLoading={false}
               />
@@ -210,33 +178,11 @@ const EventPage = () => {
             )}
           </div>
 
-          <div className="my-20 mx-4 xl:mx-0 flex flex-col sm:flex-row justify-around gap-3">
-            <div className="relative">
-              <img src={"/details3.jpg"} width={400} height={300} alt="pict" />
-              <div className="absolute flex justify-center items-center w-full top-0 left-0 h-full sm:hidden bg-black/50">
-                <h2 className="text-3xl uppercase font-semibold p-3 text-white">
-                  ADD YOUR TEAM AND BE ABLE TO WIN SUPER PRIZE!
-                </h2>
-              </div>
-            </div>
-            <div className="w-full sm:max-w-[400px] flex flex-col items-center">
-              <h2 className="text-3xl uppercase font-semibold mb-8 hidden sm:block">
-                ADD YOUR TEAM AND BE ABLE TO WIN SUPER PRIZE!
-              </h2>
-              <button
-                onClick={() => {
-                  if (user) {
-                    navigate(`/events/${event.id}/register-team`);
-                  } else {
-                    navigate(`/auth/login`);
-                  }
-                }}
-                className="bg-red-500 text-white uppercase font-semibold rounded-lg w-3/4 py-3"
-              >
-                Register Now
-              </button>
-            </div>
-          </div>
+          <EventUsersAction
+            eventId={event.id}
+            isParticipant={false}
+            userRole={user?.role}
+          />
         </div>
       </main>
     </>

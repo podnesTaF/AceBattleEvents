@@ -1,3 +1,5 @@
+import { IClub } from "~/lib/clubs/types";
+import { ICountry } from "~/lib/countries/types";
 import { IMedia } from "~/lib/media/types/IMedia";
 
 export interface IUser {
@@ -5,9 +7,9 @@ export interface IUser {
   name: string;
   email: string;
   surname: string;
-  club?: string;
+  club?: IClub;
   city: string;
-  country: string;
+  country: ICountry;
   balance: number;
   token: string;
   clubId?: number;
@@ -16,4 +18,5 @@ export interface IUser {
   gender?: string;
   dateOfBirth?: string;
   worldAthleticsUrl?: string;
+  favoriteClubs?: IClub;
 }

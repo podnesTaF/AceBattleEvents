@@ -1,10 +1,9 @@
 import { Logout, Settings } from "@mui/icons-material";
 import GroupIcon from "@mui/icons-material/Group";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import Groups3OutlinedIcon from "@mui/icons-material/Groups3Outlined";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { Avatar, Divider, ListItemIcon, Menu, MenuItem } from "@mui/material";
-import { Link, useNavigate } from "@remix-run/react";
+import { Link } from "@remix-run/react";
 import React from "react";
 
 interface ProfileMenuProps {
@@ -22,7 +21,6 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({
   userId,
   handleClose,
 }) => {
-  const navigate = useNavigate();
   return (
     <Menu
       anchorEl={anchorEl}
@@ -59,97 +57,79 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({
       transformOrigin={{ horizontal: "right", vertical: "top" }}
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
-      <MenuItem className="w-[200px]">
-        <Link to={`/profile/${userId}`}>
-          <div className="flex items-center gap-1">
-            <Avatar sx={{ width: 40, height: 40 }} />
-            <p>My account</p>
-          </div>
-        </Link>
-      </MenuItem>
-      {clubId && (
-        <MenuItem>
-          <Link to={`/clubs/${clubId}`}>
-            <div className="flex items-center gap-2">
-              <GroupIcon className="text-gray-400" />
-              <p>My Club</p>
-            </div>
-          </Link>
-        </MenuItem>
+      {/* User's account */}
+      {renderMenuItem(
+        `/profile/${userId}`,
+        <Avatar sx={{ width: 40, height: 40 }} />,
+        "My account"
       )}
-      {role === "manager" ? (
-        clubId ? (
-          <div>
-            <MenuItem>
-              <Link to="/add-team">
-                <div className="flex items-center gap-2">
-                  <Groups3OutlinedIcon className="text-gray-400" />
-                  <p>Form a Team</p>
-                </div>
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link to={`/clubs/${clubId}/join-requests`}>
-                <div className="flex items-center gap-2">
-                  <PersonAddIcon className="text-gray-400" />
-                  <p>Join Requests</p>
-                </div>
-              </Link>
-            </MenuItem>
-          </div>
-        ) : (
-          <MenuItem>
-            <Link to="/create-club">
-              <div className="flex items-center gap-2">
-                <Avatar
-                  sx={{ width: 40, height: 40 }}
-                  className="bg-yellow-300"
-                >
-                  <GroupAddIcon className="text-black" />
-                </Avatar>
-                <p>Add Club</p>
-              </div>
-            </Link>
-          </MenuItem>
-        )
+
+      {/* User's club */}
+      {clubId &&
+        renderMenuItem(
+          `/clubs/${clubId}`,
+          <GroupIcon className="text-gray-400" />,
+          "My Club"
+        )}
+
+      {/* Manager options */}
+      {role === "manager" && clubId ? (
+        <>
+          {renderMenuItem(
+            "/add-team",
+            <Groups3OutlinedIcon className="text-gray-400" />,
+            "Form a Team"
+          )}
+          {renderMenuItem(
+            `/clubs/${clubId}/join-requests`,
+            <PersonAddIcon className="text-gray-400" />,
+            "Join Requests"
+          )}
+        </>
       ) : (
-        !clubId && (
-          <MenuItem>
-            <Link to="/clubs">
-              <div className="flex items-center gap-2">
-                <Avatar
-                  sx={{ width: 40, height: 40 }}
-                  className="bg-yellow-300"
-                >
-                  <GroupIcon className="text-black" />
-                </Avatar>
-                <p>Find a Club</p>
-              </div>
-            </Link>
-          </MenuItem>
+        // Other user roles and viewer
+        role !== "viewer" &&
+        !clubId &&
+        renderMenuItem(
+          role === "manager" ? "/create-club" : "/clubs",
+          <Avatar sx={{ width: 40, height: 40 }} className="bg-yellow-300">
+            <GroupIcon className="text-black" />
+          </Avatar>,
+          role === "manager" ? "Add Club" : "Find a Club"
         )
       )}
+
+      {/* Settings */}
       <Divider />
-      <MenuItem onClick={handleClose}>
+      {renderMenuItem(
+        "/",
         <ListItemIcon>
           <Settings />
-        </ListItemIcon>
-        Settings
-      </MenuItem>
-      <MenuItem
-        onClick={() => {
-          handleClose();
-          navigate("/logout");
-        }}
-        className="text-red-500"
-      >
+        </ListItemIcon>,
+        "Settings"
+      )}
+
+      {/* Logout */}
+      {renderMenuItem(
+        "/logout",
         <ListItemIcon>
           <Logout color="error" />
-        </ListItemIcon>
-        Logout
-      </MenuItem>
+        </ListItemIcon>,
+        "Logout"
+      )}
     </Menu>
   );
 };
 
 export default ProfileMenu;
+
+const renderMenuItem = (to: string, icon: React.ReactNode, text: string) => (
+  <MenuItem>
+    <Link to={to}>
+      <div className="flex items-center gap-2">
+        {icon}
+        <p>{text}</p>
+      </div>
+    </Link>
+  </MenuItem>
+);

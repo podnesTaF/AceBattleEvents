@@ -34,7 +34,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user, isMe, token }) => {
               height={300}
             />
             <div className="absolute -top-4 px-5 py-2 bg-red-700 rounded-md left-1/2 -translate-x-1/2">
-              <p className="text-white text-xl font-semibold">manager</p>
+              <p className="text-white text-xl font-semibold">{user.role}</p>
             </div>
             {isMe && (
               <div className="mt-4">
@@ -55,10 +55,11 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user, isMe, token }) => {
                   {user.surname}
                 </h3>
               </div>
-              <p className="text-xl font-semibold">Club “Muse Run”</p>
-
+              <p className="text-xl font-semibold">
+                {user.club ? `Club "${user.club?.name}"` : "No Club"}
+              </p>
               <p className="text-xl font-semibold text-gray-400">
-                {user.city}|{user.country}
+                {user.city} | {user.country?.name}
               </p>
             </div>
           </div>

@@ -3,10 +3,13 @@ import { config as evnconfig } from 'dotenv';
 import { JoinRequest } from 'src/club-requests/entities/club-request.entity';
 import { Club } from 'src/club/entities/club.entity';
 import { Coach } from 'src/coach/entities/coach.entity';
+import { Content } from 'src/content/entities/content.entity';
 import { Country } from 'src/country/entity/country.entity';
 import { Event } from 'src/events/entities/event.entity';
+import { Hashtag } from 'src/hashtag/entities/hashtag.entity';
 import { Location } from 'src/locations/entities/locations.entity';
 import { Media } from 'src/media/entities/media.entity';
+import { News } from 'src/news/entities/news.entity';
 import { PersonalBest } from 'src/personal-bests/entities/personal-best.entity';
 import { PlayerEntity } from 'src/players/entities/player.entity';
 import { PrizeEntity } from 'src/prizes/entities/prize.entity';
@@ -36,6 +39,9 @@ const config: TypeOrmModuleOptions = {
     Media,
     ViewerRegistration,
     JoinRequest,
+    Hashtag,
+    Content,
+    News,
   ],
   synchronize: true,
 };

@@ -1,4 +1,5 @@
-export const formatDate = (dateString: string): string => {
+export const formatDate = (dateString?: string): string => {
+  if (!dateString) return "";
   const date = new Date(dateString);
 
   const formattedDate: string = date.toLocaleDateString("en-GB", {

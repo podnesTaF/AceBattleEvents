@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Patch,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -19,6 +20,11 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Get('/athletes')
+  getAllRunners(@Query() queries: any) {
+    return this.userService.findAllRunners(queries);
+  }
+
   @Get('/me')
   @UseGuards(JwtAuthGuard)
   getMe(@Request() req) {
@@ -28,6 +34,11 @@ export class UserController {
   @Get(':id')
   getUserProfile(@Param('id') id: number) {
     return this.userService.findById(id);
+  }
+
+  @Get(':id/favorite-clubs')
+  getFavoriteClubs(@Param('id') id: number) {
+    return this.userService.findFavoriteClubs(id);
   }
 
   @Patch('/image')

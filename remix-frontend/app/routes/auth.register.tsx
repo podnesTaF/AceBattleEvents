@@ -63,6 +63,7 @@ const RegisterPage = () => {
               runner: "Runner",
               manager: "Manager",
               coach: "Coach",
+              viewer: "Viewer",
             })}
             onChangeFilter={(value) => setIsRunner(value === "runner")}
           />

@@ -1,4 +1,4 @@
-import { IsBoolean, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateViewerRegistrationDto {
   @IsString()
@@ -18,4 +18,8 @@ export class CreateViewerRegistrationDto {
 
   @IsNumber()
   eventId: number;
+
+  @IsNumber()
+  @IsOptional()
+  viewerId?: number;
 }

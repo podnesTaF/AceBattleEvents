@@ -7,6 +7,7 @@ export type CreateViewer = {
   email?: string;
   gender?: string;
   discoveryMethod?: string;
+  viewerId?: number;
 };
 
 export type IViewer = {

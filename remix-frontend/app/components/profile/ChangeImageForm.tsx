@@ -24,7 +24,7 @@ const ChangeImageForm: React.FC<Props> = ({
   });
 
   const onCloseDialog = (image?: any) => {
-    if (image) {
+    if (image.title) {
       onAddProfileImage(image);
     }
     setEditImageDialogOpen(false);

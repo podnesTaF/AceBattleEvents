@@ -101,4 +101,29 @@ export const ClubApi = (instance: AxiosInstance) => ({
       throw new Error(error.response.data.message);
     }
   },
+  async findClubsSnippet() {
+    try {
+      const { data } = await instance.get<{ id: number; name: string }[]>(
+        "/clubs/snippet"
+      );
+      return { clubs: data, error: null };
+    } catch (e: any) {
+      return {
+        clubs: [],
+        error: e.response.data.message,
+      };
+    }
+  },
+  async handleFavorites(clubId: number, action: string) {
+    try {
+      const { data } = await instance.post<{ message: string }>(
+        `/clubs/${clubId}/handle-favorite`,
+        { action }
+      );
+
+      return data;
+    } catch (e: any) {
+      throw new Error(e.response.data.message);
+    }
+  },
 });

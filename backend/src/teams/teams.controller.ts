@@ -48,10 +48,9 @@ export class TeamsController {
     return this.teamsService.findAll(queries, +req?.user?.id);
   }
 
-  @Get('/user')
-  @UseGuards(JwtAuthGuard)
-  findUsers(@Request() req) {
-    return this.teamsService.findAllByUser(+req?.user?.id);
+  @Get('/user/:id')
+  findUsers(@Param('id') id: string) {
+    return this.teamsService.findAllByUser(+id);
   }
 
   @Get('/registrations')

@@ -1,7 +1,13 @@
 import axios from "axios";
-import { ClubApi, EventsApi, TeamsApi } from "./endpoints";
-import { MediaApi } from "./endpoints/media";
-import { UserApi } from "./endpoints/user";
+import {
+  AthletesApi,
+  ClubApi,
+  EventsApi,
+  MediaApi,
+  NewsApi,
+  TeamsApi,
+  UserApi,
+} from "./endpoints";
 
 interface ApiReturnType {
   events: ReturnType<typeof EventsApi>;
@@ -9,6 +15,8 @@ interface ApiReturnType {
   teams: ReturnType<typeof TeamsApi>;
   users: ReturnType<typeof UserApi>;
   media: ReturnType<typeof MediaApi>;
+  athletes: ReturnType<typeof AthletesApi>;
+  news: ReturnType<typeof NewsApi>;
 }
 
 // https://abe-server.up.railway.app/api/v1
@@ -26,5 +34,7 @@ export const Api = (token?: string): ApiReturnType => {
     teams: TeamsApi(instance),
     users: UserApi(instance),
     media: MediaApi(instance),
+    athletes: AthletesApi(instance),
+    news: NewsApi(instance),
   };
 };
