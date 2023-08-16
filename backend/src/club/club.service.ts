@@ -72,6 +72,12 @@ export class ClubService {
     return club;
   }
 
+  async handleFavorite(userId: number, clubId: number, action: string) {
+    const club = await this.repository.findOne({ where: { id: clubId } });
+
+    return this.userService.handleFavorites(userId, club, action);
+  }
+
   update(id: number, updateClubDto: UpdateClubDto) {
     return `This action updates a #${id} club`;
   }

@@ -36,6 +36,11 @@ export class UserController {
     return this.userService.findById(id);
   }
 
+  @Get(':id/favorite-clubs')
+  getFavoriteClubs(@Param('id') id: number) {
+    return this.userService.findFavoriteClubs(id);
+  }
+
   @Patch('/image')
   @UseGuards(JwtAuthGuard)
   updateImage(@Request() req, @Body() body: { imageId: number }) {

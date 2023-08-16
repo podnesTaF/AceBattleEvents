@@ -3,6 +3,7 @@ import { Club } from 'src/club/entities/club.entity';
 import { Country } from 'src/country/entity/country.entity';
 import { Media } from 'src/media/entities/media.entity';
 import { Team } from 'src/teams/entities/team.entity';
+import { ViewerRegistration } from 'src/viewer-registrations/entities/viewer-registration.entity';
 import {
   Column,
   CreateDateColumn,
@@ -74,4 +75,15 @@ export class User {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
+
+  @ManyToMany(() => Club, (club) => club.favorites, { nullable: true })
+  @JoinTable()
+  favoriteClubs: Club[];
+
+  @OneToMany(
+    () => ViewerRegistration,
+    (viewerRegistration) => viewerRegistration.viewer,
+    { nullable: true },
+  )
+  viewerRegistrations: ViewerRegistration[];
 }

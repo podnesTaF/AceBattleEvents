@@ -44,6 +44,10 @@ export class Club {
   @JoinTable()
   joinRequests: JoinRequest[];
 
+  @ManyToMany(() => User, (user) => user.favoriteClubs)
+  @JoinTable()
+  favorites: User[];
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 

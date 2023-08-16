@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Club } from 'src/club/entities/club.entity';
 import { Repository } from 'typeorm';
 import { LoginUserDto } from './dto/login-user.dto';
 import { User } from './entities/user.entity';
@@ -74,7 +75,10 @@ export class UserService {
   }
 
   findById(id: number) {
-    return this.repository.findOne({ where: { id }, relations: ['image'] });
+    return this.repository.findOne({
+      where: { id },
+      relations: ['image', 'country', 'club', 'favoriteClubs'],
+    });
   }
 
   async findByCond(cond: LoginUserDto) {
@@ -90,8 +94,44 @@ export class UserService {
     return { ...user, clubId };
   }
 
+  async handleFavorites(id: number, club: Club, action: string) {
+    const user = await this.repository.findOne({
+      where: { id },
+      relations: ['favoriteClubs'],
+    });
+
+    if (action === 'add') {
+      user.favoriteClubs.push(club);
+    } else {
+      user.favoriteClubs = user.favoriteClubs.filter(
+        (favoriteClub) => favoriteClub.id !== club.id,
+      );
+    }
+
+    return this.repository.save(user);
+  }
+
+  async findFavoriteClubs(id: number) {
+    const user = await this.repository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.favoriteClubs', 'favoriteClubs')
+      .leftJoinAndSelect('favoriteClubs.logo', 'logo')
+      .where('user.id = :id', { id })
+      .getOne();
+
+    if (user) {
+      return user.favoriteClubs;
+    } else {
+      return [];
+    }
+  }
+
   async count() {
     const count = await this.repository.count();
     return { 'Total users': count };
+  }
+
+  update(id: number, dto: User) {
+    return this.repository.update(id, { ...dto });
   }
 }
