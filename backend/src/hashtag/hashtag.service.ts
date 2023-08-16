@@ -1,11 +1,36 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateHashtagDto } from './dto/create-hashtag.dto';
 import { UpdateHashtagDto } from './dto/update-hashtag.dto';
+import { Hashtag } from './entities/hashtag.entity';
 
 @Injectable()
 export class HashtagService {
-  create(createHashtagDto: CreateHashtagDto) {
-    return 'This action adds a new hashtag';
+  constructor(
+    @InjectRepository(Hashtag)
+    private repository: Repository<Hashtag>,
+  ) {}
+
+  async create(createHashtagDto: CreateHashtagDto) {
+    const hashagIfExist = await this.returnIfExist({
+      name: createHashtagDto.name,
+    });
+
+    if (!hashagIfExist) {
+      const hashtag = await this.repository.save({
+        name: createHashtagDto.name,
+      });
+      return hashtag;
+    } else {
+      return hashagIfExist;
+    }
+  }
+
+  async returnIfExist(query: any) {
+    const hashtag = await this.repository.findOne({ where: { ...query } });
+
+    return hashtag || null;
   }
 
   findAll() {
