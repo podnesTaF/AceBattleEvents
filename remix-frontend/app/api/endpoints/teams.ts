@@ -27,9 +27,11 @@ export const TeamsApi = (instance: AxiosInstance) => ({
     }
   },
 
-  async getTeamsByUserId() {
+  async getTeamsByUserId(id?: string) {
     try {
-      const { data: teamsData } = await instance.get<ITeam[]>(`teams/user`);
+      const { data: teamsData } = await instance.get<ITeam[]>(
+        `teams/user/${id}`
+      );
 
       return teamsData;
     } catch (error: any) {
@@ -75,7 +77,18 @@ export const TeamsApi = (instance: AxiosInstance) => ({
       console.log(error);
     }
   },
-  async getTeamByUserId() {
+  async getTeamsByRunner(id?: string) {
+    try {
+      const { data: teams } = await instance.get<ITeam[]>(
+        `/teams/runner/${id}`
+      );
+
+      return teams;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async getTeamByCurrentUserId() {
     try {
       const { data: team } = await instance.get<ITeam[]>(`/teams/user`);
 

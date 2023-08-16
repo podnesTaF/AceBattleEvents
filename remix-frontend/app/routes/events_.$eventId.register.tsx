@@ -9,6 +9,7 @@ import AgreeCheck from "~/components/shared/forms/AgreeCheck";
 import FormButton from "~/components/shared/forms/FormButton";
 import FormField from "~/components/shared/forms/FormField";
 import FormSelect from "~/components/shared/forms/FormSelect";
+import { authenticator } from "~/lib/auth/utils/auth.server";
 import { formatDate } from "~/lib/events/utils/format-date";
 import { registerAsViewerSchema } from "~/lib/registrations/utils/schemas";
 import { genders } from "~/lib/teams/data/options-data";
@@ -37,7 +38,7 @@ export const action = async ({ request, params }: ActionArgs) => {
   const agreeToTerms = form.get("agreeToTerms");
   const { eventId } = params;
 
-  console.log(firstName, lastName, email, discoveryMethod, agreeToTerms);
+  const authedUser = await authenticator.isAuthenticated(request);
 
   const registration = await Api().events.registerViewer({
     eventId: eventId || "",
@@ -46,21 +47,24 @@ export const action = async ({ request, params }: ActionArgs) => {
     gender,
     email,
     discoveryMethod,
+    viewerId: authedUser?.id,
   });
 
-  console.log(registration);
-
   if (registration) {
-    return json({ registration, error: null });
+    return json({ registration, authedUser: authedUser || null, error: null });
   } else {
-    return json({ registration: null, error: "Error registering" });
+    return json({
+      registration: null,
+      authedUser: authedUser || null,
+      error: "Error registering",
+    });
   }
 };
 
 const RegisterAsViewer = () => {
   const { event } = useLoaderData<typeof loader>();
   const data = useActionData<typeof action>();
-  const [dialogOpen, setDialogOpen] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const navigate = useNavigate();
 
