@@ -7,9 +7,9 @@ export const getProfileTabs = (isMe: boolean, userRole?: string): string[] => {
   // Manager
   if (userRole === "manager") {
     if (isMe) {
-      return ["My club", "Registers", "Last Races"];
+      return ["My club", "Registrations", "Last Races"];
     } else {
-      return ["Last Races", ];
+      return ["Last Races"];
     }
   }
 

@@ -18,6 +18,7 @@ type TabReturnData = {
   viewerRegistrations?: IViewer[];
   teamRegistrations?: ITeamEvent[];
   favoriteClubs?: IClub[];
+  club?: IClub | null;
 };
 
 export const loader = async ({ params, request }: LoaderArgs) => {
@@ -37,7 +38,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
   };
 
   if (tab === "Teams") {
-    if (user?.role === "manager") {
+    if (user?.role === "runner") {
       const teams = await Api().teams.getTeamsByUserId(userId);
       returnData.teams = teams;
     } else {
@@ -69,6 +70,16 @@ export const loader = async ({ params, request }: LoaderArgs) => {
     }
   }
 
+  if (tab === "My club") {
+    if (user.role === "manager" && user.id === authedUser?.id) {
+      if (authedUser.clubId) {
+        const club = await Api().clubs.getClub(authedUser.clubId.toString());
+        returnData.club = club;
+      } else {
+        returnData.club = null;
+      }
+    }
+  }
   return json(returnData);
 };
 
@@ -81,6 +92,7 @@ const ProfileTab = () => {
     teamRegistrations,
     user,
     favoriteClubs,
+    club,
   } = useLoaderData<typeof loader>();
 
   useEffect(() => {
@@ -150,6 +162,20 @@ const ProfileTab = () => {
                 <h3 className="text-2xl">No favorite clubs yet</h3>
               )}
             </ul>
+          )}
+        </>
+      )}
+      {tab === "My club" && (
+        <>
+          <h2 className="text-3xl font-semibold mb-4 text-center">Your club</h2>
+          {club ? (
+            <ul>
+              <li key={club.id}>
+                <p>{club.name}</p>
+              </li>
+            </ul>
+          ) : (
+            <h3 className="text-2xl">You don't have a club yet</h3>
           )}
         </>
       )}
