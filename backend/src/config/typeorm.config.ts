@@ -13,6 +13,10 @@ import { News } from 'src/news/entities/news.entity';
 import { PersonalBest } from 'src/personal-bests/entities/personal-best.entity';
 import { PlayerEntity } from 'src/players/entities/player.entity';
 import { PrizeEntity } from 'src/prizes/entities/prize.entity';
+import { Race } from 'src/race/entities/race.entity';
+import { RunnerResult } from 'src/runner-results/entities/runner-results.entity';
+import { Split } from 'src/splits/entities/splits.entity';
+import { TeamResult } from 'src/team-results/entities/team-results.entity';
 import { Team } from 'src/teams/entities/team.entity';
 import { User } from 'src/user/entities/user.entity';
 import { ViewerRegistration } from 'src/viewer-registrations/entities/viewer-registration.entity';
@@ -42,6 +46,10 @@ const config: TypeOrmModuleOptions = {
     Hashtag,
     Content,
     News,
+    Race,
+    TeamResult,
+    RunnerResult,
+    Split,
   ],
   synchronize: true,
 };

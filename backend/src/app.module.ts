@@ -25,6 +25,10 @@ import { ContentModule } from './content/content.module';
 import { IntegrationModule } from './integration/integration.module';
 import { ClubRequestsModule } from './club-requests/club-requests.module';
 import { ViewerRegistrationsModule } from './viewer-registrations/viewer-registrations.module';
+import { RaceModule } from './race/race.module';
+import { TeamResultsModule } from './team-results/team-results.module';
+import { RunnerResultsModule } from './runner-results/runner-results.module';
+import { SplitsModule } from './splits/splits.module';
 
 @Module({
   imports: [
@@ -52,6 +56,10 @@ import { ViewerRegistrationsModule } from './viewer-registrations/viewer-registr
     IntegrationModule,
     ClubRequestsModule,
     ViewerRegistrationsModule,
+    RaceModule,
+    TeamResultsModule,
+    RunnerResultsModule,
+    SplitsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

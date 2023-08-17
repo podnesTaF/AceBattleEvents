@@ -2,6 +2,7 @@ import { JoinRequest } from 'src/club-requests/entities/club-request.entity';
 import { Club } from 'src/club/entities/club.entity';
 import { Country } from 'src/country/entity/country.entity';
 import { Media } from 'src/media/entities/media.entity';
+import { RunnerResult } from 'src/runner-results/entities/runner-results.entity';
 import { Team } from 'src/teams/entities/team.entity';
 import { ViewerRegistration } from 'src/viewer-registrations/entities/viewer-registration.entity';
 import {
@@ -86,4 +87,7 @@ export class User {
     { nullable: true },
   )
   viewerRegistrations: ViewerRegistration[];
+
+  @OneToMany(() => RunnerResult, (result) => result.runner)
+  results: RunnerResult[];
 }
