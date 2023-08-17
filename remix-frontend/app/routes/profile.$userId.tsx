@@ -4,6 +4,7 @@ import { Api } from "~/api/axiosInstance";
 import ProfileHeader from "~/components/profile/ProfileHeader";
 import ProfileTabs from "~/components/profile/ProfileTabs";
 import { authenticator } from "~/lib/auth/utils/auth.server";
+import { getProfileTabs } from "~/lib/user/utils/getProfileTabs";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const { userId } = params;
@@ -24,6 +25,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
     page,
   });
   const teams = await Api(authorizedUser?.token).teams.getTeamsByUserId(userId);
+  const tabs = getProfileTabs(authorizedUser?.id === user?.id, user?.role);
 
   return {
     user,
@@ -32,22 +34,30 @@ export const loader = async ({ params, request }: LoaderArgs) => {
     token: authorizedUser?.token,
     registrations,
     teams,
+    tabs,
   };
 };
 
 const UserProfilePage = () => {
-  const { user, isMe, token, registrations, teams, currentUser } =
+  const { user, isMe, token, registrations, teams, currentUser, tabs } =
     useLoaderData<typeof loader>();
 
   return (
     <>
-      <ProfileHeader user={user} isMe={isMe} token={token} />
-      <ProfileTabs
-        registrations={registrations}
-        teams={teams}
+      <ProfileHeader
         user={user}
-        currentUser={currentUser}
+        isMe={isMe}
+        token={token}
+        authedUser={currentUser}
       />
+      {tabs?.length !== 0 && (
+        <ProfileTabs
+          registrations={registrations}
+          teams={teams}
+          user={user}
+          currentUser={currentUser}
+        />
+      )}
     </>
   );
 };

@@ -25,6 +25,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
   const { tab } = params;
   const { userId } = params;
   const { url } = request;
+
   const scrollY = new URL(url).searchParams.get("scrollY");
 
   const user = await Api().users.getUserProfile(userId || "");
