@@ -4,6 +4,8 @@ import { Country } from 'src/country/entity/country.entity';
 import { Event } from 'src/events/entities/event.entity';
 import { Media } from 'src/media/entities/media.entity';
 import { PlayerEntity } from 'src/players/entities/player.entity';
+import { Race } from 'src/race/entities/race.entity';
+import { TeamResult } from 'src/team-results/entities/team-results.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   Column,
@@ -12,6 +14,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -85,4 +88,13 @@ export class Team {
     },
   })
   events: Event[];
+
+  @OneToMany(() => Race, (race) => race.winner, { nullable: true })
+  wonRaces: Race[];
+
+  @OneToMany(() => TeamResult, (teamResult) => teamResult.team)
+  results: TeamResult[];
+
+  @ManyToMany(() => Race, (race) => race.teams)
+  races: Race[];
 }

@@ -2,6 +2,7 @@ import { Hashtag } from 'src/hashtag/entities/hashtag.entity';
 import { Location } from 'src/locations/entities/locations.entity';
 import { Media } from 'src/media/entities/media.entity';
 import { PrizeEntity } from 'src/prizes/entities/prize.entity';
+import { Race } from 'src/race/entities/race.entity';
 import { Team } from 'src/teams/entities/team.entity';
 import { ViewerRegistration } from 'src/viewer-registrations/entities/viewer-registration.entity';
 import {
@@ -65,4 +66,7 @@ export class Event {
     nullable: true,
   })
   hashtags: Hashtag[];
+
+  @OneToMany(() => Race, (race) => race.event, { nullable: true })
+  races: Race;
 }
