@@ -1,8 +1,9 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { LoaderArgs, redirect } from "@remix-run/node";
+import { LoaderArgs } from "@remix-run/node";
 import {
   isRouteErrorResponse,
   useLoaderData,
+  useNavigate,
   useRouteError,
 } from "@remix-run/react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -39,58 +40,61 @@ export const action = async ({ request }: LoaderArgs) => {
   const logo: any = form.get("logo");
   const photo: any = form.get("photo");
 
-  let mediaLogo;
-  let mediaPhoto;
-  if (logo || photo) {
-    const files = [logo, photo];
-    for (let i = 0; i < files.length; i++) {
-      if (files[i]) {
-        const formData = new FormData();
-        formData.append("image", files[i]);
-        const { data: resData } = await Api().media.addMedia(formData);
-        if (i === 0) {
-          mediaLogo = resData;
-        } else {
-          mediaPhoto = resData;
-        }
-      }
-    }
-    if (!logo && !photo) throw new Error("error uploading image");
-  }
-
-  const user = await authenticator.isAuthenticated(request);
-
-  try {
-    // @ts-ignore
-    const data = await Api(user?.token).clubs.createClub({
-      name: name + "",
-      phone: phone + "",
-      country: country + "",
-      city: city + "",
-      logo: mediaLogo,
-      photo: mediaPhoto,
-    });
-    if (data) {
-      redirect(`/clubs/${data.id}`);
-    }
-  } catch (error: any) {
-    console.log("error creating club");
-  }
+  console.log("logo", logo);
 };
 
 const CreateClubPage = () => {
   const { user } = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
   const form = useForm({
     mode: "onChange",
     resolver: yupResolver(createClubSchema),
   });
+
+  const onSubmit = async (dto: any) => {
+    let mediaLogo;
+    let mediaPhoto;
+    if (dto.logo || dto.photo) {
+      const files = [dto.logo, dto.photo];
+      for (let i = 0; i < files.length; i++) {
+        if (files[i]) {
+          const formData = new FormData();
+          formData.append("image", files[i]);
+          const { data: resData } = await Api().media.addMedia(formData);
+          if (i === 0) {
+            mediaLogo = resData;
+          } else {
+            mediaPhoto = resData;
+          }
+        }
+      }
+      if (!mediaLogo && !mediaPhoto) throw new Error("error uploading image");
+    }
+
+    try {
+      // @ts-ignore
+      const data = await Api(user?.token).clubs.createClub({
+        name: dto.name,
+        phone: dto.phone,
+        country: dto.country,
+        city: dto.city,
+        logo: mediaLogo,
+        photo: mediaPhoto,
+      });
+      if (data) {
+        navigate(`/clubs/${data.id}`);
+      }
+    } catch (error: any) {
+      console.log("error creating club");
+    }
+  };
 
   return (
     <>
       <CreatePagesTitle title="Create a club" />
       <main className="mx-auto my-5 sm:my-8 max-w-5xl">
         <FormProvider {...form}>
-          <form method="post">
+          <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormPartsLayout title="club details">
               <div className="w-full md:w-2/5">
                 <FormField

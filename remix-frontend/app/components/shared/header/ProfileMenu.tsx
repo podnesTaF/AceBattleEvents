@@ -73,31 +73,30 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({
         )}
 
       {/* Manager options */}
-      {role === "manager" && clubId ? (
-        <>
-          {renderMenuItem(
+      {role === "manager" && clubId
+        ? renderMenuItem(
             "/add-team",
             <Groups3OutlinedIcon className="text-gray-400" />,
             "Form a Team"
+          )
+        : // Other user roles and viewer
+          role !== "viewer" &&
+          !clubId &&
+          renderMenuItem(
+            role === "manager" ? "/create-club" : "/clubs",
+            <Avatar sx={{ width: 40, height: 40 }} className="bg-yellow-300">
+              <GroupIcon className="text-black" />
+            </Avatar>,
+            role === "manager" ? "Add Club" : "Find a Club"
           )}
-          {renderMenuItem(
-            `/clubs/${clubId}/join-requests`,
-            <PersonAddIcon className="text-gray-400" />,
-            "Join Requests"
-          )}
-        </>
-      ) : (
-        // Other user roles and viewer
-        role !== "viewer" &&
-        !clubId &&
+
+      {role === "manager" &&
+        clubId &&
         renderMenuItem(
-          role === "manager" ? "/create-club" : "/clubs",
-          <Avatar sx={{ width: 40, height: 40 }} className="bg-yellow-300">
-            <GroupIcon className="text-black" />
-          </Avatar>,
-          role === "manager" ? "Add Club" : "Find a Club"
-        )
-      )}
+          `/clubs/${clubId}/join-requests`,
+          <PersonAddIcon className="text-gray-400" />,
+          "Join Requests"
+        )}
 
       {/* Settings */}
       <Divider />

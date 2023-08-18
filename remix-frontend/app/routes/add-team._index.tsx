@@ -108,8 +108,32 @@ const AddTeamIndex = () => {
     });
   };
 
+  const registerPlayer = async (player: any) => {
+    try {
+      const user = await Api().users.registerUser(player);
+      if (user) {
+        return user.id;
+      }
+    } catch (error) {
+      console.log(error, "registering player error");
+    }
+  };
+
   const onSubmit = async (dto: any) => {
     try {
+      const players = await Promise.all(
+        dto.players.map(async (player: any) => {
+          const userId = await registerPlayer({
+            ...player,
+            club,
+            role: "runner",
+          });
+          return {
+            userId,
+          };
+        })
+      );
+
       const team = await Api(user.token).teams.addTeam({
         name: dto.name,
         clubId: club?.id || 0,
@@ -122,22 +146,16 @@ const AddTeamIndex = () => {
         gender: dto.type,
         teamImage: dto.teamImage,
         logo: dto.logo,
-        players: dto.players.map((player: any) => ({
-          name: player.name,
-          surname: player.surname,
-          dateOfBirth: player.dateOfBirth,
-          gender: player.gender,
-          worldAthleticsUrl: player.worldAthleticsUrl,
-          image: player.image,
-        })),
+        players: [...players, ...athleteList.map((a) => a.id)],
       });
 
       if (team) {
         navigate("/");
       }
     } catch (error: any) {
+      console.log(error);
       throw new Response(`An error occurs while creating team`, {
-        status: error.response.status,
+        status: 402,
       });
     }
   };
