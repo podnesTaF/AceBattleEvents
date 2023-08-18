@@ -2,6 +2,7 @@ import { LoaderArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { useEffect } from "react";
 import { Api } from "~/api/axiosInstance";
+import MyClub from "~/components/profile/MyClub";
 import TeamCard from "~/components/teams/TeamCard";
 import { authenticator } from "~/lib/auth/utils/auth.server";
 import { IClub } from "~/lib/clubs/types";
@@ -9,6 +10,7 @@ import { IViewer } from "~/lib/registrations/types/ViewerRegister";
 import { ITeam } from "~/lib/teams/types";
 import { ITeamEvent } from "~/lib/teams/types/Registrations";
 import { IUser } from "~/lib/user/types/IUser";
+import { PersonalEvents } from "~/lib/user/types/PersonalCalendar";
 
 type TabReturnData = {
   tab?: string;
@@ -19,6 +21,7 @@ type TabReturnData = {
   teamRegistrations?: ITeamEvent[];
   favoriteClubs?: IClub[];
   club?: IClub | null;
+  calendar?: PersonalEvents[];
 };
 
 export const loader = async ({ params, request }: LoaderArgs) => {
@@ -81,6 +84,17 @@ export const loader = async ({ params, request }: LoaderArgs) => {
       }
     }
   }
+
+  if (tab === "Personal Calendar") {
+    if (user.role === "runner" && user.id === authedUser?.id) {
+      const personalCalendar = await Api(
+        authedUser.token
+      ).users.getPersonalCalendar();
+
+      returnData.calendar = personalCalendar;
+    }
+  }
+
   return json(returnData);
 };
 
@@ -168,17 +182,15 @@ const ProfileTab = () => {
       )}
       {tab === "My club" && (
         <>
-          <h2 className="text-3xl font-semibold mb-4 text-center">Your club</h2>
           {club ? (
-            <ul>
-              <li key={club.id}>
-                <p>{club.name}</p>
-              </li>
-            </ul>
+            <MyClub club={club} />
           ) : (
             <h3 className="text-2xl">You don't have a club yet</h3>
           )}
         </>
+      )}
+      {tab === "Personal Calendar" && user.role === "runner" && (
+        <h3 className="text-2xl">Calendar</h3>
       )}
     </>
   );
