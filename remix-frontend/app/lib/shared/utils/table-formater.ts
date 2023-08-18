@@ -38,3 +38,17 @@ export const transfromIntoPlayersTable = (data: IUser[]) => {
     };
   });
 };
+
+export const transformIntoMembers = (members: IUser[]) => {
+  return members.map((member) => ({
+    name: member.name + " " + member.surname,
+    gender: member.gender,
+    "date of birth": member.dateOfBirth,
+    "member since": "28/07/2022",
+    country: member.country?.name,
+    results: {
+      link: `/profile${member.id}`,
+      value: "see profile",
+    },
+  }));
+};

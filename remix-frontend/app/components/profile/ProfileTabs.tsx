@@ -71,7 +71,7 @@ const ProfileTabs: React.FC<Props> = ({
           />
         ))}
       </div>
-      <div className="p-4 md:p-6 border-[1px] border-t-0 border-red-500 rounded-b-lg">
+      <div className="border-[1px] border-t-0 border-red-500 rounded-b-lg">
         <Outlet />
         {/* {activeTab === 0 && (
           <>

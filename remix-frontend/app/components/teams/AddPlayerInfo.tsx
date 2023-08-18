@@ -75,9 +75,9 @@ const AddPlayerInfo: React.FC<AddPlayerInfoProps> = ({
           name={`${name}.email`}
           placeholder={"Enter name here..."}
         />
-        {errorState?.name && (
+        {errorState?.email && (
           <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-            {errorInstance.name.message}
+            {errorInstance.email.message}
           </p>
         )}
       </div>
@@ -89,9 +89,21 @@ const AddPlayerInfo: React.FC<AddPlayerInfoProps> = ({
           values={Object.entries(countries)}
           onChangeFilter={() => {}}
         />
-        {errorState?.surname && (
+        {errorState?.country && (
           <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-            {errorInstance.surname.message}
+            {errorInstance.country.message}
+          </p>
+        )}
+      </div>
+      <div className="w-full md:w-2/5">
+        <FormField
+          name={`${name}.city`}
+          label={"City*"}
+          placeholder={"Enter city..."}
+        />
+        {errorState?.city && (
+          <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+            {errorInstance.city.message}
           </p>
         )}
       </div>

@@ -1,14 +1,23 @@
+import { Link } from "@remix-run/react";
 import React, { useState } from "react";
+import { getCategoryByDoB } from "~/lib/shared/utils/date-formaters";
 import { IUser } from "~/lib/user/types/IUser";
+import { isAbleToInvite, isAbleToJoin } from "~/lib/user/utils/helpers";
 import ChangeImageForm from "./ChangeImageForm";
 
 interface ProfileHeaderProps {
   user: IUser;
   isMe: boolean;
   token?: string;
+  authedUser?: IUser | null;
 }
 
-const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user, isMe, token }) => {
+const ProfileHeader: React.FC<ProfileHeaderProps> = ({
+  user,
+  isMe,
+  token,
+  authedUser,
+}) => {
   const [editImageDialogOpen, setEditImageDialogOpen] = useState(false);
   return (
     <>
@@ -55,14 +64,33 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user, isMe, token }) => {
                   {user.surname}
                 </h3>
               </div>
+              <h3 className="text-xl md:text-2xl font-semibold mb-2 mt-4">
+                {getCategoryByDoB(user.dateOfBirth)}
+              </h3>
               <p className="text-xl font-semibold">
-                {user.club ? `Club "${user.club?.name}"` : "No Club"}
+                {user.club ? (
+                  <Link
+                    to={`/clubs/${user.club.id}`}
+                    className="text-blue-400 hover:underline"
+                  >
+                    {user.club.name}
+                  </Link>
+                ) : (
+                  "No Club"
+                )}
               </p>
               <p className="text-xl font-semibold text-gray-400">
                 {user.city} | {user.country?.name}
               </p>
             </div>
           </div>
+          {isAbleToJoin(user) && isAbleToInvite(authedUser) && (
+            <div className="flex items-start">
+              <button className="w-full mt-4 md:w-auto md:mt-0 bg-blue-400 hover:bg-blue-300 rounded-md active:scale-95 text-white font-semibold px-4 py-2">
+                Invite to club
+              </button>
+            </div>
+          )}
         </div>
       </header>
       {token && (

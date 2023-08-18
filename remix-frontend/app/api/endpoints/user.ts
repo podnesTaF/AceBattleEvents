@@ -2,6 +2,7 @@ import { AxiosInstance } from "axios";
 import { IClub } from "~/lib/clubs/types";
 import { IViewer } from "~/lib/registrations/types/ViewerRegister";
 import { IUser } from "~/lib/user/types/IUser";
+import { PersonalEvents } from "~/lib/user/types/PersonalCalendar";
 
 export const UserApi = (instance: AxiosInstance) => ({
   async registerUser(data: IUser) {
@@ -70,6 +71,16 @@ export const UserApi = (instance: AxiosInstance) => ({
         `/users/${id}/favorite-clubs`
       );
       return clubs;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async getPersonalCalendar() {
+    try {
+      const { data: calendar } = await instance.get<PersonalEvents[]>(
+        `/users/personal-calendar`
+      );
+      return calendar;
     } catch (error) {
       console.log(error);
     }

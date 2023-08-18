@@ -15,7 +15,7 @@ export const getProfileTabs = (isMe: boolean, userRole?: string): string[] => {
 
   // Runner
   if (userRole === "runner") {
-    return ["Teams", "Last Races", "All results"];
+    return ["Teams", "Personal Calendar", "Results"];
   }
 
   // Default case

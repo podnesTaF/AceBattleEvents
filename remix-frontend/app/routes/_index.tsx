@@ -65,7 +65,7 @@ export default function Index() {
             </h3>
             {data.teams ? (
               <CustomCarousel
-                initTranslate={data.teams.length % 2 ? 400 : 200}
+                initTranslate={data.teams.length * 200 - 600}
                 items={data.teams}
                 ItemCard={CarouselItem}
               />

@@ -110,7 +110,11 @@ const ClubPage = () => {
         <section className="my-8 w-full">
           <div className="max-w-7xl mx-auto my-4 flex flex-col items-center justify-center overflow-hidden">
             <h2 className="text-3xl font-semibold">Members</h2>
-            <CustomCarousel items={club.members} ItemCard={MemberCarouseltem} />
+            <CustomCarousel
+              items={club.members}
+              ItemCard={MemberCarouseltem}
+              initTranslate={club.members.length * 200 - 600}
+            />
           </div>
         </section>
         <JoinClubForm club={club} user={user} onSubmit={createJoinRequest} />
