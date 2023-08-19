@@ -3,9 +3,11 @@ import { useLoaderData } from "@remix-run/react";
 import { useEffect } from "react";
 import { Api } from "~/api/axiosInstance";
 import MyClub from "~/components/profile/MyClub";
+import Registrations from "~/components/profile/Registrations";
 import TeamCard from "~/components/teams/TeamCard";
 import { authenticator } from "~/lib/auth/utils/auth.server";
 import { IClub } from "~/lib/clubs/types";
+import { IRace } from "~/lib/races/types";
 import { IViewer } from "~/lib/registrations/types/ViewerRegister";
 import { ITeam } from "~/lib/teams/types";
 import { ITeamEvent } from "~/lib/teams/types/Registrations";
@@ -22,6 +24,7 @@ type TabReturnData = {
   favoriteClubs?: IClub[];
   club?: IClub | null;
   calendar?: PersonalEvents[];
+  races?: IRace[];
 };
 
 export const loader = async ({ params, request }: LoaderArgs) => {
@@ -46,6 +49,13 @@ export const loader = async ({ params, request }: LoaderArgs) => {
       const teams = await Api().teams.getTeamsByUserId(userId);
       returnData.teams = teams;
     } else {
+    }
+  }
+
+  if (tab === "Last Races") {
+    if (user.role === "manager" && user?.club?.id) {
+      const races = await Api().clubs.getClubFinishedRaces(user.club.id);
+      returnData.races = races;
     }
   }
 
@@ -108,6 +118,7 @@ const ProfileTab = () => {
     user,
     favoriteClubs,
     club,
+    races,
   } = useLoaderData<typeof loader>();
 
   useEffect(() => {
@@ -149,14 +160,7 @@ const ProfileTab = () => {
             </ul>
           )}
           {user.role === "manager" && teamRegistrations && (
-            <ul>
-              {teamRegistrations.map((registration, i) => (
-                <li key={registration.event.id + "." + registration.team.id}>
-                  <p>{registration.event.title}</p>
-                  <p>{registration.team.name}</p>
-                </li>
-              ))}
-            </ul>
+            <Registrations registrations={teamRegistrations} />
           )}
         </>
       )}
@@ -192,6 +196,18 @@ const ProfileTab = () => {
       {tab === "Personal Calendar" && user.role === "runner" && (
         <h3 className="text-2xl">Calendar</h3>
       )}
+      {tab === "Last Races" &&
+        races &&
+        (races.length ? (
+          races.map((r) => (
+            <div key={r.id}>
+              <p>{r.teamResults[0].resultInMs / 1000 / 60}</p>
+              <p>{r.teamResults[1].resultInMs / 1000 / 60}</p>
+            </div>
+          ))
+        ) : (
+          <p>Your club haven&quot;t finished any races yet</p>
+        ))}
     </>
   );
 };

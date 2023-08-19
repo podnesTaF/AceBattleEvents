@@ -50,3 +50,33 @@ export const getAgeCategory = (dateOfBirth: string): string => {
     return "Senior";
   }
 };
+
+export function convertDateFormat(inputDate: string) {
+  // Convert the input string to a Date object
+  const dateObject = new Date(inputDate);
+
+  // Define an array of month names
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  // Extract day and month information
+  const day = dateObject.getDate();
+  const month = monthNames[dateObject.getMonth()];
+
+  // Generate the desired format
+  const outputFormat = `${day} of ${month}`;
+
+  return outputFormat;
+}
