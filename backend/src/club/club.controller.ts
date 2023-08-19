@@ -40,6 +40,11 @@ export class ClubController {
     return this.clubService.findOne(+id);
   }
 
+  @Get(':id/races')
+  findFinishedRacesByClub(@Param('id') id: string) {
+    return this.clubService.findFinishedRacesByClub(+id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateClubDto: UpdateClubDto) {
     return this.clubService.update(+id, updateClubDto);

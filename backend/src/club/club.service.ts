@@ -58,7 +58,7 @@ export class ClubService {
   async findOne(id: number) {
     const club = await this.repository.findOne({
       where: { id },
-      relations: ['members', 'photo', 'logo'],
+      relations: ['members', 'photo', 'logo', 'members.country'],
     });
 
     return club;
@@ -76,6 +76,25 @@ export class ClubService {
     const club = await this.repository.findOne({ where: { id: clubId } });
 
     return this.userService.handleFavorites(userId, club, action);
+  }
+
+  async findFinishedRacesByClub(clubId: number) {
+    const club = await this.repository.findOne({
+      where: { id: clubId },
+      relations: [
+        'teams',
+        'teams.races',
+        'teams.races.winner',
+        'teams.races.teamResults',
+      ],
+    });
+
+    const finishedRaces = [];
+    club?.teams.forEach((t) => {
+      finishedRaces.push(...t.races);
+    });
+
+    return finishedRaces;
   }
 
   update(id: number, updateClubDto: UpdateClubDto) {

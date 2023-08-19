@@ -43,9 +43,16 @@ export const transformIntoMembers = (members: IUser[]) => {
   return members.map((member) => ({
     name: member.name + " " + member.surname,
     gender: member.gender,
-    "date of birth": member.dateOfBirth,
+    "date of birth": new Date(member.dateOfBirth || 0).toLocaleDateString(
+      "en-GB",
+      {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }
+    ),
     "member since": "28/07/2022",
-    country: member.country?.name,
+    country: member.country,
     results: {
       link: `/profile${member.id}`,
       value: "see profile",

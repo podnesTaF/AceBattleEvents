@@ -1,5 +1,6 @@
 import { AxiosInstance } from "axios";
 import { IClub, JoinRequest } from "~/lib/clubs/types";
+import { IRace } from "~/lib/races/types";
 
 export const ClubApi = (instance: AxiosInstance) => ({
   async getClubs(params?: string, currPage?: number) {
@@ -124,6 +125,17 @@ export const ClubApi = (instance: AxiosInstance) => ({
       return data;
     } catch (e: any) {
       throw new Error(e.response.data.message);
+    }
+  },
+  async getClubFinishedRaces(clubId: number) {
+    try {
+      const { data: races } = await instance.get<IRace[]>(
+        `/clubs/${clubId}/races`
+      );
+
+      return races;
+    } catch (error) {
+      console.log(error);
     }
   },
 });

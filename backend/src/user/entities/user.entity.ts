@@ -68,6 +68,12 @@ export class User {
   @OneToMany(() => Team, (team) => team.manager, { onDelete: 'CASCADE' })
   teams: Team[];
 
+  @ManyToMany(() => Team, (team) => team.players, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  teamsAsRunner: Team[];
+
   @ManyToOne(() => Media, { nullable: true })
   image: Media;
 

@@ -91,7 +91,7 @@ const MyClub: React.FC<MyClubProps> = ({ club }) => {
       </section>
       <section className="m-4">
         <h4 className="text-xl font-semibold mb-5">Club Atheletes</h4>
-        <div className="mx-4 mb-4 w-full">
+        <div className="px-4 mb-4 w-full">
           <CustomTable
             rows={transformIntoMembers(
               club.members.filter((m) => m.role === "runner")

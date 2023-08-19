@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { CountryService } from 'src/country/country.service';
 import { Country } from 'src/country/entity/country.entity';
 import { createDateFromDDMMYYYY } from 'src/utils/date-formater';
+import { generateRandomPassword } from 'src/utils/random-password';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
@@ -45,7 +46,11 @@ export class AuthService {
 
   async register(dto: CreateUserDto) {
     try {
-      const hashedPassword = await bcrypt.hash(dto.password, 10);
+      let randomPassword: string;
+      if (!dto.password) {
+        randomPassword = generateRandomPassword();
+      }
+      const hashedPassword = await bcrypt.hash(dto.password || 'podnes', 10);
       const countryIfExist = await this.countryService.returnIfExist({
         name: dto.country,
       });
