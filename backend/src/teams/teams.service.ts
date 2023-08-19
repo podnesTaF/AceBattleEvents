@@ -28,9 +28,9 @@ export class TeamsService {
   async create(dto: CreateTeamDto, managerId: number) {
     const players = [];
 
-    for (let i = 0; i < dto.players.length; i++) {
-      const res = await this.playersService.create(dto.players[i]);
-      players.push(res);
+    for (let i = 0; i < players.length; i++) {
+      const player = await this.userService.findById(players[i]);
+      players.push(player);
     }
 
     const coach = await this.coachService.create(dto.coach);
@@ -82,7 +82,7 @@ export class TeamsService {
 
   async findAll(queries: any, userId?: number) {
     const page = +queries.page || 1; // Default to page 1 if not provided
-    const limit = +queries.limit || 5;
+    const limit = +queries.limit || 20;
 
     const qb = this.repository
       .createQueryBuilder('team')
@@ -90,7 +90,6 @@ export class TeamsService {
       .leftJoinAndSelect('team.coach', 'coach')
       .leftJoinAndSelect('team.players', 'players')
       .leftJoinAndSelect('team.logo', 'logo')
-      .leftJoinAndSelect('players.personalBests', 'personalBests')
       .leftJoinAndSelect('team.events', 'events');
 
     if (queries.user) {
