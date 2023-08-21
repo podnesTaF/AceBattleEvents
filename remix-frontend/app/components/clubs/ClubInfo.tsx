@@ -3,9 +3,10 @@ import { IClub } from "~/lib/clubs/types";
 
 interface Props {
   club: IClub;
+  finishedRaces: number;
 }
 
-const ClubInfo: React.FC<Props> = ({ club }) => {
+const ClubInfo: React.FC<Props> = ({ club, finishedRaces }) => {
   return (
     <section className="bg-[#1E1C1F] w-full py-8 md:py-16">
       <div className="max-w-6xl px-6 mx-auto sm:mx-6 lg:mx-auto w-full flex flex-col sm:flex-row justify-between gap-6 ">
@@ -41,7 +42,7 @@ const ClubInfo: React.FC<Props> = ({ club }) => {
             <h4 className="text-white text-lg font-semibold border-b-[1px] border-red-500">
               Races Finished:
             </h4>
-            <h3 className="text-2xl text-white">0</h3>
+            <h3 className="text-2xl text-white">{finishedRaces}</h3>
           </div>
         </div>
       </div>

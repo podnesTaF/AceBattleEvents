@@ -7,6 +7,7 @@ interface CustomTableProps {
   onEdit?: (id: string) => void;
   titleColor?: string;
   isTitleStraight?: boolean;
+  hightlightIdx?: number;
 }
 
 const CustomTable: React.FC<CustomTableProps> = ({
@@ -15,6 +16,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
   onEdit,
   titleColor,
   isTitleStraight,
+  hightlightIdx,
 }) => {
   return (
     <div className="relative sm:rounded-sm max-h-[500px] overflow-auto">
@@ -40,56 +42,60 @@ const CustomTable: React.FC<CustomTableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {rows.map((r, i) => (
-              <tr
-                key={i}
-                className="bg-white shadow-sm dark:bg-gray-900 dark:border-gray-700 uppercase"
-              >
-                {Object.keys(rows[0]).map((t, i) => {
-                  if (typeof r[t] === "object") {
-                    if (onEdit && t === "edit") {
+            {rows.map((r, i) => {
+              return (
+                <tr
+                  key={i}
+                  className={`shadow-sm dark:bg-gray-900 dark:border-gray-700 uppercase ${
+                    hightlightIdx === i ? "bg-red-300" : "bg-white"
+                  }`}
+                >
+                  {Object.keys(rows[0]).map((t, i) => {
+                    if (typeof r[t] === "object") {
+                      if (onEdit && t === "edit") {
+                        return (
+                          <td key={i} className="px-6 py-4">
+                            <button
+                              onClick={() => onEdit(r[t].link)}
+                              className="font-medium text-gray-400 dark:text-blue-500 hover:underline cursor-pointer"
+                            >
+                              {r[t].value}
+                            </button>
+                          </td>
+                        );
+                      }
                       return (
                         <td key={i} className="px-6 py-4">
-                          <button
-                            onClick={() => onEdit(r[t].link)}
+                          <Link
+                            to={r[t].link || "/error"}
                             className="font-medium text-gray-400 dark:text-blue-500 hover:underline cursor-pointer"
                           >
                             {r[t].value}
-                          </button>
+                          </Link>
+                        </td>
+                      );
+                    } else if (i === 0) {
+                      return (
+                        <th
+                          scope="row"
+                          key={i}
+                          className="p-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        >
+                          {r[t]}
+                        </th>
+                      );
+                    } else {
+                      return (
+                        <td key={i} className="p-6">
+                          {" "}
+                          {r[t]}
                         </td>
                       );
                     }
-                    return (
-                      <td key={i} className="px-6 py-4">
-                        <Link
-                          to={r[t].link || "/error"}
-                          className="font-medium text-gray-400 dark:text-blue-500 hover:underline cursor-pointer"
-                        >
-                          {r[t].value}
-                        </Link>
-                      </td>
-                    );
-                  } else if (i === 0) {
-                    return (
-                      <th
-                        scope="row"
-                        key={i}
-                        className="p-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        {r[t]}
-                      </th>
-                    );
-                  } else {
-                    return (
-                      <td key={i} className="p-6">
-                        {" "}
-                        {r[t]}
-                      </td>
-                    );
-                  }
-                })}
-              </tr>
-            ))}
+                  })}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       )}

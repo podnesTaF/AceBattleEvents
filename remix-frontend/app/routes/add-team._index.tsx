@@ -128,9 +128,7 @@ const AddTeamIndex = () => {
             club,
             role: "runner",
           });
-          return {
-            userId,
-          };
+          return userId;
         })
       );
 

@@ -6,7 +6,7 @@ export type IRace = {
   id: number;
   startTime: string;
   teams: ITeam[];
-  winner: ITeam[];
+  winner: ITeam | null;
   event: IEvent;
   teamResults: ITeamResult[];
 };

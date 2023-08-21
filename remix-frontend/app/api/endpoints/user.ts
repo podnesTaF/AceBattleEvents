@@ -1,8 +1,8 @@
 import { AxiosInstance } from "axios";
 import { IClub } from "~/lib/clubs/types";
+import { UserResult } from "~/lib/races/types/userResult";
 import { IViewer } from "~/lib/registrations/types/ViewerRegister";
 import { IUser } from "~/lib/user/types/IUser";
-import { PersonalEvents } from "~/lib/user/types/PersonalCalendar";
 
 export const UserApi = (instance: AxiosInstance) => ({
   async registerUser(data: IUser) {
@@ -75,12 +75,12 @@ export const UserApi = (instance: AxiosInstance) => ({
       console.log(error);
     }
   },
-  async getPersonalCalendar() {
+  async getUserResults(id: number) {
     try {
-      const { data: calendar } = await instance.get<PersonalEvents[]>(
-        `/users/personal-calendar`
+      const { data: results } = await instance.get<UserResult[]>(
+        `/runner-results/user/${id}`
       );
-      return calendar;
+      return results;
     } catch (error) {
       console.log(error);
     }

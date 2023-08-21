@@ -7,13 +7,14 @@ import TableSkeleton from "../shared/tables/TableSkeleton";
 
 interface TeamCardProps {
   team?: ITeam;
+  hightlightId?: number;
 }
 
-const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
+const TeamCard: React.FC<TeamCardProps> = ({ team, hightlightId }) => {
   return (
     <div className="shadow-md rounded-md flex flex-col md:flex-row w-full md:justify-between  bg-[url('/stadium.png')] my-5 bg-no-repeat bg-cover bg-bottom">
       <div className="w-full md:w-1/2 lg:w-1/3 rounded-t-md md:rounded-t-none rounded-tl-md overflow-hidden pb-3 mb-3 md:mb-0">
-        <div className="w-full bg-red-500 p-3 md:p-4 mb-3 rounded-tl-md">
+        <div className="w-full bg-black p-3 md:p-4 mb-3 rounded-tl-md">
           {team ? (
             <h3 className="text-white text-xl md:text-2xl font-semibold">
               {team.name}
@@ -56,6 +57,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
         <h3 className="text-2xl md:text-3xl font-semibold">Players</h3>
         {team ? (
           <CustomTable
+            hightlightIdx={team.players.findIndex((p) => p.id === hightlightId)}
             rows={transfromIntoPlayersTable(team.players)}
             isLoading={false}
           />

@@ -60,7 +60,7 @@ const MyClub: React.FC<MyClubProps> = ({ club }) => {
           <div className="w-full md:w-3/5 flex mx-6">
             <div className="w-1/3 flex flex-col items-center">
               <div className="border-t-[1px] w-full border-b-[1px] border-l-[1px] border-black rounded-l-md p-3 flex justify-center bg-white">
-                <h2 className="text-2xl sm:text-4xl font-semibold text-white">
+                <h2 className="text-2xl sm:text-4xl font-semibold ">
                   {club.members?.length || 20}
                 </h2>
               </div>

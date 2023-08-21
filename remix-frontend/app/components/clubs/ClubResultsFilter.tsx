@@ -16,7 +16,7 @@ const ClubResultsFilter: React.FC<Props> = ({ getFilters }) => {
 
   return (
     <>
-      <div className="bg-red-600 px-3 py-3 md:px-6 flex rounded-t-xl flex-col md:flex-row items-center justify-between">
+      <div className="bg-red-600 px-3 py-3 md:px-6 w-full flex rounded-t-xl flex-col gap-5 md:flex-row items-center justify-between">
         <h4 className="text-white font-semibold text-xl mb-4 md:mb-0">
           Results:
         </h4>
