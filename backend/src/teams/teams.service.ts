@@ -28,8 +28,8 @@ export class TeamsService {
   async create(dto: CreateTeamDto, managerId: number) {
     const players = [];
 
-    for (let i = 0; i < players.length; i++) {
-      const player = await this.userService.findById(players[i]);
+    for (let i = 0; i < dto.players.length; i++) {
+      const player = await this.userService.findById(dto.players[i]);
       players.push(player);
     }
 
@@ -188,11 +188,57 @@ export class TeamsService {
     };
   }
 
-  async findAllByUser(userId?: number) {
-    return this.repository.find({
-      where: { manager: { id: +userId } },
-      relations: ['players', 'coach', 'logo', 'country'],
+  async getRegistrationsByPlayerId(playerId: number) {
+    const teams = await this.repository
+      .createQueryBuilder('team')
+      .leftJoinAndSelect('team.events', 'events')
+      .leftJoinAndSelect('events.location', 'location')
+      .leftJoinAndSelect('team.coach', 'coach')
+      .leftJoinAndSelect('team.players', 'players')
+      .where('players.id = :id', { id: playerId })
+      .getMany();
+
+    const transformedData = teams.flatMap((team) => {
+      const eventList = team.events;
+
+      return eventList.map((event) => {
+        const { id, name, gender, city, coach } = team;
+        const teamInfo = { id, name, gender, city, coach };
+
+        const {
+          id: eventId,
+          title,
+          description,
+          startDateTime,
+          endDate,
+          location,
+        } = event;
+        const eventInfo = {
+          id: eventId,
+          title,
+          description,
+          startDateTime,
+          endDate,
+          location,
+        };
+
+        return { event: eventInfo, team: teamInfo };
+      });
     });
+
+    return transformedData;
+  }
+
+  async findAllByUser(userId?: number) {
+    return this.repository
+      .createQueryBuilder('team')
+      .leftJoinAndSelect('team.players', 'player')
+      .leftJoinAndSelect('team.coach', 'coach')
+      .leftJoinAndSelect('team.logo', 'logo')
+      .leftJoinAndSelect('team.country', 'country')
+      .where('player.id = :runnerId', { runnerId: userId })
+      .leftJoinAndSelect('team.players', 'players')
+      .getMany();
   }
 
   findOne(id: number) {
@@ -202,6 +248,7 @@ export class TeamsService {
         'events',
         'players',
         'coach',
+        'club',
         'logo',
         'country',
         'players.image',
