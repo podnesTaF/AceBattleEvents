@@ -31,4 +31,52 @@ export class TeamResultsService {
       team,
     });
   }
+
+  getClubResults(clubId: number) {
+    return this.repository
+      .createQueryBuilder('teamResult')
+      .leftJoinAndSelect('teamResult.team', 'team')
+      .leftJoinAndSelect('teamResult.race', 'race')
+      .leftJoin('race.event', 'event')
+      .leftJoin('race.winner', 'winner')
+      .where('team.clubId = :clubId', { clubId })
+      .select([
+        'teamResult.id',
+        'teamResult.resultInMs',
+        'teamResult.raceId',
+        'teamResult.teamId',
+        'team.id',
+        'team.name',
+        'team.gender',
+        'team.clubId',
+        'winner.id',
+        'race.startTime',
+        'event.title',
+      ])
+      .getRawMany();
+  }
+
+  getTeamResults(teamId: number) {
+    return this.repository
+      .createQueryBuilder('teamResult')
+      .leftJoinAndSelect('teamResult.team', 'team')
+      .leftJoinAndSelect('teamResult.race', 'race')
+      .leftJoin('race.event', 'event')
+      .leftJoin('race.winner', 'winner')
+      .where('team.id = :teamId', { teamId })
+      .select([
+        'teamResult.id',
+        'teamResult.resultInMs',
+        'teamResult.raceId',
+        'teamResult.teamId',
+        'team.id',
+        'team.name',
+        'team.gender',
+        'team.clubId',
+        'winner.id',
+        'race.startTime',
+        'event.title',
+      ])
+      .getRawMany();
+  }
 }

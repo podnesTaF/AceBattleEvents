@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Api } from "~/api/axiosInstance";
 import CustomTable from "~/components/shared/tables/CustomTable";
 import Pagination from "~/components/shared/tables/Pagination";
-import { raceRows } from "~/lib/teams/utils/race-rows";
+import { transformClubResults } from "~/lib/clubs/utils/transform-data";
 
 export const loader = async ({ params }: LoaderArgs) => {
   const { teamId } = params;
@@ -15,13 +15,15 @@ export const loader = async ({ params }: LoaderArgs) => {
     throw new Response("Not Found", { status: 404 });
   }
 
-  return { team };
+  const teamResults = await Api().teams.getTeamResultsByTeamId(team.id);
+
+  return { team, teamResults };
 };
 
 const TeamPage = () => {
   const [page, setPage] = useState(0);
 
-  const { team } = useLoaderData<typeof loader>();
+  const { team, teamResults } = useLoaderData<typeof loader>();
   return (
     <>
       <header className="w-full flex justify-center h-96 sm:h-[600px] bg-[url('/page-detail.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">
@@ -40,7 +42,7 @@ const TeamPage = () => {
               {team.name}
             </h2>
             <h4 className="text-white text-2xl uppercase">
-              club &quot;{team.club}&quot;
+              club &quot;{team.club.name}&quot;
             </h4>
           </div>
         </div>
@@ -107,7 +109,10 @@ const TeamPage = () => {
             <h4 className="text-2xl font-semibold text-gray-400 mb-5">
               Last Races
             </h4>
-            <CustomTable rows={raceRows} isLoading={false} />
+            <CustomTable
+              rows={transformClubResults(teamResults || [])}
+              isLoading={false}
+            />
             <div className="mt-4 flex justify-center">
               <Pagination onChangePage={setPage} currPage={1} pagesCount={3} />
             </div>

@@ -54,10 +54,27 @@ export class RunnerResultsService {
 
   async getUserResults(userId: number) {
     return this.repository
-      .createQueryBuilder('runner-result')
-      .leftJoinAndSelect('runner-result.splits', 'splits')
-      .leftJoin('runner-result.runner', 'runner')
+      .createQueryBuilder('runnerResult')
+      .leftJoinAndSelect('runnerResult.teamResult', 'teamResult')
+      .leftJoin('teamResult.team', 'team')
+      .leftJoin('teamResult.race', 'race')
+      .leftJoin('race.event', 'event')
+      .leftJoin('race.winner', 'winner')
+      .leftJoin('runnerResult.runner', 'runner')
       .where('runner.id = :userId', { userId })
-      .getMany();
+      .select([
+        'runnerResult.id',
+        'runnerResult.distance',
+        'runnerResult.finalResultInMs',
+        'teamResult.id',
+        'teamResult.resultInMs',
+        'race.id',
+        'race.startTime',
+        'event.id',
+        'event.title',
+        'winner.id',
+        'team.id',
+      ])
+      .getRawMany();
   }
 }

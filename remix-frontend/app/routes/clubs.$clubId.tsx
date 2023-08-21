@@ -14,7 +14,8 @@ import NewsCard from "~/components/news/NewsCard";
 import CustomCarousel from "~/components/shared/CustomCarousel";
 import CustomTable from "~/components/shared/tables/CustomTable";
 import { authenticator } from "~/lib/auth/utils/auth.server";
-import { fakeNews, fakeReslts } from "~/lib/clubs/data/dummy-data";
+import { fakeNews } from "~/lib/clubs/data/dummy-data";
+import { transformClubResults } from "~/lib/clubs/utils/transform-data";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const { clubId } = params;
@@ -27,11 +28,13 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
   if (!club) throw new Error("Club not found");
 
-  return json({ club, user });
+  const clubResults = await Api().teams.getTeamResultsByClubId(club.id);
+
+  return json({ club, user, results: clubResults });
 };
 
 const ClubPage = () => {
-  const { club, user } = useLoaderData<typeof loader>();
+  const { club, user, results } = useLoaderData<typeof loader>();
   const [statusAlert, setStatusAlert] = useState({
     message: "",
     isOpen: false,
@@ -94,13 +97,13 @@ const ClubPage = () => {
     <>
       <ClubHeader club={club} />
       <main>
-        <ClubInfo club={club} />
+        <ClubInfo club={club} finishedRaces={results?.length || 0} />
         <section className="w-full bg-[url('/club-results.jpg')] bg-cover bg-no-repeat">
           <div className="max-w-5xl mx-4 lg:mx-auto rounded-t-xl overflow-hidden pt-6">
             <ClubResultsFilter getFilters={getFilters} />
             <div className="w-full">
               <CustomTable
-                rows={fakeReslts}
+                rows={transformClubResults(results || [])}
                 isLoading={false}
                 titleColor="bg-[#1E1C1F]"
               />

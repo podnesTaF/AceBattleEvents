@@ -1,6 +1,6 @@
 import { AxiosInstance } from "axios";
 import { ITeam } from "~/lib/teams/types";
-import { ReqTeam } from "~/lib/teams/types/ITeam";
+import { ReqTeam, TeamResult } from "~/lib/teams/types/ITeam";
 import { ITeamEvent } from "~/lib/teams/types/Registrations";
 
 export const TeamsApi = (instance: AxiosInstance) => ({
@@ -17,6 +17,15 @@ export const TeamsApi = (instance: AxiosInstance) => ({
     }
   },
 
+  async findMyTeams() {
+    try {
+      const { data: teamsData } = await instance.get<ITeam[]>(`teams/my`);
+
+      return teamsData;
+    } catch (error: any) {
+      throw new Error("Failed to fetch data: " + error.message);
+    }
+  },
   async getTeamById(id?: string) {
     try {
       const { data: teamsData } = await instance.get<ITeam>(`teams/${id}`);
@@ -93,6 +102,40 @@ export const TeamsApi = (instance: AxiosInstance) => ({
       const { data: team } = await instance.get<ITeam[]>(`/teams/user`);
 
       return team;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async getTeamResultsByClubId(id: number) {
+    try {
+      const { data: results } = await instance.get<TeamResult[]>(
+        `/team-results/club/${id}`
+      );
+
+      return results;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  async getTeamResultsByTeamId(id: number) {
+    try {
+      const { data: results } = await instance.get<TeamResult[]>(
+        `/team-results/team/${id}`
+      );
+
+      return results;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  async getPersonalCalendar() {
+    try {
+      const { data: calendar } = await instance.get<ITeamEvent[]>(
+        `/teams/user-registrations`
+      );
+      return calendar;
     } catch (error) {
       console.log(error);
     }

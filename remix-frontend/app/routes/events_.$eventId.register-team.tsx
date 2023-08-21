@@ -14,9 +14,8 @@ import { ITeam } from "~/lib/teams/types";
 export const loader = async ({ params, request }: LoaderArgs) => {
   const { eventId } = params;
   const event = await Api().events.getEvent(eventId || "");
-  const { teams } = await Api().teams.getTeams({ params: "" });
-
   const user = await authenticator.isAuthenticated(request);
+  const teams = await Api(user?.token).teams.findMyTeams();
 
   if (!user) {
     throw new Response("User not found.", {
@@ -62,7 +61,7 @@ const RegisterTeamIndex = () => {
   }, [teamId]);
 
   const handleRegisterTeam = async () => {
-    // if (!session?.user) return;
+    if (!user) return;
     if (teamId > 0 && event?.id) {
       try {
         await onSuccessRegister(123);
@@ -75,7 +74,7 @@ const RegisterTeamIndex = () => {
 
   const onSuccessRegister = async (tx: any) => {
     if (!user || !event?.id) return;
-    await Api().teams.registerTeam({
+    await Api(user.token).teams.registerTeam({
       teamId: +teamId,
       eventId: +event.id,
       txHash: "123",

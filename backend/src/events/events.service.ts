@@ -130,6 +130,7 @@ export class EventsService {
         'location.country',
         'teams',
         'teams.country',
+        'teams.club',
         'teams.coach',
         'prizes',
         'teams.players',

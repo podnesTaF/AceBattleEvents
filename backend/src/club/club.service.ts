@@ -86,6 +86,8 @@ export class ClubService {
         'teams.races',
         'teams.races.winner',
         'teams.races.teamResults',
+        'teams.races.event',
+        'teams.races.teamResults.team',
       ],
     });
 

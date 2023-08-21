@@ -12,7 +12,7 @@ const EventHeader: React.FC<IProps> = ({ event, userRole }) => {
 
   const handleAction = () => {
     if (userRole === "manager") {
-      navigate(`/events/${event.id}/register/team`);
+      navigate(`/events/${event.id}/register-team`);
     } else {
       navigate(`/events/${event.id}/register`);
     }

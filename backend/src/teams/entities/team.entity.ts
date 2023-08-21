@@ -58,11 +58,20 @@ export class Team {
   @ManyToMany(() => User, (user) => user.teamsAsRunner, {
     onDelete: 'NO ACTION',
   })
-  @JoinTable()
+  @JoinTable({
+    name: 'runner_for_team',
+    joinColumn: {
+      name: 'teamId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'runnerId',
+      referencedColumnName: 'id',
+    },
+  })
   players: User[];
 
   @ManyToMany(() => Event, (event) => event.teams, {
-    onUpdate: 'NO ACTION',
     onDelete: 'CASCADE',
   })
   @JoinTable({

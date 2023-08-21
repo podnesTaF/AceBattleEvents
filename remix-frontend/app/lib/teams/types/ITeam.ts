@@ -1,3 +1,4 @@
+import { IClub } from "~/lib/clubs/types";
 import { ICountry } from "~/lib/countries/types";
 import { IEvent } from "~/lib/events/types";
 import { IMedia } from "~/lib/media/types/IMedia";
@@ -12,7 +13,7 @@ export type ITeam = {
   city: string;
   membersCount: number;
   manager: IUser;
-  club: string;
+  club: IClub;
   coach: ICoach;
   logo: IMedia;
   teamImage: IMedia;
@@ -38,4 +39,18 @@ export type ReqTeam = {
     dateOfBirth: string;
     gender: string;
   }[];
+};
+
+export type TeamResult = {
+  teamResult_id: number;
+  teamResult_resultInMs: number;
+  team_id: number;
+  team_name: string;
+  team_gender: string;
+  winner_id: number;
+  raceId: number;
+  teamId: number;
+  clubId: number;
+  race_startTime: string;
+  event_title: string;
 };

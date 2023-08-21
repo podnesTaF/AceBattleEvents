@@ -48,6 +48,12 @@ export class TeamsController {
     return this.teamsService.findAll(queries, +req?.user?.id);
   }
 
+  @Get('/my')
+  @UseGuards(JwtAuthGuard)
+  findMyTeams(@Request() req) {
+    return this.teamsService.findAllByUser(+req.user.id);
+  }
+
   @Get('/user/:id')
   findUsers(@Param('id') id: string) {
     return this.teamsService.findAllByUser(+id);
@@ -60,6 +66,12 @@ export class TeamsController {
     @Query() query: { limit?: string; page?: string },
   ) {
     return this.teamsService.getRegistrations(+req.user.id, query);
+  }
+
+  @Get('/user-registrations')
+  @UseGuards(JwtAuthGuard)
+  findAllRegByUser(@Request() req) {
+    return this.teamsService.getRegistrationsByPlayerId(+req.user.id);
   }
 
   @Get(':id')
