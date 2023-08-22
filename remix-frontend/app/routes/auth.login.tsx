@@ -3,6 +3,13 @@ import { Link } from "@remix-run/react";
 import { RemixForm } from "~/components/shared/forms/CustomForm";
 import { authenticator, loginSchema } from "~/lib/utils";
 
+export const action = async ({ request }: { request: Request }) => {
+  return authenticator.authenticate("user-pass", request, {
+    successRedirect: "/",
+    failureRedirect: "/auth/login",
+  });
+};
+
 export async function loader({ request }: LoaderArgs) {
   // If the user is already authenticated redirect to /dashboard directly
   return await authenticator.isAuthenticated(request, {

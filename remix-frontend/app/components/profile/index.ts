@@ -15,3 +15,5 @@ export {
   Tab,
   TableRaceInfo,
 };
+
+export * from "./tabs";
