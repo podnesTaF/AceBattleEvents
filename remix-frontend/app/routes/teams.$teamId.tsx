@@ -1,13 +1,15 @@
 import { LoaderArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { useState } from "react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
+import { useEffect } from "react";
 import { Api } from "~/api/axiosInstance";
 import CustomTable from "~/components/shared/tables/CustomTable";
 import Pagination from "~/components/shared/tables/Pagination";
 import { transformClubResults } from "~/lib/clubs/utils/transform-data";
 
-export const loader = async ({ params }: LoaderArgs) => {
+export const loader = async ({ params, request }: LoaderArgs) => {
   const { teamId } = params;
+  const { url } = request;
+  const resultPage = new URL(url).searchParams.get("resultPage") || "1";
 
   const team = await Api().teams.getTeamById(teamId);
 
@@ -15,15 +17,30 @@ export const loader = async ({ params }: LoaderArgs) => {
     throw new Response("Not Found", { status: 404 });
   }
 
-  const teamResults = await Api().teams.getTeamResultsByTeamId(team.id);
+  const teamResultsData = await Api().teams.getTeamResultsByTeamId(team.id);
 
-  return { team, teamResults };
+  return { team, teamResultsData, currPage: +resultPage };
 };
 
 const TeamPage = () => {
-  const [page, setPage] = useState(0);
+  const { team, teamResultsData, currPage } = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
 
-  const { team, teamResults } = useLoaderData<typeof loader>();
+  const onChangePage = async (page: number) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("resultPage", page.toString());
+    url.searchParams.set("scrollY", window.scrollY.toString());
+    navigate(url.pathname + url.search);
+  };
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const scrollY = url.searchParams.get("scrollY");
+    if (scrollY) {
+      window.scrollTo(0, +scrollY);
+    }
+  }, [currPage]);
+
   return (
     <>
       <header className="w-full flex justify-center h-96 sm:h-[600px] bg-[url('/page-detail.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">
@@ -110,11 +127,15 @@ const TeamPage = () => {
               Last Races
             </h4>
             <CustomTable
-              rows={transformClubResults(teamResults || [])}
+              rows={transformClubResults(teamResultsData?.results || [])}
               isLoading={false}
             />
             <div className="mt-4 flex justify-center">
-              <Pagination onChangePage={setPage} currPage={1} pagesCount={3} />
+              <Pagination
+                onChangePage={(page) => onChangePage(page)}
+                currPage={currPage}
+                pagesCount={teamResultsData?.totalPages || 1}
+              />
             </div>
           </div>
         </div>

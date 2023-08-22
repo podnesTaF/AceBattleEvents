@@ -9,9 +9,6 @@ import { getProfileTabs } from "~/lib/user/utils/getProfileTabs";
 export const loader = async ({ params, request }: LoaderArgs) => {
   const { userId } = params;
 
-  const limit = new URL(request.url).searchParams.get("limit") || "3";
-  const page = new URL(request.url).searchParams.get("page") || "1";
-
   if (!userId) throw new Error("User not found");
 
   const user = await Api().users.getUserProfile(userId);
@@ -20,11 +17,6 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
   if (!user) throw new Error("User not found");
 
-  const registrations = await Api(authorizedUser?.token).teams.getRegitrations({
-    limit,
-    page,
-  });
-  const teams = await Api(authorizedUser?.token).teams.getTeamsByUserId(userId);
   const tabs = getProfileTabs(authorizedUser?.id === user?.id, user?.role);
 
   return {
@@ -32,14 +24,12 @@ export const loader = async ({ params, request }: LoaderArgs) => {
     isMe: authorizedUser?.id === user.id,
     currentUser: authorizedUser,
     token: authorizedUser?.token,
-    registrations,
-    teams,
     tabs,
   };
 };
 
 const UserProfilePage = () => {
-  const { user, isMe, token, registrations, teams, currentUser, tabs } =
+  const { user, isMe, token, currentUser, tabs } =
     useLoaderData<typeof loader>();
 
   return (
@@ -51,12 +41,7 @@ const UserProfilePage = () => {
         authedUser={currentUser}
       />
       {tabs?.length !== 0 && (
-        <ProfileTabs
-          registrations={registrations}
-          teams={teams}
-          user={user}
-          currentUser={currentUser}
-        />
+        <ProfileTabs user={user} currentUser={currentUser} />
       )}
     </>
   );

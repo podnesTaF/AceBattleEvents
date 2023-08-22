@@ -1,8 +1,8 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton, Snackbar } from "@mui/material";
 import { LoaderArgs, json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { useState } from "react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
+import { useEffect, useState } from "react";
 import { Api } from "~/api/axiosInstance";
 import ClubHeader from "~/components/clubs/ClubHeader";
 import ClubInfo from "~/components/clubs/ClubInfo";
@@ -13,12 +13,15 @@ import MemberCarouseltem from "~/components/clubs/MemberCarouseltem";
 import NewsCard from "~/components/news/NewsCard";
 import CustomCarousel from "~/components/shared/CustomCarousel";
 import CustomTable from "~/components/shared/tables/CustomTable";
+import Pagination from "~/components/shared/tables/Pagination";
 import { authenticator } from "~/lib/auth/utils/auth.server";
 import { fakeNews } from "~/lib/clubs/data/dummy-data";
 import { transformClubResults } from "~/lib/clubs/utils/transform-data";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const { clubId } = params;
+  const { url } = request;
+  const resultPage = new URL(url).searchParams.get("resultPage") || "1";
 
   const user = await authenticator.isAuthenticated(request);
 
@@ -28,19 +31,24 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
   if (!club) throw new Error("Club not found");
 
-  const clubResults = await Api().teams.getTeamResultsByClubId(club.id);
+  const clubResultsData = await Api().teams.getTeamResultsByClubId(club.id, +1);
 
-  return json({ club, user, results: clubResults });
+  return json({
+    club,
+    user,
+    resultsData: { ...clubResultsData, currPage: +resultPage },
+  });
 };
 
 const ClubPage = () => {
-  const { club, user, results } = useLoaderData<typeof loader>();
+  const { club, user, resultsData } = useLoaderData<typeof loader>();
   const [statusAlert, setStatusAlert] = useState({
     message: "",
     isOpen: false,
   });
   const [filters, setFilters] = useState();
   const [isFavorite, setIsFavorite] = useState(false);
+  const navigate = useNavigate();
 
   const getFilters = (filters: any) => {
     setFilters(filters);
@@ -93,20 +101,45 @@ const ClubPage = () => {
     }
   };
 
+  const onChangePage = (page: number) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("resultPage", page.toString());
+    url.searchParams.set("scrollY", window.scrollY.toString());
+    navigate(url.pathname + url.search);
+  };
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const scrollY = url.searchParams.get("scrollY");
+    if (scrollY) {
+      window.scrollTo(0, +scrollY);
+    }
+  }, [resultsData.currPage]);
+
   return (
     <>
       <ClubHeader club={club} />
       <main>
-        <ClubInfo club={club} finishedRaces={results?.length || 0} />
+        <ClubInfo
+          club={club}
+          finishedRaces={resultsData?.results?.length || 0}
+        />
         <section className="w-full bg-[url('/club-results.jpg')] bg-cover bg-no-repeat">
           <div className="max-w-5xl mx-4 lg:mx-auto rounded-t-xl overflow-hidden pt-6">
             <ClubResultsFilter getFilters={getFilters} />
             <div className="w-full">
               <CustomTable
-                rows={transformClubResults(results || [])}
+                rows={transformClubResults(resultsData?.results || [])}
                 isLoading={false}
                 titleColor="bg-[#1E1C1F]"
               />
+              <div className="w-full flex justify-center my-4">
+                <Pagination
+                  onChangePage={(page) => onChangePage(page)}
+                  currPage={resultsData.currPage}
+                  pagesCount={resultsData.totalPages || 1}
+                />
+              </div>
             </div>
           </div>
         </section>

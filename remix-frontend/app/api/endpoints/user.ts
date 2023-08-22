@@ -75,11 +75,12 @@ export const UserApi = (instance: AxiosInstance) => ({
       console.log(error);
     }
   },
-  async getUserResults(id: number) {
+  async getUserResults(id: number, page: number, limit?: number) {
     try {
-      const { data: results } = await instance.get<UserResult[]>(
-        `/runner-results/user/${id}`
-      );
+      const { data: results } = await instance.get<{
+        results: UserResult[];
+        totalPages: number;
+      }>(`/runner-results/user/${id}?page=${page}&limit=${limit || 5}`);
       return results;
     } catch (error) {
       console.log(error);

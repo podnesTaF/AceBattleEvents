@@ -1,11 +1,12 @@
 import { LoaderArgs, json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { Api } from "~/api/axiosInstance";
 import ClubResultsFilter from "~/components/clubs/ClubResultsFilter";
 import MyClub from "~/components/profile/MyClub";
 import Registrations from "~/components/profile/Registrations";
 import CustomTable from "~/components/shared/tables/CustomTable";
+import Pagination from "~/components/shared/tables/Pagination";
 import TeamCard from "~/components/teams/TeamCard";
 import { authenticator } from "~/lib/auth/utils/auth.server";
 import { IClub } from "~/lib/clubs/types";
@@ -30,7 +31,11 @@ type TabReturnData = {
   club?: IClub | null;
   calendar?: PersonalEvents[];
   races?: IRace[];
-  results?: UserResult[];
+  resultsData?: {
+    results: UserResult[];
+    totalPages: number;
+    currentPage: number;
+  };
 };
 
 export const loader = async ({ params, request }: LoaderArgs) => {
@@ -39,6 +44,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
   const { url } = request;
 
   const scrollY = new URL(url).searchParams.get("scrollY");
+  const resultPage = new URL(url).searchParams.get("resultPage") || "1";
 
   const user = await Api().users.getUserProfile(userId || "");
 
@@ -113,8 +119,13 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
   if (tab === "Results") {
     if (user.role === "runner") {
-      const results = await Api().users.getUserResults(user.id);
-      returnData.results = results;
+      const resultsData = await Api().users.getUserResults(
+        user.id,
+        +resultPage
+      );
+      if (resultsData) {
+        returnData.resultsData = { ...resultsData, currentPage: +resultPage };
+      }
     }
   }
 
@@ -132,17 +143,25 @@ const ProfileTab = () => {
     favoriteClubs,
     club,
     races,
-    results,
+    resultsData,
   } = useLoaderData<typeof loader>();
   const [filters, setFilters] = useState();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!scrollY) return;
     window.scrollTo(0, +scrollY);
-  }, [tab, scrollY]);
+  }, [tab, scrollY, resultsData?.currentPage]);
 
   const getFilters = (filters: any) => {
     setFilters(filters);
+  };
+
+  const onChangeResultPage = (page: number) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("resultPage", page.toString());
+    url.searchParams.set("scrollY", window.scrollY.toString());
+    navigate(url.pathname + url.search);
   };
 
   return (
@@ -241,16 +260,23 @@ const ProfileTab = () => {
           </div>
         </div>
       )}
-      {tab === "Results" && results && user.role === "runner" && (
+      {tab === "Results" && resultsData && user.role === "runner" && (
         <div className="p-4">
           <ClubResultsFilter getFilters={getFilters} />
           <div className="w-full">
             <CustomTable
-              rows={transformUserResultsToTable(results)}
+              rows={transformUserResultsToTable(resultsData.results)}
               isLoading={false}
               titleColor="bg-[#1E1C1F]"
               isTitleStraight={true}
             />
+            <div className="flex w-full justify-center my-4">
+              <Pagination
+                onChangePage={(page) => onChangeResultPage(page)}
+                currPage={resultsData.currentPage}
+                pagesCount={resultsData.totalPages}
+              />
+            </div>
           </div>
         </div>
       )}

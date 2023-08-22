@@ -1,25 +1,16 @@
 import { Divider } from "@mui/material";
 import { Outlet, useNavigate } from "@remix-run/react";
 import React, { useEffect, useRef, useState } from "react";
-import { ITeam } from "~/lib/teams/types";
-import { ITeamEvent } from "~/lib/teams/types/Registrations";
 import { IUser } from "~/lib/user/types/IUser";
 import { getProfileTabs } from "~/lib/user/utils/getProfileTabs";
 import Tab from "./Tab";
 
 interface Props {
-  teams?: ITeam[];
-  registrations?: { teamsForEvents: ITeamEvent[]; totalPages: number };
   user?: IUser;
   currentUser: IUser | null;
 }
 
-const ProfileTabs: React.FC<Props> = ({
-  teams,
-  registrations,
-  user,
-  currentUser,
-}) => {
+const ProfileTabs: React.FC<Props> = ({ user, currentUser }) => {
   const navigate = useNavigate();
   // const [pagesCount, setPageCount] = useState(registrations?.totalPages || 1);
   const [currPage, setCurrPage] = useState<number>(1);
@@ -34,6 +25,7 @@ const ProfileTabs: React.FC<Props> = ({
 
   useEffect(() => {
     const tabs = getProfileTabs(currentUser?.id === user?.id, user?.role);
+
     setTabsByRole(tabs);
     navigate(
       "/profile/" + user?.id + "/" + tabs[activeTab] + "?scrollY=" + scrollY

@@ -106,11 +106,12 @@ export const TeamsApi = (instance: AxiosInstance) => ({
       console.log(error);
     }
   },
-  async getTeamResultsByClubId(id: number) {
+  async getTeamResultsByClubId(id: number, page: number, limit?: number) {
     try {
-      const { data: results } = await instance.get<TeamResult[]>(
-        `/team-results/club/${id}`
-      );
+      const { data: results } = await instance.get<{
+        results: TeamResult[];
+        totalPages: number;
+      }>(`/team-results/club/${id}?page=${page}&limit=${limit || 2}`);
 
       return results;
     } catch (error) {
@@ -120,9 +121,10 @@ export const TeamsApi = (instance: AxiosInstance) => ({
 
   async getTeamResultsByTeamId(id: number) {
     try {
-      const { data: results } = await instance.get<TeamResult[]>(
-        `/team-results/team/${id}`
-      );
+      const { data: results } = await instance.get<{
+        results: TeamResult[];
+        totalPages: number;
+      }>(`/team-results/team/${id}`);
 
       return results;
     } catch (error) {
