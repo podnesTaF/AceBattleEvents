@@ -1,18 +1,19 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import { ActionArgs, LoaderArgs, json } from "@remix-run/node";
 import { useActionData, useLoaderData, useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
+
+import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
 import { Api } from "~/api/axiosInstance";
-import RegistrationPopup from "~/components/events/RegistrationPopup";
-import AgreeCheck from "~/components/shared/forms/AgreeCheck";
-import FormButton from "~/components/shared/forms/FormButton";
-import FormField from "~/components/shared/forms/FormField";
-import FormSelect from "~/components/shared/forms/FormSelect";
-import { authenticator } from "~/lib/auth/utils/auth.server";
-import { formatDate } from "~/lib/events/utils/format-date";
-import { registerAsViewerSchema } from "~/lib/registrations/utils/schemas";
-import { genders } from "~/lib/teams/data/options-data";
+import {
+  AgreeCheck,
+  FormButton,
+  FormField,
+  FormSelect,
+  RegistrationPopup,
+} from "~/components";
+import { genders } from "~/lib/teams";
+import { authenticator, formatDate, registerAsViewerSchema } from "~/lib/utils";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const { eventId } = params;

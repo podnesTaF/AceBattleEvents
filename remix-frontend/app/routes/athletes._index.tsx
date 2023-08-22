@@ -1,17 +1,19 @@
+import { useEffect, useState } from "react";
+
 import { LoaderArgs, json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
-import { useEffect, useState } from "react";
+
 import { Api } from "~/api/axiosInstance";
-import FilterBage from "~/components/shared/forms/FilterBage";
-import FilterSelect from "~/components/shared/forms/FilterSelect";
-import SearchField from "~/components/shared/forms/SearchField";
-import CustomTable from "~/components/shared/tables/CustomTable";
-import Pagination from "~/components/shared/tables/Pagination";
-import { getNewParams } from "~/lib/events/utils/update-params";
-import { countries } from "~/lib/shared/data/countries";
-import { useFilter } from "~/lib/shared/hooks/useFilter";
-import { genders } from "~/lib/teams/data/options-data";
-import { transformDataAthletes } from "~/lib/user/utils/transformIntoTable";
+import {
+  CustomTable,
+  FilterBage,
+  FilterSelect,
+  Pagination,
+  SearchField,
+} from "~/components";
+import { countries, useFilter } from "~/lib/shared";
+import { genders } from "~/lib/teams";
+import { getNewParams, transformDataAthletes } from "~/lib/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const url = request.url;

@@ -4,9 +4,8 @@ import {
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
-import EventCard from "~/components/events/EventCard";
-import { authenticator } from "~/lib/auth/utils/auth.server";
-import { getEvents } from "~/lib/events/utils/events-requests.server";
+import { EventCard } from "~/components";
+import { authenticator, getEvents } from "~/lib/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const { events } = await getEvents({ params: "" });

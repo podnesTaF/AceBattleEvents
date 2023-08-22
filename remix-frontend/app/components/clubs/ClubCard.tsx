@@ -1,6 +1,6 @@
 import { useNavigate } from "@remix-run/react";
 import React from "react";
-import { IClub } from "~/lib/clubs/types";
+import { IClub } from "~/lib/types";
 
 interface ClubCardProps {
   club: IClub;

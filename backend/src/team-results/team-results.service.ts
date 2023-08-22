@@ -32,14 +32,30 @@ export class TeamResultsService {
     });
   }
 
-  getClubResults(clubId: number) {
-    return this.repository
+  async getClubResults(
+    clubId: number,
+    queries: { limit?: number; page?: number },
+  ) {
+    const limit = +queries.limit || 10;
+    const page = +queries.page || 1;
+    const offset = (page - 1) * limit;
+
+    const totalCount = await this.repository
+      .createQueryBuilder('teamResult')
+      .leftJoin('teamResult.team', 'team')
+      .leftJoin('team.club', 'club')
+      .where('club.id = :clubId', { clubId })
+      .getCount();
+
+    const res = await this.repository
       .createQueryBuilder('teamResult')
       .leftJoinAndSelect('teamResult.team', 'team')
       .leftJoinAndSelect('teamResult.race', 'race')
       .leftJoin('race.event', 'event')
       .leftJoin('race.winner', 'winner')
       .where('team.clubId = :clubId', { clubId })
+      .offset(offset)
+      .limit(limit)
       .select([
         'teamResult.id',
         'teamResult.resultInMs',
@@ -54,16 +70,36 @@ export class TeamResultsService {
         'event.title',
       ])
       .getRawMany();
+
+    return {
+      results: res,
+      totalPages: Math.ceil(totalCount / limit),
+    };
   }
 
-  getTeamResults(teamId: number) {
-    return this.repository
+  async getTeamResults(
+    teamId: number,
+    queries: { limit?: number; page?: number },
+  ) {
+    const limit = +queries.limit || 10;
+    const page = +queries.page || 1;
+    const offset = (page - 1) * limit;
+
+    const totalCount = await this.repository
+      .createQueryBuilder('teamResult')
+      .leftJoin('teamResult.team', 'team')
+      .where('team.id = :teamId', { teamId })
+      .getCount();
+
+    const res = await this.repository
       .createQueryBuilder('teamResult')
       .leftJoinAndSelect('teamResult.team', 'team')
       .leftJoinAndSelect('teamResult.race', 'race')
       .leftJoin('race.event', 'event')
       .leftJoin('race.winner', 'winner')
       .where('team.id = :teamId', { teamId })
+      .offset(offset)
+      .limit(limit)
       .select([
         'teamResult.id',
         'teamResult.resultInMs',
@@ -78,5 +114,10 @@ export class TeamResultsService {
         'event.title',
       ])
       .getRawMany();
+
+    return {
+      results: res,
+      totalPages: Math.ceil(totalCount / limit),
+    };
   }
 }

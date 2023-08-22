@@ -1,5 +1,5 @@
 import React from "react";
-import { IClub } from "~/lib/clubs/types";
+import { IClub } from "~/lib/types";
 
 interface Props {
   club: IClub;

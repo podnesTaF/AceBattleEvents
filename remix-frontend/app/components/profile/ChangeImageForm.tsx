@@ -2,8 +2,8 @@ import { useNavigate } from "@remix-run/react";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Api } from "~/api/axiosInstance";
-import { IUser } from "~/lib/user/types/IUser";
-import AddImageDialog from "../media/AddImageDialog";
+import { IUser } from "~/lib/types";
+import { AddImageDialog } from "..";
 
 interface Props {
   setEditImageDialogOpen: Function;

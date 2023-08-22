@@ -1,6 +1,6 @@
 import { useNavigate } from "@remix-run/react";
 import React from "react";
-import { IEvent } from "~/lib/events/types";
+import { IEvent } from "~/lib/types";
 
 interface IProps {
   event: IEvent;

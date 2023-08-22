@@ -1,24 +1,22 @@
 import { LoaderArgs, json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
-import CustomTitle from "~/components/shared/CustomTitle";
-import FilterBage from "~/components/shared/forms/FilterBage";
-import FilterSelect from "~/components/shared/forms/FilterSelect";
-import SearchField from "~/components/shared/forms/SearchField";
-import CustomTable from "~/components/shared/tables/CustomTable";
-import Pagination from "~/components/shared/tables/Pagination";
-import { getEvents } from "~/lib/events/utils/events-requests.server";
-import { transformIntoEventsTable } from "~/lib/events/utils/transform-into-table";
-import { getNewParams } from "~/lib/events/utils/update-params";
-import { countries } from "~/lib/shared/data/countries";
-import { months, years } from "~/lib/shared/data/date-data";
-import { useFilter } from "~/lib/shared/hooks/useFilter";
+import {
+  CustomTable,
+  CustomTitle,
+  FilterBage,
+  FilterSelect,
+  Pagination,
+  SearchField,
+} from "~/components";
+import { countries, months, useFilter, years } from "~/lib/shared";
+import { getEvents, getNewParams, transformIntoEventsTable } from "~/lib/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const url = request.url;
   const params = url.split("?")[1];
 
-  const eventsData = await getEvents({ params });
+  const eventsData: any = await getEvents({ params });
 
   return json({ events: eventsData.events, totalPages: eventsData.totalPages });
 };

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CreateTeamResultDto } from './dto/create-team-result.dto';
 import { TeamResultsService } from './team-results.service';
 
@@ -12,12 +12,18 @@ export class TeamResultsController {
   }
 
   @Get('/club/:clubId')
-  getClubResults(@Param('clubId') clubId: string) {
-    return this.teamResultsService.getClubResults(+clubId);
+  getClubResults(
+    @Param('clubId') clubId: string,
+    @Query() queries: { limit?: number; page?: number },
+  ) {
+    return this.teamResultsService.getClubResults(+clubId, queries);
   }
 
   @Get('/team/:teamId')
-  getTeamResults(@Param('teamId') teamId: string) {
-    return this.teamResultsService.getTeamResults(+teamId);
+  getTeamResults(
+    @Param('teamId') teamId: string,
+    @Query() queries: { limit?: number; page?: number },
+  ) {
+    return this.teamResultsService.getTeamResults(+teamId, queries);
   }
 }

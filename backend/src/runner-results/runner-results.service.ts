@@ -52,8 +52,23 @@ export class RunnerResultsService {
     });
   }
 
-  async getUserResults(userId: number) {
-    return this.repository
+  async getUserResults(
+    userId: number,
+    queries: { limit?: number; page?: number },
+  ) {
+    const limit = +queries.limit || 10;
+    const page = +queries.page || 1;
+    const offset = (page - 1) * limit;
+
+    const totalCount = await this.repository
+      .createQueryBuilder('runnerResult')
+      .leftJoin('runnerResult.runner', 'runner')
+      .where('runner.id = :userId', { userId })
+      .getCount();
+
+    const pageCount = Math.ceil(totalCount / limit);
+
+    const results = await this.repository
       .createQueryBuilder('runnerResult')
       .leftJoinAndSelect('runnerResult.teamResult', 'teamResult')
       .leftJoin('teamResult.team', 'team')
@@ -62,6 +77,8 @@ export class RunnerResultsService {
       .leftJoin('race.winner', 'winner')
       .leftJoin('runnerResult.runner', 'runner')
       .where('runner.id = :userId', { userId })
+      .offset(offset)
+      .limit(limit)
       .select([
         'runnerResult.id',
         'runnerResult.distance',
@@ -76,5 +93,14 @@ export class RunnerResultsService {
         'team.id',
       ])
       .getRawMany();
+
+    console.log(results.length);
+
+    console.log(limit, page, offset, totalCount, pageCount);
+
+    return {
+      results,
+      totalPages: pageCount,
+    };
   }
 }

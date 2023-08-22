@@ -8,19 +8,21 @@ import {
   useRouteError,
 } from "@remix-run/react";
 import axios from "axios";
-import EventHeader from "~/components/events/EventHeader";
-import EventUsersAction from "~/components/events/EventUsersAction";
-import Map from "~/components/events/Map";
-import StatisticCards from "~/components/events/StatisticCards";
-import CustomTable from "~/components/shared/tables/CustomTable";
-import { authenticator } from "~/lib/auth/utils/auth.server";
-import { IEvent } from "~/lib/events/types";
-import { formatDate } from "~/lib/shared/utils/date-formaters";
 import {
+  CustomTable,
+  EventHeader,
+  EventUsersAction,
+  Map,
+  StatisticCards,
+} from "~/components";
+import { IEvent } from "~/lib/types";
+import {
+  authenticator,
+  formatDate,
   getGoogleMapsLink,
   transformAddress,
-} from "~/lib/shared/utils/get-google-maps";
-import { transformIntoTeamsTable } from "~/lib/shared/utils/table-formater";
+  transformIntoTeamsTable,
+} from "~/lib/utils";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const { eventId } = params;

@@ -1,7 +1,6 @@
-import { formatDate } from "~/lib/events/utils/format-date";
-import { UserResult } from "~/lib/races/types/userResult";
-import { msToMinutesAndSeconds } from "~/lib/races/utils/transform-data";
-import { IUser } from "../types/IUser";
+import { UserResult } from "~/lib/types";
+import { formatDate, msToMinutesAndSeconds } from "~/lib/utils";
+import { IUser } from "../types";
 
 export const transformDataAthletes = (data: IUser[]) => {
   return data.map((runner: IUser) => ({

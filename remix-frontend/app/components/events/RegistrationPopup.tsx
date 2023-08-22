@@ -1,9 +1,9 @@
+import React from "react";
+
 import { Dialog, DialogTitle, Slide } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
-import React from "react";
-import { IEvent } from "~/lib/events/types";
-import { formatDate } from "~/lib/events/utils/format-date";
-import { IViewer } from "~/lib/registrations/types/ViewerRegister";
+import { IEvent, IViewer } from "~/lib/types";
+import { formatDate } from "~/lib/utils";
 
 interface RegistrationPopupProps {
   open: boolean;

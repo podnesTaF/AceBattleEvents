@@ -1,7 +1,5 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
-import { Button, Divider, IconButton } from "@mui/material";
+import { useCallback, useState } from "react";
+
 import { LoaderArgs, json } from "@remix-run/node";
 import {
   Link,
@@ -10,23 +8,28 @@ import {
   useNavigate,
   useRouteError,
 } from "@remix-run/react";
-import { useCallback, useState } from "react";
+
+import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { Api } from "~/api/axiosInstance";
-import AddImageDialog from "~/components/media/AddImageDialog";
-import ImageField from "~/components/media/ImageField";
-import PickList from "~/components/media/PickList";
-import FormButton from "~/components/shared/forms/FormButton";
-import FormField from "~/components/shared/forms/FormField";
-import FormPartsLayout from "~/components/shared/forms/FormPartsLayout";
-import FormSelect from "~/components/shared/forms/FormSelect";
-import GrayedInput from "~/components/shared/forms/GrayedInput";
-import AddPlayerInfo from "~/components/teams/AddPlayerInfo";
-import { authenticator } from "~/lib/auth/utils/auth.server";
-import { getCategoryByDoB } from "~/lib/shared/utils/date-formaters";
-import { teamTypes } from "~/lib/teams/data/options-data";
-import { AddTeamSchema } from "~/lib/teams/utils/add-team-helpers";
-import { IUser } from "~/lib/user/types/IUser";
+
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import { Button, Divider, IconButton } from "@mui/material";
+import {
+  AddImageDialog,
+  AddPlayerInfo,
+  FormButton,
+  FormField,
+  FormPartsLayout,
+  FormSelect,
+  GrayedInput,
+  ImageField,
+  PickList,
+} from "~/components";
+import { teamTypes } from "~/lib/teams";
+import { IUser } from "~/lib/types";
+import { AddTeamSchema, authenticator, getCategoryByDoB } from "~/lib/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
   let user = await authenticator.isAuthenticated(request, {

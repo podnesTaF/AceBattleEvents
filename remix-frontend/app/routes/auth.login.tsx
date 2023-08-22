@@ -1,11 +1,7 @@
 import { LoaderArgs } from "@remix-run/node";
 import { Link } from "@remix-run/react";
-import { makeDomainFunction } from "domain-functions";
 import { RemixForm } from "~/components/shared/forms/CustomForm";
-import { authenticator } from "~/lib/auth/utils/auth.server";
-import { loginSchema } from "~/lib/auth/utils/login-form";
-
-const mutation = makeDomainFunction(loginSchema)(async (values) => {});
+import { authenticator, loginSchema } from "~/lib/utils";
 
 export const action = async ({ request }: { request: Request }) => {
   return authenticator.authenticate("user-pass", request, {

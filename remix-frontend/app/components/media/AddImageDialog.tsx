@@ -13,8 +13,8 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { Api } from "~/api/axiosInstance";
-import { IMedia } from "~/lib/media/types/IMedia";
-import ImagePicker from "./ImagePicker";
+import { IMedia } from "~/lib/types";
+import { ImagePicker } from "..";
 
 interface Props {
   isOpen: boolean;

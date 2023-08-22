@@ -1,6 +1,6 @@
 import React from "react";
-import { convertDateFormat } from "~/lib/shared/utils/date-formaters";
-import { ITeamEvent } from "~/lib/teams/types/Registrations";
+import { ITeamEvent } from "~/lib/types";
+import { convertDateFormat } from "~/lib/utils";
 
 interface RegistrationsProps {
   registrations: ITeamEvent[];
@@ -15,6 +15,7 @@ const Registrations: React.FC<RegistrationsProps> = ({ registrations }) => {
       <div className="flex flex-col gap-5">
         {registrations.map((reg, i) => (
           <div
+            key={reg.team.id + "," + reg.event.id}
             className={`rounded-md relative overflow-hidden w-full sm:w-[640px] ${
               i % 2 ? "ml-auto" : "ml-0"
             }`}

@@ -1,15 +1,19 @@
-import { Skeleton } from "@mui/material";
 import { json, type LoaderArgs, type V2_MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
+
 import axios from "axios";
-import CarouselItem from "~/components/main/CarouselItem";
-import IntroSlider from "~/components/main/IntroSlider";
-import NewsCard from "~/components/news/NewsCard";
-import CustomCarousel from "~/components/shared/CustomCarousel";
-import CustomTitle from "~/components/shared/CustomTitle";
-import { IEvent } from "~/lib/events/types";
-import { fakeNews } from "~/lib/news/utils/dummy-news";
-import { ITeam } from "~/lib/teams/types/ITeam";
+
+import { IEvent, ITeam } from "~/lib/types";
+import { fakeNews } from "~/lib/utils";
+
+import { Skeleton } from "@mui/material";
+import {
+  CarouselItem,
+  CustomCarousel,
+  CustomTitle,
+  IntroSlider,
+  NewsCard,
+} from "~/components";
 
 export const meta: V2_MetaFunction = () => {
   return [

@@ -3,10 +3,8 @@ import { useState } from "react";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import { Avatar, Button, IconButton, Tooltip } from "@mui/material";
-import { IUser } from "~/lib/user/types/IUser";
-import AnnonceStripe from "../../main/AnnonceStripe";
-import CustomDrawer from "./CustomDrawer";
-import ProfileMenu from "./ProfileMenu";
+import { AnnonceStripe, CustomDrawer, ProfileMenu } from "~/components";
+import { IUser } from "~/lib/types";
 
 interface AppBarProps {
   user: IUser | null;
