@@ -1,13 +1,13 @@
-import { Snackbar } from "@mui/material";
-import { LoaderArgs, json, redirect } from "@remix-run/node";
-import { useLoaderData, useNavigate } from "@remix-run/react";
 import { useState } from "react";
 import { Api } from "~/api/axiosInstance";
-import JoinRequestCard from "~/components/clubs/JoinRequestCard";
-import FilterSelect from "~/components/shared/forms/FilterSelect";
-import SearchField from "~/components/shared/forms/SearchField";
-import { authenticator } from "~/lib/auth/utils/auth.server";
-import { useFilter } from "~/lib/shared/hooks/useFilter";
+
+import { LoaderArgs, json, redirect } from "@remix-run/node";
+import { useLoaderData, useNavigate } from "@remix-run/react";
+
+import { Snackbar } from "@mui/material";
+import { FilterSelect, JoinRequestCard, SearchField } from "~/components";
+import { useFilter } from "~/lib/shared";
+import { authenticator } from "~/lib/utils";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const user = await authenticator.isAuthenticated(request);

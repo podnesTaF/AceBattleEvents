@@ -1,10 +1,11 @@
 import { useState } from "react";
-import CustomTitle from "~/components/shared/CustomTitle";
-import FilterBage from "~/components/shared/forms/FilterBage";
-import FilterSelect from "~/components/shared/forms/FilterSelect";
-import SearchField from "~/components/shared/forms/SearchField";
-import { countries } from "~/lib/shared/data/countries";
-import { years } from "~/lib/shared/data/date-data";
+import {
+  CustomTitle,
+  FilterBage,
+  FilterSelect,
+  SearchField,
+} from "~/components";
+import { countries, years } from "~/lib/shared";
 
 const ResultsPage = () => {
   const [searchValue, setSearchValue] = useState("");

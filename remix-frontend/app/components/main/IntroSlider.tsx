@@ -1,7 +1,7 @@
 import { Skeleton } from "@mui/material";
 import React, { useEffect } from "react";
-import { IEvent } from "~/lib/events/types";
-import IntroSlide from "./IntroSlide";
+import { IEvent } from "~/lib/types";
+import { IntroSlide } from "..";
 
 interface Props {
   events?: IEvent[];

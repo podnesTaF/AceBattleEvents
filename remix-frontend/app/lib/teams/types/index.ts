@@ -1,3 +1,4 @@
 import { ICoach } from "./ICoach";
 import { ITeam, TeamResult } from "./ITeam";
-export type { ICoach, ITeam, TeamResult };
+import { ITeamEvent } from "./Registrations";
+export type { ICoach, ITeam, ITeamEvent, TeamResult };

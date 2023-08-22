@@ -1,12 +1,9 @@
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import axios from "axios";
-import ClubCard from "~/components/clubs/ClubCard";
-import FilterSelect from "~/components/shared/forms/FilterSelect";
-import SearchField from "~/components/shared/forms/SearchField";
-import { IClub } from "~/lib/clubs/types";
-import { countries } from "~/lib/shared/data/countries";
-import { useFilter } from "~/lib/shared/hooks/useFilter";
+import { ClubCard, FilterSelect, SearchField } from "~/components";
+import { countries, useFilter } from "~/lib/shared";
+import { IClub } from "~/lib/types";
 
 export const loader = async () => {
   const { data: clubsData } = await axios.get<IClub[]>(

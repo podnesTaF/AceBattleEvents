@@ -2,11 +2,8 @@
 
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import { useNavigate } from "@remix-run/react";
-import { IEvent } from "~/lib/events/types";
-import { formatDate, isPassed } from "~/lib/shared/utils/date-formaters";
-import { getGoogleMapsLink } from "~/lib/shared/utils/get-google-maps";
-import { ITeam } from "~/lib/teams/types";
-import { IUser } from "~/lib/user/types/IUser";
+import { IEvent, ITeam, IUser } from "~/lib/types";
+import { formatDate, getGoogleMapsLink, isPassed } from "~/lib/utils";
 
 interface EventCardProps {
   event: IEvent;

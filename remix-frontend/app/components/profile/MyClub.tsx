@@ -1,9 +1,8 @@
 import { Link } from "@remix-run/react";
 import React from "react";
-import { IClub } from "~/lib/clubs/types";
-import { transformIntoMembers } from "~/lib/shared/utils/table-formater";
-import CustomTable from "../shared/tables/CustomTable";
-import Pagination from "../shared/tables/Pagination";
+import { CustomTable, Pagination } from "~/components";
+import { IClub } from "~/lib/types";
+import { transformIntoMembers } from "~/lib/utils";
 
 interface MyClubProps {
   club: IClub;

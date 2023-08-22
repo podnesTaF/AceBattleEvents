@@ -1,6 +1,6 @@
 import React from "react";
-import { convertDateFormat } from "~/lib/shared/utils/date-formaters";
-import { ITeamEvent } from "~/lib/teams/types/Registrations";
+import { ITeamEvent } from "~/lib/types";
+import { convertDateFormat } from "~/lib/utils";
 
 interface RegistrationsProps {
   registrations: ITeamEvent[];

@@ -2,9 +2,8 @@ import { LoaderArgs } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { useEffect } from "react";
 import { Api } from "~/api/axiosInstance";
-import CustomTable from "~/components/shared/tables/CustomTable";
-import Pagination from "~/components/shared/tables/Pagination";
-import { transformClubResults } from "~/lib/clubs/utils/transform-data";
+import { CustomTable, Pagination } from "~/components";
+import { transformClubResults } from "~/lib/utils";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const { teamId } = params;

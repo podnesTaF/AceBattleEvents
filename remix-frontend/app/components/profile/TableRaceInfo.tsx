@@ -1,9 +1,7 @@
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import React from "react";
-import { ITeamResult } from "~/lib/races/types";
-import { msToMinutesAndSeconds } from "~/lib/races/utils/transform-data";
-import { ITeam } from "~/lib/teams/types";
-import { IUser } from "~/lib/user/types/IUser";
+import { ITeam, ITeamResult, IUser } from "~/lib/types";
+import { msToMinutesAndSeconds } from "~/lib/utils";
 
 interface Props {
   teamResults: ITeamResult[];

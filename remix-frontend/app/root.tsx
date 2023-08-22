@@ -11,14 +11,12 @@ import {
   useRouteError,
 } from "@remix-run/react";
 
-import AppBar from "./components/shared/header/AppBar";
-
 import { ReactNode } from "react";
 import globalStyles from "~/styles/global.css";
 import stylesheet from "~/tailwind.css";
-import Footer from "./components/shared/Footer";
-import { authenticator } from "./lib/auth/utils/auth.server";
-import { IUser } from "./lib/user/types/IUser";
+import { AppBar, Footer } from "./components";
+import { IUser } from "./lib/types";
+import { authenticator } from "./lib/utils";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },

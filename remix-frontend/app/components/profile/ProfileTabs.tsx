@@ -1,9 +1,9 @@
 import { Divider } from "@mui/material";
 import { Outlet, useNavigate } from "@remix-run/react";
 import React, { useEffect, useRef, useState } from "react";
-import { IUser } from "~/lib/user/types/IUser";
-import { getProfileTabs } from "~/lib/user/utils/getProfileTabs";
-import Tab from "./Tab";
+import { IUser } from "~/lib/types";
+import { getProfileTabs } from "~/lib/utils";
+import { Tab } from ".";
 
 interface Props {
   user?: IUser;
@@ -12,7 +12,6 @@ interface Props {
 
 const ProfileTabs: React.FC<Props> = ({ user, currentUser }) => {
   const navigate = useNavigate();
-  // const [pagesCount, setPageCount] = useState(registrations?.totalPages || 1);
   const [currPage, setCurrPage] = useState<number>(1);
   const [activeTab, setActiveTab] = useState(0);
   const ref = useRef<HTMLDivElement>(null);

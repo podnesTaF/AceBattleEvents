@@ -1,16 +1,19 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import { Link, useNavigate } from "@remix-run/react";
 import { useState } from "react";
+
+import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
+
 import { Api } from "~/api/axiosInstance";
-import AgreeCheck from "~/components/shared/forms/AgreeCheck";
-import FormButton from "~/components/shared/forms/FormButton";
-import FormField from "~/components/shared/forms/FormField";
-import FormRadio from "~/components/shared/forms/FormRadio";
-import FormSelect from "~/components/shared/forms/FormSelect";
-import { RegisterSchema } from "~/lib/auth/utils/register-form";
-import { countries } from "~/lib/shared/data/countries";
-import { badRequest } from "~/lib/shared/utils/request.server";
+import {
+  AgreeCheck,
+  FormButton,
+  FormField,
+  FormRadio,
+  FormSelect,
+} from "~/components";
+import { countries } from "~/lib/shared";
+import { RegisterSchema, badRequest } from "~/lib/utils";
 
 const RegisterPage = () => {
   const navigate = useNavigate();

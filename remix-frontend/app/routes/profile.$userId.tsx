@@ -1,10 +1,8 @@
 import { LoaderArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Api } from "~/api/axiosInstance";
-import ProfileHeader from "~/components/profile/ProfileHeader";
-import ProfileTabs from "~/components/profile/ProfileTabs";
-import { authenticator } from "~/lib/auth/utils/auth.server";
-import { getProfileTabs } from "~/lib/user/utils/getProfileTabs";
+import { ProfileHeader, ProfileTabs } from "~/components";
+import { authenticator, getProfileTabs } from "~/lib/utils";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const { userId } = params;

@@ -1,5 +1,6 @@
 import { IRace } from "./races";
-import { IRunnerResult } from "./runnerResults";
+import { IRunnerResult, ISplit } from "./runnerResults";
 import { ITeamResult } from "./teamResults";
+import { UserResult } from "./userResult";
 
-export type { IRace, IRunnerResult, ITeamResult };
+export type { IRace, IRunnerResult, ISplit, ITeamResult, UserResult };

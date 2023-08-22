@@ -1,10 +1,17 @@
 import { Link } from "@remix-run/react";
 import React from "react";
-import { INews } from "~/lib/news/types/INews";
-import { getTimeAgo } from "~/lib/shared/utils/date-formaters";
+import { getTimeAgo } from "~/lib/utils";
 
 interface Props {
-  news: INews;
+  news: {
+    id: number;
+    title: string;
+    text: string;
+    media: {
+      mediaUrl: string;
+    };
+    createdAt: string;
+  };
 }
 
 const NewsCard: React.FC<Props> = ({ news }) => {

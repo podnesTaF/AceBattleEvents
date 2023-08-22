@@ -1,9 +1,8 @@
 import { Link } from "@remix-run/react";
 import React, { useState } from "react";
-import { getCategoryByDoB } from "~/lib/shared/utils/date-formaters";
-import { IUser } from "~/lib/user/types/IUser";
-import { isAbleToInvite, isAbleToJoin } from "~/lib/user/utils/helpers";
-import ChangeImageForm from "./ChangeImageForm";
+import { IUser } from "~/lib/types";
+import { getCategoryByDoB, isAbleToInvite, isAbleToJoin } from "~/lib/utils";
+import { ChangeImageForm } from "..";
 
 interface ProfileHeaderProps {
   user: IUser;

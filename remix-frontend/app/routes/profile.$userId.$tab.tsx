@@ -1,24 +1,34 @@
 import { LoaderArgs, json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
+
 import { Api } from "~/api/axiosInstance";
-import ClubResultsFilter from "~/components/clubs/ClubResultsFilter";
-import MyClub from "~/components/profile/MyClub";
-import Registrations from "~/components/profile/Registrations";
-import CustomTable from "~/components/shared/tables/CustomTable";
-import Pagination from "~/components/shared/tables/Pagination";
-import TeamCard from "~/components/teams/TeamCard";
-import { authenticator } from "~/lib/auth/utils/auth.server";
-import { IClub } from "~/lib/clubs/types";
-import { IRace } from "~/lib/races/types";
-import { UserResult } from "~/lib/races/types/userResult";
-import { transformRaceToTable } from "~/lib/races/utils/transform-data";
-import { IViewer } from "~/lib/registrations/types/ViewerRegister";
-import { ITeam } from "~/lib/teams/types";
-import { ITeamEvent } from "~/lib/teams/types/Registrations";
-import { IUser } from "~/lib/user/types/IUser";
-import { PersonalEvents } from "~/lib/user/types/PersonalCalendar";
-import { transformUserResultsToTable } from "~/lib/user/utils/transformIntoTable";
+
+import {
+  authenticator,
+  transformRaceToTable,
+  transformUserResultsToTable,
+} from "~/lib/utils";
+
+import {
+  IClub,
+  IRace,
+  ITeam,
+  ITeamEvent,
+  IUser,
+  IViewer,
+  PersonalEvents,
+  UserResult,
+} from "~/lib/types";
+
+import {
+  ClubResultsFilter,
+  CustomTable,
+  MyClub,
+  Pagination,
+  Registrations,
+  TeamCard,
+} from "~/components";
 
 type TabReturnData = {
   tab?: string;

@@ -1,5 +1,5 @@
 import { Skeleton } from "@mui/material";
-import { IEvent } from "~/lib/events/types";
+import { IEvent } from "~/lib/types";
 
 interface Props {
   event: IEvent;

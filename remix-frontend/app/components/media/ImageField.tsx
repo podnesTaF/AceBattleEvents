@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AddImageDialog from "./AddImageDialog";
+import { AddImageDialog } from "..";
 
 interface Props {
   title: string;

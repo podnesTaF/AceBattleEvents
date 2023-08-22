@@ -1,5 +1,5 @@
 import { Outlet } from "@remix-run/react";
-import CreatePagesTitle from "~/components/shared/header/CreatePagesTitle";
+import { CreatePagesTitle } from "~/components";
 
 const AddTeamPage = () => {
   return (

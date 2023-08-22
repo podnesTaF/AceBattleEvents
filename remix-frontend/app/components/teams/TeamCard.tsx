@@ -1,9 +1,8 @@
 import Skeleton from "@mui/material/Skeleton";
 import React from "react";
-import { transfromIntoPlayersTable } from "~/lib/shared/utils/table-formater";
-import { ITeam } from "~/lib/teams/types";
-import CustomTable from "../shared/tables/CustomTable";
-import TableSkeleton from "../shared/tables/TableSkeleton";
+import { ITeam } from "~/lib/types";
+import { transfromIntoPlayersTable } from "~/lib/utils";
+import { CustomTable, TableSkeleton } from "../shared";
 
 interface TeamCardProps {
   team?: ITeam;

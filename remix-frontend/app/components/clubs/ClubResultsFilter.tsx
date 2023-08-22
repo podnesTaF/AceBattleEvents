@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
+import { useFilter } from "~/lib/hooks";
 import { years } from "~/lib/shared/data/date-data";
-import { useFilter } from "~/lib/shared/hooks/useFilter";
-import FilterSelect from "../shared/forms/FilterSelect";
+import { FilterSelect } from "..";
 
 interface Props {
   getFilters: (filters: any) => void;

@@ -4,19 +4,19 @@ import { LoaderArgs, json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { Api } from "~/api/axiosInstance";
-import ClubHeader from "~/components/clubs/ClubHeader";
-import ClubInfo from "~/components/clubs/ClubInfo";
-import ClubResultsFilter from "~/components/clubs/ClubResultsFilter";
-import FavoriteClubButton from "~/components/clubs/FavoriteClubButton";
-import JoinClubForm from "~/components/clubs/JoinClubForm";
-import MemberCarouseltem from "~/components/clubs/MemberCarouseltem";
-import NewsCard from "~/components/news/NewsCard";
-import CustomCarousel from "~/components/shared/CustomCarousel";
-import CustomTable from "~/components/shared/tables/CustomTable";
-import Pagination from "~/components/shared/tables/Pagination";
-import { authenticator } from "~/lib/auth/utils/auth.server";
-import { fakeNews } from "~/lib/clubs/data/dummy-data";
-import { transformClubResults } from "~/lib/clubs/utils/transform-data";
+import {
+  ClubHeader,
+  ClubInfo,
+  ClubResultsFilter,
+  CustomCarousel,
+  CustomTable,
+  FavoriteClubButton,
+  JoinClubForm,
+  MemberCarouseltem,
+  NewsCard,
+  Pagination,
+} from "~/components";
+import { authenticator, fakeNews, transformClubResults } from "~/lib/utils";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const { clubId } = params;

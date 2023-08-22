@@ -1,8 +1,6 @@
 import React from "react";
 import { countries } from "~/lib/shared/data/countries";
-import FormField from "../shared/forms/FormField";
-import FormRadio from "../shared/forms/FormRadio";
-import FormSelect from "../shared/forms/FormSelect";
+import { FormField, FormRadio, FormSelect } from "../shared";
 
 interface AddPlayerInfoProps {
   errorState: any;

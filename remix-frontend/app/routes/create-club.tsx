@@ -8,15 +8,16 @@ import {
 } from "@remix-run/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Api } from "~/api/axiosInstance";
-import ImagePicker from "~/components/media/ImagePicker";
-import FormButton from "~/components/shared/forms/FormButton";
-import FormField from "~/components/shared/forms/FormField";
-import FormPartsLayout from "~/components/shared/forms/FormPartsLayout";
-import FormSelect from "~/components/shared/forms/FormSelect";
-import CreatePagesTitle from "~/components/shared/header/CreatePagesTitle";
-import { authenticator } from "~/lib/auth/utils/auth.server";
-import { createClubSchema } from "~/lib/clubs/utils/shemas";
-import { countries } from "~/lib/shared/data/countries";
+import {
+  CreatePagesTitle,
+  FormButton,
+  FormField,
+  FormPartsLayout,
+  FormSelect,
+  ImagePicker,
+} from "~/components";
+import { countries } from "~/lib/shared";
+import { authenticator, createClubSchema } from "~/lib/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const user = await authenticator.isAuthenticated(request);
