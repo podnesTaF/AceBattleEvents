@@ -1,12 +1,14 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
   Post,
   Query,
 } from '@nestjs/common';
+import { Team } from 'src/teams/entities/team.entity';
 import { CreateRaceDto } from './dto/create-race.dto';
 import { RaceService } from './race.service';
 
@@ -33,5 +35,18 @@ export class RaceController {
     @Body() { winnerId }: { winnerId: number },
   ) {
     return this.raceService.updateWinner(winnerId, +id);
+  }
+
+  @Patch(':id/race')
+  updateRace(
+    @Param('id') id: string,
+    @Body() body: { teams: Team[]; startTime: string },
+  ) {
+    return this.raceService.updateRace(+id, body.teams, body.startTime);
+  }
+
+  @Delete(':id')
+  deleteRace(@Param('id') id: string) {
+    return this.raceService.deleteRace(+id);
   }
 }

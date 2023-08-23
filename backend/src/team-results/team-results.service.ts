@@ -120,4 +120,8 @@ export class TeamResultsService {
       totalPages: Math.ceil(totalCount / limit),
     };
   }
+
+  async updateTeamTime(id: number, newTime: number) {
+    return this.repository.update(id, { resultInMs: newTime });
+  }
 }

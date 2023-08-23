@@ -87,12 +87,15 @@ export class Team {
   })
   events: Event[];
 
-  @OneToMany(() => Race, (race) => race.winner, { nullable: true })
+  @OneToMany(() => Race, (race) => race.winner, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
   wonRaces: Race[];
 
   @OneToMany(() => TeamResult, (teamResult) => teamResult.team)
   results: TeamResult[];
 
-  @ManyToMany(() => Race, (race) => race.teams)
+  @ManyToMany(() => Race, (race) => race.teams, { onDelete: 'CASCADE' })
   races: Race[];
 }

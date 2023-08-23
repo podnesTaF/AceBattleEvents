@@ -23,6 +23,8 @@ export class TeamResult {
   @ManyToOne(() => Team, (team) => team.results)
   team: Team;
 
-  @OneToMany(() => RunnerResult, (runnerResult) => runnerResult.teamResult)
+  @OneToMany(() => RunnerResult, (runnerResult) => runnerResult.teamResult, {
+    onDelete: 'CASCADE',
+  })
   runnerResults: RunnerResult[];
 }

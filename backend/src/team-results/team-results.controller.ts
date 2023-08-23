@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CreateTeamResultDto } from './dto/create-team-result.dto';
 import { TeamResultsService } from './team-results.service';
 
@@ -25,5 +33,13 @@ export class TeamResultsController {
     @Query() queries: { limit?: number; page?: number },
   ) {
     return this.teamResultsService.getTeamResults(+teamId, queries);
+  }
+
+  @Patch(':id')
+  updateResult(
+    @Param('id') id: string,
+    @Body() { resultInMs }: { resultInMs: number },
+  ) {
+    return this.teamResultsService.updateTeamTime(+id, resultInMs);
   }
 }

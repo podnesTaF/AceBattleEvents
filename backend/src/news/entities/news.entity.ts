@@ -21,6 +21,6 @@ export class News {
   @JoinTable()
   hashtags: Hashtag[];
 
-  @OneToMany(() => Content, (content) => content.news)
+  @OneToMany(() => Content, (content) => content.news, { onDelete: 'CASCADE' })
   contents: Content[];
 }

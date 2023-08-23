@@ -1,8 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
 import { Club } from 'src/club/entities/club.entity';
+import { CountryService } from 'src/country/country.service';
+import { Country } from 'src/country/entity/country.entity';
 import { Repository } from 'typeorm';
 import { LoginUserDto } from './dto/login-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -10,6 +14,7 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private repository: Repository<User>,
+    private countryService: CountryService,
   ) {}
 
   create(dto: any) {
@@ -133,5 +138,49 @@ export class UserService {
 
   update(id: number, dto: User) {
     return this.repository.update(id, { ...dto });
+  }
+
+  async updateProfileData(id: number, dto: UpdateUserDto) {
+    const user = await this.repository.findOne({ where: { id } });
+
+    let newCountry: Country;
+    if (dto.country) {
+      const countryIfExist = await this.countryService.returnIfExist({
+        name: dto.country,
+      });
+      if (countryIfExist) {
+        newCountry = countryIfExist;
+      } else {
+        newCountry = await this.countryService.create(dto.country);
+      }
+    }
+
+    user.city = dto.city || user.city;
+    user.country = newCountry || user.country;
+    user.name = dto.name || user.name;
+    user.image = dto.image || user.image;
+    user.surname = dto.surname || user.surname;
+  }
+
+  async changePassword(
+    id: number,
+    dto: { oldPassword: string; newPassword: string; repeatPassword: string },
+  ) {
+    if (dto.newPassword !== dto.repeatPassword || dto.newPassword.length < 6) {
+      throw new ForbiddenException('Error Changing password');
+    }
+    const user = await this.repository.findOne({ where: { id } });
+    if (user) {
+      const isEqual = await bcrypt.compare(dto.oldPassword, user.password);
+      if (isEqual) {
+        const password = await bcrypt.hash(dto.newPassword, 10);
+        return this.updatePassword(id, password);
+      }
+    }
+    return null;
+  }
+
+  updatePassword(id: number, password: string) {
+    return this.repository.update(id, { password });
   }
 }

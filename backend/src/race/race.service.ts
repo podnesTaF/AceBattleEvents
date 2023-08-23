@@ -56,4 +56,20 @@ export class RaceService {
 
     return this.repository.update(raceId, { winner });
   }
+
+  async updateRace(id: number, teams: Team[], newStartDate?: string) {
+    const race = await this.repository.findOne({
+      where: { id },
+      relations: ['teams'],
+    });
+
+    race.teams = teams || race.teams;
+    race.startTime = new Date(newStartDate) || race.startTime;
+
+    return this.repository.save(race);
+  }
+
+  deleteRace(id: number) {
+    return this.repository.delete(id);
+  }
 }

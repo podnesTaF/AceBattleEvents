@@ -4,7 +4,7 @@ import { ContentService } from 'src/content/content.service';
 import { CreateHashtagDto } from 'src/hashtag/dto/create-hashtag.dto';
 import { HashtagService } from 'src/hashtag/hashtag.service';
 import { Repository } from 'typeorm';
-import { CreateNewsDto } from './dto/create.dto';
+import { CreateNewsDto, updateNewsDto } from './dto/create.dto';
 import { News } from './entities/news.entity';
 
 @Injectable()
@@ -83,5 +83,22 @@ export class NewsService {
       contents,
       hashtags,
     });
+  }
+
+  async updateNews(id: number, body: updateNewsDto) {
+    const news = await this.repository.findOne({
+      where: { id },
+      relations: ['hashtags', 'contents'],
+    });
+
+    news.contents = body.contents || news.contents;
+    news.hashtags = body.hashtags || news.hashtags;
+    news.title = body.title || news.title;
+
+    return this.repository.save(news);
+  }
+
+  deleteNews(id: number) {
+    return this.repository.delete(id);
   }
 }

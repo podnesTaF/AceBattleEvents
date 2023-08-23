@@ -94,12 +94,15 @@ export class FileService {
   async deleteFileFromStorage(
     imagePath: string,
     storage: Storage,
+    mediaId: number,
   ): Promise<boolean> {
     try {
       const bucket = storage.bucket(googleCloudStorageConfig.bucketName);
       const file = bucket.file(imagePath);
 
       await file.delete();
+
+      await this.mediaService.deleteMedia(mediaId);
 
       return true;
     } catch (e) {

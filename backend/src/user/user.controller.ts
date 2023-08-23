@@ -47,6 +47,16 @@ export class UserController {
     return this.userService.updateImage(req.user.id, body.imageId);
   }
 
+  @Patch('/password')
+  @UseGuards(JwtAuthGuard)
+  updatePassword(
+    @Request() req,
+    @Body()
+    body: { oldPassword: string; newPassword: string; repeatPassword: string },
+  ) {
+    return this.userService.changePassword(req.user.id, body);
+  }
+
   @Get('count')
   count() {
     return this.userService.count();

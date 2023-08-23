@@ -16,6 +16,9 @@ export class Content {
   @ManyToOne(() => Media, { nullable: true })
   media: Media;
 
-  @ManyToOne(() => News, (news) => news.contents, { nullable: true })
+  @ManyToOne(() => News, (news) => news.contents, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
   news: News;
 }

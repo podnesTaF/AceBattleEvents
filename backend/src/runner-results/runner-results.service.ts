@@ -94,13 +94,16 @@ export class RunnerResultsService {
       ])
       .getRawMany();
 
-    console.log(results.length);
-
-    console.log(limit, page, offset, totalCount, pageCount);
-
     return {
       results,
       totalPages: pageCount,
     };
+  }
+
+  async updateResult(
+    id: number,
+    body: { distance?: number; finalResultInMs?: number },
+  ) {
+    return this.repository.update(id, body);
   }
 }

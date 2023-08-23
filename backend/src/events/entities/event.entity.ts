@@ -55,14 +55,12 @@ export class Event {
   viewerRegistrations: ViewerRegistration[];
 
   @ManyToMany(() => Team, (team) => team.events, {
-    onDelete: 'NO ACTION',
-    onUpdate: 'NO ACTION',
+    onDelete: 'CASCADE',
   })
   teams: Team[];
 
   @ManyToMany(() => Hashtag, (hashtag) => hashtag.events, {
-    onDelete: 'NO ACTION',
-    onUpdate: 'NO ACTION',
+    onDelete: 'CASCADE',
     nullable: true,
   })
   hashtags: Hashtag[];

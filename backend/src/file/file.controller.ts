@@ -3,6 +3,7 @@ import {
   Delete,
   Param,
   Post,
+  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -29,10 +30,12 @@ export class FileController {
   @Delete(':imagePath')
   async deleteImage(
     @Param('imagePath') imagePath: string,
+    @Query('mediaId') mediaId: string,
   ): Promise<{ success: boolean }> {
     const isDeleted = await this.fileService.deleteFileFromStorage(
       imagePath,
       storage,
+      +mediaId,
     );
     return { success: isDeleted };
   }

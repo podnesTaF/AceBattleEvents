@@ -6,6 +6,11 @@ import { LocationsService } from 'src/locations/locations.service';
 import { PrizesService } from 'src/prizes/prizes.service';
 import { Repository } from 'typeorm';
 import { CreateEventDto } from './dto/create-event.dto';
+import {
+  UpdateEventInfo,
+  UpdateEventMedia,
+  UpdateEventPrizes,
+} from './dto/update-event.dto';
 import { Event } from './entities/event.entity';
 
 @Injectable()
@@ -167,5 +172,48 @@ export class EventsService {
   async count() {
     const count = await this.repository.count();
     return { 'Total Events': count };
+  }
+
+  async updateInformation(id: number, body: UpdateEventInfo) {
+    const event = await this.repository.findOne({ where: { id } });
+    if (!event) {
+      throw new Error('Event not found');
+    }
+
+    const { title, description, startDateTime, endDate } = body;
+
+    event.title = title || event.title;
+    event.description = description || event.description;
+    event.startDateTime = new Date(startDateTime) || event.startDateTime;
+    event.endDate = new Date(endDate) || event.endDate;
+
+    return this.repository.save(event);
+  }
+
+  async updatePrizes(id: number, body: UpdateEventPrizes) {
+    const event = await this.repository.findOne({
+      where: { id },
+      relations: ['prizes'],
+    });
+
+    event.prizes = body.prizes;
+
+    return this.repository.save(event);
+  }
+
+  async updateMedia(id: number, body: UpdateEventMedia) {
+    const event = await this.repository.findOne({
+      where: { id },
+      relations: ['introImage', 'minorImage'],
+    });
+
+    event.introImage = body.introImage || event.introImage;
+    event.minorImage = body.minorImage || event.minorImage;
+
+    return this.repository.save(event);
+  }
+
+  deleteEvent(id: number) {
+    return this.repository.delete(id);
   }
 }

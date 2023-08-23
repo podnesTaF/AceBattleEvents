@@ -13,6 +13,9 @@ export class Hashtag {
   @ManyToMany(() => News, (news) => news.hashtags, { nullable: true })
   news: News[];
 
-  @ManyToMany(() => Event, (event) => event.hashtags, { nullable: true })
+  @ManyToMany(() => Event, (event) => event.hashtags, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
   events: Event[];
 }
