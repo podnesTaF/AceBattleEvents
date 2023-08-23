@@ -30,4 +30,8 @@ export class MediaService {
   findByUrl(url: string) {
     return this.repository.findOne({ where: { mediaUrl: url } });
   }
+
+  deleteMedia(id: number) {
+    return this.repository.delete(id);
+  }
 }

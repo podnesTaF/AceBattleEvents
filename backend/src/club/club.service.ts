@@ -106,4 +106,14 @@ export class ClubService {
   remove(id: number) {
     return `This action removes a #${id} club`;
   }
+  async leaveClub(userId: number, clubId: number) {
+    const club = await this.repository.findOne({
+      where: { id: clubId },
+      relations: ['members'],
+    });
+
+    club.members = club.members.filter((member) => member.id !== userId);
+
+    return this.repository.save(club);
+  }
 }

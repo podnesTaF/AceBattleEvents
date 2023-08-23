@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CreateMediaDto } from './dto/createMedia.dto';
 import { MediaService } from './media.service';
 
@@ -14,5 +14,10 @@ export class MediaController {
   @Get('/images')
   getAllImages() {
     return this.mediaService.findAllImages();
+  }
+
+  @Delete(':id')
+  deleteImage(@Param('id') id: string) {
+    return this.mediaService.deleteMedia(+id);
   }
 }

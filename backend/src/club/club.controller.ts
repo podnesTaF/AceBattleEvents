@@ -64,4 +64,10 @@ export class ClubController {
   remove(@Param('id') id: string) {
     return this.clubService.remove(+id);
   }
+
+  @Post(':id/leave')
+  @UseGuards(JwtAuthGuard)
+  leaveClub(@Request() req, @Param('id') id: string) {
+    return this.clubService.leaveClub(+req.user.id, +id);
+  }
 }
