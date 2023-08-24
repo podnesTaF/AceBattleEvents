@@ -24,6 +24,19 @@ export const EventsApi = (instance: AxiosInstance) => ({
     }
   },
 
+  async getEventsSnippet() {
+    try {
+      const { data } = await instance.get<{ title: string; id: number }[]>(
+        `events/snippet`
+      );
+
+      return data;
+    } catch (e) {
+      console.log(e);
+      return [];
+    }
+  },
+
   async getEvent(id: string) {
     try {
       const { data } = await instance.get<IEvent>(`events/${id}`);
@@ -46,6 +59,15 @@ export const EventsApi = (instance: AxiosInstance) => ({
     } catch (e) {
       console.log(e);
       return null;
+    }
+  },
+
+  async addEvent(dto: IEvent) {
+    try {
+      const { data } = await instance.post<IEvent>(`events`, dto);
+      return data;
+    } catch (error) {
+      console.log(error);
     }
   },
 });

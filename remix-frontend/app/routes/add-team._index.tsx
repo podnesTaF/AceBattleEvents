@@ -14,11 +14,8 @@ import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { Api } from "~/api/axiosInstance";
 
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
-import { Button, Divider, IconButton } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import {
-  AddImageDialog,
-  AddPlayerInfo,
   FormButton,
   FormField,
   FormPartsLayout,
@@ -26,6 +23,7 @@ import {
   GrayedInput,
   ImageField,
   PickList,
+  UnregisteredAthlete,
 } from "~/components";
 import { teamTypes } from "~/lib/teams";
 import { IUser } from "~/lib/types";
@@ -45,7 +43,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   return json({ club, user });
 };
 
-const defaultPlayer = {
+export const defaultPlayer = {
   name: "",
   surname: "",
   dateOfBirth: "",
@@ -247,59 +245,15 @@ const AddTeamIndex = () => {
           </div>
           {watch("players").map((field, index) => {
             return (
-              <div key={field.id} className="rounded shadow-md p-4 my-5">
-                <div className="flex justify-between">
-                  <p className="text-end mb-3 text-xl font-semibold">
-                    {`Player ${index + 1}`}
-                  </p>
-                  <IconButton onClick={() => removePlayer(field.id, index)}>
-                    <PersonRemoveIcon fontSize="large" />
-                  </IconButton>
-                </div>
-                <div className="flex flex-col md:flex-row flex-wrap gap-3 mb-3 justify-around">
-                  <AddPlayerInfo
-                    name={`players[${index}]`}
-                    errorState={
-                      formState?.errors?.players &&
-                      formState?.errors?.players[index]
-                    }
-                    errorInstance={
-                      formState?.errors?.players &&
-                      formState?.errors?.players[index]
-                    }
-                  />
-                  <div className="mx-auto">
-                    <ImageField
-                      title="upload avatar"
-                      name={`players[${index}].image`}
-                    />
-                  </div>
-                  {avatarPreviews && avatarPreviews[field.id]?.url && (
-                    <div className="mb-4 flex w-full justify-center gap-4">
-                      <h4 className="text-xl text-gray-500">
-                        {avatarPreviews[field.id].name}
-                      </h4>
-                      <img
-                        src={avatarPreviews[field.id].url}
-                        alt={"avatar preview"}
-                        width={400}
-                        height={400}
-                      />
-                    </div>
-                  )}
-                  <AddImageDialog
-                    isOpen={playerDialogOpen}
-                    handleClose={() => setPlayerDialogOpen(false)}
-                    name={"image"}
-                    setIntroPreview={(preview: any) => {
-                      setAvatarPreviews((prev: any) => ({
-                        ...prev,
-                        [field.id]: preview,
-                      }));
-                    }}
-                  />
-                </div>
-              </div>
+              <UnregisteredAthlete
+                field={field}
+                index={index}
+                avatarPreviews={avatarPreviews}
+                removePlayer={removePlayer}
+                setPlayerDialogOpen={setPlayerDialogOpen}
+                playerDialogOpen={playerDialogOpen}
+                setAvatarPreviews={setAvatarPreviews}
+              />
             );
           })}
           <div className="w-full my-3 flex items-center">

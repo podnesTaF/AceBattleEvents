@@ -1,4 +1,5 @@
 // export all components app/components
+export * from "./admin";
 export * from "./clubs";
 export * from "./events";
 export * from "./main";

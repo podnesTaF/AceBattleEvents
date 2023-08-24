@@ -17,6 +17,20 @@ export const TeamsApi = (instance: AxiosInstance) => ({
     }
   },
 
+  async getTeamsSnippetsByEventId(
+    id?: number
+  ): Promise<{ id: number; name: string }[] | undefined> {
+    try {
+      if (!id) return [];
+      const { data } = await instance.get<{ id: number; name: string }[]>(
+        `teams/snippet/${id}`
+      );
+      return data;
+    } catch (error: any) {
+      return error.message;
+    }
+  },
+
   async findMyTeams() {
     try {
       const { data: teamsData } = await instance.get<ITeam[]>(`teams/my`);
@@ -140,6 +154,17 @@ export const TeamsApi = (instance: AxiosInstance) => ({
       return calendar;
     } catch (error) {
       console.log(error);
+    }
+  },
+
+  async CountAll() {
+    try {
+      const { data } = await instance.get<any[]>("/teams/count/all");
+
+      return data;
+    } catch (error) {
+      console.log(error);
+      return [];
     }
   },
 });

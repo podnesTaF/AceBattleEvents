@@ -8,5 +8,5 @@ export type IRace = {
   teams: ITeam[];
   winner: ITeam | null;
   event: IEvent;
-  teamResults: ITeamResult[];
+  teamResults?: ITeamResult[];
 };

@@ -4,17 +4,16 @@ import { ITeam } from "~/lib/teams/types/ITeam";
 import { IPrize } from "./EventBound";
 
 export type IEvent = {
-  id: number;
+  id?: number;
   title: string;
   description: string;
   startDateTime: string;
-  endDateTime: string;
+  endDate: string;
   introImage?: IMedia;
   minorImage?: IMedia;
-  price: number;
   teamsCount?: number;
   location: ILocation;
-  totalPrize: number;
+  totalPrize?: number;
   prizes: IPrize[];
-  teams: ITeam[];
+  teams?: ITeam[];
 };
