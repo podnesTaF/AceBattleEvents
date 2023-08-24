@@ -5,6 +5,7 @@ import {
   EventsApi,
   MediaApi,
   NewsApi,
+  RacesApi,
   TeamsApi,
   UserApi,
 } from "./endpoints";
@@ -17,6 +18,7 @@ interface ApiReturnType {
   media: ReturnType<typeof MediaApi>;
   athletes: ReturnType<typeof AthletesApi>;
   news: ReturnType<typeof NewsApi>;
+  races: ReturnType<typeof RacesApi>;
 }
 
 // https://abe-server.up.railway.app/api/v1
@@ -36,5 +38,6 @@ export const Api = (token?: string): ApiReturnType => {
     media: MediaApi(instance),
     athletes: AthletesApi(instance),
     news: NewsApi(instance),
+    races: RacesApi(instance),
   };
 };

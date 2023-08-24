@@ -13,6 +13,17 @@ export const transformRaceToTable = (races: IRace[]) => {
   }));
 };
 
+export const transformForAdminRace = (races: IRace[]) => {
+  return transformRaceToTable(races).map((r, i) => ({
+    ...r,
+    battle: !races[i].winner ? "not finished" : r.battle,
+    edit: {
+      link: "/admin/races/edit/" + races[i].id,
+      value: "edit",
+    },
+  }));
+};
+
 export const getTeamResult = (teamResult: ITeamResult, isWinner: boolean) => {
   let res =
     teamResult.team.name + " / " + msToMinutesAndSeconds(teamResult.resultInMs);
@@ -22,7 +33,7 @@ export const getTeamResult = (teamResult: ITeamResult, isWinner: boolean) => {
 
 export const getBattle = (race: IRace) => {
   return race.teamResults
-    .map((teamResult) =>
+    ?.map((teamResult: ITeamResult) =>
       getTeamResult(teamResult, race.winner?.id === teamResult.team.id)
     )
     .join(" vs ");
@@ -42,3 +53,15 @@ export function msToMinutesAndSeconds(ms: number): string {
     2
   )}`;
 }
+
+export const transformDataToSelect = (
+  data: { id: number; name?: string; title?: string }[]
+) => {
+  return data.reduce(
+    (acc, curr) => ({
+      ...acc,
+      [curr.id]: curr.name || curr.title,
+    }),
+    {}
+  );
+};
