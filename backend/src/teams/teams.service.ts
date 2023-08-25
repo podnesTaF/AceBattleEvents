@@ -281,4 +281,13 @@ export class TeamsService {
 
     return res;
   }
+
+  findAllSnippetByEventId(eventId: number) {
+    return this.repository
+      .createQueryBuilder('team')
+      .leftJoinAndSelect('team.events', 'event')
+      .where('event.id = :eventId', { eventId })
+      .select(['team.id', 'team.name'])
+      .getMany();
+  }
 }

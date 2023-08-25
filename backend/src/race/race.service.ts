@@ -42,6 +42,23 @@ export class RaceService {
     });
   }
 
+  async getAllRaces(queries: { page: number; limit: number }) {
+    const count = await this.repository.count();
+    const page = +queries.page || 1;
+    const limit = +queries.limit || 5;
+
+    const races = await this.repository.find({
+      relations: ['event', 'winner', 'teamResults', 'teamResults.team'],
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    return {
+      races,
+      totalPages: Math.ceil(count / limit),
+    };
+  }
+
   getAllRacesByEvent(id: number) {
     return this.repository
       .createQueryBuilder('race')

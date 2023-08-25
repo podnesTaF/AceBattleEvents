@@ -127,6 +127,12 @@ export class EventsService {
     return { events: resEvents, totalPages };
   }
 
+  getAllSnippet() {
+    return this.repository.find({
+      select: ['id', 'title'],
+    });
+  }
+
   async getEventById(id: number) {
     const event = await this.repository.findOne({
       where: { id },

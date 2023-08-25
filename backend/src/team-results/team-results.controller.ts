@@ -19,6 +19,11 @@ export class TeamResultsController {
     return this.teamResultsService.create(dto);
   }
 
+  @Get()
+  getAllTeamResults(@Query() queries: { limit?: number; page?: number }) {
+    return this.teamResultsService.getAllTeamResults(queries);
+  }
+
   @Get('/club/:clubId')
   getClubResults(
     @Param('clubId') clubId: string,
@@ -36,10 +41,20 @@ export class TeamResultsController {
   }
 
   @Patch(':id')
-  updateResult(
+  updateTeamResult(
     @Param('id') id: string,
-    @Body() { resultInMs }: { resultInMs: number },
+    @Body()
+    {
+      resultInMs,
+      teamId,
+      oldTeamId,
+    }: { resultInMs?: number; teamId?: number; oldTeamId?: number },
   ) {
-    return this.teamResultsService.updateTeamTime(+id, resultInMs);
+    return this.teamResultsService.updateTeamTime(
+      +id,
+      resultInMs,
+      teamId,
+      oldTeamId,
+    );
   }
 }
