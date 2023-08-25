@@ -34,6 +34,11 @@ export class EventsController {
     return this.eventsService.getAll(queries);
   }
 
+  @Get('snippet')
+  findAllSnippet() {
+    return this.eventsService.getAllSnippet();
+  }
+
   @Get(':id')
   findById(@Param('id') id: string) {
     return this.eventsService.getEventById(+id);

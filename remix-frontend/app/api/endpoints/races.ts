@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import { IRace } from "~/lib/types";
+import { IRace, ITeamResult } from "~/lib/types";
 
 export const RacesApi = (instance: AxiosInstance) => ({
   async getAllRaces(params?: string) {
@@ -18,5 +18,18 @@ export const RacesApi = (instance: AxiosInstance) => ({
     const { data } = await instance.post<IRace>(`/race`, dto);
 
     return data;
+  },
+
+  async getAllResults(queries: string) {
+    try {
+      const { data } = await instance.get<{
+        data: ITeamResult[];
+        totalPages: number;
+      }>("/team-results?" + queries + "&limit=5");
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
   },
 });

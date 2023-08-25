@@ -48,6 +48,11 @@ export class TeamsController {
     return this.teamsService.findAll(queries, +req?.user?.id);
   }
 
+  @Get('/snippet/:eventId')
+  findAllSnippet(@Param('eventId') eventId: string) {
+    return this.teamsService.findAllSnippetByEventId(+eventId);
+  }
+
   @Get('/my')
   @UseGuards(JwtAuthGuard)
   findMyTeams(@Request() req) {

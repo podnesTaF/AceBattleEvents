@@ -21,6 +21,11 @@ export class RaceController {
     return this.raceService.createRace(dto);
   }
 
+  @Get()
+  getAllRaces(@Query() queries: { page: number; limit: number }) {
+    return this.raceService.getAllRaces(queries);
+  }
+
   @Get('/event')
   getAllRacesForEvent(@Query('eventId') eventId: string) {
     if (!eventId) {

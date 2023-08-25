@@ -4,7 +4,7 @@ interface CustomSelectProps {
   placeholder: string;
   values: any[];
   onChangeFilter: (type: string, value: string) => void;
-  selected?: string;
+  selected?: string | number;
   labelHidden?: boolean;
 }
 

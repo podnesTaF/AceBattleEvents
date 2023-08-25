@@ -32,6 +32,32 @@ export class TeamResultsService {
     });
   }
 
+  async getAllTeamResults(queries: { limit?: number; page?: number }) {
+    const limit = +queries.limit || 10;
+    const page = +queries.page || 1;
+    const offset = (page - 1) * limit;
+    const totalCount = await this.repository.count();
+    const totalPages = Math.ceil(totalCount / limit);
+
+    const data = await this.repository.find({
+      relations: [
+        'runnerResults',
+        'race',
+        'race.teams',
+        'race.event',
+        'team',
+        'runnerResults.runner',
+      ],
+      skip: offset,
+      take: limit,
+    });
+
+    return {
+      data,
+      totalPages,
+    };
+  }
+
   async getClubResults(
     clubId: number,
     queries: { limit?: number; page?: number },
@@ -121,7 +147,44 @@ export class TeamResultsService {
     };
   }
 
-  async updateTeamTime(id: number, newTime: number) {
-    return this.repository.update(id, { resultInMs: newTime });
+  async updateTeamTime(
+    id: number,
+    newTime?: number,
+    teamId?: number,
+    oldTeamId?: number,
+  ) {
+    const teamResult = await this.repository.findOne({
+      where: { id },
+      relations: ['team', 'race'],
+    });
+
+    if (newTime) {
+      teamResult.resultInMs = newTime;
+    }
+
+    if (teamId && oldTeamId) {
+      const newTeam = await this.teamRepository.findOne({
+        where: { id: teamId },
+      });
+
+      const race = await this.raceRepository.findOne({
+        where: { id: teamResult.race.id },
+        relations: ['teams', 'winner'],
+      });
+
+      race.teams = race.teams.filter((t) => t.id !== oldTeamId);
+
+      race.teams.push(newTeam);
+
+      if (race.winner?.id === oldTeamId) {
+        race.winner = newTeam;
+      }
+
+      await this.raceRepository.save(race);
+
+      teamResult.team = newTeam;
+    }
+
+    return this.repository.save(teamResult);
   }
 }
