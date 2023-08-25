@@ -1,4 +1,5 @@
-import { IRace, ITeamResult } from "../types";
+import { formatDate, getCategoryByDoB } from "~/lib/utils";
+import { IRace, ITeamResult, ResultTableRow } from "../types";
 
 export const transformRaceToTable = (races: IRace[]) => {
   return races.map((race) => ({
@@ -63,5 +64,45 @@ export const transformDataToSelect = (
       [curr.id]: curr.name || curr.title,
     }),
     {}
+  );
+};
+
+export const teamResultsTable = (
+  teamResults: ITeamResult[]
+): ResultTableRow[] => {
+  return teamResults.map((teamResult) => ({
+    id: teamResult.id,
+    team: {
+      id: teamResult.team.id,
+      name: teamResult.team.name,
+      link: "/teams/" + teamResult.team.id,
+    },
+    date: formatDate(teamResult.race.startTime),
+    resultInMs: teamResult.resultInMs,
+    race: teamResult.race.teams
+      ?.reduce((acc, curr) => (acc += curr.name + " vs "), "")
+      .slice(0, -4),
+    event: {
+      id: teamResult.race?.event.id,
+      name: teamResult.race?.event.title,
+      link: "/events/" + teamResult.race.event.id,
+    },
+    runnerResults: teamResult.runnerResults.map((runnerResult) => ({
+      runner: runnerResult.runner.name + " " + runnerResult.runner.surname,
+      gender: runnerResult.runner.gender,
+      category: getCategoryByDoB(runnerResult.runner.dateOfBirth),
+      distance: runnerResult.distance,
+      finalResultInMs: runnerResult.finalResultInMs,
+      records: "",
+    })),
+  }));
+};
+
+export const getResultIsMs = (result: string) => {
+  const [minutes, sAndMs] = result.split(":");
+  const [seconds, milliseconds] = sAndMs.split(".");
+
+  return (
+    Number(minutes) * 60 * 1000 + Number(seconds) * 1000 + Number(milliseconds)
   );
 };

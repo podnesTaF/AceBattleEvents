@@ -5,7 +5,7 @@ import { IRunnerResult } from "./runnerResults";
 export type ITeamResult = {
   id: number;
   resultInMs: number;
-  race: IRace[];
+  race: IRace;
   team: ITeam;
-  runnerResults: IRunnerResult;
+  runnerResults: IRunnerResult[];
 };
