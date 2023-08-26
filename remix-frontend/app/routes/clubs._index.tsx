@@ -1,16 +1,14 @@
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import axios from "axios";
+import { Api } from "~/api/axiosInstance";
 import { ClubCard, FilterSelect, SearchField } from "~/components";
 import { countries, useFilter } from "~/lib/shared";
 import { IClub } from "~/lib/types";
 
 export const loader = async () => {
-  const { data: clubsData } = await axios.get<IClub[]>(
-    "http://localhost:4000/api/v1/clubs"
-  );
+  const clubsData = await Api().clubs.getClubs();
 
-  return json({ clubs: clubsData });
+  return json({ clubs: clubsData?.clubs, totalPages: clubsData?.totalPages });
 };
 
 const ClubsIndexPage = () => {
@@ -48,7 +46,7 @@ const ClubsIndexPage = () => {
           </div>
         </div>
         <div className="max-w-6xl mx-6 lg:mx-auto my-6">
-          {data.clubs.map((club: IClub, i: number) => (
+          {data.clubs?.map((club: IClub, i: number) => (
             <div
               key={club.id}
               className={`w-full sm:w-2/3 ${i % 2 && "ml-auto"} mb-8`}

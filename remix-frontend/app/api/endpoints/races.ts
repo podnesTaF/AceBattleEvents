@@ -10,6 +10,16 @@ export const RacesApi = (instance: AxiosInstance) => ({
     return data;
   },
 
+  async getRace(id: string) {
+    try {
+      const { data } = await instance.get<IRace>("race/" + id);
+
+      return data;
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  },
+
   async createRace(dto: {
     eventId: number;
     startTime: string;
@@ -27,6 +37,21 @@ export const RacesApi = (instance: AxiosInstance) => ({
         totalPages: number;
       }>("/team-results?" + queries + "&limit=5");
 
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async updateRace(
+    dto: {
+      eventId: number;
+      startTime: string;
+      teamIds: number[];
+    },
+    raceId: number
+  ) {
+    try {
+      const { data } = await instance.patch("/race/" + raceId + "/race", dto);
       return data;
     } catch (error) {
       console.log(error);

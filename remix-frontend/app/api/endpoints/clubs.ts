@@ -4,7 +4,10 @@ import { IRace } from "~/lib/races/types";
 
 export const ClubApi = (instance: AxiosInstance) => ({
   async getClubs(params?: string, currPage?: number) {
-    const { data: clubsData } = await instance.get<IClub[]>("/clubs");
+    const { data: clubsData } = await instance.get<{
+      clubs: IClub[];
+      totalPages: number;
+    }>("/clubs?" + params);
 
     if (!clubsData) {
       return null;
