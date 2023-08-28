@@ -5,14 +5,23 @@ interface Props {
   title: string;
   name: string;
   storageUnavailable?: boolean;
+  defaulImage?: {
+    url: string;
+    name: string;
+  };
 }
 
-const ImageField: React.FC<Props> = ({ title, name, storageUnavailable }) => {
+const ImageField: React.FC<Props> = ({
+  title,
+  name,
+  storageUnavailable,
+  defaulImage,
+}) => {
   const [imageDialogOpen, setImageDialogOpen] = useState<boolean>(false);
   const [imagePreview, setImagePreview] = useState<{
     url: string;
     name: string;
-  }>({ url: "", name: "" });
+  }>(defaulImage || { url: "", name: "" });
 
   return (
     <>

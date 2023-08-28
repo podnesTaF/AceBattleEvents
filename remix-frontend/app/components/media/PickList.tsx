@@ -10,6 +10,8 @@ interface PickListProps {
   }[];
   tabs: string[];
   onSelectedListChange: (items: any[]) => void;
+  defaultSelectedItems?: any[];
+  setActiveTab?: Function;
 }
 
 const PickList: React.FC<PickListProps> = ({
@@ -17,12 +19,17 @@ const PickList: React.FC<PickListProps> = ({
   onSelectedListChange,
   items,
   tabs,
+  defaultSelectedItems,
+  setActiveTab,
 }) => {
   const [tabValue, setTabValue] = useState(0);
-  const [checkedItems, setCheckedItems] = useState<any[]>([]);
+  const [checkedItems, setCheckedItems] = useState<any[]>(
+    defaultSelectedItems || []
+  );
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
+    setActiveTab && setActiveTab(tabs[newValue].toLowerCase());
   };
 
   const handleItemCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,23 +68,26 @@ const PickList: React.FC<PickListProps> = ({
             />
           ))}
         </Tabs>
-        <CustomTabPanel index={0} value={tabValue}>
-          {items.map((item) => (
-            <PickItem
-              key={item.id}
-              name={item.title}
-              additionalInfo={item.additionalInfo}
-              onCheck={handleItemCheck}
-              id={item.id}
-            />
-          ))}
-        </CustomTabPanel>
+        {tabs.map((tab, i) => (
+          <CustomTabPanel key={tab} index={i} value={tabValue}>
+            {items.map((item) => (
+              <PickItem
+                key={item.id}
+                name={item.title}
+                additionalInfo={item.additionalInfo}
+                onCheck={handleItemCheck}
+                isChecked={checkedItems?.some((itm) => itm.id === item.id)}
+                id={item.id}
+              />
+            ))}
+          </CustomTabPanel>
+        ))}
       </div>
-      <div className="w-full md:w-1/2">
+      <div className="md:w-1/2 w-full">
         <h3 className="font-semibold text-center text-xl py-1 border-b-[1px] border-gray-300">
-          Selected Items
+          Selected Runners
         </h3>
-        <div className="w-full">
+        <div className="w-full h-[350px] overflow-auto border-r-[1px] border-gray-300">
           {checkedItems.map((item) => (
             <div
               key={item.id}
@@ -99,6 +109,7 @@ interface PickItemProps {
   id: number;
   onCheck?: (e: any) => void;
   disabled?: boolean;
+  isChecked?: boolean;
 }
 
 const PickItem: React.FC<PickItemProps> = ({
@@ -106,12 +117,13 @@ const PickItem: React.FC<PickItemProps> = ({
   additionalInfo,
   id,
   onCheck,
+  isChecked,
 }) => {
   return (
     <div className="border-b-[1px] border-gray-300 p-2 flex justify-between">
       <FormControlLabel
         onChange={onCheck}
-        control={<Checkbox color="success" value={id} />}
+        control={<Checkbox checked={isChecked} color="success" value={id} />}
         label={<h3 className="text-xl text-semibold">{name}</h3>}
       />
       <h2 className="text-2xl font-semibold">{additionalInfo}</h2>

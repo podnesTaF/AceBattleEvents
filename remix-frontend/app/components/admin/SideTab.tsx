@@ -25,7 +25,9 @@ const SideTab: React.FC<Props> = ({
   setIsOpened,
 }) => {
   const location = useLocation();
-  const isActive = hiddenTabs.some((tab) => tab.link === location.pathname);
+  const isActive = hiddenTabs.some(
+    (tab) => location.pathname.indexOf(tab.link) !== -1
+  );
 
   return (
     <div className="w-1/3 sm:w-full flex flex-col-reverse sm:flex-col relative">

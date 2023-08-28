@@ -101,7 +101,7 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({
       {/* Settings */}
       <Divider />
       {renderMenuItem(
-        "/",
+        "/user/settings",
         <ListItemIcon>
           <Settings />
         </ListItemIcon>,
