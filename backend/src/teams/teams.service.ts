@@ -2,13 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClubService } from 'src/club/club.service';
 import { CoachService } from 'src/coach/coach.service';
+import { CreateCoachDto } from 'src/coach/dto/create-coach-dto';
 import { CountryService } from 'src/country/country.service';
 import { Event } from 'src/events/entities/event.entity';
 import { PlayersService } from 'src/players/players.service';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { CreateTeamDto } from './dto/create-team.dto';
-import { UpdateTeamDto } from './dto/update-team.dto';
 import { Team } from './entities/team.entity';
 
 @Injectable()
@@ -236,7 +236,13 @@ export class TeamsService {
       .leftJoinAndSelect('team.coach', 'coach')
       .leftJoinAndSelect('team.logo', 'logo')
       .leftJoinAndSelect('team.country', 'country')
+      .leftJoinAndSelect('team.club', 'club')
+      .leftJoinAndSelect('club.members', 'member')
       .where('player.id = :runnerId', { runnerId: userId })
+      .orWhere('member.role = :role and member.id = :managerId', {
+        managerId: userId,
+        role: 'manager',
+      })
       .leftJoinAndSelect('team.players', 'players')
       .getMany();
   }
@@ -252,12 +258,43 @@ export class TeamsService {
         'logo',
         'country',
         'players.image',
+        'club.members',
       ],
     });
   }
 
-  update(id: number, updateTeamDto: UpdateTeamDto) {
-    return `This action updates a #${id} team`;
+  async update(
+    id: number,
+    updateTeamDto: {
+      name: string;
+      city: string;
+      gender: string;
+      coach: CreateCoachDto;
+      players: number[];
+    },
+  ) {
+    const team = await this.repository.findOne({
+      where: { id },
+      relations: ['players', 'coach'],
+    });
+
+    const players = [];
+    for (let i = 0; i < updateTeamDto.players.length; i++) {
+      const player = await this.userService.findById(updateTeamDto.players[i]);
+      players.push(player);
+    }
+
+    const coach = await this.coachService.create(updateTeamDto.coach);
+
+    team.name = updateTeamDto.name || team.name;
+    team.city = updateTeamDto.city || team.city;
+    team.gender = updateTeamDto.gender || team.gender;
+    team.coach = coach || team.coach;
+    team.players = players || team.players;
+
+    return this.repository.save({
+      ...team,
+    });
   }
 
   remove(id: number) {

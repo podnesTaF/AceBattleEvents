@@ -8,7 +8,6 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { Team } from 'src/teams/entities/team.entity';
 import { CreateRaceDto } from './dto/create-race.dto';
 import { RaceService } from './race.service';
 
@@ -25,13 +24,17 @@ export class RaceController {
   getAllRaces(@Query() queries: { page: number; limit: number }) {
     return this.raceService.getAllRaces(queries);
   }
-
   @Get('/event')
   getAllRacesForEvent(@Query('eventId') eventId: string) {
     if (!eventId) {
       throw new Error('You have not provided eventId');
     }
     return this.raceService.getAllRacesByEvent(+eventId);
+  }
+
+  @Get(':id')
+  getRace(@Param('id') id: string) {
+    return this.raceService.getRace(+id);
   }
 
   @Patch(':id/winner')
@@ -45,9 +48,9 @@ export class RaceController {
   @Patch(':id/race')
   updateRace(
     @Param('id') id: string,
-    @Body() body: { teams: Team[]; startTime: string },
+    @Body() body: { teamIds: number[]; startTime: string; eventId: number },
   ) {
-    return this.raceService.updateRace(+id, body.teams, body.startTime);
+    return this.raceService.updateRace(+id, body);
   }
 
   @Delete(':id')

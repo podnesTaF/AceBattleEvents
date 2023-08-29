@@ -3,12 +3,14 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { CreateCoachDto } from 'src/coach/dto/create-coach-dto';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { TeamsService } from './teams.service';
 
@@ -55,7 +57,10 @@ export class TeamsController {
 
   @Get('/my')
   @UseGuards(JwtAuthGuard)
-  findMyTeams(@Request() req) {
+  findMyTeams(@Request() req: { user?: { id?: number } }) {
+    if (!req.user) {
+      throw new Error('User not found');
+    }
     return this.teamsService.findAllByUser(+req.user.id);
   }
 
@@ -92,5 +97,20 @@ export class TeamsController {
   @Get('count/all')
   countAll() {
     return this.teamsService.countAll();
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body()
+    dto: {
+      name: string;
+      city: string;
+      gender: string;
+      coach: CreateCoachDto;
+      players: number[];
+    },
+  ) {
+    return this.teamsService.update(+id, dto);
   }
 }

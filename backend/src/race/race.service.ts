@@ -59,6 +59,19 @@ export class RaceService {
     };
   }
 
+  async getRace(id: number) {
+    return this.repository.findOne({
+      where: { id },
+      relations: [
+        'event',
+        'winner',
+        'teamResults',
+        'teamResults.team',
+        'teams',
+      ],
+    });
+  }
+
   getAllRacesByEvent(id: number) {
     return this.repository
       .createQueryBuilder('race')
@@ -74,14 +87,31 @@ export class RaceService {
     return this.repository.update(raceId, { winner });
   }
 
-  async updateRace(id: number, teams: Team[], newStartDate?: string) {
+  async updateRace(
+    id: number,
+    body: { teamIds: number[]; startTime: string; eventId: number },
+  ) {
     const race = await this.repository.findOne({
       where: { id },
-      relations: ['teams'],
+      relations: ['teams', 'event'],
+    });
+
+    const teams = await Promise.all(
+      body.teamIds.map(async (id) => {
+        const team = await this.teamRepository.findOne({ where: { id } });
+        if (team) {
+          return team;
+        }
+      }),
+    );
+
+    const event = await this.eventRepository.findOne({
+      where: { id: body.eventId },
     });
 
     race.teams = teams || race.teams;
-    race.startTime = new Date(newStartDate) || race.startTime;
+    race.startTime = new Date(body.startTime) || race.startTime;
+    race.event = event || race.event;
 
     return this.repository.save(race);
   }
