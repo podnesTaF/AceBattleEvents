@@ -51,6 +51,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
     tab,
     scrollY,
     user,
+    token: authedUser?.token,
   };
 
   if (tab && tabHandlers[tab]) {
@@ -73,6 +74,7 @@ const ProfileTab = () => {
     club,
     races,
     resultsData,
+    token,
   } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
   useEffect(() => {
@@ -98,7 +100,11 @@ const ProfileTab = () => {
         />
       )}
       {tab === "Favorites" && (
-        <FavoriteClubsSection user={user} favoriteClubs={favoriteClubs} />
+        <FavoriteClubsSection
+          token={token}
+          user={user}
+          favoriteClubs={favoriteClubs}
+        />
       )}
       {tab === "My club" && <MyClubSection club={club} />}
       {tab === "Personal Calendar" && (

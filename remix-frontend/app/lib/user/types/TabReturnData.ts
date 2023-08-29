@@ -25,4 +25,5 @@ export type TabReturnData = {
     totalPages: number;
     currentPage: number;
   };
+  token?: string;
 };

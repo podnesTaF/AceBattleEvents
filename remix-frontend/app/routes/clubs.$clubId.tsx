@@ -40,13 +40,14 @@ export const loader = async ({ params, request }: LoaderArgs) => {
   return json({
     club,
     user: me,
+    token: user?.token,
     resultsData: { ...clubResultsData, currPage: +resultPage },
     resultsRows,
   });
 };
 
 const ClubPage = () => {
-  const { club, user, resultsData, resultsRows } =
+  const { club, user, resultsData, resultsRows, token } =
     useLoaderData<typeof loader>();
   const [statusAlert, setStatusAlert] = useState({
     message: "",
@@ -66,9 +67,9 @@ const ClubPage = () => {
     checkValue: boolean
   ) => {
     try {
-      if (!user) throw new Error("You must be logged in to send a request");
+      if (!token) throw new Error("You must be logged in to send a request");
 
-      const joinRequest = await Api(user.token).clubs.sendJoinRequest(
+      const joinRequest = await Api(token).clubs.sendJoinRequest(
         motivation,
         clubId
       );
@@ -89,9 +90,9 @@ const ClubPage = () => {
 
   const handleFavorites = async (action: string) => {
     try {
-      if (!user) throw new Error("You must be logged in to send a request");
+      if (!token) throw new Error("You must be logged in to send a request");
 
-      const { message } = await Api(user.token).clubs.handleFavorites(
+      const { message } = await Api(token).clubs.handleFavorites(
         club.id,
         action
       );
