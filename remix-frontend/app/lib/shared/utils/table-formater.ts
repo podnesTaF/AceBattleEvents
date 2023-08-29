@@ -54,7 +54,7 @@ export const transformIntoMembers = (members: IUser[]) => {
     "member since": "28/07/2022",
     country: member.country,
     results: {
-      link: `/profile${member.id}`,
+      link: `/profile/${member.id}/Results?scrollY=800`,
       value: "see profile",
     },
   }));

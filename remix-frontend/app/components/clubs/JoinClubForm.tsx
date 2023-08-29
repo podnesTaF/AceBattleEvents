@@ -28,7 +28,7 @@ const JoinClubForm: React.FC<Props> = ({ club, user, onSubmit }) => {
   };
   return (
     <section className="my-16 w-full">
-      {user?.clubId === club.id ? (
+      {user?.club?.id === club.id ? (
         user.role === "manager" ? (
           <div>you re a manager of this club</div>
         ) : (

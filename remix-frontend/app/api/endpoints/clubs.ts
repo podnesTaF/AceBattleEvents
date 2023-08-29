@@ -1,6 +1,7 @@
 import { AxiosInstance } from "axios";
 import { IClub, JoinRequest } from "~/lib/clubs/types";
 import { IRace } from "~/lib/races/types";
+import { IMedia } from "~/lib/types";
 
 export const ClubApi = (instance: AxiosInstance) => ({
   async getClubs(params?: string, currPage?: number) {
@@ -139,6 +140,44 @@ export const ClubApi = (instance: AxiosInstance) => ({
       return races;
     } catch (error) {
       console.log(error);
+    }
+  },
+  async handleUpdateClubData(
+    id: number,
+    data: {
+      name?: string;
+      city?: string;
+      country?: string;
+      logo?: IMedia;
+      image?: IMedia;
+    }
+  ) {
+    try {
+      const { data: club } = await instance.patch<IClub>(
+        `/clubs/${id}/club-data`,
+        data
+      );
+      return club;
+    } catch (error: any) {
+      throw new Error("Failed to update user: " + error.message);
+    }
+  },
+  async kickMembers(clubId: number, userIds: number[]) {
+    try {
+      const { data } = await instance.patch<IClub>(
+        `/clubs/${clubId}/kick-members`,
+        { userIds }
+      );
+      return data;
+    } catch (error) {}
+  },
+
+  async leaveClub(id: number) {
+    try {
+      const { data: club } = await instance.post<IClub>(`/clubs/${id}/leave`);
+      return club;
+    } catch (error: any) {
+      throw new Error("Failed to leave club: " + error.message);
     }
   },
 });

@@ -1,4 +1,7 @@
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import { IconButton } from "@mui/material";
 import { Link } from "@remix-run/react";
+import { useState } from "react";
 import TableSkeleton from "./TableSkeleton";
 
 interface CustomTableProps {
@@ -8,6 +11,9 @@ interface CustomTableProps {
   titleColor?: string;
   isTitleStraight?: boolean;
   hightlightIdx?: number;
+  deletableRows?: boolean;
+  onDelete?: (ids: number[]) => Promise<void>;
+  ids?: number[];
 }
 
 const CustomTable: React.FC<CustomTableProps> = ({
@@ -17,7 +23,19 @@ const CustomTable: React.FC<CustomTableProps> = ({
   titleColor,
   isTitleStraight,
   hightlightIdx,
+  deletableRows,
+  onDelete,
+  ids,
 }) => {
+  const [chosenItems, setChosenItems] = useState<number[]>([]);
+
+  const handleDelete = async () => {
+    if (onDelete) {
+      await onDelete(chosenItems);
+      setChosenItems([]);
+    }
+  };
+
   return (
     <div className="relative sm:rounded-sm max-h-[500px] overflow-auto">
       {isLoading ? (
@@ -39,6 +57,16 @@ const CustomTable: React.FC<CustomTableProps> = ({
                   {t}
                 </th>
               ))}
+              {deletableRows && (
+                <th scope="col" className="px-6 py-3">
+                  <IconButton
+                    onClick={handleDelete}
+                    disabled={!chosenItems.length}
+                  >
+                    <RemoveCircleOutlineIcon className="text-white" />
+                  </IconButton>
+                </th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -93,6 +121,24 @@ const CustomTable: React.FC<CustomTableProps> = ({
                       );
                     }
                   })}
+                  {deletableRows && ids?.length && (
+                    <td className="px-6 py-4 flex justify-center">
+                      <input
+                        type="checkbox"
+                        value={ids[i]}
+                        checked={chosenItems.includes(ids[i])}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setChosenItems([...chosenItems, ids[i]]);
+                          } else {
+                            setChosenItems(
+                              chosenItems.filter((id) => id !== ids[i])
+                            );
+                          }
+                        }}
+                      />
+                    </td>
+                  )}
                 </tr>
               );
             })}
