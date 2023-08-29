@@ -86,4 +86,31 @@ export const UserApi = (instance: AxiosInstance) => ({
       console.log(error);
     }
   },
+
+  async updateProfile(data: any) {
+    try {
+      const { data: userData } = await instance.patch<IUser>(
+        `/users/profile-data`,
+        data
+      );
+      return userData;
+    } catch (error: any) {
+      throw new Error("Failed to update profile: " + error.message);
+    }
+  },
+  async changePassword(data: {
+    oldPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+  }) {
+    try {
+      const { data: userData } = await instance.patch<IUser>(
+        `/users/password`,
+        data
+      );
+      return userData;
+    } catch (error: any) {
+      throw new Error("Failed to change password: " + error.message);
+    }
+  },
 });

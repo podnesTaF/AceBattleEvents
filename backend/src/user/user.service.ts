@@ -160,13 +160,15 @@ export class UserService {
     user.name = dto.name || user.name;
     user.image = dto.image || user.image;
     user.surname = dto.surname || user.surname;
+
+    return this.repository.save(user);
   }
 
   async changePassword(
     id: number,
-    dto: { oldPassword: string; newPassword: string; repeatPassword: string },
+    dto: { oldPassword: string; newPassword: string; confirmPassword: string },
   ) {
-    if (dto.newPassword !== dto.repeatPassword || dto.newPassword.length < 6) {
+    if (dto.newPassword !== dto.confirmPassword || dto.newPassword.length < 6) {
       throw new ForbiddenException('Error Changing password');
     }
     const user = await this.repository.findOne({ where: { id } });

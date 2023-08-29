@@ -1,7 +1,8 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoaderArgs, json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 import { FormProvider, useForm } from "react-hook-form";
+import { Api } from "~/api/axiosInstance";
 import {
   FormButton,
   FormField,
@@ -24,24 +25,12 @@ export const loader = async ({ request }: LoaderArgs) => {
     });
   }
 
-  //   if ((user.role === "manager" || user.role === "runner") && user.clubId) {
-  //     const club = await Api().clubs.getClub(user.clubId.toString());
-  //     if (club) {
-  //       returnData = { ...returnData, club };
-  //     }
-
-  //     if(user.role === "manager" && user.clubId) {
-  //         const teams = await
-  //     }
-  //   }
-
-  console.log(user);
-
   return json({ user });
 };
 
 const ProfileSettings = () => {
   const { user } = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
 
   const form = useForm({
     mode: "onChange",
@@ -55,7 +44,23 @@ const ProfileSettings = () => {
     resolver: yupResolver(updateProfileSchema),
   });
 
-  const onSubmit = async (data: any) => {};
+  const onSubmit = async (data: any) => {
+    try {
+      const dto = {
+        name: data.name,
+        surname: data.surname,
+        city: data.city,
+        country: data.country,
+        image: data.image,
+      };
+
+      await Api(user.token).users.updateProfile(dto);
+
+      navigate(`/profile/${user.id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-full">

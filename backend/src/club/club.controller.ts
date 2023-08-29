@@ -11,9 +11,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Media } from 'src/media/entities/media.entity';
 import { ClubService } from './club.service';
 import { CreateClubDto } from './dto/create-club.dto';
-import { UpdateClubDto } from './dto/update-club.dto';
 
 @Controller('clubs')
 export class ClubController {
@@ -45,9 +45,19 @@ export class ClubController {
     return this.clubService.findFinishedRacesByClub(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClubDto: UpdateClubDto) {
-    return this.clubService.update(+id, updateClubDto);
+  @Patch(':id/club-data')
+  update(
+    @Param('id') id: string,
+    @Body()
+    dto: {
+      name?: string;
+      city?: string;
+      country?: string;
+      logo?: Media;
+      photo?: Media;
+    },
+  ) {
+    return this.clubService.update(+id, dto);
   }
 
   @Post(':id/handle-favorite')
@@ -63,6 +73,16 @@ export class ClubController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.clubService.remove(+id);
+  }
+
+  @Patch(':id/kick-members')
+  @UseGuards(JwtAuthGuard)
+  kickMembers(
+    @Request() req,
+    @Param('id') id: string,
+    @Body() body: { userIds: number[] },
+  ) {
+    return this.clubService.kickMembers(+req.user.id, +id, body.userIds);
   }
 
   @Post(':id/leave')

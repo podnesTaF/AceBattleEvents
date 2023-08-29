@@ -1,5 +1,6 @@
-import { Link } from "@remix-run/react";
+import { Link, useNavigate } from "@remix-run/react";
 import React, { useState } from "react";
+import { Api } from "~/api/axiosInstance";
 import { IUser } from "~/lib/types";
 import { getCategoryByDoB, isAbleToInvite, isAbleToJoin } from "~/lib/utils";
 import { ChangeImageForm } from "..";
@@ -18,6 +19,25 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   authedUser,
 }) => {
   const [editImageDialogOpen, setEditImageDialogOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const onAddProfileImage = async (dto: any) => {
+    if (!dto || !user) return;
+    try {
+      await Api(token).users.updateImage(dto.id);
+      navigate(`/profile/${user.id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onCloseDialog = (image?: any) => {
+    if (image.title) {
+      onAddProfileImage(image);
+    }
+    setEditImageDialogOpen(false);
+  };
+
   return (
     <>
       <header className="w-full flex flex-col md:h-[800px] relative">
@@ -94,10 +114,10 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       </header>
       {token && (
         <ChangeImageForm
+          successCallback={onAddProfileImage}
           setEditImageDialogOpen={setEditImageDialogOpen}
           editImageDialogOpen={editImageDialogOpen}
-          user={user}
-          token={token}
+          onClose={onCloseDialog}
         />
       )}
     </>

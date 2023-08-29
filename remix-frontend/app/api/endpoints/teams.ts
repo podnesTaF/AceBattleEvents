@@ -183,4 +183,26 @@ export const TeamsApi = (instance: AxiosInstance) => ({
       console.log(error);
     }
   },
+
+  async updateTeam(
+    id: number,
+    data: {
+      name: string;
+      city: string;
+      gender: string;
+      coach: {
+        name: string;
+        surname: string;
+      };
+      players: number[];
+    }
+  ) {
+    try {
+      const { data: team } = await instance.patch<ITeam>(`/teams/${id}`, data);
+
+      return team;
+    } catch (error) {
+      return null;
+    }
+  },
 });

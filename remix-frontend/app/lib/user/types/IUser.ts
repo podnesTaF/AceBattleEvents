@@ -19,4 +19,5 @@ export interface IUser {
   dateOfBirth?: string;
   worldAthleticsUrl?: string;
   favoriteClubs?: IClub;
+  createdAt: string;
 }

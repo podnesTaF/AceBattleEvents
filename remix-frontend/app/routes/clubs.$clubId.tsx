@@ -25,6 +25,8 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
   const user = await authenticator.isAuthenticated(request);
 
+  const me = await Api(user?.token).users.getUser();
+
   if (!clubId) throw new Error("Club not found");
 
   const club = await Api().clubs.getClub(clubId);
@@ -33,15 +35,19 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
   const clubResultsData = await Api().teams.getTeamResultsByClubId(club.id, +1);
 
+  const resultsRows = transformClubResults(clubResultsData?.results || []);
+
   return json({
     club,
-    user,
+    user: me,
     resultsData: { ...clubResultsData, currPage: +resultPage },
+    resultsRows,
   });
 };
 
 const ClubPage = () => {
-  const { club, user, resultsData } = useLoaderData<typeof loader>();
+  const { club, user, resultsData, resultsRows } =
+    useLoaderData<typeof loader>();
   const [statusAlert, setStatusAlert] = useState({
     message: "",
     isOpen: false,
@@ -129,7 +135,7 @@ const ClubPage = () => {
             <ClubResultsFilter getFilters={getFilters} />
             <div className="w-full">
               <CustomTable
-                rows={transformClubResults(resultsData?.results || [])}
+                rows={resultsRows}
                 isLoading={false}
                 titleColor="bg-[#1E1C1F]"
               />

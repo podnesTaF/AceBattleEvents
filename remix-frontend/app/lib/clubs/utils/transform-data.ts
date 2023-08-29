@@ -1,5 +1,6 @@
 import { msToMinutesAndSeconds } from "~/lib/races/utils/transform-data";
 import { ITeam, TeamResult } from "~/lib/teams/types";
+import { IUser } from "~/lib/types";
 import { IClub } from "../types";
 
 export const transformClubResults = (results: TeamResult[]) => {
@@ -50,4 +51,24 @@ export const getTeams = (teams: ITeam[]): string => {
   }
 
   return finalStr;
+};
+
+export const transformToClubMembers = (members: IUser[]) => {
+  return members.map((member) => ({
+    name: member.name + " " + member.surname,
+    "date of birth": member.dateOfBirth
+      ? new Date(member.dateOfBirth).toLocaleDateString()
+      : "N/A",
+    email: member.email,
+    "created at": new Date(member.createdAt).toLocaleDateString(),
+    role: member.role,
+    country: member.country.code,
+    results:
+      member.role === "runner"
+        ? {
+            link: "/profile/" + member.id + "/Results?scrollY=800",
+            value: "results",
+          }
+        : "N/A",
+  }));
 };

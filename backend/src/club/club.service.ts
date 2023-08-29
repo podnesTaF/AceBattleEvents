@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Media } from 'src/media/entities/media.entity';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { CreateClubDto } from './dto/create-club.dto';
-import { UpdateClubDto } from './dto/update-club.dto';
 import { Club } from './entities/club.entity';
 
 @Injectable()
@@ -23,11 +23,18 @@ export class ClubService {
     });
   }
 
-  findAll(queries: any) {
+  async findAll(queries: any) {
+    const limit = +queries.limit || 10;
+    const page = +queries.page || 1;
+    const offset = (page - 1) * limit;
+    const totalCount = await this.repository.count();
+
     const qb = this.repository
       .createQueryBuilder('club')
       .leftJoinAndSelect('club.members', 'members')
-      .leftJoinAndSelect('club.logo', 'logo');
+      .leftJoinAndSelect('club.teams', 'teams')
+      .leftJoinAndSelect('club.logo', 'logo')
+      .orderBy('club.id', 'DESC');
 
     const conditions = [];
 
@@ -46,7 +53,12 @@ export class ClubService {
       });
     }
 
-    return qb.getMany();
+    const clubs = await qb.getMany();
+
+    return {
+      clubs,
+      totalPages: Math.ceil(totalCount / limit),
+    };
   }
 
   findAllSnippet() {
@@ -99,8 +111,34 @@ export class ClubService {
     return finishedRaces;
   }
 
-  update(id: number, updateClubDto: UpdateClubDto) {
-    return `This action updates a #${id} club`;
+  async update(
+    id: number,
+    dto: {
+      name?: string;
+      city?: string;
+      country?: string;
+      logo?: Media;
+      photo?: Media;
+    },
+  ) {
+    const club = await this.repository.findOne({
+      where: { id },
+      relations: ['logo', 'photo'],
+    });
+
+    club.name = dto.name || club.name;
+    club.city = dto.city || club.city;
+    club.country = dto.country || club.country;
+
+    if (dto.logo) {
+      club.logo = dto.logo;
+    }
+
+    if (dto.photo) {
+      club.photo = dto.photo;
+    }
+
+    return this.repository.save(club);
   }
 
   remove(id: number) {
@@ -113,6 +151,25 @@ export class ClubService {
     });
 
     club.members = club.members.filter((member) => member.id !== userId);
+
+    return this.repository.save(club);
+  }
+
+  async kickMembers(managerId: number, clubId: number, userIds: number[]) {
+    const user = await this.userService.findById(managerId);
+
+    if (user?.role !== 'manager') {
+      throw new Error('You are not allowed to kick members');
+    }
+
+    const club = await this.repository.findOne({
+      where: { id: clubId },
+      relations: ['members'],
+    });
+
+    club.members = club.members.filter(
+      (member) => !userIds.includes(member.id),
+    );
 
     return this.repository.save(club);
   }

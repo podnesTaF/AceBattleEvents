@@ -1,6 +1,8 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoaderArgs } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import { FormProvider, useForm } from "react-hook-form";
+import { Api } from "~/api/axiosInstance";
 import { FormButton, FormField, FormPartsLayout } from "~/components";
 import AdminHeader from "~/components/admin/AdminHeader";
 import { changePasswordSchema } from "~/lib/user/utils/shemas";
@@ -20,12 +22,20 @@ export const loader = async ({ request }: LoaderArgs) => {
 };
 
 const ChangePassword = () => {
+  const { user } = useLoaderData<typeof loader>();
   const form = useForm({
     mode: "onChange",
     resolver: yupResolver(changePasswordSchema),
   });
 
-  const onSubmit = async (data: any) => {};
+  const onSubmit = async (data: any) => {
+    try {
+      await Api(user.token).users.changePassword(data);
+      form.reset();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-full">

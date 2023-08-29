@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
 @Controller('users')
@@ -52,9 +53,15 @@ export class UserController {
   updatePassword(
     @Request() req,
     @Body()
-    body: { oldPassword: string; newPassword: string; repeatPassword: string },
+    body: { oldPassword: string; newPassword: string; confirmPassword: string },
   ) {
     return this.userService.changePassword(req.user.id, body);
+  }
+
+  @Patch('/profile-data')
+  @UseGuards(JwtAuthGuard)
+  updateProfileData(@Request() req, @Body() body: UpdateUserDto) {
+    return this.userService.updateProfileData(req.user.id, body);
   }
 
   @Get('count')

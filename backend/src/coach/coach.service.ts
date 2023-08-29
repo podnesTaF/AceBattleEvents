@@ -11,7 +11,15 @@ export class CoachService {
     private repository: Repository<Coach>,
   ) {}
 
-  create(dto: CreateCoachDto) {
-    return this.repository.save(dto);
+  async create(dto: CreateCoachDto) {
+    const coach = await this.repository.findOne({
+      where: { name: dto.name, surname: dto.surname },
+    });
+
+    if (coach) {
+      return coach;
+    } else {
+      return this.repository.save(dto);
+    }
   }
 }
