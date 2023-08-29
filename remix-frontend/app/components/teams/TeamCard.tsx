@@ -1,4 +1,7 @@
+import EditIcon from "@mui/icons-material/Edit";
+import { IconButton } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
+import { Link } from "@remix-run/react";
 import React from "react";
 import { ITeam } from "~/lib/types";
 import { transfromIntoPlayersTable } from "~/lib/utils";
@@ -7,11 +10,16 @@ import { CustomTable, TableSkeleton } from "../shared";
 interface TeamCardProps {
   team?: ITeam;
   hightlightId?: number;
+  editable?: boolean;
 }
 
-const TeamCard: React.FC<TeamCardProps> = ({ team, hightlightId }) => {
+const TeamCard: React.FC<TeamCardProps> = ({
+  team,
+  hightlightId,
+  editable,
+}) => {
   return (
-    <div className="shadow-md rounded-md flex flex-col md:flex-row w-full md:justify-between  bg-[url('/stadium.png')] my-5 bg-no-repeat bg-cover bg-bottom">
+    <div className="relative shadow-md rounded-md flex flex-col md:flex-row w-full md:justify-between  bg-[url('/stadium.png')] my-5 bg-no-repeat bg-cover bg-bottom">
       <div className="w-full md:w-1/2 lg:w-1/3 rounded-t-md md:rounded-t-none rounded-tl-md overflow-hidden pb-3 mb-3 md:mb-0">
         <div className="w-full bg-black p-3 md:p-4 mb-3 rounded-tl-md">
           {team ? (
@@ -64,6 +72,16 @@ const TeamCard: React.FC<TeamCardProps> = ({ team, hightlightId }) => {
           <TableSkeleton />
         )}
       </div>
+      {editable && (
+        <Link
+          className="absolute top-4 right-4 h-10"
+          to={"/user/settings/teams/" + team?.id}
+        >
+          <IconButton>
+            <EditIcon />
+          </IconButton>
+        </Link>
+      )}
     </div>
   );
 };

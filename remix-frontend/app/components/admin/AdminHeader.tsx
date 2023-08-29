@@ -3,6 +3,7 @@ import { SearchField } from "..";
 
 interface Props {
   title: string;
+  pageName: string;
   description: string;
   searchValue?: string;
   onChangeInput?: Function;
@@ -15,6 +16,7 @@ const AdminHeader: React.FC<Props> = ({
   searchValue,
   onChangeInput,
   children,
+  pageName,
 }) => {
   return (
     <div className="w-full">
@@ -25,7 +27,7 @@ const AdminHeader: React.FC<Props> = ({
             {title}
           </h2>
           <h3 className="text-white text-2xl lg:text-3xl pl-2 font-semibold uppercase">
-            Admin dashboard
+            {pageName}
           </h3>
         </div>
       </header>

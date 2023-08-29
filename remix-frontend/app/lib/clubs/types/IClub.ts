@@ -7,7 +7,7 @@ export type IClub = {
   name: string;
   country: string;
   members: IUser[];
-  created_at: string;
+  createdAt: string;
   city: string;
   teams: ITeam[];
   logo?: IMedia;

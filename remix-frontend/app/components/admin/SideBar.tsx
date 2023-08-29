@@ -1,82 +1,13 @@
-import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
-import EventNoteIcon from "@mui/icons-material/EventNote";
-import GroupsIcon from "@mui/icons-material/Groups";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import PermMediaIcon from "@mui/icons-material/PermMedia";
-import { useState } from "react";
+import React, { useState } from "react";
 import SideTab from "./SideTab";
 
-const tabs = [
-  {
-    title: "Events",
-    icon: <EventNoteIcon />,
-    hiddenTabs: [
-      {
-        title: "All events",
-        link: "/admin/events",
-      },
-      {
-        title: "Add one",
-        link: "/admin/events/add",
-      },
-    ],
-    name: "events",
-  },
-  {
-    title: "Clubs",
-    icon: <GroupsIcon />,
-    hiddenTabs: [
-      {
-        title: "All clubs",
-        link: "/admin/clubs",
-      },
-      {
-        title: "Add one",
-        link: "/admin/clubs/add",
-      },
-    ],
-    name: "clubs",
-  },
-  {
-    title: "Races",
-    icon: <DirectionsRunIcon />,
-    hiddenTabs: [
-      {
-        title: "All races",
-        link: "/admin/races",
-      },
-      {
-        title: "Add one",
-        link: "/admin/races/add",
-      },
-    ],
-    name: "races",
-  },
-  {
-    title: "Players",
-    icon: <PeopleAltIcon />,
-    hiddenTabs: [
-      {
-        title: "All players",
-        link: "/admin/players",
-      },
-    ],
-    name: "players",
-  },
-  {
-    title: "Media files",
-    icon: <PermMediaIcon />,
-    hiddenTabs: [
-      {
-        title: "All media",
-        link: "/admin/media",
-      },
-    ],
-    name: "media",
-  },
-];
+interface SideBarProps {
+  tabs: any[];
 
-const SideBar = () => {
+  title: string;
+}
+
+const SideBar: React.FC<SideBarProps> = ({ tabs, title }) => {
   const [tabsControl, setTabsControl] = useState<any>({
     players: false,
     teams: false,
@@ -89,9 +20,9 @@ const SideBar = () => {
   };
 
   return (
-    <div className="sm:h-screen fixed sm:sticky bottom-0 sm:w-64 flex sm:flex-col bg-[#1E1C1F] overflow-x-scroll sm:overflow-x-auto z-10">
+    <div className="h-full md:min-h-screen fixed md:static bottom-0 sm:w-64 flex sm:flex-col bg-[#1E1C1F] overflow-x-scroll sm:overflow-x-auto z-10">
       <div className="py-4 hidden sm:flex px-4">
-        <h3 className="text-2xl font-semibold text-white uppercase">Admin</h3>
+        <h3 className="text-2xl font-semibold text-white uppercase">{title}</h3>
       </div>
       {tabs.map((tab) => (
         <SideTab

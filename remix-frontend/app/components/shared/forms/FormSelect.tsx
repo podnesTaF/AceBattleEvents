@@ -6,7 +6,7 @@ interface FormSelectProps {
   placeholder: string;
   values: any[];
   onChangeFilter: (value: string) => void;
-  selected?: string;
+  selected?: string | number;
   name: string;
 }
 

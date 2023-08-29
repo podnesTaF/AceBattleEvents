@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { json } from "@remix-run/node";
+import { LoaderArgs, json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -7,29 +7,64 @@ import { Api } from "~/api/axiosInstance";
 import { FormButton, FormField, FormSelect } from "~/components";
 import { createRaceSchema, transformDataToSelect } from "~/lib/utils";
 
-export const loader = async () => {
+export const loader = async ({ request }: LoaderArgs) => {
   const eventsSnippets = await Api().events.getEventsSnippet();
+
+  const { url } = request;
+  const raceId = new URL(url).searchParams.get("raceId");
+
+  let race;
+  let defaultValues;
+  if (raceId) {
+    race = await Api().races.getRace(raceId);
+    if (race) {
+      defaultValues = {
+        startTime: new Date(race.startTime).toISOString().slice(0, 16),
+        eventId: race.event.id,
+        team1Id: race.teams[0].id + "",
+        team2Id: race.teams[1].id + "",
+      };
+    }
+  }
 
   return json({
     eventsSnippets,
+    race: race || null,
+    defaultValues: defaultValues || null,
   });
 };
 
 const AdminRacesAdd = () => {
-  const { eventsSnippets } = useLoaderData<typeof loader>();
-  const [chosenEvent, setChosenEvent] = useState<number>();
+  const { eventsSnippets, race, defaultValues } =
+    useLoaderData<typeof loader>();
+  const [chosenEvent, setChosenEvent] = useState<number | undefined>(
+    defaultValues?.eventId
+  );
   const [teams, setTeams] = useState<{ id: number; name: string }[]>([]);
   const navigate = useNavigate();
 
   const form = useForm({
     mode: "onChange",
     resolver: yupResolver(createRaceSchema),
+    defaultValues: defaultValues || {},
   });
 
   const onSubmit = async (dto: any) => {
     try {
-      const race = await Api().races.createRace({
-        teamIds: [dto.team1Id, dto.team2Id],
+      if (race) {
+        await Api().races.updateRace(
+          {
+            teamIds: [+dto.team1Id, +dto.team2Id],
+            eventId: dto.eventId,
+            startTime: dto.startTime,
+          },
+          race.id
+        );
+        navigate("/admin/races");
+        return;
+      }
+      await Api().races.createRace({
+        teamIds: [+dto.team1Id, +dto.team2Id],
         eventId: dto.eventId,
         startTime: dto.startTime,
       });
@@ -49,12 +84,12 @@ const AdminRacesAdd = () => {
         setTeams(teamsSnippets);
       }
     })();
-  }, [chosenEvent]);
+  }, [chosenEvent, defaultValues]);
 
   return (
     <>
       <div className="w-full bg-[#1E1C1F] p-4">
-        <h2 className="text-white text-3xl font-semibold">Add Event</h2>
+        <h2 className="text-white text-3xl font-semibold">Add Race</h2>
       </div>
       <div className="mx-3 my-5 max-w-4xl md:mx-auto">
         <FormProvider {...form}>
@@ -106,7 +141,7 @@ const AdminRacesAdd = () => {
               </div>
               <div className="w-full justify-center">
                 <FormButton
-                  title="create event"
+                  title={race ? "update race" : "create race"}
                   disabled={
                     !form.formState.isValid || form.formState.isSubmitting
                   }

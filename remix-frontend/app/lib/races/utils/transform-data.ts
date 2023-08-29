@@ -19,7 +19,7 @@ export const transformForAdminRace = (races: IRace[]) => {
     ...r,
     battle: !races[i].winner ? "not finished" : r.battle,
     edit: {
-      link: "/admin/races/edit/" + races[i].id,
+      link: "/admin/races/add?raceId=" + races[i].id,
       value: "edit",
     },
   }));

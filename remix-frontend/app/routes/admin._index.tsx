@@ -13,11 +13,15 @@ export const loader = async () => {
 };
 
 const MainAdminPage = () => {
-  const { adminStats } = useLoaderData();
+  const { adminStats } = useLoaderData<typeof loader>();
 
   return (
     <div className="w-full">
-      <AdminHeader title="" description="Admin page" />
+      <AdminHeader
+        title=""
+        pageName="Admin Dashboard"
+        description="Admin page"
+      />
       <div className="flex flex-col items-center justify-center bg-gray-100 py-6">
         <h1 className="text-4xl font-bold text-gray-800 mb-6">
           Admin Dashboard
