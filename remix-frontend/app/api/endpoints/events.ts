@@ -40,11 +40,9 @@ export const EventsApi = (instance: AxiosInstance) => ({
   async getEvent(id: string) {
     try {
       const { data } = await instance.get<IEvent>(`events/${id}`);
-
       return data;
-    } catch (e) {
-      console.log(e);
-      return null;
+    } catch (e: any) {
+      throw new Error(e.response?.data?.message || "error registering viewer");
     }
   },
 
@@ -56,9 +54,8 @@ export const EventsApi = (instance: AxiosInstance) => ({
       );
 
       return data;
-    } catch (e) {
-      console.log(e);
-      return null;
+    } catch (e: any) {
+      throw new Error(e.response?.data?.message);
     }
   },
 

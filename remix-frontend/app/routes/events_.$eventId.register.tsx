@@ -3,6 +3,7 @@ import { useActionData, useLoaderData, useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
 
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Button } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
 import { Api } from "~/api/axiosInstance";
 import {
@@ -20,13 +21,15 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
   const event = await Api().events.getEvent(eventId || "");
 
+  const user = await authenticator.isAuthenticated(request);
+
   if (!event) {
     throw new Response("Event not found.", {
       status: 404,
     });
   }
 
-  return json({ event });
+  return json({ event, user });
 };
 
 export const action = async ({ request, params }: ActionArgs) => {
@@ -41,31 +44,46 @@ export const action = async ({ request, params }: ActionArgs) => {
 
   const authedUser = await authenticator.isAuthenticated(request);
 
-  const registration = await Api().events.registerViewer({
-    eventId: eventId || "",
-    firstName,
-    lastName,
-    gender,
-    email,
-    discoveryMethod,
-    viewerId: authedUser?.id,
-  });
+  try {
+    const registration = await Api().events.registerViewer({
+      eventId: eventId || "",
+      firstName,
+      lastName,
+      gender,
+      email,
+      discoveryMethod,
+      viewerId: authedUser?.id,
+    });
+    console.log("registration:", registration);
 
-  if (registration) {
-    return json({ registration, authedUser: authedUser || null, error: null });
-  } else {
+    if (registration) {
+      return json({
+        registration,
+        authedUser: authedUser || null,
+        error: null,
+      });
+    } else {
+      return json({
+        registration: null,
+        authedUser: authedUser || null,
+        error: "Error registering",
+      });
+    }
+  } catch (error: any) {
+    console.log(error);
     return json({
       registration: null,
       authedUser: authedUser || null,
-      error: "Error registering",
+      error: "Error registering: " + error.message,
     });
   }
 };
 
 const RegisterAsViewer = () => {
-  const { event } = useLoaderData<typeof loader>();
+  const { event, user } = useLoaderData<typeof loader>();
   const data = useActionData<typeof action>();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [isFormShown, setIsFormShown] = useState(user ? false : true);
 
   const navigate = useNavigate();
 
@@ -75,10 +93,27 @@ const RegisterAsViewer = () => {
   });
 
   useEffect(() => {
-    if (data?.registration) {
+    if (data) {
       setDialogOpen(true);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (user && !isFormShown) {
+      form.setValue("firstName", user.name);
+      form.setValue("lastName", user.surname);
+      form.setValue("email", user.email);
+    }
+  }, [user, isFormShown]);
+
+  const handleClose = () => {
+    setDialogOpen(false);
+    if (!data?.error) {
+      navigate(`/events/${event.id}`);
+    } else {
+      navigate(`/events/${event.id}/register`);
+    }
+  };
 
   return (
     <>
@@ -129,28 +164,52 @@ const RegisterAsViewer = () => {
           </p>
           <FormProvider {...form}>
             <form method="post" className="flex w-full flex-col">
-              <div className="w-full flex flex-col lg:flex-row justify-between lg:gap-4">
-                <div className="w-full lg:w-6/12">
+              {user && (
+                <div className="mb-4 mt-6 flex justify-between w-full gap-4">
+                  <Button
+                    variant={`${isFormShown ? "outlined" : "contained"}`}
+                    className={`font-semibold text-xl`}
+                    color="primary"
+                    type="button"
+                    onClick={() => setIsFormShown(false)}
+                  >
+                    register as a {user.email}
+                  </Button>
+                  <Button
+                    variant={`${isFormShown ? "contained" : "outlined"}`}
+                    className="font-semibold text-xl"
+                    color="primary"
+                    type="button"
+                    onClick={() => setIsFormShown(true)}
+                  >
+                    register on another email
+                  </Button>
+                </div>
+              )}
+              <div className={`${isFormShown ? "block" : "hidden"}`}>
+                <div className="w-full flex flex-col lg:flex-row justify-between lg:gap-4">
+                  <div className="w-full lg:w-6/12">
+                    <FormField
+                      name="firstName"
+                      label="First name"
+                      placeholder="e.g John"
+                    />
+                  </div>
+                  <div className="w-full lg:w-6/12">
+                    <FormField
+                      name="lastName"
+                      label="Last name"
+                      placeholder="e.g Smith"
+                    />
+                  </div>
+                </div>
+                <div className="w-full">
                   <FormField
-                    name="firstName"
-                    label="First name"
-                    placeholder="e.g John"
+                    name="email"
+                    label="Email address"
+                    placeholder="e.g smith@domain.com"
                   />
                 </div>
-                <div className="w-full lg:w-6/12">
-                  <FormField
-                    name="lastName"
-                    label="Last name"
-                    placeholder="e.g Smith"
-                  />
-                </div>
-              </div>
-              <div className="w-full">
-                <FormField
-                  name="email"
-                  label="Email address"
-                  placeholder="e.g smith@domain.com"
-                />
               </div>
               <div className="w-full flex flex-col lg:flex-row justify-between lg:gap-4">
                 <div className="w-full lg:w-6/12">
@@ -192,7 +251,8 @@ const RegisterAsViewer = () => {
       <RegistrationPopup
         event={event}
         registration={data?.registration}
-        handleClose={() => setDialogOpen(false)}
+        error={data?.error}
+        handleClose={handleClose}
         open={dialogOpen}
       />
     </>

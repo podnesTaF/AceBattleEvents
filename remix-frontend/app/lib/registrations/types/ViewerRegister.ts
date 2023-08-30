@@ -1,4 +1,5 @@
 import { IEvent } from "~/lib/events/types";
+import { IUser } from "~/lib/types";
 
 export type CreateViewer = {
   eventId: string;
@@ -18,4 +19,5 @@ export type IViewer = {
   gender: string;
   discoveryMethod: string;
   event: IEvent;
+  viewer: IUser;
 };
