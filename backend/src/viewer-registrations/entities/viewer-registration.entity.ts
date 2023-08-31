@@ -31,4 +31,7 @@ export class ViewerRegistration {
 
   @ManyToOne(() => Media, { nullable: true })
   qrcode: Media;
+
+  @ManyToOne(() => Media, { nullable: true })
+  ticket: Media;
 }

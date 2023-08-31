@@ -79,6 +79,10 @@ export class ViewerRegistrationsService {
       storage,
     );
 
+    if (!qr) {
+      throw new Error('Error uploading QR code');
+    }
+
     const registration = await this.repository.save({
       ...createViewerRegistrationDto,
       event,
@@ -86,14 +90,19 @@ export class ViewerRegistrationsService {
       qrcode: qr,
     });
 
-    const pdfFilePath = await this.fileService.generatePDFforViewer(
+    const ticket = await this.fileService.generatePDFforViewer(
       event,
-      createViewerRegistrationDto,
+      registration,
       qr,
       storage,
     );
 
-    console.log(pdfFilePath);
+    if (!ticket) {
+      throw new Error('Error generating ticket');
+    } else {
+      registration.ticket = ticket;
+      await this.repository.save(registration);
+    }
 
     return registration;
   }
