@@ -121,6 +121,9 @@ export class UserService {
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.favoriteClubs', 'favoriteClubs')
       .leftJoinAndSelect('favoriteClubs.logo', 'logo')
+      .leftJoinAndSelect('favoriteClubs.photo', 'photo')
+      .leftJoinAndSelect('favoriteClubs.members', 'members')
+      .leftJoinAndSelect('favoriteClubs.teams', 'teams')
       .where('user.id = :id', { id })
       .getOne();
 

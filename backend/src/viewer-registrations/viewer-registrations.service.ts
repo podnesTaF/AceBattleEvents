@@ -1,11 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import sgMail from '@sendgrid/mail';
+import { config as evnconfig } from 'dotenv';
+import * as qrcode from 'qrcode';
 import { Event } from 'src/events/entities/event.entity';
+import { FileService, FileType } from 'src/file/file.service';
+import { storage } from 'src/file/google-cloud-storage.config';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateViewerRegistrationDto } from './dto/create-viewer-registration.dto';
 import { UpdateViewerRegistrationDto } from './dto/update-viewer-registration.dto';
 import { ViewerRegistration } from './entities/viewer-registration.entity';
+evnconfig();
 
 @Injectable()
 export class ViewerRegistrationsService {
@@ -16,7 +22,10 @@ export class ViewerRegistrationsService {
     private eventRepository: Repository<Event>,
     @InjectRepository(User)
     private viewerRepository: Repository<User>,
-  ) {}
+    private fileService: FileService,
+  ) {
+    sgMail.setApiKey(process.env.SEND_GRID_API_K);
+  }
 
   async create(createViewerRegistrationDto: CreateViewerRegistrationDto) {
     let viewer: User;
@@ -28,16 +37,80 @@ export class ViewerRegistrationsService {
 
     const event = await this.eventRepository.findOne({
       where: { id: createViewerRegistrationDto.eventId },
+      relations: ['location', 'location.country'],
     });
 
     if (!event) {
       throw new Error('Event not found');
     }
-    return this.repository.save({
+
+    const isUnique = await this.checkIfUnique(
+      createViewerRegistrationDto.email,
+      event.id,
+    );
+
+    if (!isUnique) {
+      throw new BadRequestException('Email already registered for this event');
+    }
+
+    const msg = {
+      to: createViewerRegistrationDto.email,
+      from: 'apodnes@gmail.com', // Set your sender email
+      subject: 'Welcome to the Event!',
+      html: `<p>Thank you for registering for our event. We're excited to have you.</p>`,
+    };
+
+    try {
+      const res = await sgMail.send(msg);
+    } catch (error) {
+      console.log('error sending email', error.message);
+    }
+
+    const qrCodeData = `eventId:${event.id};email:${createViewerRegistrationDto.email}`;
+
+    const qrCodeBuffer = await qrcode.toBuffer(qrCodeData);
+
+    const qrCodeFileName = `qrcode-event-${event.id}-user-${createViewerRegistrationDto.email}.png`;
+
+    const qr = await this.fileService.uploadFileToStorage(
+      FileType.QRCODE,
+      qrCodeBuffer,
+      qrCodeFileName,
+      storage,
+    );
+
+    const registration = await this.repository.save({
       ...createViewerRegistrationDto,
       event,
       viewer,
+      qrcode: qr,
     });
+
+    const pdfFilePath = await this.fileService.generatePDFforViewer(
+      event,
+      createViewerRegistrationDto,
+      qr,
+      storage,
+    );
+
+    console.log(pdfFilePath);
+
+    return registration;
+  }
+
+  async checkIfUnique(email: string, eventId: number) {
+    const registrations = await this.repository.find({
+      where: { email },
+      relations: ['event'],
+    });
+
+    if (
+      registrations.length &&
+      registrations.some((reg) => reg.event.id === eventId)
+    ) {
+      return false;
+    }
+    return true;
   }
 
   findAll() {

@@ -5,6 +5,7 @@ export const registerAsViewerSchema = yup.object().shape({
   lastName: yup.string().required("Please provide your last name"),
   email: yup.string().email().required("Please provide your email"),
   gender: yup.string().required("Provide your gender, please"),
+  userId: yup.number(),
   discoveryMethod: yup
     .string()
     .required("Please provide your discovery method"),

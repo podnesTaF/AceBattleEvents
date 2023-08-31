@@ -6,11 +6,13 @@ import React from "react";
 interface FavoriteClubButtonProps {
   handleFavorites: (action: string) => void;
   isFavorite: boolean;
+  position?: string;
 }
 
 const FavoriteClubButton: React.FC<FavoriteClubButtonProps> = ({
   handleFavorites,
   isFavorite,
+  position,
 }) => {
   return isFavorite ? (
     <IconButton
@@ -19,7 +21,7 @@ const FavoriteClubButton: React.FC<FavoriteClubButtonProps> = ({
         bgcolor: "white",
         opacity: 0.3,
         color: "green",
-        position: "fixed",
+        position: position || "fixed",
         bottom: 20,
         right: 20,
         "&:hover": {
