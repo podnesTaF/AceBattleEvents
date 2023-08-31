@@ -19,9 +19,14 @@ export class FileController {
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   async uploadImage(@UploadedFile() file: any): Promise<Media> {
+    if (!file) {
+      throw new Error('No file provided');
+    }
+
     const image = await this.fileService.uploadFileToStorage(
       FileType.IMAGE,
-      file,
+      file.buffer,
+      file.originalname,
       storage,
     );
     return image;

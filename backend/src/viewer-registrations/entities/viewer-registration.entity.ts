@@ -1,4 +1,5 @@
 import { Event } from 'src/events/entities/event.entity';
+import { Media } from 'src/media/entities/media.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -27,4 +28,7 @@ export class ViewerRegistration {
 
   @ManyToOne(() => Event, (event) => event.viewerRegistrations)
   event: Event;
+
+  @ManyToOne(() => Media, { nullable: true })
+  qrcode: Media;
 }
