@@ -29,9 +29,9 @@ export class ViewerRegistration {
   @ManyToOne(() => Event, (event) => event.viewerRegistrations)
   event: Event;
 
-  @ManyToOne(() => Media, { nullable: true })
+  @ManyToOne(() => Media, { nullable: true, onDelete: 'SET NULL' })
   qrcode: Media;
 
-  @ManyToOne(() => Media, { nullable: true })
+  @ManyToOne(() => Media, { nullable: true, onDelete: 'SET NULL' })
   ticket: Media;
 }

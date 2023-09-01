@@ -1,11 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import sgMail from '@sendgrid/mail';
 import { Club } from 'src/club/entities/club.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateClubRequestDto } from './dto/create-club-request.dto';
 import { UpdateClubRequestDto } from './dto/update-club-request.dto';
 import { JoinRequest } from './entities/club-request.entity';
+import {
+  acceptJoinRequestTemplate,
+  joinRequestTemplate,
+} from './utils/getMessageTemplate';
 
 @Injectable()
 export class ClubRequestsService {
@@ -16,7 +21,9 @@ export class ClubRequestsService {
     private userRepository: Repository<User>,
     @InjectRepository(Club)
     private clubRepository: Repository<Club>,
-  ) {}
+  ) {
+    sgMail.setApiKey(process.env.SEND_GRID_API_K);
+  }
 
   async create(
     createClubRequestDto: CreateClubRequestDto,
@@ -26,7 +33,14 @@ export class ClubRequestsService {
 
     // Find the user and club entities
     const user = await this.userRepository.findOne({ where: { id: userId } });
-    const club = await this.clubRepository.findOne({ where: { id: clubId } });
+    const club = await this.clubRepository.findOne({
+      where: { id: clubId },
+      relations: ['members'],
+    });
+    const manager = club.members.find((member) => member.role === 'manager');
+    if (!manager) {
+      throw new Error('Manager not found');
+    }
 
     // Create a new JoinRequest entity
     const joinRequest = new JoinRequest();
@@ -38,6 +52,19 @@ export class ClubRequestsService {
     const createdJoinRequest = await this.joinRequestRepository.save(
       joinRequest,
     );
+
+    const msg = {
+      to: manager.email,
+      from: 'it.podnes@gmail.com',
+      subject: `${club.name} - Join Request!`,
+      html: joinRequestTemplate(club, user, motivation),
+    };
+
+    try {
+      const res = await sgMail.send(msg);
+    } catch (error) {
+      console.log('error sending email', error.message);
+    }
 
     return createdJoinRequest;
   }
@@ -62,6 +89,8 @@ export class ClubRequestsService {
       relations: ['members'],
     });
 
+    const manager = club.members.find((member) => member.role === 'manager');
+
     // Remove the user from the club's join requests
     await this.joinRequestRepository.delete({ user, club });
 
@@ -70,6 +99,19 @@ export class ClubRequestsService {
 
     // Save the club
     await this.clubRepository.save(club);
+
+    const msg = {
+      to: user.email,
+      from: 'it.podnes@gmail.com',
+      subject: `${club.name} - Join Request Accepted!`,
+      html: acceptJoinRequestTemplate(club, manager),
+    };
+
+    try {
+      const res = await sgMail.send(msg);
+    } catch (error) {
+      console.log('error sending email', error.message);
+    }
 
     return { message: `${user.role} ${user.name} added to the club` };
   }

@@ -1,17 +1,24 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import sgMail from '@sendgrid/mail';
+import axios from 'axios';
 import { config as evnconfig } from 'dotenv';
 import * as qrcode from 'qrcode';
 import { Event } from 'src/events/entities/event.entity';
 import { FileService, FileType } from 'src/file/file.service';
 import { storage } from 'src/file/google-cloud-storage.config';
+import { Location } from 'src/locations/entities/locations.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateViewerRegistrationDto } from './dto/create-viewer-registration.dto';
 import { UpdateViewerRegistrationDto } from './dto/update-viewer-registration.dto';
 import { ViewerRegistration } from './entities/viewer-registration.entity';
+import { successRegisterTemplate } from './utils/getMessageTemplate';
 evnconfig();
+
+export const getGoogleMapsLink = (location: Location) => {
+  return `https://www.google.com/maps/search/?api=1&query=${location.address}+${location.city}+${location.country.name}`;
+};
 
 @Injectable()
 export class ViewerRegistrationsService {
@@ -53,19 +60,6 @@ export class ViewerRegistrationsService {
       throw new BadRequestException('Email already registered for this event');
     }
 
-    const msg = {
-      to: createViewerRegistrationDto.email,
-      from: 'apodnes@gmail.com', // Set your sender email
-      subject: 'Welcome to the Event!',
-      html: `<p>Thank you for registering for our event. We're excited to have you.</p>`,
-    };
-
-    try {
-      const res = await sgMail.send(msg);
-    } catch (error) {
-      console.log('error sending email', error.message);
-    }
-
     const qrCodeData = `eventId:${event.id};email:${createViewerRegistrationDto.email}`;
 
     const qrCodeBuffer = await qrcode.toBuffer(qrCodeData);
@@ -102,6 +96,33 @@ export class ViewerRegistrationsService {
     } else {
       registration.ticket = ticket;
       await this.repository.save(registration);
+    }
+
+    const { data: ticketData } = await axios.get(ticket.mediaUrl, {
+      responseType: 'arraybuffer',
+    });
+
+    const ticketBuffer = Buffer.from(ticketData);
+
+    const msg = {
+      to: createViewerRegistrationDto.email,
+      from: 'it.podnes@gmail.com', // Set your sender email
+      subject: 'Welcome to the Event!',
+      html: successRegisterTemplate(event, registration),
+      attachments: [
+        {
+          content: ticketBuffer.toString('base64'),
+          filename: ticket.title + '.pdf',
+          type: 'application/pdf',
+          disposition: 'attachment',
+        },
+      ],
+    };
+
+    try {
+      const res = await sgMail.send(msg);
+    } catch (error) {
+      console.log('error sending email', error.message);
     }
 
     return registration;
