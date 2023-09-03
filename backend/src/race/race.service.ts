@@ -72,6 +72,23 @@ export class RaceService {
     });
   }
 
+  async getFullRace(id: number) {
+    return this.repository.findOne({
+      where: { id },
+      relations: [
+        'event',
+        'winner',
+        'teamResults',
+        'teamResults.team',
+        'teams',
+        'teamResults.runnerResults',
+        'teamResults.runnerResults.runner',
+        'teamResults.runnerResults.runner.club',
+        'teamResults.runnerResults.splits',
+      ],
+    });
+  }
+
   getAllRacesByEvent(id: number) {
     return this.repository
       .createQueryBuilder('race')

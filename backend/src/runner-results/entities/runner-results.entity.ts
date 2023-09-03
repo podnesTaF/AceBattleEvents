@@ -20,6 +20,9 @@ export class RunnerResult {
   @Column()
   finalResultInMs: number;
 
+  @Column({ nullable: true })
+  runnerType: string;
+
   @ManyToOne(() => User, (user) => user.results, { nullable: true })
   runner: User;
 
