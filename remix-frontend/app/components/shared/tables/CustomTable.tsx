@@ -14,6 +14,7 @@ interface CustomTableProps {
   deletableRows?: boolean;
   onDelete?: (ids: number[]) => Promise<void>;
   ids?: number[];
+  height?: string;
 }
 
 const CustomTable: React.FC<CustomTableProps> = ({
@@ -25,6 +26,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
   hightlightIdx,
   deletableRows,
   onDelete,
+  height,
   ids,
 }) => {
   const [chosenItems, setChosenItems] = useState<number[]>([]);
@@ -37,7 +39,11 @@ const CustomTable: React.FC<CustomTableProps> = ({
   };
 
   return (
-    <div className="relative sm:rounded-sm max-h-[500px] overflow-auto">
+    <div
+      className={`relative sm:rounded-sm ${
+        height ? height : "max-h-[500px]"
+      } overflow-auto`}
+    >
       {isLoading ? (
         <TableSkeleton />
       ) : rows.length < 1 ? (

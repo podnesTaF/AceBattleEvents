@@ -163,7 +163,7 @@ const EventPage = () => {
           </div>
           <div className="my-10 mx-4 xl:mx-0">
             <h2 className="text-4xl my-3 font-semibold">Registered Teams</h2>
-            {event?.teams.length ? (
+            {event?.teams?.length ? (
               <CustomTable
                 titleColor="bg-black"
                 isTitleStraight={true}

@@ -1,5 +1,6 @@
+import { Link } from "@remix-run/react";
 import { IEvent, ITeam, IViewer } from "~/lib/types";
-import { convertDateFormat } from "~/lib/utils";
+import { convertDateFormat, getGoogleMapsLink } from "~/lib/utils";
 
 interface RegistrationsProps {
   event: IEvent;
@@ -29,7 +30,9 @@ const TeamRegistrationItem: React.FC<RegistrationsProps> = ({
           <p className="text-gray-400 border-b-[1px] border-red-500 pb-1 mb-2">
             Event
           </p>
-          <h3 className="text-2xl font-semibold mb-2">{event.title}</h3>
+          <Link to={`/events/${event.id}`}>
+            <h3 className="text-2xl font-semibold mb-2">{event.title}</h3>
+          </Link>
           {team && (
             <>
               <p className="text-gray-400 mb-2">Registered Team:</p>
@@ -42,14 +45,26 @@ const TeamRegistrationItem: React.FC<RegistrationsProps> = ({
           )}
           {viewer && (
             <>
-              <button className="w-full bg-yellow-400 font-semibold text-xl px-4 py-2 rounded-md mb-2 my-4">
+              <a
+                href={viewer.ticket?.mediaUrl || ""}
+                download={!!viewer.ticket}
+                target="_blank"
+                className={`w-full block ${
+                  !viewer.ticket
+                    ? "text-gray-500 bg-gray-300"
+                    : "bg-yellow-300 text-black"
+                } font-semibold text-xl px-4 py-2 rounded-md my-4 active:scale-95 hover:opacity-95`}
+              >
                 Download Ticket
-              </button>
+              </a>
             </>
           )}
-          <p className="text-xl text-gray-400 underline mb-2">
+          <a
+            href={getGoogleMapsLink(event.location)}
+            className="text-xl text-gray-400 underline mb-2"
+          >
             {event.location.address}, {event.location.zipCode}
-          </p>
+          </a>
         </div>
         <img
           src={index % 2 === 0 ? `/stadium.png` : "/running.svg"}

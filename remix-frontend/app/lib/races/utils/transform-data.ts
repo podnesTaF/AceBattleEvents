@@ -106,3 +106,83 @@ export const getResultIsMs = (result: string) => {
     Number(minutes) * 60 * 1000 + Number(seconds) * 1000 + Number(milliseconds)
   );
 };
+
+export const getTransformIntoResultTable = (race: IRace) => {
+  const teamResultCols = race.teamResults?.map((teamResult) => {
+    const resultObj: any = {
+      name: teamResult.team.name,
+      "age group": "",
+    };
+
+    teamResult.runnerResults[0].splits.forEach((split, i) => {
+      resultObj[`lap ${i + 1}`] = "";
+    });
+
+    resultObj.result = msToMinutesAndSeconds(teamResult.resultInMs);
+
+    return resultObj;
+  });
+
+  const runnerResultRows = teamResultCols?.map((col, i) => {
+    const teamRes = race.teamResults;
+    if (!teamRes) return [];
+    const runnerResultsCols = teamRes[i].runnerResults.map((result) => {
+      const resObj: any = {
+        name: {
+          link: "/profile/" + result.runner.id,
+          value: result.runner.name + " " + result.runner.surname,
+        },
+        "age group": getCategoryByDoB(result.runner.dateOfBirth) || "-",
+      };
+
+      teamRes[0].runnerResults[0].splits.forEach((split, i) => {
+        resObj[`lap ${i + 1}`] = "";
+      });
+
+      result.splits.forEach((split, i) => {
+        if (result.runnerType.indexOf("joker") !== -1) {
+          resObj[
+            `lap ${
+              teamRes[0].runnerResults[0].splits.length -
+              (result.splits.length - 1) +
+              i
+            }`
+          ] = msToMinutesAndSeconds(split.resultInMs);
+        } else {
+          resObj[`lap ${i + 1}`] = msToMinutesAndSeconds(split.resultInMs);
+        }
+      });
+
+      let res = msToMinutesAndSeconds(result.finalResultInMs);
+
+      if (result.runnerType === "joker1") {
+        const pacer1 = teamRes[i].runnerResults.find(
+          (r) => r.runnerType === "pacer1"
+        );
+        res = msToMinutesAndSeconds(
+          (pacer1?.finalResultInMs || 0) + result.finalResultInMs
+        );
+      } else if (result.runnerType === "joker2") {
+        const pacer2 = teamRes[i].runnerResults.find(
+          (r) => r.runnerType === "pacer2"
+        );
+        res = msToMinutesAndSeconds(
+          (pacer2?.finalResultInMs || 0) + result.finalResultInMs
+        );
+      }
+
+      resObj["result"] = res;
+
+      return resObj;
+    });
+
+    return runnerResultsCols;
+  });
+
+  if (!teamResultCols || !runnerResultRows) return [];
+
+  const firstTeam = [teamResultCols[0], ...runnerResultRows[0]];
+  const secondTeam = [teamResultCols[1], ...runnerResultRows[1]];
+
+  return [...firstTeam, ...secondTeam] || [];
+};

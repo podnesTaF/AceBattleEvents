@@ -8,6 +8,7 @@ export type IRunnerResult = {
   runner: IUser;
   teamResult: ITeamResult;
   splits: ISplit[];
+  runnerType: string;
 };
 
 export type ISplit = {

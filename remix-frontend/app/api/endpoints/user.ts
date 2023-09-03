@@ -34,7 +34,7 @@ export const UserApi = (instance: AxiosInstance) => ({
       const { data: userData } = await instance.get<IUser>(`/users/me`);
       return userData;
     } catch (error: any) {
-      throw new Error("Failed to fetch data: " + error.message);
+      return null;
     }
   },
   async getUserProfile(id: string) {

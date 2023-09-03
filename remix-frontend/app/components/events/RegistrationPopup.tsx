@@ -29,6 +29,10 @@ const RegistrationPopup: React.FC<RegistrationPopupProps> = ({
     setIsCopied(true);
   };
 
+  const downloadTicket = () => {
+    window.open(registration?.ticket?.mediaUrl, "_blank");
+  };
+
   return (
     <Dialog
       open={open}
@@ -51,7 +55,7 @@ const RegistrationPopup: React.FC<RegistrationPopupProps> = ({
       )}
       <div className="px-4 pb-4 w-full flex flex-col md:flex-row gap-4">
         {registration && (
-          <div className="w-full md:w-1/2 p-4 rounded-md border-red-500 border-[1px] bg-white">
+          <div className="w-full md:w-1/2 p-4 rounded-md border-red-500 border-[1px] bg-white  min-w-[420px]">
             <h3 className="text-xl font-semibold text-center mb-4">
               Thank you for registration!
             </h3>
@@ -75,8 +79,17 @@ const RegistrationPopup: React.FC<RegistrationPopupProps> = ({
               </div>
             </div>
             <div className="flex flex-col items-center gap-4 w-full mb-6">
+              <img
+                src={registration.qrcode?.mediaUrl}
+                alt="qrcode"
+                width={200}
+                height={200}
+              />
               <h2 className="text-2xl font-semibold">Download your ticket</h2>
-              <button className="bg-red-400 rounded-md text-white font-semibold px-5 py-2 hover:bg-red-500">
+              <button
+                onClick={downloadTicket}
+                className="bg-red-400 rounded-md text-white font-semibold px-5 py-2 hover:bg-red-500"
+              >
                 PDF
               </button>
             </div>
@@ -85,7 +98,7 @@ const RegistrationPopup: React.FC<RegistrationPopupProps> = ({
             </p>
           </div>
         )}
-        <div className="w-full md:w-1/2 flex flex-col justify-between">
+        <div className="w-full md:w-1/3 lg:w-1/2 flex flex-col justify-between min-w-[420px]">
           {registration && !registration.viewer && (
             <div className="flex flex-col items-center gap-4 mb-10">
               <p className="text-xl text-center">
@@ -102,7 +115,7 @@ const RegistrationPopup: React.FC<RegistrationPopupProps> = ({
               </div>
             </div>
           )}
-          <div className="w-full">
+          <div className="w-full self-end">
             {registration && (
               <div className="w-full mb-6">
                 <p className="text-center mb-4">

@@ -1,5 +1,5 @@
 import { IEvent } from "~/lib/events/types";
-import { IUser } from "~/lib/types";
+import { IMedia, IUser } from "~/lib/types";
 
 export type CreateViewer = {
   eventId: string;
@@ -20,4 +20,6 @@ export type IViewer = {
   discoveryMethod: string;
   event: IEvent;
   viewer: IUser;
+  qrcode: IMedia;
+  ticket: IMedia;
 };
