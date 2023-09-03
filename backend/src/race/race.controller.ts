@@ -32,6 +32,11 @@ export class RaceController {
     return this.raceService.getAllRacesByEvent(+eventId);
   }
 
+  @Get('/full-race/:id')
+  getFullRace(@Param('id') id: string) {
+    return this.raceService.getFullRace(+id);
+  }
+
   @Get(':id')
   getRace(@Param('id') id: string) {
     return this.raceService.getRace(+id);

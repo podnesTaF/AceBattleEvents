@@ -32,6 +32,7 @@ export class RunnerResultsService {
       teamResult,
       runner,
       distance: dto.distance,
+      runnerType: dto.runnerType || null,
       finalResultInMs: dto.finalResultInMs,
     });
 

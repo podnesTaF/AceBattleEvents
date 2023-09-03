@@ -20,6 +20,16 @@ export const RacesApi = (instance: AxiosInstance) => ({
     }
   },
 
+  async getFullRace(id: string) {
+    try {
+      const { data: race } = await instance.get("/race/full-race/" + id);
+
+      return race;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   async createRace(dto: {
     eventId: number;
     startTime: string;

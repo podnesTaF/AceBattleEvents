@@ -1,4 +1,4 @@
-import { IsArray, IsNumber } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 import { CreateSplitDto } from 'src/splits/dto/create-split.dto';
 
 export class CreateRunnerResultDto {
@@ -7,6 +7,10 @@ export class CreateRunnerResultDto {
 
   @IsNumber()
   runnerId: number;
+
+  @IsString()
+  @IsOptional()
+  runnerType: string;
 
   @IsNumber()
   distance: number;

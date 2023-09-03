@@ -1,7 +1,9 @@
 import { ILocation } from "~/lib/countries/types";
 
 export const getGoogleMapsLink = (location: ILocation) => {
-  return `https://www.google.com/maps/search/?api=1&query=${location.address}+${location.city}+${location.country.name}`;
+  return `https://www.google.com/maps/search/?api=1&query=${location.address}+${
+    location.city
+  }+${location.country?.name || location.country}`;
 };
 
 export const transformAddress = (location: ILocation): string => {

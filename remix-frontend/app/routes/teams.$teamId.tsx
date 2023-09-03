@@ -18,11 +18,17 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
   const teamResultsData = await Api().teams.getTeamResultsByTeamId(team.id);
 
-  return { team, teamResultsData, currPage: +resultPage };
+  return {
+    team,
+    teamResultsData,
+    currPage: +resultPage,
+    tableRows: transformClubResults(teamResultsData?.results || []),
+  };
 };
 
 const TeamPage = () => {
-  const { team, teamResultsData, currPage } = useLoaderData<typeof loader>();
+  const { team, teamResultsData, currPage, tableRows } =
+    useLoaderData<typeof loader>();
   const navigate = useNavigate();
 
   const onChangePage = async (page: number) => {
@@ -125,10 +131,7 @@ const TeamPage = () => {
             <h4 className="text-2xl font-semibold text-gray-400 mb-5">
               Last Races
             </h4>
-            <CustomTable
-              rows={transformClubResults(teamResultsData?.results || [])}
-              isLoading={false}
-            />
+            <CustomTable rows={tableRows} isLoading={false} />
             <div className="mt-4 flex justify-center">
               <Pagination
                 onChangePage={(page) => onChangePage(page)}

@@ -151,6 +151,7 @@ export class ViewerRegistrationsService {
     const qb = this.repository
       .createQueryBuilder('vr')
       .leftJoinAndSelect('vr.event', 'event')
+      .leftJoinAndSelect('vr.ticket', 'ticket')
       .leftJoinAndSelect('event.location', 'location')
       .leftJoinAndSelect('vr.viewer', 'viewer')
       .where('viewer.id = :id', { id })

@@ -2,7 +2,7 @@ import { useNavigate } from "@remix-run/react";
 import React from "react";
 
 interface IEventUsersActionProps {
-  eventId: number;
+  eventId?: number;
   isParticipant: boolean;
   userRole?: string;
 }

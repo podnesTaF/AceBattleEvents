@@ -3,5 +3,5 @@ export type IMedia = {
   title: string;
   mediaType: string;
   mediaUrl: string;
-  smallUrl: string;
+  smallUrl?: string;
 };
