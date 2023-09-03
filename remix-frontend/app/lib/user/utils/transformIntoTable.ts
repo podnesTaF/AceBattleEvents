@@ -27,7 +27,7 @@ export const transformUserResultsToTable = (userResults: UserResult[]) => {
     result: msToMinutesAndSeconds(userResult.runnerResult_finalResultInMs),
     place: userResult.winner_id === userResult.team_id ? "🏆" : "2",
     details: {
-      link: "/",
+      link: "/race/" + userResult.race_id,
       value: "details",
     },
   }));

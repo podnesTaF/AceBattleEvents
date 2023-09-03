@@ -16,7 +16,7 @@ export const transformClubResults = (results: TeamResult[]) => {
     result: msToMinutesAndSeconds(result.teamResult_resultInMs),
     place: result.winner_id === result.team_id ? "🏆" : "2",
     details: {
-      link: "/",
+      link: "/race/" + result.raceId,
       value: "details",
     },
   }));
