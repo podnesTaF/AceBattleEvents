@@ -10,6 +10,25 @@ html {
   clip-path: none;
 }
 
+.clip-right {
+  clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
+  transform: translateX(10%);
+}
+
+.clip-left {
+  clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
+  transform: translateX(-10%);
+}
+
+.clip-both {
+  clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+  transform: translateX(0);
+}
+
+.clip-rect {
+  clip-path: polygon(100% 0, 100% 100%, 20% 100%, 0 80%, 0 0);
+}
+
 .slider-carousel {
   position: absolute;
   transition: transform 0.3s ease;
@@ -74,6 +93,10 @@ html {
   max-width: 1080px;
 }
 
+.auto-approximation {
+  animation: auto-approximation 3s ease-in-out forwards;
+}
+
 @media screen and (min-width: 1180px) {
   .h-calc-screen-lg {
     height: calc(100vh - 90px) !important;
@@ -91,5 +114,14 @@ html {
 
   .clip-title-sm {
     clip-path: polygon(0 0, 100% 0, 96% 100%, 0% 100%);
+  }
+}
+
+@keyframes auto-approximation {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
   }
 }

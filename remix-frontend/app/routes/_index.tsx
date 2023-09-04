@@ -1,3 +1,6 @@
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import YouTubeIcon from "@mui/icons-material/YouTube";
 import { json, type V2_MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 
@@ -6,7 +9,7 @@ import axios from "axios";
 import { IEvent } from "~/lib/types";
 import { fakeNews } from "~/lib/utils";
 
-import { Skeleton } from "@mui/material";
+import { IconButton, Skeleton } from "@mui/material";
 import { Api } from "~/api/axiosInstance";
 import {
   CarouselItem,
@@ -17,6 +20,24 @@ import {
   SectionTitle,
   VideoItem,
 } from "~/components";
+
+const networksLinks = [
+  {
+    title: "Youtube",
+    href: "https://www.youtube.com/channel/UCMdyoMWNkZZ1UCTnarBnhcg",
+    icon: YouTubeIcon,
+  },
+  {
+    title: "Instagram",
+    href: "https://www.instagram.com/battle_mile/",
+    icon: InstagramIcon,
+  },
+  {
+    title: "Facebook",
+    href: "https://www.facebook.com/profile.php?id=100043279343057",
+    icon: FacebookIcon,
+  },
+];
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -130,8 +151,21 @@ export default function Index() {
             </div>
           </div>
         </section>
-
         <OtherPlatforms />
+        <div className="w-full bg-red-500 py-4">
+          <div className="max-w-6xl mx-4 lg:mx-auto flex justify-between items-center gap-4">
+            <h4 className="text-white text-2xl font-semibold">Follow us</h4>
+            <div className="flex gap-4">
+              {networksLinks.map((link, i) => (
+                <a href={link.href} key={i}>
+                  <IconButton sx={{ bgcolor: "white" }}>
+                    <link.icon className="text-red-500" fontSize="large" />
+                  </IconButton>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
       </main>
     </>
   );
