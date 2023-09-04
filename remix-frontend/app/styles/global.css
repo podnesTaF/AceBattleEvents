@@ -32,6 +32,48 @@ html {
   height: 320px;
 }
 
+.vector-shape {
+  width: 100%;
+  height: 100%; /* Adjust the height as needed */
+  position: relative;
+  background-color: #1e1c1f;
+  clip-path: polygon(0 100%, 100% 100%, 100% 80%, 0 100%);
+  z-index: -1;
+}
+
+.video-section {
+  position: relative;
+}
+
+.video-section.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.video-section .iframe-video {
+  width: 100%;
+  height: 180px;
+  border: none;
+}
+
+.video-section .fullscreen-iframe {
+  height: 640px;
+  width: 100%;
+}
+
+.video-wrapper {
+  width: 80%;
+  max-width: 1080px;
+}
+
 @media screen and (min-width: 1180px) {
   .h-calc-screen-lg {
     height: calc(100vh - 90px) !important;
@@ -40,7 +82,7 @@ html {
 
 @media screen and (min-width: 640px) {
   .h-calc-screen {
-    height: calc(100vh - 122px);
+    height: 640px;
   }
 
   .clip-title {
