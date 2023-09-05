@@ -1,4 +1,4 @@
-import { Divider, Skeleton } from "@mui/material";
+import { Skeleton } from "@mui/material";
 import { LoaderArgs, json } from "@remix-run/node";
 import {
   isRouteErrorResponse,
@@ -12,13 +12,11 @@ import { useRef, useState } from "react";
 import {
   CarouselItem,
   CustomCarousel,
-  CustomTable,
   EventHeader,
   EventUsersAction,
   Map,
   PrizesPodium,
   SectionTitle,
-  StatisticCards,
   WideCarousel,
 } from "~/components";
 import { IEvent } from "~/lib/types";
@@ -26,8 +24,8 @@ import {
   authenticator,
   formatDate,
   getGoogleMapsLink,
+  plans,
   transformAddress,
-  transformIntoTeamsTable,
 } from "~/lib/utils";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
@@ -131,7 +129,7 @@ const EventPage = () => {
                   preliminary teams:
                 </h4>
                 <div className="flex w-full justify-around gap-8 flex-col md:flex-row items-center md:w-4/5 px-4 md:mx-auto">
-                  <div className="flex flex-col gap-4 items-center w-2/5">
+                  <div className="flex flex-col gap-4 items-center w-full md:w-2/5">
                     <h5 className="font-semibold text-2xl">Professionals</h5>
                     <div className="flex items-center w-full">
                       <h3 className="text-2xl font-semibold w-1/2 border-r-2 border-black text-center">
@@ -146,7 +144,7 @@ const EventPage = () => {
                       countries
                     </p>
                   </div>
-                  <div className="flex flex-col gap-4 items-center w-2/5">
+                  <div className="flex flex-col gap-4 items-center  w-full md:w-2/5">
                     <h5 className="font-semibold text-2xl">Kids. U16</h5>
                     <div className="flex items-center w-full">
                       <h3 className="text-2xl font-semibold w-1/2 border-r-2 border-black text-center">
@@ -189,30 +187,122 @@ const EventPage = () => {
             />
             <p className="text-end">prize funds per team</p>
           </div>
+          <div className="mt-6 my-20 relative mx-3 sm:mx-6">
+            <img
+              src={"/running.svg"}
+              width={280}
+              height={360}
+              alt="running group"
+              className="absolute -z-10"
+            />
+            <div className="ml-auto w-full md:w-[600px] min-h-[360px]">
+              <h3 className="text-2xl text-center mb-3 font-semibold">
+                Other Awards
+              </h3>
+              <div className="w-full flex flex-col gap-3">
+                {event.prizes.length > 3 && (
+                  <div className="w-full flex bg-red-500 p-3">
+                    <div className="w-1/4 border-r-[1px] border-gray-200">
+                      <p className="text-xl uppercase text-center text-white">
+                        Place
+                      </p>
+                    </div>
+                    <div className="w-3/4">
+                      <p className="text-xl uppercase text-center text-white">
+                        Award
+                      </p>
+                    </div>
+                  </div>
+                )}
+                {event.prizes
+                  .sort((a, b) => a.place - b.place)
+                  .slice(3)
+                  .map((prize) => (
+                    <div
+                      key={prize.id}
+                      className={"p-4 shadow w-full flex bg-white/80"}
+                    >
+                      <div className="w-1/4 border-r-[1px] border-black">
+                        <p className="text-2xl uppercase text-center ">
+                          {prize.place}
+                        </p>
+                      </div>
+                      <div className="w-3/4">
+                        <p className="text-2xl uppercase text-center">
+                          {prize.amount} $
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                <div className="my-4">
+                  <ul className="list-disc ml-4">
+                    <li className="font-semibold text-xl ">
+                      the fastest mile: 500 €
+                    </li>
+                    <li className="font-semibold text-xl">
+                      the fastest pacer-joker: 500 €
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
-        <div className="bg-no-repeat bg-right-top bg-contain h-full relative">
-          <img
-            src={"/details2.jpg"}
-            width={400}
-            height={700}
-            alt="pict"
-            className="absolute top-0 right-0 -z-10"
-          />
-          <div className="w-full xl:w-3/4 max-w-[1280px] px-4 py-5 sm:px-8 lg:px-12 lg:py-8">
-            <StatisticCards event={event} />
-            <div className="flex flex-col md:flex-row items-center md:items-start justify-between w-full gap-10 md:gap-0">
-              <div className="w-full max-w-[500px] min-h-[350px] md:w-2/5 border-[1px] border-red bg-white p-4 flex flex-col justify-between">
-                <div className="flex justify-between">
+        <section className="bg-[#1E1C1F] py-4 my-6 md:my-8">
+          <div className="max-w-5xl mx-4 lg:mx-auto">
+            <SectionTitle
+              title={"Preliminary event schedule"}
+              textColor="text-white"
+              borderColor="border-white"
+            />
+            <div className="max-w-4xl flex gap-6 justify-between mx-auto my-6">
+              <h1 className="-rotate-90 translate-x-80 font-bold text-8xl text-[#D9DADB] uppercase hidden md:block w-1/3">
+                Action plan
+              </h1>
+              <div className="flex flex-col gap-6 w-full md:w-2/3">
+                <ul>
+                  <li className="text-xl font-semibold mb-4 text-white">
+                    September 22, Friday, 7 pm - 10 pm
+                  </li>
+                  <li className="text-xl text-white">
+                    Sequence Competition Draw with coaches of the team
+                  </li>
+                </ul>
+                <ul className="flex flex-col gap-1 w-full">
+                  <li className="text-xl font-semibold mb-4 text-white">
+                    September 23, Saturday, 3 pm - 8pm
+                  </li>
+                  {plans.map((p, i) => (
+                    <li
+                      key={i}
+                      className="text-xl text-white border-b-[1px] border-[#D9DADB] pb-1"
+                    >
+                      {p}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="w-full my-6">
+          <div className="max-w-7xl mx-4 lg:mx-auto lg:min-h-[700px] bg-none border-[1px] border-red-500  lg:border-none lg:bg-[url('/rect.svg')] bg-no-repeat bg-contain md:py-6 md:pl-8 flex flex-col gap-4 md:gap-8">
+            <h3 className="font-semibold uppercase text-3xl text-center lg:text-left">
+              LOCATIONS AND DATES
+            </h3>
+            <div className="flex gap-6 flex-col md:gap-8 md:flex-row p-2 w-full lg:w-4/5 items-center justify-center">
+              <div className="w-full md:w-2/5 p-4 flex flex-col justify-center">
+                <div className="flex justify-between border-b-[1px] border-[#D9DADB] py-2">
                   <p className="text-xl font-semibold">Country:</p>
                   <p className="text-xl font-light">
                     {event.location.country.name}
                   </p>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between border-b-[1px] border-[#D9DADB] py-2">
                   <p className="text-xl font-semibold">City:</p>
                   <p className="text-xl font-light">{event.location.city}</p>
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col border-b-[1px] border-[#D9DADB] py-2">
                   <p className="text-xl font-semibold">Address:</p>
                   {event.location && (
                     <p className="text-xl font-light underline">
@@ -227,14 +317,14 @@ const EventPage = () => {
                     </p>
                   )}
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between border-b-[1px] border-[#D9DADB] py-2">
                   <p className="text-xl font-semibold">Date:</p>
                   <p className="text-xl font-light">
                     {event && formatDate(event.startDateTime)}
                   </p>
                 </div>
               </div>
-              <div className="w-full min-w-[400px] max-w-[500px] md:w-3/5 border-[1px] border-red bg-white">
+              <div className="w-full min-w-[400px] max-w-[450px] max-h-[400px] md:w-3/5 border-[1px] border-black rounded-md overflow-hidden">
                 <Map
                   address={transformAddress(event.location)}
                   googleMapsKey={googleMapsKey}
@@ -242,83 +332,12 @@ const EventPage = () => {
               </div>
             </div>
           </div>
-        </div>
-        <div className="bg-[#1E1C1F] flex justify-center items-center p-4">
-          <h3 className="text-white text-3xl uppercase font-semibold">
-            Prices and Prizes
-          </h3>
-        </div>
-        <div className="mx-auto max-w-7xl h-full">
-          <div className="mt-6 my-20 relative mx-3 sm:mx-6">
-            <img
-              src={"/running.svg"}
-              width={380}
-              height={480}
-              alt="running group"
-              className="absolute -z-10"
-            />
-            <div className="ml-auto w-full md:w-[600px]">
-              <h3 className="text-2xl text-center mb-3 font-semibold">
-                PRIZE FUNDS
-              </h3>
-              <div className="w-full flex flex-col gap-3">
-                <div className="w-full flex bg-red-500 p-3">
-                  <div className="w-1/4 border-r-[1px] border-gray-200">
-                    <p className="text-xl uppercase text-center text-white">
-                      Place
-                    </p>
-                  </div>
-                  <div className="w-3/4">
-                    <p className="text-xl uppercase text-center text-white">
-                      Award
-                    </p>
-                  </div>
-                </div>
-                {event.prizes.map((prize) => (
-                  <div
-                    key={prize.id}
-                    className={"p-4 shadow w-full flex bg-white/80"}
-                  >
-                    <div className="w-1/4 border-r-[1px] border-black">
-                      <p className="text-2xl uppercase text-center ">
-                        {prize.place}
-                      </p>
-                    </div>
-                    <div className="w-3/4">
-                      <p className="text-2xl uppercase text-center">
-                        {prize.amount} $
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="my-10 mx-4 xl:mx-0">
-            <h2 className="text-4xl my-3 font-semibold">Registered Teams</h2>
-            {event?.teams?.length ? (
-              <CustomTable
-                titleColor="bg-black"
-                isTitleStraight={true}
-                rows={transformIntoTeamsTable(event?.teams)}
-                isLoading={false}
-              />
-            ) : (
-              <>
-                <p className="text-2xl text-center">
-                  There are no registered teams yet
-                </p>
-                <Divider />
-              </>
-            )}
-          </div>
-
-          <EventUsersAction
-            eventId={event.id}
-            isParticipant={false}
-            userRole={user?.role}
-          />
-        </div>
+        </section>
+        <EventUsersAction
+          eventId={event.id}
+          isParticipant={false}
+          userRole={user?.role}
+        />
       </main>
     </>
   );

@@ -18,18 +18,13 @@ const EventUsersAction: React.FC<IEventUsersActionProps> = ({
   }
 
   return (
-    <div className="my-20 mx-4 xl:mx-0 flex flex-col sm:flex-row justify-around gap-3">
-      <div className="relative">
-        <img src={"/details3.jpg"} width={400} height={300} alt="pict" />
-        <div className="absolute flex justify-center items-center w-full top-0 left-0 h-full sm:hidden bg-black/50">
-          <h2 className="text-3xl uppercase font-semibold p-3 text-white">
-            ADD YOUR TEAM AND BE ABLE TO WIN SUPER PRIZE!
-          </h2>
-        </div>
-      </div>
-      <div className="w-full sm:max-w-[400px] flex flex-col items-center">
-        <h2 className="text-3xl uppercase font-semibold mb-8 hidden sm:block">
-          ADD YOUR TEAM AND BE ABLE TO WIN SUPER PRIZE!
+    <div className="mt-8 bg-[url('/add-team.jpg')] bg-no-repeat bg-cover w-full relative h-64">
+      <div className="absolute top-0 left-0 w-full bg-gradient-to-b from-transparent to-black h-full"></div>
+      <div className="w-full md:max-w-6xl flex flex-col md:flex-row items-center mx-auto justify-between h-full py-4 relative z-10">
+        <h2 className="text-3xl uppercase font-semibold mb-8 text-white w-full md:w-1/2">
+          {userRole === "manager"
+            ? "ADD YOUR TEAM AND BE ABLE TO WIN SUPER PRIZE!"
+            : "Attend the Event and get unique experience!"}
         </h2>
         <button
           onClick={() => {
@@ -39,7 +34,7 @@ const EventUsersAction: React.FC<IEventUsersActionProps> = ({
               navigate(`/events/${eventId}/register`);
             }
           }}
-          className="bg-green-300 text-white uppercase font-semibold rounded-lg w-3/4 py-3"
+          className="bg-green-300 text-white uppercase font-semibold rounded-lg px-4 py-3 self-end"
         >
           {userRole === "manager" ? "Register Now" : "Attend the Event"}
         </button>
