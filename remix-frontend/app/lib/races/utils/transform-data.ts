@@ -1,5 +1,5 @@
 import { formatDate, getCategoryByDoB } from "~/lib/utils";
-import { IRace, ITeamResult, ResultTableRow } from "../types";
+import { IRace, ITeamResult } from "../types";
 
 export const transformRaceToTable = (races: IRace[]) => {
   return races.map((race) => ({
@@ -73,9 +73,7 @@ export const transformDataToSelect = (
   );
 };
 
-export const teamResultsTable = (
-  teamResults: ITeamResult[]
-): ResultTableRow[] => {
+export const teamResultsTable = (teamResults: ITeamResult[]) => {
   return teamResults.map((teamResult) => ({
     id: teamResult.id,
     team: {

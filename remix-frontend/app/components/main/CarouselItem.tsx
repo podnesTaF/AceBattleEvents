@@ -9,11 +9,11 @@ const CarouselItem: React.FC<Props> = ({ item }) => {
   const navigate = useNavigate();
   return (
     <div
-      onClick={() => navigate("/teams/" + item.id)}
+      onClick={() => navigate(`/${item.gender ? "teams" : "clubs"}/${item.id}`)}
       className="w-full overflow-hidden relative cursor-pointer active:scale-95 flex justify-center items-center"
     >
       <img
-        src={item.logo.mediaUrl}
+        src={item.logo?.mediaUrl || "/abm-logo-white.svg"}
         alt="team logo"
         className="object-contain max-h-[250px] md:max-h-[350px]"
         width={350}

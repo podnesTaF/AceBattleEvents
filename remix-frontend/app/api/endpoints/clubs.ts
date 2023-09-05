@@ -16,6 +16,15 @@ export const ClubApi = (instance: AxiosInstance) => ({
       return clubsData;
     }
   },
+  async getPreviewClubs() {
+    const { data: clubsData } = await instance.get<IClub[]>("/clubs/preview");
+
+    if (!clubsData) {
+      return [];
+    } else {
+      return clubsData;
+    }
+  },
   async getClub(id?: string) {
     if (!id) return null;
     const { data: clubData } = await instance.get<IClub>(`/clubs/${id}`);

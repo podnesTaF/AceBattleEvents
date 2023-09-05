@@ -10,6 +10,25 @@ html {
   clip-path: none;
 }
 
+.clip-right {
+  clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
+  transform: translateX(10%);
+}
+
+.clip-left {
+  clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
+  transform: translateX(-10%);
+}
+
+.clip-both {
+  clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+  transform: translateX(0);
+}
+
+.clip-rect {
+  clip-path: polygon(100% 0, 100% 100%, 20% 100%, 0 80%, 0 0);
+}
+
 .slider-carousel {
   position: absolute;
   transition: transform 0.3s ease;
@@ -32,6 +51,52 @@ html {
   height: 320px;
 }
 
+.vector-shape {
+  width: 100%;
+  height: 100%; /* Adjust the height as needed */
+  position: relative;
+  background-color: #1e1c1f;
+  clip-path: polygon(0 100%, 100% 100%, 100% 80%, 0 100%);
+  z-index: -1;
+}
+
+.video-section {
+  position: relative;
+}
+
+.video-section.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.video-section .iframe-video {
+  width: 100%;
+  height: 180px;
+  border: none;
+}
+
+.video-section .fullscreen-iframe {
+  height: 640px;
+  width: 100%;
+}
+
+.video-wrapper {
+  width: 80%;
+  max-width: 1080px;
+}
+
+.auto-approximation {
+  animation: auto-approximation 3s ease-in-out forwards;
+}
+
 @media screen and (min-width: 1180px) {
   .h-calc-screen-lg {
     height: calc(100vh - 90px) !important;
@@ -40,7 +105,7 @@ html {
 
 @media screen and (min-width: 640px) {
   .h-calc-screen {
-    height: calc(100vh - 122px);
+    height: 640px;
   }
 
   .clip-title {
@@ -49,5 +114,14 @@ html {
 
   .clip-title-sm {
     clip-path: polygon(0 0, 100% 0, 96% 100%, 0% 100%);
+  }
+}
+
+@keyframes auto-approximation {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
   }
 }

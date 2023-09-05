@@ -27,7 +27,7 @@ const IntroSlide: React.FC<Props> = ({
       onClick={() => navigate("events/" + event.id)}
       className={`${
         isActive ? "block" : "hidden"
-      } w-full h-full relative cursor-pointer`}
+      } w-full h-full relative cursor-pointer overflow-hidden`}
     >
       <div className="absolute w-full md:w-3/4 lg:w-1/2 bottom-0 left-1/2 -translate-x-1/2 px-4 py-2 bg-gradient-to-b from-transparent to-black">
         <div className="flex justify-between w-full py-2 border-b-[1px] border-red-500 mb-4 w">
@@ -73,7 +73,7 @@ const IntroSlide: React.FC<Props> = ({
           "https://storage.googleapis.com/abe_cloud_storage/image/large/dccfea3d-a639-4569-9c06-b37bbbb37130.jpg"
         }
         alt="bg"
-        className="object-cover w-full h-full mt-auto object-center shadow-md"
+        className="-z-10 absolute object-cover w-full h-full mt-auto object-center shadow-md auto-approximation"
       />
     </div>
   );

@@ -16,7 +16,7 @@ interface Props {
 
 const NewsCard: React.FC<Props> = ({ news }) => {
   return (
-    <div className="rounded-md shadow-md max-w-[550px] bg-white">
+    <div className="rounded-md shadow-md max-w-[550px] bg-white w-full">
       <div className="flex justify-between w-full mb-4">
         <div className="p-3 w-3/5">
           <h3 className="text-xl font-semibold mb-3">
@@ -24,7 +24,7 @@ const NewsCard: React.FC<Props> = ({ news }) => {
           </h3>
           <p>{news.text.slice(0, 40) + "..."}</p>
         </div>
-        <div className="w-2/5">
+        <div>
           <img
             src={news.media.mediaUrl}
             alt="news preview"
