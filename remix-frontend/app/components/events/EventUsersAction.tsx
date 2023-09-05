@@ -30,7 +30,7 @@ const EventUsersAction: React.FC<IEventUsersActionProps> = ({
           onClick={() => {
             if (userRole === "manager") {
               navigate(`/events/${eventId}/register-team`);
-            } else if (userRole === "viewer") {
+            } else {
               navigate(`/events/${eventId}/register`);
             }
           }}

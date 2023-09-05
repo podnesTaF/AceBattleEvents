@@ -189,7 +189,7 @@ const EventPage = () => {
           </div>
           <div className="mt-6 my-20 relative mx-3 sm:mx-6">
             <img
-              src={"/running.svg"}
+              src={"/running-black.svg"}
               width={280}
               height={360}
               alt="running group"

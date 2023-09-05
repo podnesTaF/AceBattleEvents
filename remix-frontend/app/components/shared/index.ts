@@ -4,6 +4,7 @@ import CustomCarousel from "./CustomCarousel";
 import CustomTitle from "./CustomTitle";
 import Footer from "./Footer";
 import MessageDialog from "./MessageDialog";
+import PageInDevelopment from "./PageInDevelopment";
 import SectionTitle from "./SectionTitle";
 import VideoItem from "./VideoItem";
 import WideCarousel from "./WideCarousel";
@@ -18,6 +19,7 @@ export {
   CustomTitle,
   Footer,
   MessageDialog,
+  PageInDevelopment,
   SectionTitle,
   VideoItem,
   WideCarousel,

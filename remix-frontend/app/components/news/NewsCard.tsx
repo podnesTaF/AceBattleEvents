@@ -24,7 +24,7 @@ const NewsCard: React.FC<Props> = ({ news }) => {
           </h3>
           <p>{news.text.slice(0, 40) + "..."}</p>
         </div>
-        <div className="w-2/5">
+        <div>
           <img
             src={news.media.mediaUrl}
             alt="news preview"
