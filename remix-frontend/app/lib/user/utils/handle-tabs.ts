@@ -1,4 +1,5 @@
 import { Api } from "~/api/axiosInstance";
+import { transformRaceToTable, transformUserResultsToTable } from "~/lib/utils";
 import { IUser } from "../types";
 
 export const getTeamsData = async (user: IUser) => {
@@ -9,7 +10,7 @@ export const getTeamsData = async (user: IUser) => {
 export const getLastRacesData = async (user: IUser) => {
   if (user.role === "manager" && user?.club?.id) {
     const races = await Api().clubs.getClubFinishedRaces(user.club.id);
-    return { races };
+    return { races, tableRaces: transformRaceToTable(races || []) };
   }
   return {};
 };
@@ -87,6 +88,9 @@ export const handleResultsTab = async (user: IUser, resultPage: number) => {
     const resultsData = await Api().users.getUserResults(user.id, +resultPage);
     if (resultsData) {
       returnData.resultsData = { ...resultsData, currentPage: +resultPage };
+      returnData.resultsTableData = transformUserResultsToTable(
+        resultsData.results
+      );
     }
   }
 

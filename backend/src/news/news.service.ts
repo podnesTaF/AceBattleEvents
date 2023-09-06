@@ -22,8 +22,14 @@ export class NewsService {
     });
   }
 
-  async getNewsPreviews() {
-    const newsList = await this.getNews();
+  async getNewsPreviews({
+    relatedNews,
+    itemsAmount,
+  }: {
+    relatedNews?: News[];
+    itemsAmount?: number;
+  }) {
+    const newsList = relatedNews ? relatedNews : await this.getNews();
 
     const newsPreviews = newsList.map((news) => {
       const content = news.contents.find((item) => item.type === 'text');
@@ -42,17 +48,59 @@ export class NewsService {
         title: news.title,
         previewText: previewText,
         smallImageUrl: media ? media.smallUrl : '',
+        createdAt: news.createdAt,
       };
     });
 
-    return newsPreviews;
+    return !isNaN(+itemsAmount)
+      ? newsPreviews.slice(0, +itemsAmount)
+      : newsPreviews;
   }
 
-  getNewsById(id: number) {
-    return this.repository.findOne({
+  async getNewsById(id: number) {
+    const news = await this.repository.findOne({
       where: { id },
-      relations: ['contents', 'hashtags', 'contents.media'],
+      relations: [
+        'contents',
+        'hashtags',
+        'contents.media',
+        'mainImage',
+        'hashtags.news',
+        'hashtags.news.contents',
+        'hashtags.news.contents.media',
+        // 'hashtags.events',
+      ],
     });
+
+    const relatedFullNews: {
+      [key: number]: News;
+    } = news.hashtags.reduce((acc, hashtag) => {
+      return {
+        ...acc,
+        ...hashtag.news.reduce(
+          (acc, news) => ({ ...acc, [news.id]: news }),
+          {},
+        ),
+      };
+    }, {});
+
+    const relatedNews = await this.getNewsPreviews({
+      relatedNews: Object.values(relatedFullNews).filter(
+        (item) => item.id !== news.id,
+      ),
+    });
+
+    // const relatedEvents: Event[] = news.hashtags.reduce((acc, hashtag) => {
+    //   return [...acc, ...hashtag.events];
+    // }, []);
+
+    delete news.hashtags;
+
+    return {
+      ...news,
+      relatedNews,
+      // relatedEvents,
+    };
   }
 
   async createNews(dto: CreateNewsDto) {

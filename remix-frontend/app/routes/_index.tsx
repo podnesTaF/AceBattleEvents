@@ -7,7 +7,6 @@ import { Link, useLoaderData } from "@remix-run/react";
 import axios from "axios";
 
 import { IEvent } from "~/lib/types";
-import { fakeNews } from "~/lib/utils";
 
 import { IconButton, Skeleton } from "@mui/material";
 import { Api } from "~/api/axiosInstance";
@@ -48,12 +47,13 @@ export const meta: V2_MetaFunction = () => {
 
 export const loader = async () => {
   const { data } = await axios.get<{ events: IEvent[]; totalPages: number }>(
-    "http://localhost:4000/api/v1/events"
+    "https://abe-server.up.railway.app/api/v1/events"
   );
 
   const clubs = await Api().clubs.getPreviewClubs();
+  const newsPreviews = await Api().news.getNewsPreviews(4);
 
-  return json({ events: data.events, clubs: clubs });
+  return json({ events: data.events, clubs: clubs, newsPreviews });
 };
 
 export default function Index() {
@@ -90,8 +90,8 @@ export default function Index() {
           <div className="max-w-7xl mx-4 lg:mx-auto">
             <SectionTitle title="News and articles" />
             <div className="flex flex-wrap gap-8 w-full justify-center items-center mb-6">
-              {fakeNews.map((news: any) => (
-                <NewsCard key={news.id} news={news} />
+              {data.newsPreviews?.map((news: any) => (
+                <NewsCard key={news.id} item={news} />
               ))}
             </div>
             <div className="flex gap-4 items-center">

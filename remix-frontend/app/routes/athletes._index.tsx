@@ -21,11 +21,13 @@ export const loader = async ({ request }: LoaderArgs) => {
   const athletesData = await Api().athletes.getAthletes(params);
   const clubsData = await Api().clubs.findClubsSnippet();
 
-  return json({ athletesData, clubsData });
+  const tableData = transformDataAthletes(athletesData.athletes);
+
+  return json({ athletesData, clubsData, tableData });
 };
 
 const AthletesIndexPage = () => {
-  const { athletesData, clubsData } = useLoaderData<typeof loader>();
+  const { athletesData, clubsData, tableData } = useLoaderData<typeof loader>();
 
   const navigate = useNavigate();
   const {
@@ -113,7 +115,7 @@ const AthletesIndexPage = () => {
         <CustomTable
           titleColor="bg-black"
           isTitleStraight={true}
-          rows={transformDataAthletes(athletesData.athletes)}
+          rows={tableData}
           isLoading={false}
         />
       </div>

@@ -78,6 +78,17 @@ const AppBar: React.FC<AppBarProps> = ({ user }) => {
               Close Events
             </p>
           </Link>
+          <Link className="hover:opacity-80" to="/news">
+            <p
+              className={`text-lg uppercase ${
+                pathname.split("/")[1] === "news"
+                  ? "text-[#FF0000]"
+                  : "text-white"
+              }`}
+            >
+              Latest News
+            </p>
+          </Link>
           <Link className="hover:opacity-80" to="/results">
             <p
               className={`text-lg uppercase ${

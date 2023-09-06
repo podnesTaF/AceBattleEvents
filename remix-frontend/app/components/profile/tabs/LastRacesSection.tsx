@@ -1,15 +1,13 @@
 import { CustomTable } from "~/components/shared";
-import { IRace } from "~/lib/types";
-import { transformRaceToTable } from "~/lib/utils";
 
-const LastRacesSection = ({ races }: { races?: IRace[] }) => {
+const LastRacesSection = ({ tableData }: { tableData?: any[] }) => {
   return (
     <div className="px-4">
       <h2 className="text-3xl font-semibold my-4 text-center">Last Races</h2>
       <div className="mb-4">
-        {races?.length ? (
+        {tableData?.length ? (
           <CustomTable
-            rows={transformRaceToTable(races)}
+            rows={tableData}
             isLoading={false}
             titleColor="bg-black"
             isTitleStraight={true}

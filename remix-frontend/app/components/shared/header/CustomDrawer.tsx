@@ -133,6 +133,17 @@ const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen, user }) => {
               Close Events
             </p>
           </Link>
+          <Link to="/news">
+            <p
+              className={`hover:opacity-80 py-2 border-b-2 border-solid border-red-300/10 text-xl uppercase ${
+                pathname.split("/")[1] === "news"
+                  ? "text-[#FF0000]"
+                  : "text-white"
+              }`}
+            >
+              Latest News
+            </p>
+          </Link>
           <Link to="/results">
             <p
               className={`hover:opacity-80 py-2 border-b-2 border-solid border-red-300/10 text-xl uppercase ${

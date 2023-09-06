@@ -72,7 +72,6 @@ const UserClubSettings = () => {
   const navigate = useNavigate();
 
   const onUpdate = async (data: any) => {
-    console.log(data);
     try {
       await Api().clubs.handleUpdateClubData(club.id, data);
       if (data.name) club.name = data.name;

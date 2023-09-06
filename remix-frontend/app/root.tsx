@@ -1,12 +1,17 @@
-import { json, type LinksFunction, type LoaderArgs } from "@remix-run/node";
 import {
-  isRouteErrorResponse,
+  V2_MetaFunction,
+  json,
+  type LinksFunction,
+  type LoaderArgs,
+} from "@remix-run/node";
+import {
   Links,
   LiveReload,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  isRouteErrorResponse,
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
@@ -29,6 +34,10 @@ export const loader = async ({ request }: LoaderArgs) => {
   return json({ user });
 };
 
+export const meta: V2_MetaFunction = () => {
+  return [{ title: "Ace Battle Events | Main Page" }];
+};
+
 function Document({
   children,
   title,
@@ -43,8 +52,6 @@ function Document({
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        {title ? <title>{title}</title> : null}
-        <title>{title}</title>
         <Meta />
         <Links />
       </head>

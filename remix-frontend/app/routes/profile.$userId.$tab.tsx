@@ -73,7 +73,9 @@ const ProfileTab = () => {
     favoriteClubs,
     club,
     races,
+    tableRaces,
     resultsData,
+    resultsTableData,
     token,
   } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
@@ -113,10 +115,11 @@ const ProfileTab = () => {
           teamRegistrations={teamRegistrations}
         />
       )}
-      {tab === "Last Races" && <LastRacesSection races={races} />}
+      {tab === "Last Races" && <LastRacesSection tableData={tableRaces} />}
       {tab === "Results" && (
         <ResultsSection
           user={user}
+          tableData={resultsTableData}
           resultsData={resultsData}
           onChangeResultPage={onChangeResultPage}
         />

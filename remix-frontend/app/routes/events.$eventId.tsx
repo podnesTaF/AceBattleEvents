@@ -3,18 +3,18 @@ import { LoaderArgs, json } from "@remix-run/node";
 import {
   isRouteErrorResponse,
   useLoaderData,
-  useNavigate,
   useParams,
   useRouteError,
 } from "@remix-run/react";
 import axios from "axios";
-import { useRef, useState } from "react";
+import { Api } from "~/api/axiosInstance";
 import {
   CarouselItem,
   CustomCarousel,
   EventHeader,
   EventUsersAction,
   Map,
+  NewsCard,
   PrizesPodium,
   SectionTitle,
   WideCarousel,
@@ -32,7 +32,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
   const { eventId } = params;
 
   const { data: event } = await axios.get<IEvent>(
-    "http://localhost:4000/api/v1/events/" + eventId
+    "https://abe-server.up.railway.app/api/v1/events/" + eventId
   );
 
   if (!event) {
@@ -43,29 +43,24 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
   const user = await authenticator.isAuthenticated(request);
 
+  event.prizes = event.prizes.sort((a, b) => a.place - b.place);
+
+  const newsPreview = await Api().news.getNewsPreviews(4);
+
+  console.log(newsPreview);
+
   return json({
     event: event,
+    startFormated: formatDate(event.startDateTime),
     googleMapsKey: process.env.GOOGLE_MAPS_KEY || "",
     user,
+    newsPreview: newsPreview,
   });
 };
 
 const EventPage = () => {
-  const { event, googleMapsKey, user } = useLoaderData<typeof loader>();
-  const navigate = useNavigate();
-  const [translateDistance, setTranslateDistance] = useState(0);
-
-  const itemRefs = useRef<any>([]);
-
-  const slide = (direction: "next" | "prev") => {
-    const slideDistance = itemRefs.current[0].offsetWidth;
-
-    console.log(slideDistance);
-
-    setTranslateDistance(
-      (prev) => prev + (direction === "next" ? slideDistance : -slideDistance)
-    );
-  };
+  const { event, googleMapsKey, user, startFormated, newsPreview } =
+    useLoaderData<typeof loader>();
 
   return (
     <>
@@ -75,7 +70,7 @@ const EventPage = () => {
           <div className="max-w-7xl mx-4 lg:mx-auto">
             <SectionTitle title="News and articles" />
             <div className="my-6">
-              <WideCarousel />
+              <WideCarousel ItemCard={NewsCard} items={newsPreview} />
             </div>
           </div>
         </section>
@@ -214,26 +209,23 @@ const EventPage = () => {
                     </div>
                   </div>
                 )}
-                {event.prizes
-                  .sort((a, b) => a.place - b.place)
-                  .slice(3)
-                  .map((prize) => (
-                    <div
-                      key={prize.id}
-                      className={"p-4 shadow w-full flex bg-white/80"}
-                    >
-                      <div className="w-1/4 border-r-[1px] border-black">
-                        <p className="text-2xl uppercase text-center ">
-                          {prize.place}
-                        </p>
-                      </div>
-                      <div className="w-3/4">
-                        <p className="text-2xl uppercase text-center">
-                          {prize.amount} $
-                        </p>
-                      </div>
+                {event.prizes.slice(3).map((prize) => (
+                  <div
+                    key={prize.id}
+                    className={"p-4 shadow w-full flex bg-white/80"}
+                  >
+                    <div className="w-1/4 border-r-[1px] border-black">
+                      <p className="text-2xl uppercase text-center ">
+                        {prize.place}
+                      </p>
                     </div>
-                  ))}
+                    <div className="w-3/4">
+                      <p className="text-2xl uppercase text-center">
+                        {prize.amount} $
+                      </p>
+                    </div>
+                  </div>
+                ))}
                 <div className="my-4">
                   <ul className="list-disc ml-4">
                     <li className="font-semibold text-xl ">
@@ -319,9 +311,7 @@ const EventPage = () => {
                 </div>
                 <div className="flex justify-between border-b-[1px] border-[#D9DADB] py-2">
                   <p className="text-xl font-semibold">Date:</p>
-                  <p className="text-xl font-light">
-                    {event && formatDate(event.startDateTime)}
-                  </p>
+                  <p className="text-xl font-light">{startFormated}</p>
                 </div>
               </div>
               <div className="w-full min-w-[400px] max-w-[450px] max-h-[400px] md:w-3/5 border-[1px] border-black rounded-md overflow-hidden">

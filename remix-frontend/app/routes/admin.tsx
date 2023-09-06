@@ -3,8 +3,12 @@ import EventNoteIcon from "@mui/icons-material/EventNote";
 import GroupsIcon from "@mui/icons-material/Groups";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import PermMediaIcon from "@mui/icons-material/PermMedia";
-import { Outlet } from "@remix-run/react";
+import { Outlet, V2_MetaFunction } from "@remix-run/react";
 import { SideBar } from "~/components";
+
+export const meta: V2_MetaFunction = () => {
+  return [{ title: "Ace Battle Events | Admin" }];
+};
 
 const tabs = [
   {

@@ -1,5 +1,5 @@
 import { useNavigate } from "@remix-run/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IEvent } from "~/lib/types";
 import { formatDate } from "~/lib/utils";
 
@@ -21,6 +21,11 @@ const IntroSlide: React.FC<Props> = ({
   slideProgress,
 }) => {
   const navigate = useNavigate();
+  const [eventStartDateTime, setEventStartDateTime] = useState("");
+
+  useEffect(() => {
+    setEventStartDateTime(formatDate(event.startDateTime));
+  }, []);
 
   return (
     <div
@@ -42,7 +47,7 @@ const IntroSlide: React.FC<Props> = ({
           {event.title}
         </h4>
         <h5 className="text-lg sm:text-2xl text-green-500 mb-4 md:mb-4 font-semibold">
-          {formatDate(event.startDateTime)}
+          {eventStartDateTime}
         </h5>
         <div
           className="w-full flex justify-around gap-4 my-4 px-4"

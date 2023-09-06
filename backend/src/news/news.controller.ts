@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CreateNewsDto, updateNewsDto } from './dto/create.dto';
 import { NewsService } from './news.service';
@@ -20,8 +21,8 @@ export class NewsController {
   }
 
   @Get('previews')
-  getNewsPreviews() {
-    return this.newsService.getNewsPreviews();
+  getNewsPreviews(@Query('itemsAmount') itemsAmount?: number) {
+    return this.newsService.getNewsPreviews({ itemsAmount });
   }
 
   @Get(':id')

@@ -67,6 +67,13 @@ export class ClubService {
     });
   }
 
+  findAllPreview() {
+    return this.repository.find({
+      relations: ['logo'],
+      select: ['id', 'name', 'logo'],
+    });
+  }
+
   async findOne(id: number) {
     const club = await this.repository.findOne({
       where: { id },

@@ -40,8 +40,6 @@ export const action = async ({ request }: LoaderArgs) => {
   const city = form.get("city");
   const logo: any = form.get("logo");
   const photo: any = form.get("photo");
-
-  console.log("logo", logo);
 };
 
 const CreateClubPage = () => {
