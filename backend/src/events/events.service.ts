@@ -142,6 +142,7 @@ export class EventsService {
         'teams',
         'teams.country',
         'teams.club',
+        'teams.logo',
         'teams.coach',
         'prizes',
         'teams.players',

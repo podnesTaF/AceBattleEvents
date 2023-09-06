@@ -30,6 +30,11 @@ export class ClubController {
     return this.clubService.findAll(queries);
   }
 
+  @Get('preview')
+  findClubsPreview() {
+    return this.clubService.findAllPreview();
+  }
+
   @Get('snippet')
   findAllSnippet() {
     return this.clubService.findAllSnippet();
