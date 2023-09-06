@@ -16,7 +16,7 @@ import {
   NewsCard,
   Pagination,
 } from "~/components";
-import { authenticator, fakeNews, transformClubResults } from "~/lib/utils";
+import { authenticator, transformClubResults } from "~/lib/utils";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const { clubId } = params;
@@ -37,17 +37,20 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
   const resultsRows = transformClubResults(clubResultsData?.results || []);
 
+  const clubNews = await Api().news.getNewsPreviews(4);
+
   return json({
     club,
     user: me,
     token: user?.token,
     resultsData: { ...clubResultsData, currPage: +resultPage },
     resultsRows,
+    clubNews,
   });
 };
 
 const ClubPage = () => {
-  const { club, user, resultsData, resultsRows, token } =
+  const { club, user, resultsData, resultsRows, token, clubNews } =
     useLoaderData<typeof loader>();
   const [statusAlert, setStatusAlert] = useState({
     message: "",
@@ -167,8 +170,8 @@ const ClubPage = () => {
               Club related news
             </h3>
             <div className="flex flex-wrap gap-8 w-full justify-center items-center">
-              {fakeNews.map((news: any) => (
-                <NewsCard key={news.id} news={news} />
+              {clubNews.map((news: any) => (
+                <NewsCard key={news.id} item={news} />
               ))}
             </div>
           </div>

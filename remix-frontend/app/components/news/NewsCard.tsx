@@ -3,30 +3,20 @@ import React from "react";
 import { getTimeAgo } from "~/lib/utils";
 
 interface Props {
-  news: {
-    id: number;
-    title: string;
-    text: string;
-    media: {
-      mediaUrl: string;
-    };
-    createdAt: string;
-  };
+  item: any;
 }
 
-const NewsCard: React.FC<Props> = ({ news }) => {
+const NewsCard: React.FC<Props> = ({ item }) => {
   return (
     <div className="rounded-md shadow-md max-w-[550px] bg-white w-full">
       <div className="flex justify-between w-full mb-4">
         <div className="p-3 w-3/5">
-          <h3 className="text-xl font-semibold mb-3">
-            {news.title.slice(0, 30) + "..."}
-          </h3>
-          <p>{news.text.slice(0, 40) + "..."}</p>
+          <h3 className="text-xl font-semibold mb-3">{item?.title}</h3>
+          <p>{item?.previewText}</p>
         </div>
         <div>
           <img
-            src={news.media.mediaUrl}
+            src={item.smallImageUrl || "/abm-logo-black.svg"}
             alt="news preview"
             width={200}
             height={200}
@@ -35,10 +25,12 @@ const NewsCard: React.FC<Props> = ({ news }) => {
         </div>
       </div>
       <div className="flex w-full justify-between p-3">
-        <Link to={"/news/" + news.id} className="underline">
+        <Link to={"/news/" + item.id} className="underline">
           read more in article
         </Link>
-        <p className="text-gray-400">{getTimeAgo(news.createdAt)}</p>
+        <p className="text-gray-400">
+          {getTimeAgo("2023-08-26 11:31:14.000000")}
+        </p>
       </div>
     </div>
   );

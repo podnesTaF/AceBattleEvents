@@ -54,7 +54,6 @@ export const action = async ({ request, params }: ActionArgs) => {
       discoveryMethod,
       viewerId: authedUser?.id,
     });
-    console.log("registration:", registration);
 
     if (registration) {
       return json({

@@ -11,7 +11,7 @@ export const getEvents = async ({
     const { data: eventsData } = await axios.get<{
       events: IEvent[];
       totalPages: number;
-    }>(`http://localhost:4000/api/v1/events?${params}&limit=5`);
+    }>(`https://abe-server.up.railway.app/api/v1/events?${params}&limit=5`);
 
     return {
       events: eventsData.events,
@@ -27,7 +27,7 @@ export const getEvents = async ({
 export const getEvent = async (id: string): Promise<IEvent | null> => {
   try {
     const { data: eventData } = await axios.get<IEvent>(
-      `http://localhost:4000/api/v1/events/${id}`
+      `https://abe-server.up.railway.app/api/v1/events/${id}`
     );
 
     return eventData;

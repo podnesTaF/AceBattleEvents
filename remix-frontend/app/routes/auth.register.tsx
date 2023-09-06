@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "@remix-run/react";
+import { Link, V2_MetaFunction, useNavigate } from "@remix-run/react";
 import { useState } from "react";
 
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,6 +14,10 @@ import {
 } from "~/components";
 import { countries } from "~/lib/shared";
 import { RegisterSchema, badRequest } from "~/lib/utils";
+
+export const meta: V2_MetaFunction = () => {
+  return [{ title: "Ace Battle Events | Registration" }];
+};
 
 const RegisterPage = () => {
   const navigate = useNavigate();

@@ -2,6 +2,7 @@
 
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import { useNavigate } from "@remix-run/react";
+import { useEffect, useState } from "react";
 import { IEvent, ITeam, IUser } from "~/lib/types";
 import { formatDate, getGoogleMapsLink, isPassed } from "~/lib/utils";
 
@@ -21,6 +22,11 @@ const EventCard: React.FC<EventCardProps> = ({
   user,
 }) => {
   const navigate = useNavigate();
+  const [formatedDate, setFormatedDate] = useState("");
+
+  useEffect(() => {
+    setFormatedDate(formatDate(event.startDateTime));
+  }, []);
 
   const showRegisterButton = () => {
     if (!user || !user.clubId || user.role !== "manager") {
@@ -53,7 +59,7 @@ const EventCard: React.FC<EventCardProps> = ({
         </div>
       )}
       <div
-        className={`w-full bg-[url('/card1.jpg')] bg-contain md:bg-cover bg-no-repeat relative flex justify-center drop-shadow-xl`}
+        className={`w-full bg-contain md:bg-cover bg-no-repeat relative flex justify-center drop-shadow-xl`}
       >
         <img
           src={event.introImage?.mediaUrl || "/card1.jpg"}
@@ -81,9 +87,7 @@ const EventCard: React.FC<EventCardProps> = ({
               </div>
               <div>
                 <h3 className="uppercase text-xl">Date:</h3>
-                <h4 className="uppercase text-lg">
-                  {formatDate(event.startDateTime)}
-                </h4>
+                <h4 className="uppercase text-lg">{formatedDate}</h4>
               </div>
               <div>
                 <h3 className="uppercase text-xl">teams:</h3>

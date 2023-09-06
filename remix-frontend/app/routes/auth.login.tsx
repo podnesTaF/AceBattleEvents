@@ -1,4 +1,4 @@
-import { LoaderArgs } from "@remix-run/node";
+import { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { RemixForm } from "~/components/shared/forms/CustomForm";
 import { authenticator, loginSchema } from "~/lib/utils";
@@ -16,6 +16,10 @@ export async function loader({ request }: LoaderArgs) {
     successRedirect: "/",
   });
 }
+
+export const meta: V2_MetaFunction = () => {
+  return [{ title: "Ace Battle Events | Login" }];
+};
 
 const LoginPage = () => {
   return (

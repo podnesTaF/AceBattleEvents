@@ -2,10 +2,8 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { IconButton } from "@mui/material";
 import { useState } from "react";
-import { fakeNews } from "~/lib/utils";
-import { NewsCard } from "../news";
 
-const WideCarousel = () => {
+const WideCarousel = ({ items, ItemCard }: { items: any[]; ItemCard: any }) => {
   const [translateDistance, setTranslateDistance] = useState(0);
   const slide = (direction: "next" | "prev") => {
     const slideDistance = 550 + 24;
@@ -32,14 +30,14 @@ const WideCarousel = () => {
             transform: `translateX(${translateDistance}px)`,
           }}
         >
-          {fakeNews.map((item, index) => (
+          {items?.map((item, index) => (
             <div key={item.id} className="w-full sm:w-[550px] mr-6">
-              <NewsCard news={item} />
+              <ItemCard item={item} />
             </div>
           ))}
         </div>
       </div>
-      {-translateDistance < (fakeNews.length - 1) * 574 && (
+      {-translateDistance < (items.length - 1) * 574 && (
         <IconButton
           onClick={() => slide("next")}
           style={{ position: "absolute", backgroundColor: "red" }}

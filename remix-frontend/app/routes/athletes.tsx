@@ -1,6 +1,10 @@
 import HomeIcon from "@mui/icons-material/Home";
 import { Breadcrumbs, Typography } from "@mui/material";
-import { Link, Outlet } from "@remix-run/react";
+import { Link, Outlet, V2_MetaFunction } from "@remix-run/react";
+
+export const meta: V2_MetaFunction = () => {
+  return [{ title: "Ace Battle Events | Athletes" }];
+};
 
 const AlthetesPage = () => {
   return (

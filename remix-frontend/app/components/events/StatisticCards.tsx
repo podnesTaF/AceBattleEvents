@@ -13,7 +13,7 @@ const StatisticCards: React.FC<Props> = ({ event }) => {
         <div className="w-1/3 flex flex-col items-center">
           <div className="border-t-[1px] w-full border-b-[1px] border-l-[1px] border-red-500 rounded-l-md p-4 flex justify-center bg-white">
             <h2 className="text-2xl sm:text-4xl font-semibold">
-              {event.teams.reduce((acc, prev) => acc + prev.membersCount, 0)}
+              {event.teams?.reduce((acc, prev) => acc + prev.membersCount, 0)}
             </h2>
           </div>
           <p className="text-lg sm:text-xl uppercase mt-2">Participants</p>
@@ -22,7 +22,7 @@ const StatisticCards: React.FC<Props> = ({ event }) => {
           <div className="border-[1px] w-full border-red-500 p-4 flex justify-center bg-white">
             {event ? (
               <h2 className="text-2xl sm:text-4xl font-semibold">
-                {event.teams.length}
+                {event.teams?.length}
               </h2>
             ) : (
               <Skeleton

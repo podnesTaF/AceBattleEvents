@@ -20,10 +20,12 @@ export type TabReturnData = {
   club?: IClub | null;
   calendar?: PersonalEvents[];
   races?: IRace[];
+  tableRaces?: any[];
   resultsData?: {
     results: UserResult[];
     totalPages: number;
     currentPage: number;
   };
+  resultsTableData?: any[];
   token?: string;
 };

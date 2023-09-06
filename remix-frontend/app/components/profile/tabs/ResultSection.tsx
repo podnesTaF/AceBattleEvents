@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { ClubResultsFilter, CustomTable, Pagination } from "~/components";
 import { IUser, UserResult } from "~/lib/types";
-import { transformUserResultsToTable } from "~/lib/utils";
 
 interface IResultsData {
   user: IUser;
@@ -10,12 +9,14 @@ interface IResultsData {
     totalPages: number;
     currentPage: number;
   };
+  tableData?: any[];
   onChangeResultPage: (page: number) => void;
 }
 
 const ResultsSection: React.FC<IResultsData> = ({
   user,
   resultsData,
+  tableData,
   onChangeResultPage,
 }) => {
   const [filters, setFilters] = useState();
@@ -28,7 +29,7 @@ const ResultsSection: React.FC<IResultsData> = ({
         <ClubResultsFilter getFilters={getFilters} />
         <div className="w-full">
           <CustomTable
-            rows={transformUserResultsToTable(resultsData.results)}
+            rows={tableData || []}
             isLoading={false}
             titleColor="bg-[#1E1C1F]"
             isTitleStraight={true}

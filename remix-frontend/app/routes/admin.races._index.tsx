@@ -17,15 +17,17 @@ export const loader = async ({ request }: LoaderArgs) => {
   const currPage = new URL(url).searchParams.get("page") || "1";
 
   const racesData = await Api().races.getAllRaces(params);
+  const tableData = transformForAdminRace(racesData.races);
 
   return json({
     racesData,
     currPage: parseInt(currPage),
+    tableData,
   });
 };
 
 const RacesIndexPage = () => {
-  const { racesData, currPage } = useLoaderData<typeof loader>();
+  const { racesData, currPage, tableData } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
 
   const { filters, searchValue, onChangeFilter, setSearchValue } = useFilter();
@@ -70,10 +72,7 @@ const RacesIndexPage = () => {
           </div>
         </div>
         <div className="max-w-6xl mb-4">
-          <CustomTable
-            rows={transformForAdminRace(racesData.races)}
-            isLoading={false}
-          />
+          <CustomTable rows={tableData} isLoading={false} />
           <div className="flex mx-auto my-4">
             <Pagination
               onChangePage={onChangePage}
