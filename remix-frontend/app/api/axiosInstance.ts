@@ -26,7 +26,7 @@ interface ApiReturnType {
 export const Api = (token?: string): ApiReturnType => {
   const headers = token ? { Authorization: "Bearer " + token } : {};
   const instance = axios.create({
-    baseURL: "http://localhost:4000/api/v1",
+    baseURL: "https://abe-server.up.railway.app/api/v1",
     headers,
   });
 

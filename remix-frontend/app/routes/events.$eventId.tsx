@@ -47,8 +47,6 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
   const newsPreview = await Api().news.getNewsPreviews(4);
 
-  console.log(newsPreview);
-
   return json({
     event: event,
     startFormated: formatDate(event.startDateTime),

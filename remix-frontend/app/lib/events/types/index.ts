@@ -1,4 +1,4 @@
 import { IPrize } from "./EventBound";
-import { IEvent } from "./IEvent";
+import { EventShortform, IEvent } from "./IEvent";
 
-export type { IEvent, IPrize };
+export type { EventShortform, IEvent, IPrize };

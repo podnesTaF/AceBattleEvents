@@ -96,4 +96,13 @@ export class User {
 
   @OneToMany(() => RunnerResult, (result) => result.runner)
   results: RunnerResult[];
+
+  @OneToMany(() => RunnerResult, (res) => res.pbForRunner, { nullable: true })
+  personalBests: RunnerResult[];
+
+  @Column({ nullable: true })
+  totalPoints: number;
+
+  @Column({ default: 9999, nullable: true })
+  rank: number;
 }

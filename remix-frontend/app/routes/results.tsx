@@ -1,24 +1,57 @@
-import { V2_MetaFunction } from "@remix-run/node";
-import { useState } from "react";
+import { LoaderArgs, V2_MetaFunction, json } from "@remix-run/node";
+import { useLoaderData, useNavigate } from "@remix-run/react";
+import { useEffect, useState } from "react";
+import { Api } from "~/api/axiosInstance";
 import {
+  CustomTable,
   CustomTitle,
   FilterBage,
   FilterSelect,
+  Pagination,
   SearchField,
 } from "~/components";
 import { countries, years } from "~/lib/shared";
+import { getNewParams, transformRaceToTable } from "~/lib/utils";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Ace Battle Events | Results" }];
 };
 
+export const loader = async ({ request }: LoaderArgs) => {
+  const { url } = request;
+
+  const params = url.split("?")[1];
+
+  const racesData = await Api().races.getAllRaces(params, true);
+
+  const page = new URL(url).searchParams.get("page");
+  const scroll = new URL(url).searchParams.get("scrollY");
+  const tableRows = transformRaceToTable(racesData.races);
+
+  return json({
+    tableRows,
+    totalPages: racesData.totalPages,
+    currPage: +(page || "1"),
+    scroll,
+  });
+};
+
 const ResultsPage = () => {
+  const { tableRows, totalPages, currPage, scroll } =
+    useLoaderData<typeof loader>();
   const [searchValue, setSearchValue] = useState("");
   const [filters, setFilters] = useState<{ type: string; value: any }[]>([]);
+
+  const navigate = useNavigate();
 
   const onChangeInput = (newValue: string) => {
     setSearchValue(newValue);
     onChangeFilter("name", newValue);
+  };
+
+  const changePage = (pageNum: number) => {
+    const params = getNewParams(pageNum, filters, scrollY);
+    navigate(`${location.pathname}?${params}`);
   };
 
   const onChangeFilter = (filterType: string, selectedValue: string) => {
@@ -44,16 +77,17 @@ const ResultsPage = () => {
     setFilters((prev) => prev.filter((f) => f.type !== filter));
   };
 
-  const onLoad = () => {
-    // @ts-ignore
-    var rrp = new RRPublish(
-      document.getElementById("divRRPublish"),
-      163493,
-      "results"
-    );
-    rrp.ShowTimerLogo = true;
-    rrp.ShowInfoText = false;
-  };
+  useEffect(() => {
+    if (scroll) {
+      window.scrollTo(0, parseInt(scroll));
+    }
+  }, [currPage]);
+
+  useEffect(() => {
+    const params = getNewParams(currPage, filters, scrollY);
+    navigate(`${location.pathname}?${params}`);
+  }, [filters]);
+
   return (
     <>
       <header className="w-full flex justify-center items-center h-48 sm:h-56  md:bg-[url('/auth-intro.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">
@@ -120,14 +154,14 @@ const ResultsPage = () => {
           </div>
         </div>
         <div className="my-4">
-          <iframe
-            id="battleFrame"
-            src="https://app.battlemile.org/frames/battles.html"
-            rel="nofollow"
-            width="100%"
-            height={"100%"}
-            className="min-h-[700px]"
-          ></iframe>
+          <CustomTable rows={tableRows} isLoading={!tableRows} />
+          <div className="flex w-full justify-center">
+            <Pagination
+              pagesCount={totalPages}
+              onChangePage={changePage}
+              currPage={currPage}
+            />
+          </div>
         </div>
       </main>
     </>

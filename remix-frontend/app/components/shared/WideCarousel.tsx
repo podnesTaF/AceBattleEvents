@@ -1,12 +1,13 @@
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { IconButton } from "@mui/material";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const WideCarousel = ({ items, ItemCard }: { items: any[]; ItemCard: any }) => {
   const [translateDistance, setTranslateDistance] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
   const slide = (direction: "next" | "prev") => {
-    const slideDistance = 550 + 24;
+    const slideDistance = (ref.current?.offsetWidth || 550) + 24;
     setTranslateDistance(
       (prev) => prev + (direction === "next" ? -slideDistance : slideDistance)
     );
@@ -31,7 +32,11 @@ const WideCarousel = ({ items, ItemCard }: { items: any[]; ItemCard: any }) => {
           }}
         >
           {items?.map((item, index) => (
-            <div key={item.id} className="w-full sm:w-[550px] mr-6">
+            <div
+              ref={ref}
+              key={item.id}
+              className="w-[350px] sm:w-[550px] mr-6 overflow-hidden"
+            >
               <ItemCard item={item} />
             </div>
           ))}

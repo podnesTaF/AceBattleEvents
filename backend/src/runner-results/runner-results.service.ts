@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { SplitsService } from 'src/splits/splits.service';
 import { TeamResult } from 'src/team-results/entities/team-results.entity';
 import { User } from 'src/user/entities/user.entity';
+import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { CreateRunnerResultDto } from './dto/create-runner-result.dto';
 import { RunnerResult } from './entities/runner-results.entity';
@@ -17,6 +18,7 @@ export class RunnerResultsService {
     @InjectRepository(User)
     private runnerRepository: Repository<User>,
     private splitService: SplitsService,
+    private userService: UserService,
   ) {}
 
   async create(dto: CreateRunnerResultDto) {
@@ -25,8 +27,13 @@ export class RunnerResultsService {
     });
 
     const runner = await this.runnerRepository.findOne({
+      relations: ['personalBest'],
       where: { id: dto.runnerId },
     });
+
+    if (!runner) {
+      throw new Error('Runner not found');
+    }
 
     const runnerResult = await this.repository.save({
       teamResult,
@@ -35,6 +42,26 @@ export class RunnerResultsService {
       runnerType: dto.runnerType || null,
       finalResultInMs: dto.finalResultInMs,
     });
+
+    runner.personalBests = runner.personalBests || [];
+
+    const pbIdx = runner.personalBests.findIndex(
+      (pb) => pb.distance === dto.distance,
+    );
+
+    if (pbIdx !== -1) {
+      if (runner.personalBests[pbIdx].finalResultInMs > dto.finalResultInMs) {
+        runner.personalBests[pbIdx].finalResultInMs = dto.finalResultInMs;
+        await this.runnerRepository.save(runner);
+      }
+    } else {
+      runner.personalBests.push(runnerResult);
+      await this.runnerRepository.save(runner);
+    }
+
+    await this.userService.changeTotalPointsByAddedResult(runnerResult);
+
+    await this.userService.updateRanking(runnerResult.runner.gender);
 
     const splits = [];
 
@@ -76,6 +103,7 @@ export class RunnerResultsService {
       .leftJoin('teamResult.race', 'race')
       .leftJoin('race.event', 'event')
       .leftJoin('race.winner', 'winner')
+      .leftJoin('runnerResult.pbForRunner', 'pbForRunner')
       .leftJoin('runnerResult.runner', 'runner')
       .where('runner.id = :userId', { userId })
       .offset(offset)
@@ -92,6 +120,7 @@ export class RunnerResultsService {
         'event.title',
         'winner.id',
         'team.id',
+        'pbForRunner.id',
       ])
       .getRawMany();
 

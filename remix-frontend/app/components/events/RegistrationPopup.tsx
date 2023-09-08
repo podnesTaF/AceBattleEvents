@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Dialog, DialogTitle, Slide } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
@@ -21,6 +21,11 @@ const RegistrationPopup: React.FC<RegistrationPopupProps> = ({
   error,
 }) => {
   const [isCopied, setIsCopied] = useState(false);
+  const [formatedDate, setFormatedDate] = useState("");
+
+  useEffect(() => {
+    setFormatedDate(formatDate(event.startDateTime));
+  }, []);
 
   const onCopy = () => {
     navigator.clipboard.writeText(
@@ -69,9 +74,7 @@ const RegistrationPopup: React.FC<RegistrationPopupProps> = ({
               </div>
               <div>
                 <p>Start Date and Time:</p>
-                <h4 className="text-xl font-semibold">
-                  {formatDate(event.startDateTime)}
-                </h4>
+                <h4 className="text-xl font-semibold">{formatedDate}</h4>
               </div>
               <div>
                 <p>Ticket Number:</p>

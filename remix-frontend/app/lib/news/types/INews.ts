@@ -18,6 +18,7 @@ export type NewsPreview = {
   previewText?: string;
   smallImageUrl?: string;
   createdAt: string;
+  mainImage?: IMedia;
 };
 
 export type IContent = {

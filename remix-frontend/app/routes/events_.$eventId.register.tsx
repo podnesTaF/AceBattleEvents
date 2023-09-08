@@ -83,6 +83,7 @@ const RegisterAsViewer = () => {
   const data = useActionData<typeof action>();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isFormShown, setIsFormShown] = useState(user ? false : true);
+  const [formatedDate, setFormatedDate] = useState("");
 
   const navigate = useNavigate();
 
@@ -90,6 +91,10 @@ const RegisterAsViewer = () => {
     mode: "onChange",
     resolver: yupResolver(registerAsViewerSchema),
   });
+
+  useEffect(() => {
+    setFormatedDate(formatDate(event.startDateTime));
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -123,7 +128,7 @@ const RegisterAsViewer = () => {
               {event.title}
             </h1>
             <div className="text-xl font-semibold flex flex-col gap-2 md:flex-row">
-              <p>{formatDate(event.startDateTime)}</p>
+              <p>{formatedDate}</p>
               <p>
                 {event.location.country.name}, {event.location.city}
               </p>

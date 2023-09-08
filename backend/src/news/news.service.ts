@@ -18,7 +18,7 @@ export class NewsService {
 
   getNews() {
     return this.repository.find({
-      relations: ['contents', 'hashtags', 'contents.media'],
+      relations: ['contents', 'hashtags', 'contents.media', 'mainImage'],
     });
   }
 
@@ -49,6 +49,7 @@ export class NewsService {
         previewText: previewText,
         smallImageUrl: media ? media.smallUrl : '',
         createdAt: news.createdAt,
+        mainImage: news.mainImage,
       };
     });
 

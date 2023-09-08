@@ -10,7 +10,6 @@ import { useState } from "react";
 const ResultsPage: React.FC = () => {
   const [searchValue, setSearchValue] = useState("");
   const [filters, setFilters] = useState<{ type: string; value: any }[]>([]);
-  const [currPage, setCurrPage] = useState<number>(1);
 
   const onChangeInput = (newValue: string) => {
     setSearchValue(newValue);

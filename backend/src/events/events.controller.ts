@@ -39,6 +39,11 @@ export class EventsController {
     return this.eventsService.getAllSnippet();
   }
 
+  @Get('shortform')
+  findAllShortform() {
+    return this.eventsService.getAllInShort();
+  }
+
   @Get(':id')
   findById(@Param('id') id: string) {
     return this.eventsService.getEventById(+id);

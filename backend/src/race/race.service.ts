@@ -42,16 +42,51 @@ export class RaceService {
     });
   }
 
-  async getAllRaces(queries: { page: number; limit: number }) {
+  async getAllRaces(queries: {
+    page: number;
+    limit: number;
+    category?: string;
+    country?: string;
+    year?: string;
+    isFinished?: string;
+  }) {
     const count = await this.repository.count();
-    const page = +queries.page || 1;
-    const limit = +queries.limit || 5;
+    const page = +queries?.page || 1;
+    const limit = +queries?.limit || 5;
 
-    const races = await this.repository.find({
-      relations: ['event', 'winner', 'teamResults', 'teamResults.team'],
-      skip: (page - 1) * limit,
-      take: limit,
-    });
+    const qb = this.repository
+      .createQueryBuilder('race')
+      .leftJoinAndSelect('race.event', 'event')
+      .leftJoinAndSelect('event.location', 'location')
+      .leftJoinAndSelect('location.country', 'country')
+      .leftJoinAndSelect('race.winner', 'winner')
+      .leftJoinAndSelect('race.teamResults', 'teamResults')
+      .leftJoinAndSelect('teamResults.team', 'team');
+
+    if (queries.category) {
+      qb.andWhere('team.gender = :category', { category: queries.category });
+    }
+
+    if (queries.country) {
+      qb.andWhere('country.name LIKE :country', {
+        country: `%${queries.country}%`,
+      });
+    }
+
+    if (queries.year) {
+      const year = +queries.year;
+      if (!isNaN(year)) {
+        qb.andWhere('YEAR(event.startDateTime) = :year', { year });
+      }
+    }
+
+    if (queries.isFinished) {
+      qb.andWhere('winner.id IS NOT NULL');
+    }
+
+    qb.skip((page - 1) * limit).take(limit);
+
+    const races = await qb.getMany();
 
     return {
       races,

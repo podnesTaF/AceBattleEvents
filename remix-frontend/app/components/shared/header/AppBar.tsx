@@ -1,10 +1,11 @@
 import { Link, useLocation, useNavigate } from "@remix-run/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import { Avatar, Button, IconButton, Tooltip } from "@mui/material";
 import { AnnonceStripe, CustomDrawer, ProfileMenu } from "~/components";
 import { IUser } from "~/lib/types";
+import { links } from "~/lib/utils";
 
 interface AppBarProps {
   user: IUser | null;
@@ -12,6 +13,8 @@ interface AppBarProps {
 
 const AppBar: React.FC<AppBarProps> = ({ user }) => {
   const [open, setOpen] = useState(false);
+  const [isScrollingUp, setIsScrollingUp] = useState(false);
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const router = useLocation();
   const pathname = router.pathname;
@@ -25,159 +28,120 @@ const AppBar: React.FC<AppBarProps> = ({ user }) => {
     setAnchorEl(null);
   };
 
+  const handleScroll = () => {
+    if (window.scrollY > 0) {
+      setIsScrollingUp(true);
+    } else {
+      setIsScrollingUp(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
-      <div className="xl:flex justify-between px-5 py-2 bg-[#1E1C1F] items-center w-full z-10">
-        <div className={"flex justify-between items-center"}>
-          <div className="xl:hidden">
-            <IconButton
-              onClick={() => setOpen(true)}
-              className={"text-white items-center"}
-            >
-              <MenuIcon sx={{ fontSize: 40, color: "white" }} />
-            </IconButton>
-          </div>
-          <h2
-            onClick={() => navigate("/")}
-            className={
-              "text-2xl xl:text-3xl uppercase text-white cursor-pointer active:scale-95"
-            }
-          >
-            Ace Battle Events
-          </h2>
-        </div>
-        <nav className={"hidden xl:flex gap-4 items-center"}>
-          <Link className="hover:opacity-80" to="/">
-            <p
-              className={`text-lg uppercase ${
-                pathname === "/" ? "text-[#FF0000]" : "text-white"
-              }`}
-            >
-              Home
-            </p>
-          </Link>
-          <Link className="hover:opacity-80" to="/events">
-            <p
-              className={`text-lg uppercase ${
-                pathname.split("/")[1] === "events"
-                  ? "text-[#FF0000]"
-                  : "text-white"
-              }`}
-            >
-              Calendar
-            </p>
-          </Link>
-          <Link className="hover:opacity-80" to="/close-events">
-            <p
-              className={`text-lg uppercase ${
-                pathname.split("/")[1] === "close-events"
-                  ? "text-[#FF0000]"
-                  : "text-white"
-              }`}
-            >
-              Close Events
-            </p>
-          </Link>
-          <Link className="hover:opacity-80" to="/news">
-            <p
-              className={`text-lg uppercase ${
-                pathname.split("/")[1] === "news"
-                  ? "text-[#FF0000]"
-                  : "text-white"
-              }`}
-            >
-              Latest News
-            </p>
-          </Link>
-          <Link className="hover:opacity-80" to="/results">
-            <p
-              className={`text-lg uppercase ${
-                pathname.split("/")[1] === "results"
-                  ? "text-[#FF0000]"
-                  : "text-white"
-              }`}
-            >
-              Results
-            </p>
-          </Link>
-          <Link className="hover:opacity-80" to="/clubs">
-            <p
-              className={`text-lg uppercase ${
-                pathname.split("/")[1] === "clubs"
-                  ? "text-[#FF0000]"
-                  : "text-white"
-              }`}
-            >
-              Clubs
-            </p>
-          </Link>
-          <Link className="hover:opacity-80" to="/athletes">
-            <p
-              className={`text-lg uppercase ${
-                pathname.split("/")[1] === "athletes"
-                  ? "text-[#FF0000]"
-                  : "text-white"
-              }`}
-            >
-              Athletes
-            </p>
-          </Link>
-          <Link className="hover:opacity-80" to="/rules">
-            <p
-              className={`text-lg uppercase ${
-                pathname.split("/")[1] === "rules"
-                  ? "text-[#FF0000]"
-                  : "text-white"
-              }`}
-            >
-              Rules
-            </p>
-          </Link>
-          {user ? (
-            <Tooltip title="Profile">
+      <div
+        className={`relative w-full mb-[66px] ${isScrollingUp && "xl:mb-12"}`}
+      >
+        <div
+          className={`xl:flex justify-between px-5 z-30 ${
+            isScrollingUp ? "py-0" : "py-2"
+          } transition-all bg-[#1E1C1F] items-center w-full z-10 shadow-lg fixed top-0 left-0`}
+        >
+          <div className={"flex justify-between items-center"}>
+            <div className="xl:hidden">
               <IconButton
-                onClick={handleProfileClick}
-                size="small"
-                aria-controls={open ? "account-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
+                onClick={() => setOpen(true)}
+                className={"text-white items-center"}
               >
-                <Avatar
-                  src={user?.image?.smallUrl}
-                  sx={{ width: 40, height: 40 }}
-                >
-                  {user.surname[0]}
-                </Avatar>
+                <MenuIcon sx={{ fontSize: 40, color: "white" }} />
               </IconButton>
-            </Tooltip>
-          ) : (
-            <>
-              <div className="bg-green-700 rounded-md">
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={() => navigate("/auth/register")}
+            </div>
+            <img
+              onClick={() => navigate("/")}
+              src="/main-logo-white.svg"
+              alt="abe"
+              className={`cursor-pointer h-5 md:h-auto hover:opacity-90 active:scale-[0.97] transition-all ${
+                !isScrollingUp ? "block" : "hidden"
+              }`}
+              height={36}
+            />
+            <img
+              onClick={() => navigate("/")}
+              src="/abe-short-logo-white.svg"
+              alt="abe"
+              height={45}
+              className={`h-9 md:h-11 cursor-pointer hover:opacity-90 active:scale-[0.97] ${
+                isScrollingUp ? "block" : "hidden"
+              }`}
+            />
+          </div>
+          <nav className={"hidden xl:flex xl:gap-4 2xl:gap-6 items-center"}>
+            {links.map((link, index) => (
+              <Link key={index} to={link.to} className="hover:opacity-80">
+                <p
+                  className={`text-lg uppercase font-semibold ${
+                    pathname.split("/")[1] === link.to.split("/")[1]
+                      ? "text-[#FF0000]"
+                      : "text-white"
+                  }`}
                 >
-                  Sign up
+                  {link.label}
+                </p>
+              </Link>
+            ))}
+            {user ? (
+              <Tooltip title="Profile">
+                <IconButton
+                  onClick={handleProfileClick}
+                  size="small"
+                  aria-controls={open ? "account-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                >
+                  <Avatar
+                    src={user?.image?.smallUrl}
+                    sx={{ width: 40, height: 40 }}
+                  >
+                    {user.surname[0]}
+                  </Avatar>
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <>
+                <div className="bg-green-700 rounded-md">
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={() => navigate("/auth/register")}
+                  >
+                    Sign up
+                  </Button>
+                </div>
+                <Button
+                  variant="outlined"
+                  color="success"
+                  onClick={() => navigate("/auth/login")}
+                >
+                  Sign In
                 </Button>
-              </div>
-              <Button
-                variant="outlined"
-                color="success"
-                onClick={() => navigate("/auth/login")}
-              >
-                Sign In
-              </Button>
-            </>
-          )}
+              </>
+            )}
 
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          ></div>
-        </nav>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            ></div>
+          </nav>
+        </div>
       </div>
       {pathname === "/" && <AnnonceStripe />}
       <CustomDrawer setOpen={setOpen} open={open} user={user} />
