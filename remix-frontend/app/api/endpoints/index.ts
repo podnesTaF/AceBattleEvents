@@ -1,3 +1,4 @@
+import { AdminApi } from "./admin";
 import { AthletesApi } from "./athletes";
 import { ClubApi } from "./clubs";
 import { EventsApi } from "./events";
@@ -8,6 +9,7 @@ import { TeamsApi } from "./teams";
 import { UserApi } from "./user";
 
 export {
+  AdminApi,
   AthletesApi,
   ClubApi,
   EventsApi,

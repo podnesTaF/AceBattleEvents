@@ -21,8 +21,13 @@ export class NewsController {
   }
 
   @Get('previews')
-  getNewsPreviews(@Query('itemsAmount') itemsAmount?: number) {
-    return this.newsService.getNewsPreviews({ itemsAmount });
+  getNewsPreviews(
+    @Query() query: { itemsAmount?: string; textLength?: string },
+  ) {
+    return this.newsService.getNewsPreviews({
+      itemsAmount: +query.itemsAmount,
+      textLength: +query.textLength,
+    });
   }
 
   @Get(':id')

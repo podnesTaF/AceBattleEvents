@@ -39,9 +39,10 @@ const FormSelect: React.FC<FormSelectProps> = ({
           onChange={(e) => {
             onChangeFilter(e.target.value);
           }}
+          defaultValue={0}
           className="block w-full text-sm shadow-sm text-gray-900 border rounded-md  p-2.5 outline-none bg-gray-50 focus:border-[1px]  dark:bg-gray-700 dark:border-gray-600 focus:border-blue-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none"
         >
-          <option value={undefined}>{placeholder}</option>
+          <option value={"0"}>{placeholder}</option>
           {values.map((v, i) => (
             <option key={i} value={v[0]}>
               {v[1]}

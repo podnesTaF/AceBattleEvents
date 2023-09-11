@@ -2,7 +2,7 @@ import { Link, useNavigate } from "@remix-run/react";
 
 interface StatusCardProps {
   status: string;
-  eventId: number;
+  eventId?: number;
 }
 
 const StatusCard: React.FC<StatusCardProps> = ({ status, eventId }) => {

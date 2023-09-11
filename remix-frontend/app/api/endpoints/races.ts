@@ -2,9 +2,9 @@ import { AxiosInstance } from "axios";
 import { IRace, ITeamResult } from "~/lib/types";
 
 export const RacesApi = (instance: AxiosInstance) => ({
-  async getAllRaces(params?: string) {
+  async getAllRaces(params?: string, isFinished?: boolean) {
     const { data } = await instance.get<{ races: IRace[]; totalPages: number }>(
-      `/race?${params}&limit=5`
+      `/race?${params}&limit=5&isFinished=${isFinished || ""}`
     );
 
     return data;

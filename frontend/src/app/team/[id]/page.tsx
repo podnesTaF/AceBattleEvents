@@ -85,7 +85,7 @@ const TeamPage: React.FC<Props> = ({ params: { id } }) => {
               Runners
             </h4>
             <div className="flex flex-wrap px-4 xl:px-8 my-4 gap-8 justify-center">
-              {team?.players.map((player) => (
+              {team?.players.map((player: any) => (
                 <div className="max-w-xs max-h-sm relative" key={player.id}>
                   <Image
                     src={

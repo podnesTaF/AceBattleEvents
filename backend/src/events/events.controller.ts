@@ -8,7 +8,11 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/roles/roles.guard';
 import { CreateEventDto } from './dto/create-event.dto';
 import {
   UpdateEventInfo,
@@ -25,6 +29,8 @@ export class EventsController {
   ) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   create(@Body() createEventDto: CreateEventDto) {
     return this.eventsService.create(createEventDto, this.storage);
   }
@@ -37,6 +43,11 @@ export class EventsController {
   @Get('snippet')
   findAllSnippet() {
     return this.eventsService.getAllSnippet();
+  }
+
+  @Get('shortform')
+  findAllShortform() {
+    return this.eventsService.getAllInShort();
   }
 
   @Get(':id')

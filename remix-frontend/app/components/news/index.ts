@@ -1,6 +1,15 @@
+import EventItemCard from "./EventItemCard";
 import NewsCard from "./NewsCard";
-import NewsCardList from "./NewsCardList";
+import NewsCollage from "./NewsCollage";
+import NewsLargeItem from "./NewsLargeItem";
 import RelatedNews from "./RelatedNews";
 import RelatedNewsWrapper from "./RelatedNewsWrapper";
 
-export { NewsCard, NewsCardList, RelatedNews, RelatedNewsWrapper };
+export {
+  EventItemCard,
+  NewsCard,
+  NewsCollage,
+  NewsLargeItem,
+  RelatedNews,
+  RelatedNewsWrapper,
+};

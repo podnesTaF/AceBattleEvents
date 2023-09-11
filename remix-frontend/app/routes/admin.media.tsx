@@ -1,28 +1,32 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Collapse } from "@mui/material";
-import { json } from "@remix-run/node";
-import { useLoaderData, useNavigate } from "@remix-run/react";
+import { LoaderArgs, json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Api } from "~/api/axiosInstance";
 import { FormButton, ImagePicker, SearchField } from "~/components";
 import { useFilter } from "~/lib/hooks";
-import { addImageSchema } from "~/lib/utils";
+import { addImageSchema, adminAuthenticator } from "~/lib/utils";
 
-export const loader = async () => {
+export const loader = async ({ request }: LoaderArgs) => {
   const images = await Api().media.getAllMedia();
+  const me = await adminAuthenticator.isAuthenticated(request);
+
+  if (!me) {
+    throw new Response("Unauthorized");
+  }
 
   return json({
     images,
+    me,
   });
 };
 
 const MediaPage = () => {
   const { searchValue, setSearchValue, onChangeFilter } = useFilter();
   const [openAdd, setOpenAdd] = useState<boolean>(false);
-  const { images } = useLoaderData<typeof loader>();
-
-  const navigate = useNavigate();
+  const { images, me } = useLoaderData<typeof loader>();
 
   const onChangeInput = (newValue: string) => {
     setSearchValue(newValue);
@@ -38,8 +42,8 @@ const MediaPage = () => {
     try {
       const formData = new FormData();
       formData.append("image", dto.image);
-      const { data } = await Api().media.addMedia(formData);
-      if (data) {
+      const mediaData = await Api(me.token).media.addMedia(formData);
+      if (mediaData) {
         form.reset();
         window.location.reload();
       }
@@ -77,7 +81,7 @@ const MediaPage = () => {
           <Collapse in={openAdd}>
             <FormProvider {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
-                <div className="w-full my-4 h-32">
+                <div className="w-full my-4 min-h-32">
                   <label
                     htmlFor="image"
                     className="text-gray uppercase text-xl"

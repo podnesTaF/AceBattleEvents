@@ -28,8 +28,8 @@ const MainAdminPage = () => {
         </h1>
         {adminStats.length ? (
           <div className="grid grid-cols-2 gap-4">
-            {adminStats.map((stat: any) => (
-              <div className="bg-white p-4 rounded shadow">
+            {adminStats.map((stat: any, i) => (
+              <div key={i} className="bg-white p-4 rounded shadow">
                 <h2 className="text-lg font-semibold text-gray-800 mb-2">
                   {Object.keys(stat)[0]}
                 </h2>

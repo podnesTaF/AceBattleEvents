@@ -16,12 +16,14 @@ import {
   useRouteError,
 } from "@remix-run/react";
 
-import { ReactNode } from "react";
+import { withEmotionCache } from "@emotion/react";
+import { ReactNode, useContext, useEffect } from "react";
 import globalStyles from "~/styles/global.css";
 import stylesheet from "~/tailwind.css";
 import { AppBar, Footer } from "./components";
-import { IUser } from "./lib/types";
-import { authenticator } from "./lib/utils";
+import ClientStyleContext from "./context/ClientStyleContext";
+import { IAdmin, IUser } from "./lib/types";
+import { adminAuthenticator, authenticator } from "./lib/utils";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -30,47 +32,69 @@ export const links: LinksFunction = () => [
 
 export const loader = async ({ request }: LoaderArgs) => {
   const user = await authenticator.isAuthenticated(request);
+  const admin = await adminAuthenticator.isAuthenticated(request);
 
-  return json({ user });
+  return json({ user, admin });
 };
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Ace Battle Events | Main Page" }];
 };
 
-function Document({
-  children,
-  title,
-  user,
-}: {
-  children: ReactNode;
-  title: string;
-  user: IUser | null;
-}) {
-  return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        <AppBar user={user} />
-        {children}
-        <Footer />
-        <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
-      </body>
-    </html>
-  );
-}
+const Document = withEmotionCache(
+  (
+    {
+      children,
+      title,
+      user,
+      admin,
+    }: {
+      children: ReactNode;
+      title: string;
+      user: IUser | null;
+      admin: IAdmin | null;
+    },
+    emotionCache
+  ) => {
+    const clientStyleData = useContext(ClientStyleContext);
+
+    useEffect(() => {
+      // re-link sheet container
+      emotionCache.sheet.container = document.head;
+      // re-inject tags
+      const tags = emotionCache.sheet.tags;
+      emotionCache.sheet.flush();
+      tags.forEach((tag) => {
+        (emotionCache.sheet as any)._insertTag(tag);
+      });
+      clientStyleData.reset();
+    }, []);
+
+    return (
+      <html lang="en">
+        <head>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width,initial-scale=1" />
+          <Meta />
+          <Links />
+        </head>
+        <body>
+          <AppBar user={user} admin={admin} />
+          {children}
+          <Footer />
+          <ScrollRestoration />
+          <Scripts />
+          <LiveReload />
+        </body>
+      </html>
+    );
+  }
+);
 
 export default function App() {
-  const { user } = useLoaderData();
+  const { user, admin } = useLoaderData();
   return (
-    <Document title="Remix Starter" user={user}>
+    <Document title="" user={user} admin={admin}>
       <Outlet />
     </Document>
   );
@@ -81,7 +105,7 @@ export function ErrorBoundary() {
 
   if (isRouteErrorResponse(error)) {
     return (
-      <Document title={`${error.status} ${error.statusText}`} user={null}>
+      <Document title="" user={null} admin={null}>
         <div className="error-container">
           <h1 className="font-semibold text-3xl">
             {error.status} {error.statusText}
@@ -93,7 +117,7 @@ export function ErrorBoundary() {
 
   const errorMessage = error instanceof Error ? error.message : "Unknown error";
   return (
-    <Document title="App error!" user={null}>
+    <Document title="" user={null} admin={null}>
       <div className="error-container">
         <h1 className="font-semibold text-3xl mb-3">App Error</h1>
         <pre>{errorMessage}</pre>

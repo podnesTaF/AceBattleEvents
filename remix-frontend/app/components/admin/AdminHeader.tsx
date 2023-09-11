@@ -4,7 +4,7 @@ import { SearchField } from "..";
 interface Props {
   title: string;
   pageName: string;
-  description: string;
+  description?: string;
   searchValue?: string;
   onChangeInput?: Function;
   children?: React.ReactNode;

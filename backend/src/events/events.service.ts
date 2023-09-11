@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CountryService } from 'src/country/country.service';
 import { LocationsService } from 'src/locations/locations.service';
 import { PrizesService } from 'src/prizes/prizes.service';
+import { formatDate } from 'src/utils/date-formater';
 import { Repository } from 'typeorm';
 import { CreateEventDto } from './dto/create-event.dto';
 import {
@@ -125,6 +126,17 @@ export class EventsService {
     });
 
     return { events: resEvents, totalPages };
+  }
+
+  async getAllInShort() {
+    const events = await this.repository.find({
+      relations: ['introImage'],
+      select: ['id', 'title', 'startDateTime', 'introImage'],
+    });
+    return events.map((event) => ({
+      ...event,
+      startDateTime: formatDate(event.startDateTime),
+    }));
   }
 
   getAllSnippet() {

@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import { IEvent } from "~/lib/events/types";
+import { EventShortform, IEvent } from "~/lib/events/types";
 import {
   CreateViewer,
   IViewer,
@@ -21,6 +21,16 @@ export const EventsApi = (instance: AxiosInstance) => ({
     } catch (e) {
       console.log(e);
       return { events: [], totalPages: 0, error: true };
+    }
+  },
+
+  async getEventsShortform() {
+    try {
+      const { data } = await instance.get<EventShortform[]>(`events/shortform`);
+      return data;
+    } catch (e) {
+      console.log(e);
+      return [];
     }
   },
 

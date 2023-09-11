@@ -22,4 +22,5 @@ export class updateNewsDto {
   hashtags?: Hashtag[];
   contents?: Content[];
   title?: string;
+  mainImage?: Media;
 }

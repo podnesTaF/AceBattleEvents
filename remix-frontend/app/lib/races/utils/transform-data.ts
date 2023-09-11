@@ -46,7 +46,8 @@ export const getBattleName = (race: IRace) => {
     .join(" vs ");
 };
 
-export function msToMinutesAndSeconds(ms: number): string {
+export function msToMinutesAndSeconds(ms?: number): string | null {
+  if (!ms) return null;
   const totalSeconds = Math.floor(ms / 1000);
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;

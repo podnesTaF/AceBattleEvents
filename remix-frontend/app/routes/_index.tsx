@@ -51,7 +51,7 @@ export const loader = async () => {
   );
 
   const clubs = await Api().clubs.getPreviewClubs();
-  const newsPreviews = await Api().news.getNewsPreviews(4);
+  const newsPreviews = await Api().news.getNewsPreviews({ itemsAmount: 4 });
 
   return json({ events: data.events, clubs: clubs, newsPreviews });
 };

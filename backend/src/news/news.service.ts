@@ -18,16 +18,18 @@ export class NewsService {
 
   getNews() {
     return this.repository.find({
-      relations: ['contents', 'hashtags', 'contents.media'],
+      relations: ['contents', 'hashtags', 'contents.media', 'mainImage'],
     });
   }
 
   async getNewsPreviews({
     relatedNews,
     itemsAmount,
+    textLength,
   }: {
     relatedNews?: News[];
     itemsAmount?: number;
+    textLength?: number;
   }) {
     const newsList = relatedNews ? relatedNews : await this.getNews();
 
@@ -38,8 +40,8 @@ export class NewsService {
       let previewText = '';
       if (content) {
         previewText =
-          content.text.length > 80
-            ? content.text.substring(0, 80) + '...'
+          content.text.length > textLength || 80
+            ? content.text.substring(0, textLength || 80) + '...'
             : content.text;
       }
 
@@ -49,6 +51,7 @@ export class NewsService {
         previewText: previewText,
         smallImageUrl: media ? media.smallUrl : '',
         createdAt: news.createdAt,
+        mainImage: news.mainImage,
       };
     });
 
@@ -90,11 +93,12 @@ export class NewsService {
       ),
     });
 
-    // const relatedEvents: Event[] = news.hashtags.reduce((acc, hashtag) => {
-    //   return [...acc, ...hashtag.events];
-    // }, []);
-
-    delete news.hashtags;
+    news.hashtags = news.hashtags.map((hashtag) => ({
+      id: hashtag.id,
+      name: hashtag.name,
+      news: null,
+      events: null,
+    }));
 
     return {
       ...news,
@@ -109,6 +113,7 @@ export class NewsService {
 
     const news = await this.repository.save({
       title: dto.title,
+      mainImage: dto.mainImage,
     });
 
     for (const content of dto.contents) {
@@ -139,9 +144,36 @@ export class NewsService {
       relations: ['hashtags', 'contents'],
     });
 
-    news.contents = body.contents || news.contents;
-    news.hashtags = body.hashtags || news.hashtags;
+    const newHashtags = [];
+    for (const hashtag of body.hashtags) {
+      if (!hashtag.id) {
+        const newHashtag = await this.hashtagService.create({
+          name: hashtag.name,
+        });
+        newHashtags.push(newHashtag);
+      } else {
+        newHashtags.push(hashtag);
+      }
+    }
+
+    const newContents = [];
+
+    for (const content of body.contents) {
+      if (!content.id) {
+        const newContent = await this.contentService.create(
+          { ...content },
+          news.id,
+        );
+        newContents.push(newContent);
+      } else {
+        newContents.push(content);
+      }
+    }
+
+    news.hashtags = newHashtags;
+    news.contents = newContents;
     news.title = body.title || news.title;
+    news.mainImage = body.mainImage || news.mainImage;
 
     return this.repository.save(news);
   }

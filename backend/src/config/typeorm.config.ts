@@ -1,5 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { config as evnconfig } from 'dotenv';
+import { Admin } from 'src/admin/entities/admin.entity';
 import { JoinRequest } from 'src/club-requests/entities/club-request.entity';
 import { Club } from 'src/club/entities/club.entity';
 import { Coach } from 'src/coach/entities/coach.entity';
@@ -48,6 +49,7 @@ const config: TypeOrmModuleOptions = {
     News,
     Race,
     TeamResult,
+    Admin,
     RunnerResult,
     Split,
   ],

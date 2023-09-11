@@ -10,4 +10,5 @@ export type UserResult = {
   event_id: number;
   event_title: string;
   winner_id: number;
+  pbForRunner_id: boolean;
 };

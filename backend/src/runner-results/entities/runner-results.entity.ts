@@ -33,4 +33,7 @@ export class RunnerResult {
     onDelete: 'CASCADE',
   })
   splits: Split[];
+
+  @ManyToOne(() => User, (user) => user.personalBests, { nullable: true })
+  pbForRunner: User;
 }

@@ -7,7 +7,11 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/roles/roles.guard';
 import { CreateRaceDto } from './dto/create-race.dto';
 import { RaceService } from './race.service';
 
@@ -16,14 +20,17 @@ export class RaceController {
   constructor(private readonly raceService: RaceService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   createRace(@Body() dto: CreateRaceDto) {
     return this.raceService.createRace(dto);
   }
 
   @Get()
-  getAllRaces(@Query() queries: { page: number; limit: number }) {
+  getAllRaces(@Query() queries: any) {
     return this.raceService.getAllRaces(queries);
   }
+
   @Get('/event')
   getAllRacesForEvent(@Query('eventId') eventId: string) {
     if (!eventId) {
@@ -51,6 +58,8 @@ export class RaceController {
   }
 
   @Patch(':id/race')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   updateRace(
     @Param('id') id: string,
     @Body() body: { teamIds: number[]; startTime: string; eventId: number },
@@ -59,6 +68,8 @@ export class RaceController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   deleteRace(@Param('id') id: string) {
     return this.raceService.deleteRace(+id);
   }

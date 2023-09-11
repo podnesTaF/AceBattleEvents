@@ -45,9 +45,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
   event.prizes = event.prizes.sort((a, b) => a.place - b.place);
 
-  const newsPreview = await Api().news.getNewsPreviews(4);
-
-  console.log(newsPreview);
+  const newsPreview = await Api().news.getNewsPreviews({ itemsAmount: 4 });
 
   return json({
     event: event,

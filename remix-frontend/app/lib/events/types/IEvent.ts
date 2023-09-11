@@ -17,3 +17,10 @@ export type IEvent = {
   prizes: IPrize[];
   teams?: ITeam[];
 };
+
+export type EventShortform = {
+  id: number;
+  title: string;
+  startDateTime: string;
+  introImage?: IMedia;
+};

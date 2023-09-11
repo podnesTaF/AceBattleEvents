@@ -103,7 +103,7 @@ html {
 
 @media screen and (min-width: 1180px) {
   .h-calc-screen-lg {
-    height: calc(100vh - 90px) !important;
+    height: calc(100vh - 90px);
   }
 }
 

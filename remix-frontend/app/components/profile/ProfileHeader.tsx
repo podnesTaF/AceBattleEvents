@@ -2,7 +2,12 @@ import { Link, useNavigate } from "@remix-run/react";
 import React, { useState } from "react";
 import { Api } from "~/api/axiosInstance";
 import { IUser } from "~/lib/types";
-import { getCategoryByDoB, isAbleToInvite, isAbleToJoin } from "~/lib/utils";
+import {
+  getCategoryByDoB,
+  isAbleToInvite,
+  isAbleToJoin,
+  msToMinutesAndSeconds,
+} from "~/lib/utils";
 import { ChangeImageForm } from "..";
 
 interface ProfileHeaderProps {
@@ -108,6 +113,40 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
               <button className="w-full mt-4 md:w-auto md:mt-0 bg-blue-400 hover:bg-blue-300 rounded-md active:scale-95 text-white font-semibold px-4 py-2">
                 Invite to club
               </button>
+            </div>
+          )}
+          {user.role === "runner" && (
+            <div className="w-full md:max-w-xs my-auto border-red-500 border-[1px] shadow-md p-4">
+              <div className="flex gap-4 mb-5 items-center">
+                <img
+                  src="/abm-logo-black.svg"
+                  alt="abm logo"
+                  width={65}
+                  height={50}
+                />
+                <h3 className="text-xl md:text-2xl font-semibold">
+                  Statistics
+                </h3>
+              </div>
+              <div className="w-full flex flex-col gap-4">
+                <div className="flex justify-between gap-4">
+                  <p className="font-semibold">Overall men&apos;s rank:</p>
+                  <p className="font-semibold">{user.rank || "-"}</p>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <p className="font-semibold">Personal Mile Best:</p>
+                  <p className="font-semibold">
+                    {msToMinutesAndSeconds(
+                      user.personalBests?.find((pb) => pb.distance === 160934)
+                        ?.finalResultInMs
+                    ) || "-"}
+                  </p>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <p className="font-semibold">Finished Races:</p>
+                  <p className="font-semibold">{user.results?.length || 0}</p>
+                </div>
+              </div>
             </div>
           )}
         </div>

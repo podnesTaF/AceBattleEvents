@@ -3,7 +3,8 @@ import { formatDate, msToMinutesAndSeconds } from "~/lib/utils";
 import { IUser } from "../types";
 
 export const transformDataAthletes = (data: IUser[]) => {
-  return data.map((runner: IUser) => ({
+  return data.map((runner: IUser, i) => ({
+    rank: runner.rank || "-",
     name: runner.name + " " + runner.surname,
     gender: runner.gender,
     "date of birth": formatDate(runner.dateOfBirth),
@@ -24,7 +25,9 @@ export const transformUserResultsToTable = (userResults: UserResult[]) => {
       value: userResult.event_title,
     },
     distance: (userResult.runnerResult_distance / 100).toFixed(2),
-    result: msToMinutesAndSeconds(userResult.runnerResult_finalResultInMs),
+    result:
+      msToMinutesAndSeconds(userResult.runnerResult_finalResultInMs) +
+      ` ${userResult.pbForRunner_id ? "PB" : ""}`,
     place: userResult.winner_id === userResult.team_id ? "🏆" : "2",
     details: {
       link: "/race/" + userResult.race_id,

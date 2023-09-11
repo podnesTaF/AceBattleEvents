@@ -9,12 +9,13 @@ import {
   styled,
   tableCellClasses,
 } from "@mui/material";
-import { ResultTableRow } from "~/lib/types";
+import { IAdmin, ResultTableRow } from "~/lib/types";
 import ExpandableRow from "./ExpandableRow";
 
 interface ExpandableTableProps {
   headers: string[];
   rows: ResultTableRow[];
+  me: IAdmin;
 }
 
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -29,7 +30,11 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-const ExpandableTable: React.FC<ExpandableTableProps> = ({ headers, rows }) => {
+const ExpandableTable: React.FC<ExpandableTableProps> = ({
+  headers,
+  rows,
+  me,
+}) => {
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -46,7 +51,7 @@ const ExpandableTable: React.FC<ExpandableTableProps> = ({ headers, rows }) => {
         </TableHead>
         <TableBody>
           {rows.map((row, i) => (
-            <ExpandableRow key={i} row={row} />
+            <ExpandableRow me={me} key={i} row={row} />
           ))}
         </TableBody>
       </Table>

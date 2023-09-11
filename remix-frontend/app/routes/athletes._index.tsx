@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { LoaderArgs, json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
@@ -17,17 +17,31 @@ import { getNewParams, transformDataAthletes } from "~/lib/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const url = request.url;
+  const scrollY = new URL(url).searchParams.get("scrollY");
   const params = url.split("?")[1];
   const athletesData = await Api().athletes.getAthletes(params);
   const clubsData = await Api().clubs.findClubsSnippet();
 
+  let page = new URL(url).searchParams.get("page") || "1";
+
+  if (isNaN(parseInt(page))) {
+    page = "1";
+  }
+
   const tableData = transformDataAthletes(athletesData.athletes);
 
-  return json({ athletesData, clubsData, tableData });
+  return json({
+    athletesData,
+    clubsData,
+    tableData,
+    currPage: +page,
+    scroll: scrollY,
+  });
 };
 
 const AthletesIndexPage = () => {
-  const { athletesData, clubsData, tableData } = useLoaderData<typeof loader>();
+  const { athletesData, clubsData, tableData, scroll, currPage } =
+    useLoaderData<typeof loader>();
 
   const navigate = useNavigate();
   const {
@@ -39,19 +53,24 @@ const AthletesIndexPage = () => {
     setSearchValue,
   } = useFilter();
 
-  const [currPage, setCurrPage] = useState(athletesData.totalPages);
-
   const onChangeInput = (newValue: string) => {
     setSearchValue(newValue);
     onChangeFilter("name", newValue);
   };
 
   const changePage = (pageNum: number) => {
-    setCurrPage(pageNum);
+    const params = getNewParams(pageNum, filters, scrollY);
+    navigate(`${location.pathname}?${params}`);
   };
 
   useEffect(() => {
-    const params = getNewParams(currPage, filters, checkValue);
+    if (scroll) {
+      window.scrollTo(0, parseInt(scroll));
+    }
+  }, [currPage]);
+
+  useEffect(() => {
+    const params = getNewParams(currPage, filters, scrollY);
     navigate(`${location.pathname}?${params}`);
   }, [filters]);
 

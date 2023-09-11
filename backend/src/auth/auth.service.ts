@@ -32,11 +32,11 @@ export class AuthService {
   }
 
   generateJwtToken(data: { id: number; email: string }) {
-    const payload = { email: data.email, sub: data.id };
+    const payload = { email: data.email, sub: data.id, roles: ['user'] };
     return this.jwtService.sign(payload);
   }
 
-  async login(user: User) {
+  async login(user: User, role?: string) {
     const { password, ...userData } = user;
     return {
       ...userData,
