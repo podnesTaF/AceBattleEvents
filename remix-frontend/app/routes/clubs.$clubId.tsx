@@ -37,7 +37,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
   const resultsRows = transformClubResults(clubResultsData?.results || []);
 
-  const clubNews = await Api().news.getNewsPreviews(4);
+  const clubNews = await Api().news.getNewsPreviews({ itemsAmount: 4 });
 
   return json({
     club,

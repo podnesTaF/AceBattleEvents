@@ -20,7 +20,7 @@ const SideBar: React.FC<SideBarProps> = ({ tabs, title }) => {
   };
 
   return (
-    <div className="h-full md:min-h-screen fixed md:static bottom-0 sm:w-64 flex sm:flex-col bg-[#1E1C1F] overflow-x-scroll sm:overflow-x-auto z-10">
+    <div className="h-full h-calc-screen-lg fixed md:sticky top-[90px] sm:w-64 flex sm:flex-col bg-[#1E1C1F] overflow-x-scroll sm:overflow-x-auto z-10">
       <div className="py-4 hidden sm:flex px-4">
         <h3 className="text-2xl font-semibold text-white uppercase">{title}</h3>
       </div>

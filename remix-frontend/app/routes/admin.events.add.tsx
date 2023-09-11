@@ -2,15 +2,27 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Button, Divider, IconButton } from "@mui/material";
-import { useNavigate } from "@remix-run/react";
+import { LoaderArgs, json } from "@remix-run/node";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 import { useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { Api } from "~/api/axiosInstance";
 import { FormButton, FormField, FormSelect, ImageField } from "~/components";
 import { countries } from "~/lib/shared";
-import { addEventSchema } from "~/lib/utils";
+import { addEventSchema, adminAuthenticator } from "~/lib/utils";
+
+export const loader = async ({ request }: LoaderArgs) => {
+  const me = await adminAuthenticator.isAuthenticated(request);
+
+  if (!me) {
+    throw new Response(JSON.stringify({ message: "Unauthorized" }));
+  }
+
+  return json({ me });
+};
 
 const AddEvent = () => {
+  const { me } = useLoaderData<typeof loader>();
   const [activeSlide, setActiveSlide] = useState(0);
 
   const navigate = useNavigate();
@@ -39,7 +51,7 @@ const AddEvent = () => {
     };
 
     try {
-      const event = await Api().events.addEvent({
+      const event = await Api(me.token).events.addEvent({
         title: dto.title,
         startDateTime: dto.startDateTime,
         endDate: dto.endDate,

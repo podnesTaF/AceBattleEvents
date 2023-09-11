@@ -1,9 +1,7 @@
 "use client";
-
 import CloseIcon from "@mui/icons-material/Close";
 import GroupIcon from "@mui/icons-material/Group";
 import LogoutIcon from "@mui/icons-material/Logout";
-
 import {
   Avatar,
   Button,
@@ -14,15 +12,15 @@ import {
 } from "@mui/material";
 import { Link, useLocation, useNavigate } from "@remix-run/react";
 import React from "react";
-import { IUser } from "~/lib/user/types/IUser";
+import { links } from "~/lib/utils";
 
-interface CustomDrawer {
+interface CustomDrawerProps {
   open: boolean;
-  setOpen: Function;
-  user: IUser | null;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  user: any;
 }
 
-const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen, user }) => {
+const CustomDrawer: React.FC<CustomDrawerProps> = ({ open, setOpen, user }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -33,10 +31,16 @@ const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen, user }) => {
         onClick={() => setOpen(false)}
         onKeyDown={() => setOpen(false)}
       >
-        <div className={"flex justify-between w-full item-center"}>
-          <h2 className={"text-2xl uppercase text-white"}>Ace Battle Events</h2>
+        <div className={"flex justify-between w-full items-center"}>
+          <img
+            onClick={() => navigate("/")}
+            src="/main-logo-white.svg"
+            alt="abe"
+            className={`cursor-pointer h-5 hover:opacity-90 active:scale-[0.97] transition-all`}
+            height={36}
+          />
           <IconButton onClick={() => setOpen(false)} className={"text-white"}>
-            <CloseIcon fontSize={"large"} />
+            <CloseIcon fontSize={"large"} className="text-white" />
           </IconButton>
         </div>
         {user ? (
@@ -83,8 +87,8 @@ const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen, user }) => {
         ) : (
           <div className={"flex gap-3 my-5 p-3 w-full"}>
             <Button
-              variant="outlined"
-              color="error"
+              variant="contained"
+              color="success"
               className={"w-full"}
               onClick={() => navigate("/auth/register")}
             >
@@ -92,7 +96,7 @@ const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen, user }) => {
             </Button>
             <Button
               variant="outlined"
-              color="warning"
+              color="success"
               className={"w-full"}
               onClick={() => navigate("/auth/login")}
             >
@@ -102,96 +106,21 @@ const CustomDrawer: React.FC<CustomDrawer> = ({ open, setOpen, user }) => {
         )}
         <Divider sx={{ width: "100%", borderColor: "error.main" }} />
         <div className={"w-full p-3"}>
-          <Link to="/">
-            <p
-              className={`hover:opacity-80 py-2 border-b-2 border-solid border-red-300/10 text-xl uppercase ${
-                pathname === "/" ? "text-[#FF0000]" : "text-white"
-              }`}
-            >
-              Home
-            </p>
-          </Link>
-          <Link to="/events">
-            <p
-              className={`hover:opacity-80 py-2 border-b-2 border-solid border-red-300/10 text-xl uppercase ${
-                pathname.split("/")[1] === "events"
-                  ? "text-[#FF0000]"
-                  : "text-white"
-              }`}
-            >
-              Calendar
-            </p>
-          </Link>
-          <Link to="/close-events">
-            <p
-              className={`hover:opacity-80 py-2 border-b-2 border-solid border-red-300/10 text-xl uppercase ${
-                pathname.split("/")[1] === "close-events"
-                  ? "text-[#FF0000]"
-                  : "text-white"
-              }`}
-            >
-              Close Events
-            </p>
-          </Link>
-          <Link to="/news">
-            <p
-              className={`hover:opacity-80 py-2 border-b-2 border-solid border-red-300/10 text-xl uppercase ${
-                pathname.split("/")[1] === "news"
-                  ? "text-[#FF0000]"
-                  : "text-white"
-              }`}
-            >
-              Latest News
-            </p>
-          </Link>
-          <Link to="/results">
-            <p
-              className={`hover:opacity-80 py-2 border-b-2 border-solid border-red-300/10 text-xl uppercase ${
-                pathname.split("/")[1] === "results"
-                  ? "text-[#FF0000]"
-                  : "text-white"
-              }`}
-            >
-              Results
-            </p>
-          </Link>
-          <Link className="hover:opacity-80" to="/clubs">
-            <p
-              className={`hover:opacity-80 py-2 border-b-2 border-solid border-red-300/10 text-xl uppercase ${
-                pathname.split("/")[1] === "clubs"
-                  ? "text-[#FF0000]"
-                  : "text-white"
-              }`}
-            >
-              Clubs
-            </p>
-          </Link>
-          <Link className="hover:opacity-80" to="/athletes">
-            <p
-              className={`hover:opacity-80 py-2 border-b-2 border-solid border-red-300/10 text-xl uppercase ${
-                pathname.split("/")[1] === "athletes"
-                  ? "text-[#FF0000]"
-                  : "text-white"
-              }`}
-            >
-              Athletes
-            </p>
-          </Link>
-          <Link className="hover:opacity-80" to="/rules">
-            <p
-              className={`hover:opacity-80 py-2 border-b-2 border-solid border-red-300/10 text-xl uppercase ${
-                pathname.split("/")[1] === "rules"
-                  ? "text-[#FF0000]"
-                  : "text-white"
-              }`}
-            >
-              Rules
-            </p>
-          </Link>
+          {links.map((link, i) => (
+            <Link key={i} to={link.to}>
+              <p
+                className={`hover:opacity-80 py-2 border-b-2 border-solid border-red-300/10 text-lg font-semibold uppercase ${
+                  pathname === link.to ? "text-[#FF0000]" : "text-white"
+                }`}
+              >
+                {link.label}
+              </p>
+            </Link>
+          ))}
           {user && (
             <Link className="hover:opacity-80" to="/add-team">
               <p
-                className={`text-xl uppercase py-2 ${
+                className={`text-lg font-semibold uppercase py-2 ${
                   pathname.split("/")[1] === "add-team"
                     ? "text-[#FF0000]"
                     : "text-white"

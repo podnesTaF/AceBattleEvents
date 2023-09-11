@@ -18,7 +18,7 @@ import { Link, useNavigate } from "@remix-run/react";
 import React, { useEffect, useState } from "react";
 import InputMask from "react-input-mask";
 import { Api } from "~/api/axiosInstance";
-import { ResultTableRow } from "~/lib/types";
+import { IAdmin, ResultTableRow } from "~/lib/types";
 import {
   getResultIsMs,
   msToMinutesAndSeconds,
@@ -29,9 +29,10 @@ import { StyledTableCell } from "./ExpandableTable";
 
 interface Row {
   row: ResultTableRow;
+  me: IAdmin;
 }
 
-const ExpandableRow: React.FC<Row> = ({ row }) => {
+const ExpandableRow: React.FC<Row> = ({ row, me }) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -49,7 +50,7 @@ const ExpandableRow: React.FC<Row> = ({ row }) => {
     newResult,
   }: {
     teamId?: number;
-    newResult?: string;
+    newResult?: string | null;
   }) => {
     if (!teamId || !newResult) return;
 
@@ -57,7 +58,7 @@ const ExpandableRow: React.FC<Row> = ({ row }) => {
 
     setIsUpdating(true);
 
-    const newTeamResult = await Api().teams.updateTeamResult(row.id, {
+    const newTeamResult = await Api(me.token).teams.updateTeamResult(row.id, {
       teamId,
       oldTeamId: row.team.id,
       resultInMs: newResultInMs,
@@ -114,7 +115,7 @@ const ExpandableRow: React.FC<Row> = ({ row }) => {
             <InputMask
               className="w-full border-[1px] border-gray-300 rounded-md p-2 focus:border-blue-300"
               mask={"99:99.99"}
-              value={newResult}
+              value={newResult as any}
               onChange={(e) => setNewResult(e.target.value)}
             />
           </StyledTableCell>

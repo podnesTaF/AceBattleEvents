@@ -46,7 +46,7 @@ const EventsIndexPage = () => {
   };
 
   useEffect(() => {
-    const params = getNewParams(currPage, filters, checkValue);
+    const params = getNewParams(currPage, filters, scrollY);
     navigate(`${location.pathname}?${params}`);
   }, [filters]);
 

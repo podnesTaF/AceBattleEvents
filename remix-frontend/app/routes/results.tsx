@@ -11,7 +11,12 @@ import {
   SearchField,
 } from "~/components";
 import { countries, years } from "~/lib/shared";
-import { getNewParams, transformRaceToTable } from "~/lib/utils";
+import {
+  adminAuthenticator,
+  authenticator,
+  getNewParams,
+  transformRaceToTable,
+} from "~/lib/utils";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Ace Battle Events | Results" }];
@@ -19,10 +24,14 @@ export const meta: V2_MetaFunction = () => {
 
 export const loader = async ({ request }: LoaderArgs) => {
   const { url } = request;
+  const user = await authenticator.isAuthenticated(request);
+  const admin = await adminAuthenticator.isAuthenticated(request);
+
+  console.log(admin?.token);
 
   const params = url.split("?")[1];
 
-  const racesData = await Api().races.getAllRaces(params, true);
+  const racesData = await Api(admin?.token).races.getAllRaces(params, true);
 
   const page = new URL(url).searchParams.get("page");
   const scroll = new URL(url).searchParams.get("scrollY");

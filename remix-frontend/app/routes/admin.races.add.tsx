@@ -5,10 +5,19 @@ import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Api } from "~/api/axiosInstance";
 import { FormButton, FormField, FormSelect } from "~/components";
-import { createRaceSchema, transformDataToSelect } from "~/lib/utils";
+import {
+  adminAuthenticator,
+  createRaceSchema,
+  transformDataToSelect,
+} from "~/lib/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const eventsSnippets = await Api().events.getEventsSnippet();
+  const me = await adminAuthenticator.isAuthenticated(request);
+
+  if (!me) {
+    throw new Response("Unauthorized");
+  }
 
   const { url } = request;
   const raceId = new URL(url).searchParams.get("raceId");
@@ -31,11 +40,12 @@ export const loader = async ({ request }: LoaderArgs) => {
     eventsSnippets,
     race: race || null,
     defaultValues: defaultValues || null,
+    me,
   });
 };
 
 const AdminRacesAdd = () => {
-  const { eventsSnippets, race, defaultValues } =
+  const { eventsSnippets, race, defaultValues, me } =
     useLoaderData<typeof loader>();
   const [chosenEvent, setChosenEvent] = useState<number | undefined>(
     defaultValues?.eventId
@@ -52,7 +62,7 @@ const AdminRacesAdd = () => {
   const onSubmit = async (dto: any) => {
     try {
       if (race) {
-        await Api().races.updateRace(
+        await Api(me.token).races.updateRace(
           {
             teamIds: [+dto.team1Id, +dto.team2Id],
             eventId: dto.eventId,
@@ -63,7 +73,7 @@ const AdminRacesAdd = () => {
         navigate("/admin/races");
         return;
       }
-      await Api().races.createRace({
+      await Api(me.token).races.createRace({
         teamIds: [+dto.team1Id, +dto.team2Id],
         eventId: dto.eventId,
         startTime: dto.startTime,

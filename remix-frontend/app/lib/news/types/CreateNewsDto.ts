@@ -1,4 +1,5 @@
 import { IMedia } from "~/lib/media/types/IMedia";
+import { Hashtag, IContent } from "./INews";
 
 export type CreateNews = {
   title: string;
@@ -7,5 +8,13 @@ export type CreateNews = {
     text?: string;
     media?: IMedia;
   }[];
-  tags: string[];
+  hashtags: string[];
+  mainImage: IMedia;
+};
+
+export type UpdateNews = {
+  title?: string;
+  contents: IContent[];
+  hashtags: Hashtag[];
+  mainImage?: IMedia;
 };

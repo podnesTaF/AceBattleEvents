@@ -22,8 +22,8 @@ import globalStyles from "~/styles/global.css";
 import stylesheet from "~/tailwind.css";
 import { AppBar, Footer } from "./components";
 import ClientStyleContext from "./context/ClientStyleContext";
-import { IUser } from "./lib/types";
-import { authenticator } from "./lib/utils";
+import { IAdmin, IUser } from "./lib/types";
+import { adminAuthenticator, authenticator } from "./lib/utils";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -32,8 +32,9 @@ export const links: LinksFunction = () => [
 
 export const loader = async ({ request }: LoaderArgs) => {
   const user = await authenticator.isAuthenticated(request);
+  const admin = await adminAuthenticator.isAuthenticated(request);
 
-  return json({ user });
+  return json({ user, admin });
 };
 
 export const meta: V2_MetaFunction = () => {
@@ -46,10 +47,12 @@ const Document = withEmotionCache(
       children,
       title,
       user,
+      admin,
     }: {
       children: ReactNode;
       title: string;
       user: IUser | null;
+      admin: IAdmin | null;
     },
     emotionCache
   ) => {
@@ -76,7 +79,7 @@ const Document = withEmotionCache(
           <Links />
         </head>
         <body>
-          <AppBar user={user} />
+          <AppBar user={user} admin={admin} />
           {children}
           <Footer />
           <ScrollRestoration />
@@ -89,9 +92,9 @@ const Document = withEmotionCache(
 );
 
 export default function App() {
-  const { user } = useLoaderData();
+  const { user, admin } = useLoaderData();
   return (
-    <Document title="" user={user}>
+    <Document title="" user={user} admin={admin}>
       <Outlet />
     </Document>
   );
@@ -102,7 +105,7 @@ export function ErrorBoundary() {
 
   if (isRouteErrorResponse(error)) {
     return (
-      <Document title="" user={null}>
+      <Document title="" user={null} admin={null}>
         <div className="error-container">
           <h1 className="font-semibold text-3xl">
             {error.status} {error.statusText}
@@ -114,7 +117,7 @@ export function ErrorBoundary() {
 
   const errorMessage = error instanceof Error ? error.message : "Unknown error";
   return (
-    <Document title="" user={null}>
+    <Document title="" user={null} admin={null}>
       <div className="error-container">
         <h1 className="font-semibold text-3xl mb-3">App Error</h1>
         <pre>{errorMessage}</pre>

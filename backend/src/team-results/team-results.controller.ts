@@ -6,7 +6,11 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/roles/roles.guard';
 import { CreateTeamResultDto } from './dto/create-team-result.dto';
 import { TeamResultsService } from './team-results.service';
 
@@ -41,6 +45,8 @@ export class TeamResultsController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   updateTeamResult(
     @Param('id') id: string,
     @Body()

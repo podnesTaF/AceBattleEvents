@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  AdminApi,
   AthletesApi,
   ClubApi,
   EventsApi,
@@ -19,6 +20,7 @@ interface ApiReturnType {
   athletes: ReturnType<typeof AthletesApi>;
   news: ReturnType<typeof NewsApi>;
   races: ReturnType<typeof RacesApi>;
+  admin: ReturnType<typeof AdminApi>;
 }
 
 // https://abe-server.up.railway.app/api/v1
@@ -39,5 +41,6 @@ export const Api = (token?: string): ApiReturnType => {
     athletes: AthletesApi(instance),
     news: NewsApi(instance),
     races: RacesApi(instance),
+    admin: AdminApi(instance),
   };
 };
