@@ -3,12 +3,12 @@ import { useEffect } from "react";
 import { LoaderArgs, json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 
+import { Pagination } from "@mui/material";
 import { Api } from "~/api/axiosInstance";
 import {
   CustomTable,
   FilterBage,
   FilterSelect,
-  Pagination,
   SearchField,
 } from "~/components";
 import { countries, useFilter } from "~/lib/shared";
@@ -141,10 +141,16 @@ const AthletesIndexPage = () => {
       </div>
       <div className="flex justify-center">
         <Pagination
+          count={athletesData.totalPages}
+          onChange={(e, page) => changePage(page)}
+          page={currPage}
+          variant="outlined"
+        />
+        {/* <Pagination
           pagesCount={athletesData.totalPages}
           onChangePage={changePage}
           currPage={currPage}
-        />
+        /> */}
       </div>
     </>
   );

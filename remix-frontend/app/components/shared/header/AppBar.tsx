@@ -55,12 +55,12 @@ const AppBar: React.FC<AppBarProps> = ({ user, admin }) => {
       <div
         className={`relative w-full ${
           admin && user
-            ? "mb-[106px] md:mb-[106px]"
+            ? "mb-[96px] xl:mb-[106px]"
             : admin
-            ? "mb-[106px] md:mb-[92px]"
+            ? "mb-[96px] xl:mb-[92px]"
             : user
-            ? "mb-[66px] md:mb-[66px]"
-            : "mb-[66px] md:mb-[50px]"
+            ? "mb-[66px] xl:mb-[66px]"
+            : "mb-[66px] xl:mb-[50px]"
         } 
         ${isScrollingUp ? "xl:mb-12" : ""}`}
       >

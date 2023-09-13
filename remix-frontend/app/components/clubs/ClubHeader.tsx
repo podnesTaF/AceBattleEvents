@@ -7,7 +7,7 @@ interface Props {
 
 const ClubHeader: React.FC<Props> = ({ club }) => {
   return (
-    <header className="relative w-full h-[400px] md:h-[700px] overflow-hidden">
+    <header className="relative w-full max-h-[700px] overflow-hidden">
       <img
         src={club.photo?.mediaUrl || "/clubs-lg.jpg"}
         alt="club photo"

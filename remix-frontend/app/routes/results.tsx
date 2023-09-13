@@ -1,3 +1,4 @@
+import { Pagination } from "@mui/material";
 import { LoaderArgs, V2_MetaFunction, json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
@@ -7,7 +8,6 @@ import {
   CustomTitle,
   FilterBage,
   FilterSelect,
-  Pagination,
   SearchField,
 } from "~/components";
 import { countries, years } from "~/lib/shared";
@@ -90,7 +90,7 @@ const ResultsPage = () => {
 
   return (
     <>
-      <header className="w-full flex justify-center items-center h-48 sm:h-56  md:bg-[url('/auth-intro.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">
+      <header className="w-full flex justify-center items-center h-48 sm:h-56  bg-[url('/auth-intro.jpg')] xl:bg-cover bg-no-repeat bg-center relative flex-col ">
         <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.4)] z-0"></div>
       </header>
       <CustomTitle title={"ACE BATTLE MILE"} subtitle="Battles' Results" />
@@ -168,9 +168,9 @@ const ResultsPage = () => {
           />
           <div className="flex w-full justify-center my-4">
             <Pagination
-              pagesCount={totalPages}
-              onChangePage={changePage}
-              currPage={currPage}
+              count={totalPages}
+              defaultPage={1}
+              onChange={(_, pageNum) => changePage(pageNum)}
             />
           </div>
         </div>

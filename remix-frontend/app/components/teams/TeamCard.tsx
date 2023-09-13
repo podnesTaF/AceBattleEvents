@@ -4,7 +4,7 @@ import Skeleton from "@mui/material/Skeleton";
 import { Link } from "@remix-run/react";
 import React from "react";
 import { ITeam } from "~/lib/types";
-import { transfromIntoPlayersTable } from "~/lib/utils";
+import { msToMinutesAndSeconds, transfromIntoPlayersTable } from "~/lib/utils";
 import { CustomTable, TableSkeleton } from "../shared";
 
 interface TeamCardProps {
@@ -43,11 +43,14 @@ const TeamCard: React.FC<TeamCardProps> = ({
           </div>
           <div className="flex justify-between w-full mb-4">
             <h5 className="text-lg font-semibold">Rank</h5>
-            <h5 className="text-lg">12</h5>
+            <h5 className="text-lg">{team?.rank}</h5>
           </div>
           <div className="flex justify-between w-full mb-4">
             <h5 className="text-lg font-semibold">Personal Best </h5>
-            <h5 className="text-lg">16:34.12</h5>
+            <h5 className="text-lg">
+              {msToMinutesAndSeconds(team?.personalBest?.resultInMs) ||
+                "The Team Has No PB"}
+            </h5>
           </div>
           <div className="flex justify-between w-full mb-4">
             <h5 className="text-lg font-semibold">Number of Players</h5>
