@@ -70,7 +70,7 @@ const AthletesIndexPage = () => {
   }, [currPage]);
 
   useEffect(() => {
-    const params = getNewParams(currPage, filters, scrollY);
+    const params = getNewParams(1, filters, scrollY);
     navigate(`${location.pathname}?${params}`);
   }, [filters]);
 
@@ -132,6 +132,7 @@ const AthletesIndexPage = () => {
       </div>
       <div className="my-6">
         <CustomTable
+          itemsName="athletes"
           titleColor="bg-black"
           isTitleStraight={true}
           rows={tableData}

@@ -21,6 +21,7 @@ const RaceOverview = () => {
   return (
     <div className="my-6">
       <CustomTable
+        itemsName="results"
         height="h-full"
         titleColor="bg-black"
         isTitleStraight={true}

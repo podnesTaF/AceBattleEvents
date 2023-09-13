@@ -1,6 +1,7 @@
 import { LoaderArgs, json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
+import { Api } from "~/api/axiosInstance";
 import {
   CustomTable,
   CustomTitle,
@@ -10,13 +11,13 @@ import {
   SearchField,
 } from "~/components";
 import { countries, months, useFilter, years } from "~/lib/shared";
-import { getEvents, getNewParams, transformIntoEventsTable } from "~/lib/utils";
+import { getNewParams, transformIntoEventsTable } from "~/lib/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const url = request.url;
   const params = url.split("?")[1];
 
-  const eventsData: any = await getEvents({ params });
+  const eventsData = await Api().events.getEvents(params);
 
   return json({ events: eventsData.events, totalPages: eventsData.totalPages });
 };
@@ -46,7 +47,7 @@ const EventsIndexPage = () => {
   };
 
   useEffect(() => {
-    const params = getNewParams(currPage, filters, scrollY);
+    const params = getNewParams(1, filters, scrollY);
     navigate(`${location.pathname}?${params}`);
   }, [filters]);
 
@@ -147,10 +148,11 @@ const EventsIndexPage = () => {
         </form>
         <div className="my-4">
           <CustomTable
+            itemsName="events"
             rows={transformIntoEventsTable(eventsData.events)}
             isLoading={false}
           />
-          <div className="flex justify-center">
+          <div className="flex justify-center my-4">
             <Pagination
               pagesCount={eventsData.totalPages}
               onChangePage={changePage}

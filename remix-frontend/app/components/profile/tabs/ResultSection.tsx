@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useNavigate } from "@remix-run/react";
+import { useEffect, useState } from "react";
 import { ClubResultsFilter, CustomTable, Pagination } from "~/components";
 import { IUser, UserResult } from "~/lib/types";
+import { getNewParams } from "~/lib/utils";
 
 interface IResultsData {
   user: IUser;
@@ -19,16 +21,24 @@ const ResultsSection: React.FC<IResultsData> = ({
   tableData,
   onChangeResultPage,
 }) => {
-  const [filters, setFilters] = useState();
+  const navigate = useNavigate();
+  const [filters, setFilters] = useState<{ type: string; value: any }[]>([]);
   const getFilters = (filters: any) => {
     setFilters(filters);
   };
+
+  useEffect(() => {
+    const params = getNewParams(1, filters, scrollY);
+    navigate(`${location.pathname}?${params}`);
+  }, [filters]);
+
   if (user.role === "runner" && resultsData) {
     return (
       <div className="p-4">
         <ClubResultsFilter getFilters={getFilters} />
         <div className="w-full">
           <CustomTable
+            itemsName="results"
             rows={tableData || []}
             isLoading={false}
             titleColor="bg-[#1E1C1F]"

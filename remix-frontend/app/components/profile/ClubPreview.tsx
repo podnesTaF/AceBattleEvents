@@ -25,7 +25,7 @@ const ClubPreview: React.FC<ClubPreviewProps> = ({ club }) => {
           <div className="w-5 bg-red-500 h-[70px]"></div>
           <div className="flex flex-col gap-4">
             <h4 className="border-b-[1px] border-red-500 text-white text-xl">
-              {club.country}
+              {club.country.name}
             </h4>
             <h2 className="text-white text-2xl md:text-3xl font-semibold">
               {club.name}

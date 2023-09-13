@@ -13,3 +13,8 @@ export const changePasswordSchema = yup.object().shape({
   newPassword: yup.string().required("New password is required"),
   confirmPassword: yup.string().required("Confirm password is required"),
 });
+
+export const createNewPasswordSchema = yup.object().shape({
+  newPassword: yup.string().required("New password is required"),
+  repeatPassword: yup.string().required("Confirm password is required"),
+});

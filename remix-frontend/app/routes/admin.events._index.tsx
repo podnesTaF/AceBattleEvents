@@ -1,5 +1,7 @@
 import { LoaderArgs, json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
+import { useEffect } from "react";
+import { Api } from "~/api/axiosInstance";
 import {
   CustomTable,
   FilterSelect,
@@ -9,14 +11,14 @@ import {
 import { formatAdminEvents } from "~/lib/admin/utils/mappers";
 import { useFilter } from "~/lib/hooks";
 import { countries, years } from "~/lib/shared";
-import { getEvents } from "~/lib/utils";
+import { getNewParams } from "~/lib/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const url = request.url;
-  const params = url.split("?")[1];
+  const params = url.split("?")[1] + "&check=past event included";
   const currPage = new URL(url).searchParams.get("page") || "1";
 
-  const eventsData = await getEvents({ params });
+  const eventsData = await Api().events.getEvents(params);
 
   return json({
     events: formatAdminEvents(eventsData.events),
@@ -41,6 +43,12 @@ const AllEvents = () => {
     url.searchParams.set("page", pageNum.toString());
     navigate(url.pathname + url.search);
   };
+
+  useEffect(() => {
+    const params = getNewParams(1, filters, scrollY);
+
+    navigate(`${location.pathname}?${params}`);
+  }, [filters]);
 
   return (
     <>
@@ -72,7 +80,7 @@ const AllEvents = () => {
           </div>
         </div>
         <div className="max-w-6xl mb-4">
-          <CustomTable rows={events} isLoading={false} />
+          <CustomTable itemsName="events" rows={events} isLoading={false} />
           <div className="flex mx-auto my-4">
             <Pagination
               onChangePage={onChangePage}

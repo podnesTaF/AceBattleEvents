@@ -28,4 +28,6 @@ export type TabReturnData = {
   };
   resultsTableData?: any[];
   token?: string;
+  resultYear?: string;
+  resultCategory?: string;
 };

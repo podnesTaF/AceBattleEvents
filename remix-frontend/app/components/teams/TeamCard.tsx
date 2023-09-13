@@ -64,6 +64,7 @@ const TeamCard: React.FC<TeamCardProps> = ({
         <h3 className="text-2xl md:text-3xl font-semibold">Players</h3>
         {team ? (
           <CustomTable
+            itemsName="players"
             hightlightIdx={team.players.findIndex((p) => p.id === hightlightId)}
             rows={transfromIntoPlayersTable(team.players)}
             isLoading={false}

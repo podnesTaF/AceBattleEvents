@@ -21,6 +21,7 @@ const RacePacerJoker = () => {
   return (
     <div className="my-9">
       <CustomTable
+        itemsName="results"
         height="h-full"
         titleColor="bg-black"
         isTitleStraight={true}

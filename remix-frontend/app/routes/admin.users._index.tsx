@@ -51,6 +51,7 @@ const AdminUsers = () => {
         </div>
         <div>
           <CustomTable
+            itemsName="admins"
             titleColor="bg-black"
             isTitleStraight={true}
             hightlightIdx={admins.findIndex((a) => a.id === me?.id)}

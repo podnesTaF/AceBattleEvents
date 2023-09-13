@@ -18,12 +18,7 @@ export const AdminApi = (instance: AxiosInstance) => ({
       throw new Error("Failed to login: " + error.message);
     }
   },
-  async registerAdmin(data: {
-    name: string;
-    surname: string;
-    email: string;
-    password: string;
-  }) {
+  async registerAdmin(data: { name: string; surname: string; email: string }) {
     try {
       const { data: userData } = await instance.post<IAdmin>(
         `/admin-auth/register`,
@@ -41,6 +36,33 @@ export const AdminApi = (instance: AxiosInstance) => ({
       return admins;
     } catch (error: any) {
       throw new Error("Failed to fetch admins: " + error.message);
+    }
+  },
+  async getAdmin(id?: string) {
+    try {
+      const { data: admin } = await instance.get<IAdmin>(`/admin/${id}`);
+      return admin;
+    } catch (error: any) {
+      throw new Error("Failed to fetch admin: " + error.message);
+    }
+  },
+  async getMe() {
+    try {
+      const { data: admin } = await instance.get<IAdmin>(`/admin/me`);
+      return admin;
+    } catch (error: any) {
+      throw new Error("Failed to fetch admin: " + error.message);
+    }
+  },
+  async setNewPassword(data: { oldPassword: string; newPassword: string }) {
+    try {
+      const { data: admin } = await instance.post<{ message: string }>(
+        `/admin-auth/change-password`,
+        data
+      );
+      return admin;
+    } catch (error: any) {
+      throw new Error("Failed to change password: " + error.message);
     }
   },
 });

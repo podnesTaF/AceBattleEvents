@@ -8,7 +8,6 @@ const PersonalCalendarSection = ({
   user: IUser;
   teamRegistrations?: ITeamEvent[];
 }) => {
-  console.log(teamRegistrations);
   if (user.role === "runner" && teamRegistrations) {
     return (
       <div>

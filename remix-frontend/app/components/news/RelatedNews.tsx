@@ -10,14 +10,14 @@ const RelatedNews = ({
 }) => {
   return (
     <div>
-      <div className="flex flex-row-reverse gap-4 p-4">
+      <div className="flex flex-row-reverse gap-4 py-2">
         <Link to={`/news/${news.id}`}>
-          <h3 className="text-xl font-medium w-full">{news.title}</h3>
+          <h3 className="text-lg font-medium w-full">{news.title}</h3>
         </Link>
         <img
           src={news.smallImageUrl || "/news-dummy-img.jpg"}
           alt="event img"
-          className="w-2/5"
+          className="w-2/5 max-h-[120px] object-cover rounded-md"
         />
       </div>
       {!isLast && <div className="border-t-2 border-red-500"></div>}

@@ -1,21 +1,26 @@
-import { json } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
-import { useState } from "react";
+import { LoaderArgs, json } from "@remix-run/node";
+import { Link, useLoaderData, useNavigate } from "@remix-run/react";
+import { useEffect, useState } from "react";
 import { Api } from "~/api/axiosInstance";
-import { ConfirmAlert, NewsLargeItem } from "~/components";
+import { ConfirmAlert, NewsLargeItem, Pagination } from "~/components";
 import AdminHeader from "~/components/admin/AdminHeader";
 
-export const loader = async () => {
-  const news = await Api().news.getNewsPreviews({ textLength: 300 });
+export const loader = async ({ request }: LoaderArgs) => {
+  const page = new URL(request.url).searchParams.get("page") || "1";
+  const newsData = await Api().news.getNewsPreviews({
+    textLength: 300,
+    page: parseInt(page),
+  });
 
-  return json({ news });
+  return json({ newsData, page: +page });
 };
 
 const AdminNews = () => {
-  const { news } = useLoaderData<typeof loader>();
+  const { newsData, page } = useLoaderData<typeof loader>();
   const [confirmAlertOpen, setConfirmAletOpen] = useState(false);
   const [newsIdToDelete, setNewsIdToDelete] = useState<number | null>(null);
-  const [newsState, setNewsState] = useState(news);
+  const [newsState, setNewsState] = useState(newsData.newsPreviews);
+  const navigate = useNavigate();
 
   const handleDelete = async () => {
     if (!newsIdToDelete) return;
@@ -26,6 +31,12 @@ const AdminNews = () => {
     handleClose();
   };
 
+  const onChangePage = (pageNum: number) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("page", pageNum.toString());
+    navigate(url.pathname + url.search);
+  };
+
   const handleOpenAlert = (id: number) => {
     setNewsIdToDelete(id);
     setConfirmAletOpen(true);
@@ -34,6 +45,10 @@ const AdminNews = () => {
   const handleClose = () => {
     setConfirmAletOpen(false);
   };
+
+  useEffect(() => {
+    setNewsState(newsData.newsPreviews);
+  }, [page]);
 
   return (
     <div className="w-full">
@@ -60,6 +75,13 @@ const AdminNews = () => {
               handleOpenAlert={handleOpenAlert}
             />
           ))}
+          <div className="flex mx-auto my-4">
+            <Pagination
+              onChangePage={onChangePage}
+              currPage={page}
+              pagesCount={newsData.totalPages}
+            />
+          </div>
         </div>
       </main>
       <ConfirmAlert

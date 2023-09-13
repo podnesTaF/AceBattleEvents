@@ -19,6 +19,12 @@ export type ITeam = {
   teamImage: IMedia;
   players: IUser[];
   events: IEvent[];
+  rank: number | null;
+  totalPoints: number | null;
+  personalBest: {
+    id: number;
+    resultInMs: number;
+  } | null;
 };
 
 export type ReqTeam = {

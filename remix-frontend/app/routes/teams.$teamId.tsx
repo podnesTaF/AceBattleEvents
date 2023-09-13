@@ -2,8 +2,8 @@ import { LoaderArgs } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { useEffect } from "react";
 import { Api } from "~/api/axiosInstance";
-import { CustomTable, Pagination } from "~/components";
-import { transformClubResults } from "~/lib/utils";
+import { CustomTable, MemberCarouseltem, Pagination } from "~/components";
+import { msToMinutesAndSeconds, transformClubResults } from "~/lib/utils";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const { teamId } = params;
@@ -83,14 +83,16 @@ const TeamPage = () => {
                 {team.coach.name} {team.coach.surname}
               </h2>
             </div>
-            <div className="mr-4">
-              <h4 className="text-xl font-semibold text-gray-400 mb-4">
-                Personal Best
-              </h4>
-              <h2 className="text-2xl md:text-3xl font-semibold">
-                16:30:00.23
-              </h2>
-            </div>
+            {team.personalBest && (
+              <div className="mr-4">
+                <h4 className="text-xl font-semibold text-gray-400 mb-4">
+                  Personal Best
+                </h4>
+                <h2 className="text-2xl md:text-3xl font-semibold">
+                  {msToMinutesAndSeconds(team.personalBest.resultInMs)}
+                </h2>
+              </div>
+            )}
           </div>
           <div className="my-5 px-4 xl:px-0">
             <h4 className="text-2xl font-semibold text-gray-400 mb-5">
@@ -98,32 +100,7 @@ const TeamPage = () => {
             </h4>
             <div className="flex flex-wrap px-4 xl:px-8 my-4 gap-8 justify-center">
               {team.players.map((player) => (
-                <div className="max-w-xs max-h-sm relative" key={player.id}>
-                  <img
-                    src={
-                      player.image
-                        ? player.image.mediaUrl
-                        : "https://storage.googleapis.com/abe_cloud_storage/image/large/c4bccba0-3f80-4eb5-b50f-63e5cd4f0100.jpg"
-                    }
-                    alt="avatar"
-                    width={250}
-                    height={300}
-                    className="rounded-md object-cover min-h-[300px]"
-                  />
-                  <div className="absolute bg-black/50 py-1 w-full flex justify-center bottom-0 left-0">
-                    {player.worldAthleticsUrl ? (
-                      <a href={player.worldAthleticsUrl} target="_blank">
-                        <h4 className={`text-2xl text-white underline`}>
-                          {player.name} <br /> {player.surname}
-                        </h4>
-                      </a>
-                    ) : (
-                      <h4 className={`text-2xl text-white`}>
-                        {player.name} <br /> {player.surname}
-                      </h4>
-                    )}
-                  </div>
-                </div>
+                <MemberCarouseltem key={player.id} item={player} />
               ))}
             </div>
           </div>

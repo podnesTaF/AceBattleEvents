@@ -72,7 +72,6 @@ const AddNews = () => {
   });
 
   const onSubmit = async (dto: any) => {
-    console.log("submit");
     if (!news) {
       const mappedContents = dto.contents.map((content: any) => {
         delete content.id;

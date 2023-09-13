@@ -7,7 +7,10 @@ export type INews = {
   mainImage?: IMedia;
   contents: IContent[];
   hashtags: Hashtag[];
-  relatedNews: NewsPreview[];
+  relatedNews: {
+    newsPreviews: NewsPreview[];
+    totalPages: number;
+  };
   relatedEvents?: IEvent[];
   createdAt: string;
 };

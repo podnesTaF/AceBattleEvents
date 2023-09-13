@@ -91,7 +91,9 @@ const EventCard: React.FC<EventCardProps> = ({
               </div>
               <div>
                 <h3 className="uppercase text-xl">teams:</h3>
-                <h4 className="uppercase text-lg">{event.teamsCount} male</h4>
+                <h4 className="uppercase text-lg">
+                  {event.teamsCount} males / females
+                </h4>
               </div>
               <div>
                 <h3 className="uppercase text-xl">organisators:</h3>
@@ -102,7 +104,7 @@ const EventCard: React.FC<EventCardProps> = ({
               <h4 className="text-xl uppercase text-white">PRIZE FUNDS</h4>
               <div className="flex-1 flex items-center justify-center">
                 <h1 className="uppercase text-7xl text-white">
-                  {event.totalPrize} $
+                  {event.totalPrize} &euro;
                 </h1>
               </div>
             </div>

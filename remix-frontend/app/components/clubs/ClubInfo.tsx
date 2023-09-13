@@ -26,9 +26,16 @@ const ClubInfo: React.FC<Props> = ({ club, finishedRaces }) => {
               Location:
             </h4>
             <div className="flex gap-2 items-center">
-              <img src={"/belgium.svg"} alt="country" width={60} height={40} />
+              {club.country.flagIconUrl && (
+                <img
+                  src={club.country.flagIconUrl}
+                  alt="country"
+                  width={60}
+                  height={40}
+                />
+              )}
               <h3 className="text-xl md:text-2xl text-white">
-                {club.country}, <br /> {club.city}
+                {club.country.name}, <br /> {club.city}
               </h3>
             </div>
           </div>

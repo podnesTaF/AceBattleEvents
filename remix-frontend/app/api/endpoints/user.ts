@@ -37,6 +37,16 @@ export const UserApi = (instance: AxiosInstance) => ({
       return null;
     }
   },
+  async getResetUser(token: string) {
+    try {
+      const { data: userData } = await instance.get<IUser>(
+        `/reset-user/user/${token}`
+      );
+      return userData;
+    } catch (error: any) {
+      throw new Error("Failed to fetch data: " + error.message);
+    }
+  },
   async getUserProfile(id: string) {
     try {
       const { data: userData } = await instance.get<IUser>(`/users/${id}`);
@@ -75,12 +85,28 @@ export const UserApi = (instance: AxiosInstance) => ({
       console.log(error);
     }
   },
-  async getUserResults(id: number, page: number, limit?: number) {
+  async getUserResults({
+    id,
+    page,
+    resultYear,
+    resultCategory,
+    limit,
+  }: {
+    id: number;
+    page: number;
+    resultYear?: number;
+    resultCategory?: string;
+    limit?: number;
+  }) {
     try {
       const { data: results } = await instance.get<{
         results: UserResult[];
         totalPages: number;
-      }>(`/runner-results/user/${id}?page=${page}&limit=${limit || 5}`);
+      }>(
+        `/runner-results/user/${id}?page=${page}&limit=${limit || 5}&year=${
+          resultYear || ""
+        }&category=${resultCategory || ""}`
+      );
       return results;
     } catch (error) {
       console.log(error);
@@ -111,6 +137,44 @@ export const UserApi = (instance: AxiosInstance) => ({
       return userData;
     } catch (error: any) {
       throw new Error("Failed to change password: " + error.message);
+    }
+  },
+
+  async resetPasswordRequest(email: string) {
+    try {
+      const { data: userData } = await instance.post<{ message: string }>(
+        `/auth/reset-password`,
+        { email }
+      );
+      return userData;
+    } catch (error: any) {
+      throw new Error("Failed to reset password: " + error.message);
+    }
+  },
+
+  async setNewPassword(
+    userId: number,
+    data: { newPassword: string; confirmPassword: string; token: string }
+  ) {
+    try {
+      const { data: userData } = await instance.post<{ message: string }>(
+        `/auth/change-password/${userId}`,
+        data
+      );
+      return userData;
+    } catch (error: any) {
+      throw new Error("Failed to change password: " + error.message);
+    }
+  },
+
+  async checkToken(token: string) {
+    try {
+      const { data: isValid } = await instance.get<boolean>(
+        `/reset-user/check/${token}`
+      );
+      return isValid;
+    } catch (error: any) {
+      throw new Error("Failed to check token: " + error.message);
     }
   },
 });

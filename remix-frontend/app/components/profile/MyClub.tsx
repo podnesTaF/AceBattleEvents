@@ -18,6 +18,7 @@ const MyClub: React.FC<MyClubProps> = ({ club }) => {
         <h4 className="text-xl font-semibold mb-5">Club Atheletes</h4>
         <div className="px-4 mb-4 w-full">
           <CustomTable
+            itemsName="athletes"
             rows={transformIntoMembers(
               club.members.filter((m) => m.role === "runner")
             )}
@@ -35,7 +36,7 @@ const MyClub: React.FC<MyClubProps> = ({ club }) => {
           EDIT CLUB INFORMATION AND MEMBERS
         </h4>
         <h2 className="text-2xl font-semibold my-4 text-center text-green-300 underline">
-          <Link to="/profile">OPEN CLUB PREFERENCES</Link>
+          <Link to="/user/settings/club">OPEN CLUB PREFERENCES</Link>
         </h2>
       </section>
     </div>

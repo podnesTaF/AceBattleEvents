@@ -1,10 +1,23 @@
 import HomeIcon from "@mui/icons-material/Home";
-import { Breadcrumbs, Typography } from "@mui/material";
-import { Link, Outlet, V2_MetaFunction } from "@remix-run/react";
+import { Outlet, V2_MetaFunction } from "@remix-run/react";
+import { CustomCrumbs } from "~/components";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Ace Battle Events | Athletes" }];
 };
+
+const links = [
+  {
+    title: "Home",
+    url: "/",
+    icon: HomeIcon,
+  },
+  {
+    title: "Athletes",
+    url: "/athletes",
+    active: true,
+  },
+];
 
 const AlthetesPage = () => {
   return (
@@ -19,15 +32,7 @@ const AlthetesPage = () => {
         </div>
       </header>
       <main className="max-w-6xl mx-4 lg:mx-auto my-6">
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link className="hover:underline" color="inherit" to="/">
-            <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-            Home
-          </Link>
-          <Link to={"/athletes"}>
-            <Typography color="text.primary">Athletes</Typography>
-          </Link>
-        </Breadcrumbs>
+        <CustomCrumbs links={links} />
         <Outlet />
       </main>
     </>

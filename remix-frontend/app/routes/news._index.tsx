@@ -13,10 +13,12 @@ import {
 } from "~/components";
 
 export const loader = async () => {
-  const newsPreviews = await Api().news.getNewsPreviews({});
+  const { newsPreviews, totalPages } = await Api().news.getNewsPreviews({
+    itemsAmount: 5,
+  });
   const eventsPreviews = await Api().events.getEventsShortform();
 
-  return json({ newsPreviews, eventsPreviews });
+  return json({ newsPreviews, eventsPreviews, totalPages });
 };
 
 const NewsPage = () => {

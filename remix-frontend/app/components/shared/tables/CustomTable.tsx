@@ -13,6 +13,7 @@ interface CustomTableProps {
   hightlightIdx?: number;
   deletableRows?: boolean;
   onDelete?: (ids: number[]) => Promise<void>;
+  itemsName?: string;
   ids?: number[];
   height?: string;
 }
@@ -27,6 +28,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
   deletableRows,
   onDelete,
   height,
+  itemsName,
   ids,
 }) => {
   const [chosenItems, setChosenItems] = useState<number[]>([]);
@@ -47,8 +49,10 @@ const CustomTable: React.FC<CustomTableProps> = ({
       {isLoading ? (
         <TableSkeleton />
       ) : rows.length < 1 ? (
-        <div>
-          <h2>No events found.</h2>
+        <div className="h-32 flex justify-center items-center border-gray-300 border-[1px] rounded-md shadow-md">
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-300">
+            No {itemsName} found.
+          </h2>
         </div>
       ) : (
         <table className="w-full text-sm text-left border-separate border-spacing-y-1">
