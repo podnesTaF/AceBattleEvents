@@ -32,6 +32,12 @@ export class Team {
   @Column()
   city: string;
 
+  @Column({ nullable: true })
+  totalPoints: number;
+
+  @Column({ default: 9999, nullable: true })
+  rank: number;
+
   @ManyToOne(() => Country, (country) => country.teams)
   country: Country;
 
@@ -98,4 +104,10 @@ export class Team {
 
   @ManyToMany(() => Race, (race) => race.teams, { onDelete: 'CASCADE' })
   races: Race[];
+
+  @OneToOne(() => TeamResult, {
+    nullable: true,
+  })
+  @JoinColumn()
+  personalBest: TeamResult;
 }

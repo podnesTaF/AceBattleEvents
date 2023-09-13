@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -25,8 +26,8 @@ export class ClubRequestsController {
   }
 
   @Get('club/:id')
-  findAllByClubId(@Param('id') id: string) {
-    return this.clubRequestsService.getJoinRequestsForClub(+id);
+  findAllByClubId(@Param('id') id: string, @Query() queries: any) {
+    return this.clubRequestsService.getJoinRequestsForClub(+id, queries);
   }
 
   @Post('club/:id/accept')

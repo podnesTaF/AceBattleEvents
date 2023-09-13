@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CountryService } from 'src/country/country.service';
 import { Media } from 'src/media/entities/media.entity';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
@@ -12,14 +13,26 @@ export class ClubService {
     @InjectRepository(Club)
     private repository: Repository<Club>,
     private userService: UserService,
+    private countryService: CountryService,
   ) {}
 
   async create(createClubDto: CreateClubDto, managerId: number) {
     const manager = await this.userService.findById(managerId);
+
+    let country = await this.countryService.returnIfExist({
+      name: createClubDto.country,
+    });
+
+    if (!country) {
+      country = await this.countryService.create(createClubDto.country);
+    }
+
     return this.repository.save({
-      ...createClubDto,
+      name: createClubDto.name,
+      city: createClubDto.city,
       members: [manager],
       logo: createClubDto.logo || null,
+      country: country,
     });
   }
 
@@ -34,6 +47,7 @@ export class ClubService {
       .leftJoinAndSelect('club.members', 'members')
       .leftJoinAndSelect('club.teams', 'teams')
       .leftJoinAndSelect('club.logo', 'logo')
+      .leftJoinAndSelect('club.country', 'country')
       .orderBy('club.id', 'DESC');
 
     const conditions = [];
@@ -43,7 +57,7 @@ export class ClubService {
     }
 
     if (queries.country) {
-      conditions.push('club.country LIKE :country');
+      conditions.push('country.name LIKE :country');
     }
 
     if (conditions.length > 0) {
@@ -77,7 +91,14 @@ export class ClubService {
   async findOne(id: number) {
     const club = await this.repository.findOne({
       where: { id },
-      relations: ['members', 'photo', 'logo', 'members.country'],
+      relations: [
+        'members',
+        'photo',
+        'logo',
+        'members.country',
+        'country',
+        'members.image',
+      ],
     });
 
     return club;
@@ -86,6 +107,7 @@ export class ClubService {
   async findPure(id: number) {
     const club = await this.repository.findOne({
       where: { id },
+      relations: ['country'],
     });
 
     return club;
@@ -133,9 +155,17 @@ export class ClubService {
       relations: ['logo', 'photo'],
     });
 
+    let country = await this.countryService.returnIfExist({
+      name: dto.country,
+    });
+
+    if (!country) {
+      country = await this.countryService.create(dto.country);
+    }
+
     club.name = dto.name || club.name;
     club.city = dto.city || club.city;
-    club.country = dto.country || club.country;
+    club.country = country || club.country;
 
     if (dto.logo) {
       club.logo = dto.logo;

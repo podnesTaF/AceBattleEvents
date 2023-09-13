@@ -1,11 +1,15 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import { AdminService } from 'src/admin/admin.service';
 import { UserService } from '../../user/user.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly userService: UserService) {
+  constructor(
+    private readonly userService: UserService,
+    private readonly adminService: AdminService,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -19,7 +23,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       email: payload.email,
     };
 
-    const user = await this.userService.findByCond(data);
+    let user: any = null;
+    if (payload.roles.includes('admin')) {
+      user = await this.adminService.findByCond(data);
+    } else {
+      user = await this.userService.findByCond(data);
+    }
 
     if (!user) {
       throw new UnauthorizedException("You don't have access to this page");

@@ -1,4 +1,5 @@
 import { JoinRequest } from 'src/club-requests/entities/club-request.entity';
+import { Country } from 'src/country/entity/country.entity';
 import { Media } from 'src/media/entities/media.entity';
 import { Team } from 'src/teams/entities/team.entity';
 import { User } from 'src/user/entities/user.entity';
@@ -25,8 +26,8 @@ export class Club {
   @Column()
   city: string;
 
-  @Column()
-  country: string;
+  @ManyToOne(() => Country, { nullable: true })
+  country: Country;
 
   @OneToMany(() => User, (user) => user.club)
   members: User[];

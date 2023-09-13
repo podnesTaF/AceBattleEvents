@@ -29,10 +29,7 @@ export class TeamResultsController {
   }
 
   @Get('/club/:clubId')
-  getClubResults(
-    @Param('clubId') clubId: string,
-    @Query() queries: { limit?: number; page?: number },
-  ) {
+  getClubResults(@Param('clubId') clubId: string, @Query() queries: any) {
     return this.teamResultsService.getClubResults(+clubId, queries);
   }
 
@@ -42,6 +39,11 @@ export class TeamResultsController {
     @Query() queries: { limit?: number; page?: number },
   ) {
     return this.teamResultsService.getTeamResults(+teamId, queries);
+  }
+
+  @Patch('/ranking')
+  updateRanking(@Query('gender') gender?: string) {
+    return this.teamResultsService.updateRanking(gender || 'male');
   }
 
   @Patch(':id')

@@ -30,6 +30,7 @@ import { TeamResultsModule } from './team-results/team-results.module';
 import { TeamsModule } from './teams/teams.module';
 import { UserModule } from './user/user.module';
 import { ViewerRegistrationsModule } from './viewer-registrations/viewer-registrations.module';
+import { ResetUserModule } from './reset-user/reset-user.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { ViewerRegistrationsModule } from './viewer-registrations/viewer-registr
     RunnerResultsModule,
     SplitsModule,
     AdminModule,
+    ResetUserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

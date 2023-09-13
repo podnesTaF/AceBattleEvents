@@ -16,22 +16,31 @@ export class NewsService {
     private hashtagService: HashtagService,
   ) {}
 
-  getNews() {
+  getNews(limit?: number, page?: number) {
     return this.repository.find({
       relations: ['contents', 'hashtags', 'contents.media', 'mainImage'],
+      take: limit,
+      skip: page ? (page - 1) * limit : 0,
     });
   }
 
   async getNewsPreviews({
     relatedNews,
-    itemsAmount,
+    page,
+    limit,
     textLength,
   }: {
+    page?: number;
     relatedNews?: News[];
-    itemsAmount?: number;
+    limit?: number;
     textLength?: number;
   }) {
-    const newsList = relatedNews ? relatedNews : await this.getNews();
+    const newsCount = await this.repository.count();
+    const newsList = relatedNews
+      ? relatedNews
+      : await this.getNews(limit, page);
+
+    const totalPages = Math.ceil(newsCount / (limit || newsCount));
 
     const newsPreviews = newsList.map((news) => {
       const content = news.contents.find((item) => item.type === 'text');
@@ -55,9 +64,7 @@ export class NewsService {
       };
     });
 
-    return !isNaN(+itemsAmount)
-      ? newsPreviews.slice(0, +itemsAmount)
-      : newsPreviews;
+    return { newsPreviews, totalPages };
   }
 
   async getNewsById(id: number) {

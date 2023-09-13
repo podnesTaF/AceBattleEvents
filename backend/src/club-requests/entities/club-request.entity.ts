@@ -1,6 +1,12 @@
 import { Club } from 'src/club/entities/club.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class JoinRequest {
@@ -15,4 +21,7 @@ export class JoinRequest {
 
   @ManyToOne(() => Club, (club) => club.joinRequests)
   club: Club;
+
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt: Date;
 }

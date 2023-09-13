@@ -49,6 +49,7 @@ export class RaceService {
     country?: string;
     year?: string;
     isFinished?: string;
+    name?: string;
   }) {
     const count = await this.repository.count();
     const page = +queries?.page || 1;
@@ -63,8 +64,12 @@ export class RaceService {
       .leftJoinAndSelect('race.teamResults', 'teamResults')
       .leftJoinAndSelect('teamResults.team', 'team');
 
+    if (queries.name) {
+      qb.andWhere('event.title LIKE :name', { name: `%${queries.name}%` });
+    }
+
     if (queries.category) {
-      qb.andWhere('team.gender = :category', { category: queries.category });
+      qb.andWhere('event.category = :category', { category: queries.category });
     }
 
     if (queries.country) {
