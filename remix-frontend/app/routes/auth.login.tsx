@@ -65,8 +65,14 @@ const LoginPage = () => {
       </RemixForm>
       <p>
         Don't have an account yet?{" "}
-        <Link to="/auth/register" className="underline text-red-500">
+        <Link to="/auth/register" className="underline text-blue-400">
           Sign up
+        </Link>
+      </p>
+      <p className="mt-3">
+        Forgot password?{" "}
+        <Link to="/reset-password" className="underline text-red-500">
+          Reset password
         </Link>
       </p>
     </div>

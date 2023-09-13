@@ -69,16 +69,45 @@ export class ClubRequestsService {
     return createdJoinRequest;
   }
 
-  async getJoinRequestsForClub(clubId: number): Promise<JoinRequest[]> {
-    const joinRequests = await this.joinRequestRepository
+  async getJoinRequestsForClub(
+    clubId: number,
+    queries: any,
+  ): Promise<{ totalCount: number; joinRequests: JoinRequest[] }> {
+    const page = +queries?.page || 1;
+    const limit = +queries?.limit || 5;
+    const offset = (page - 1) * limit;
+
+    const totalCount = await this.joinRequestRepository
+      .createQueryBuilder('joinRequest')
+      .where('joinRequest.club = :clubId', { clubId })
+      .getCount();
+
+    const pageCount = Math.ceil(totalCount / limit);
+
+    const qb = this.joinRequestRepository
       .createQueryBuilder('joinRequest')
       .innerJoinAndSelect('joinRequest.user', 'user')
       .leftJoinAndSelect('user.image', 'image')
       .innerJoinAndSelect('joinRequest.club', 'club')
-      .where('joinRequest.club = :clubId', { clubId })
-      .getMany();
+      .where('joinRequest.club = :clubId', { clubId });
 
-    return joinRequests;
+    if (queries.sortby) {
+      if (queries.sortby === 'latest') {
+        qb.orderBy('joinRequest.createdAt', 'DESC');
+      } else {
+        qb.orderBy('joinRequest.createdAt', 'ASC');
+      }
+    }
+
+    if (queries.name) {
+      qb.andWhere('user.name LIKE :name', { name: `%${queries.name}%` });
+    }
+
+    const joinRequests = await qb.offset(offset).limit(limit).getMany();
+    return {
+      totalCount: pageCount,
+      joinRequests,
+    };
   }
 
   async acceptJoinRequest(clubId: number, userId: number) {

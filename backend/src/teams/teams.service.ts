@@ -90,7 +90,8 @@ export class TeamsService {
       .leftJoinAndSelect('team.coach', 'coach')
       .leftJoinAndSelect('team.players', 'players')
       .leftJoinAndSelect('team.logo', 'logo')
-      .leftJoinAndSelect('team.events', 'events');
+      .leftJoinAndSelect('team.events', 'events')
+      .leftJoinAndSelect('team.personalBest', 'personalBest');
 
     if (queries.user) {
       qb.where('team.managerId = :id', { id: userId });
@@ -237,6 +238,7 @@ export class TeamsService {
       .leftJoinAndSelect('team.logo', 'logo')
       .leftJoinAndSelect('team.country', 'country')
       .leftJoinAndSelect('team.club', 'club')
+      .leftJoinAndSelect('team.personalBest', 'personalBest')
       .leftJoinAndSelect('club.members', 'member')
       .where('player.id = :runnerId', { runnerId: userId })
       .orWhere('member.role = :role and member.id = :managerId', {
@@ -258,7 +260,9 @@ export class TeamsService {
         'logo',
         'country',
         'players.image',
+        'players.country',
         'club.members',
+        'personalBest',
       ],
     });
   }
@@ -326,5 +330,51 @@ export class TeamsService {
       .where('event.id = :eventId', { eventId })
       .select(['team.id', 'team.name'])
       .getMany();
+  }
+
+  async updatePersonalBestsForAllTeams() {
+    let teams = await this.repository.find({
+      relations: ['personalBest', 'results'],
+    });
+
+    teams = teams.map((team) => {
+      const results = team.results.sort((a, b) => a.resultInMs - b.resultInMs);
+      const personalBest = results[0];
+
+      return {
+        ...team,
+        personalBest,
+      };
+    });
+
+    return this.repository.save(teams);
+  }
+
+  async calculateTeamsPoints(gender: string) {
+    let teams = await this.repository.find({
+      where: { gender },
+      relations: ['results'],
+    });
+
+    const teamsWithPoints = teams.map((team) => {
+      const resLen = team.results.length;
+
+      if (resLen === 0) {
+        return {
+          ...team,
+          totalPoints: 0,
+        };
+      }
+
+      const totalPoints = team.results.reduce(
+        (acc, curr) => acc + curr.resultInMs / resLen,
+        0,
+      );
+      return { ...team, totalPoints };
+    });
+
+    teams = teamsWithPoints;
+
+    return this.repository.save(teams);
   }
 }

@@ -11,12 +11,7 @@ import {
   SearchField,
 } from "~/components";
 import { countries, years } from "~/lib/shared";
-import {
-  adminAuthenticator,
-  authenticator,
-  getNewParams,
-  transformRaceToTable,
-} from "~/lib/utils";
+import { getNewParams, transformRaceToTable } from "~/lib/utils";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Ace Battle Events | Results" }];
@@ -24,14 +19,10 @@ export const meta: V2_MetaFunction = () => {
 
 export const loader = async ({ request }: LoaderArgs) => {
   const { url } = request;
-  const user = await authenticator.isAuthenticated(request);
-  const admin = await adminAuthenticator.isAuthenticated(request);
-
-  console.log(admin?.token);
 
   const params = url.split("?")[1];
 
-  const racesData = await Api(admin?.token).races.getAllRaces(params, true);
+  const racesData = await Api().races.getAllRaces(params, true);
 
   const page = new URL(url).searchParams.get("page");
   const scroll = new URL(url).searchParams.get("scrollY");
@@ -93,7 +84,7 @@ const ResultsPage = () => {
   }, [currPage]);
 
   useEffect(() => {
-    const params = getNewParams(currPage, filters, scrollY);
+    const params = getNewParams(1, filters, scrollY);
     navigate(`${location.pathname}?${params}`);
   }, [filters]);
 
@@ -107,7 +98,11 @@ const ResultsPage = () => {
         <div className="flex flex-col-reverse md:flex-row w-full p-8 md:p-4 xl:p-2 my-4">
           <div className="w-full md:w-1/2 mr-0 md:mr-5 my-5 md:my-0 flex flex-col justify-center">
             <div className="mb-4">
-              <SearchField onChangeInput={onChangeInput} value={searchValue} />
+              <SearchField
+                placeholder="Search by event title"
+                onChangeInput={onChangeInput}
+                value={searchValue}
+              />
             </div>
             <div className="mb-4">
               <div className="border-b-[1px] border-solid border-gray-300 py-1 flex flex-wrap items-center gap-2">
@@ -137,7 +132,10 @@ const ResultsPage = () => {
                 }
                 label="category"
                 placeholder="Choose category"
-                values={Object.entries(["indoor", "outdoor"])}
+                values={Object.entries({
+                  indoor: "indoor",
+                  outdoor: "outdoor",
+                })}
               />
             </div>
             <div className="w-full md:w-2/5">
@@ -163,8 +161,12 @@ const ResultsPage = () => {
           </div>
         </div>
         <div className="my-4">
-          <CustomTable rows={tableRows} isLoading={!tableRows} />
-          <div className="flex w-full justify-center">
+          <CustomTable
+            itemsName="results"
+            rows={tableRows}
+            isLoading={!tableRows}
+          />
+          <div className="flex w-full justify-center my-4">
             <Pagination
               pagesCount={totalPages}
               onChangePage={changePage}

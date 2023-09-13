@@ -1,12 +1,15 @@
 import { LoaderArgs } from "@remix-run/node";
-import { Await, useLoaderData } from "@remix-run/react";
-import { Suspense } from "react";
+import { Await, useLoaderData, useNavigate } from "@remix-run/react";
+import { Suspense, useEffect } from "react";
 import { Api } from "~/api/axiosInstance";
 import { CustomTable, Pagination } from "~/components";
-import { transformToClubData } from "~/lib/utils";
+import AdminHeader from "~/components/admin/AdminHeader";
+import { useFilter } from "~/lib/hooks";
+import { getNewParams, transformToClubData } from "~/lib/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
-  const clubsData = await Api().clubs.getClubs();
+  const params = request.url.split("?")[1];
+  const clubsData = await Api().clubs.getClubs(params);
 
   return {
     clubs: transformToClubData(clubsData?.clubs),
@@ -16,26 +19,35 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 const AdminClubs = () => {
   const { clubs, totalPages } = useLoaderData<typeof loader>();
+  const { filters, searchValue, onChangeFilter, setSearchValue } = useFilter();
+  const navigate = useNavigate();
+
+  const onChangeInput = (newValue: string) => {
+    setSearchValue(newValue);
+    onChangeFilter("name", newValue);
+  };
+
+  useEffect(() => {
+    const params = getNewParams(1, filters, scrollY);
+
+    navigate(`${location.pathname}?${params}`);
+  }, [filters]);
 
   return (
     <div className="w-full">
-      <header className="w-full flex h-36 justify-center items-center relative bg-[url('/auth-intro.jpg')] bg-no-repeat bg-cover">
-        <div className="absolute top-0 left-0 w-full h-full bg-black/50"></div>
-        <div className="flex items-center z-10">
-          <h2 className="text-white text-3xl lg:text-4xl pr-2 border-r-2 border-red-500 font-semibold uppercase">
-            Clubs
-          </h2>
-          <h3 className="text-white text-2xl lg:text-3xl pl-2 font-semibold uppercase">
-            Admin dashboard
-          </h3>
-        </div>
-      </header>
+      <AdminHeader
+        description="All Clubs"
+        title="Clubs"
+        pageName="Admin Dashboard"
+        searchValue={searchValue}
+        onChangeInput={onChangeInput}
+      />
       <main className="w-full">
         <Suspense>
           <Await resolve={clubs}>
             {(clubs) => (
               <div className="max-w-6xl mb-4 md:mx-auto my-4">
-                <CustomTable rows={clubs} isLoading={false} />
+                <CustomTable itemsName="clubs" rows={clubs} isLoading={false} />
                 <div className="flex mx-auto my-4">
                   <Pagination
                     onChangePage={() => {}}

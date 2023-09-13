@@ -66,13 +66,6 @@ const CreateAdminForm = ({ me }: { me: IAdmin | null }) => {
             label="Email*"
             placeholder="Enter your email"
           />
-          <FormField
-            name="password"
-            type="password"
-            autoGenerate={true}
-            placeholder="enter a password"
-            label="Password*"
-          />
           <FormButton
             title="Register New Admin"
             disabled={!form.formState.isValid || form.formState.isSubmitting}

@@ -25,11 +25,22 @@ export class TeamResultsService {
       where: { id: dto.teamId },
     });
 
-    return this.repository.save({
+    const teamResult = await this.repository.save({
       resultInMs: dto.resultInMs,
       race,
       team,
     });
+
+    if (team.personalBest.resultInMs > teamResult.resultInMs) {
+      team.personalBest = teamResult;
+      await this.teamRepository.save(team);
+    }
+
+    await this.changeTotalPointByAddedResult(teamResult);
+
+    await this.updateRanking(teamResult.team.gender);
+
+    return this.repository.save(teamResult);
   }
 
   async getAllTeamResults(queries: { limit?: number; page?: number }) {
@@ -58,10 +69,7 @@ export class TeamResultsService {
     };
   }
 
-  async getClubResults(
-    clubId: number,
-    queries: { limit?: number; page?: number },
-  ) {
+  async getClubResults(clubId: number, queries: any) {
     const limit = +queries.limit || 10;
     const page = +queries.page || 1;
     const offset = (page - 1) * limit;
@@ -73,14 +81,26 @@ export class TeamResultsService {
       .where('club.id = :clubId', { clubId })
       .getCount();
 
-    const res = await this.repository
+    const qb = this.repository
       .createQueryBuilder('teamResult')
       .leftJoinAndSelect('teamResult.team', 'team')
       .leftJoinAndSelect('teamResult.race', 'race')
       .leftJoin('race.event', 'event')
       .leftJoin('race.winner', 'winner')
-      .where('team.clubId = :clubId', { clubId })
-      .offset(offset)
+      .where('team.clubId = :clubId', { clubId });
+
+    if (queries.year) {
+      const year = +queries.year;
+      if (!isNaN(year)) {
+        qb.andWhere('YEAR(event.startDateTime) = :year', { year });
+      }
+    }
+
+    if (queries.category) {
+      qb.andWhere('event.category = :category', { category: queries.category });
+    }
+
+    qb.offset(offset)
       .limit(limit)
       .select([
         'teamResult.id',
@@ -94,8 +114,9 @@ export class TeamResultsService {
         'winner.id',
         'race.startTime',
         'event.title',
-      ])
-      .getRawMany();
+      ]);
+
+    const res = await qb.getRawMany();
 
     return {
       results: res,
@@ -186,5 +207,38 @@ export class TeamResultsService {
     }
 
     return this.repository.save(teamResult);
+  }
+
+  async updateRanking(gender: string) {
+    let teams = await this.teamRepository.find({
+      where: { gender },
+    });
+
+    teams = teams
+      .filter((t) => t.totalPoints > 0)
+      .sort((a, b) => a.totalPoints - b.totalPoints);
+
+    teams.forEach((team, idx) => {
+      team.rank = idx + 1;
+    });
+
+    return this.teamRepository.save(teams);
+  }
+
+  async changeTotalPointByAddedResult(result: TeamResult) {
+    const team = await this.teamRepository.findOne({
+      where: { id: result.team.id },
+      relations: ['results'],
+    });
+
+    const resLength = team.results.length;
+
+    if (resLength === 0) {
+      team.totalPoints = result.resultInMs;
+    } else {
+      team.totalPoints += result.resultInMs / resLength;
+    }
+
+    return this.teamRepository.save(team);
   }
 }

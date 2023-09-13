@@ -4,10 +4,6 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import { json, type V2_MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 
-import axios from "axios";
-
-import { IEvent } from "~/lib/types";
-
 import { IconButton, Skeleton } from "@mui/material";
 import { Api } from "~/api/axiosInstance";
 import {
@@ -46,14 +42,12 @@ export const meta: V2_MetaFunction = () => {
 };
 
 export const loader = async () => {
-  const { data } = await axios.get<{ events: IEvent[]; totalPages: number }>(
-    "https://abe-server.up.railway.app/api/v1/events"
-  );
+  const data = await Api().events.getEvents();
 
   const clubs = await Api().clubs.getPreviewClubs();
-  const newsPreviews = await Api().news.getNewsPreviews({ itemsAmount: 4 });
+  const newsPreviewsData = await Api().news.getNewsPreviews({ itemsAmount: 4 });
 
-  return json({ events: data.events, clubs: clubs, newsPreviews });
+  return json({ events: data.events, clubs: clubs, newsPreviewsData });
 };
 
 export default function Index() {
@@ -90,7 +84,7 @@ export default function Index() {
           <div className="max-w-7xl mx-4 lg:mx-auto">
             <SectionTitle title="News and articles" />
             <div className="flex flex-wrap gap-8 w-full justify-center items-center mb-6">
-              {data.newsPreviews?.map((news: any) => (
+              {data.newsPreviewsData?.newsPreviews.map((news: any) => (
                 <NewsCard key={news.id} item={news} />
               ))}
             </div>

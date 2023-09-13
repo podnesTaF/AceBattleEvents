@@ -13,8 +13,8 @@ const RelatedNewsWrapper: React.FC<Props> = ({
   relatedEvents,
 }) => {
   return (
-    <div className="bg-slate-200 mt-8">
-      <h2 className="text-2xl font-semibold p-4 text-center">RELATED NEWS</h2>
+    <div className="bg-white border-[1px] border-gray-300 rounded-b-md mt-8 p-3">
+      <h2 className="text-xl font-semibold">RELATED NEWS</h2>
       {relatedNews.map((news, index) => {
         return (
           <RelatedNews

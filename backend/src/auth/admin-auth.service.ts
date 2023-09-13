@@ -1,9 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import sgMail from '@sendgrid/mail';
 import * as bcrypt from 'bcrypt';
 import { AdminService } from 'src/admin/admin.service';
 import { CreateAdminDto } from 'src/admin/dto/create-admin.dto';
 import { Admin } from 'src/admin/entities/admin.entity';
+import { changePasswordTemplate } from './utils/getChangePassTemplate';
 
 @Injectable()
 export class AdminAuthService {
@@ -39,21 +41,54 @@ export class AdminAuthService {
 
   async register(dto: CreateAdminDto) {
     try {
-      const hashedPassword = await bcrypt.hash(dto.password, 10);
       const admin = await this.adminService.create({
         email: dto.email,
-        password: hashedPassword,
         name: dto.name,
         surname: dto.surname,
       });
 
-      return {
+      const adminWithToken = {
         ...admin,
         token: this.generateJwtToken(admin),
       };
+
+      const msg = {
+        to: admin.email,
+        from: 'it.podnes@gmail.com', // Set your sender email
+        subject: 'Registration as admin on Ace Battle Mile',
+        html: changePasswordTemplate({
+          token: adminWithToken.token,
+          type: 'admin',
+        }),
+      };
+
+      try {
+        await sgMail.send(msg);
+      } catch (error) {
+        console.log('error sending email', error.message);
+      }
+
+      return adminWithToken;
     } catch (error) {
       console.log(error.message);
       throw new BadRequestException('Registering admin error');
+    }
+  }
+
+  async changePassword(
+    id: number,
+    dto: { newPassword: string; repeatPassword: string },
+  ) {
+    try {
+      if (dto.newPassword !== dto.repeatPassword) {
+        throw new BadRequestException('Passwords do not match');
+      }
+      const hashedPassword = await bcrypt.hash(dto.newPassword, 12);
+      await this.adminService.update(id, { password: hashedPassword });
+      return { message: 'Password changed' };
+    } catch (error) {
+      console.log(error.message);
+      throw new BadRequestException('Changing password error');
     }
   }
 }

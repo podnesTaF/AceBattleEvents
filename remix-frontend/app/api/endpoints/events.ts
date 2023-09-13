@@ -6,12 +6,12 @@ import {
 } from "~/lib/registrations/types/ViewerRegister";
 
 export const EventsApi = (instance: AxiosInstance) => ({
-  async getEvents(params?: string, currPage?: number) {
+  async getEvents(params?: string) {
     try {
       const { data } = await instance.get<{
         totalPages: number;
         events: IEvent[];
-      }>(`events?${params}&page=${currPage}&limit=5`);
+      }>(`events?${params}&limit=5`);
 
       return {
         events: data.events,

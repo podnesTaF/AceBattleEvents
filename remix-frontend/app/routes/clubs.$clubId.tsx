@@ -16,12 +16,14 @@ import {
   NewsCard,
   Pagination,
 } from "~/components";
-import { authenticator, transformClubResults } from "~/lib/utils";
+import { authenticator, getNewParams, transformClubResults } from "~/lib/utils";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const { clubId } = params;
   const { url } = request;
-  const resultPage = new URL(url).searchParams.get("resultPage") || "1";
+  const resultPage = new URL(url).searchParams.get("page") || "1";
+  const resultCategory = new URL(url).searchParams.get("category") || "";
+  const resultYear = new URL(url).searchParams.get("year") || "";
 
   const user = await authenticator.isAuthenticated(request);
 
@@ -33,11 +35,18 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
   if (!club) throw new Error("Club not found");
 
-  const clubResultsData = await Api().teams.getTeamResultsByClubId(club.id, +1);
+  const clubResultsData = await Api().teams.getTeamResultsByClubId({
+    id: club.id,
+    page: +resultPage,
+    category: resultCategory,
+    year: resultYear,
+  });
 
   const resultsRows = transformClubResults(clubResultsData?.results || []);
 
-  const clubNews = await Api().news.getNewsPreviews({ itemsAmount: 4 });
+  const { newsPreviews: clubNews } = await Api().news.getNewsPreviews({
+    itemsAmount: 4,
+  });
 
   return json({
     club,
@@ -45,18 +54,30 @@ export const loader = async ({ params, request }: LoaderArgs) => {
     token: user?.token,
     resultsData: { ...clubResultsData, currPage: +resultPage },
     resultsRows,
+    resultCategory,
+    resultYear,
+    resultPage,
     clubNews,
   });
 };
 
 const ClubPage = () => {
-  const { club, user, resultsData, resultsRows, token, clubNews } =
-    useLoaderData<typeof loader>();
+  const {
+    club,
+    user,
+    resultsData,
+    resultsRows,
+    token,
+    clubNews,
+    resultCategory,
+    resultYear,
+    resultPage,
+  } = useLoaderData<typeof loader>();
   const [statusAlert, setStatusAlert] = useState({
     message: "",
     isOpen: false,
   });
-  const [filters, setFilters] = useState();
+  const [filters, setFilters] = useState<{ type: string; value: any }[]>([]);
   const [isFavorite, setIsFavorite] = useState(false);
   const navigate = useNavigate();
 
@@ -113,7 +134,7 @@ const ClubPage = () => {
 
   const onChangePage = (page: number) => {
     const url = new URL(window.location.href);
-    url.searchParams.set("resultPage", page.toString());
+    url.searchParams.set("page", page.toString());
     url.searchParams.set("scrollY", window.scrollY.toString());
     navigate(url.pathname + url.search);
   };
@@ -124,7 +145,12 @@ const ClubPage = () => {
     if (scrollY) {
       window.scrollTo(0, +scrollY);
     }
-  }, [resultsData.currPage]);
+  }, [resultPage, resultCategory, resultYear]);
+
+  useEffect(() => {
+    const params = getNewParams(1, filters, scrollY);
+    navigate(`${location.pathname}?${params}`);
+  }, [filters]);
 
   return (
     <>
@@ -139,6 +165,7 @@ const ClubPage = () => {
             <ClubResultsFilter getFilters={getFilters} />
             <div className="w-full">
               <CustomTable
+                itemsName="results"
                 rows={resultsRows}
                 isLoading={false}
                 titleColor="bg-[#1E1C1F]"
@@ -171,7 +198,7 @@ const ClubPage = () => {
             </h3>
             <div className="flex flex-wrap gap-8 w-full justify-center items-center">
               {clubNews.map((news: any) => (
-                <NewsCard key={news.id} item={news} />
+                <NewsCard key={news.id} item={news} darkMode={true} />
               ))}
             </div>
           </div>

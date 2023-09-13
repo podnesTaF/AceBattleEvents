@@ -4,6 +4,7 @@ import { IClub, JoinRequest } from "~/lib/clubs/types";
 import { IUser } from "~/lib/user/types/IUser";
 import AgreeCheck from "../shared/forms/AgreeCheck";
 import FormButton from "../shared/forms/FormButton";
+import ClubMemberSection from "./ClubMemberSection";
 
 interface Props {
   club: IClub;
@@ -29,11 +30,7 @@ const JoinClubForm: React.FC<Props> = ({ club, user, onSubmit }) => {
   return (
     <section className="my-16 w-full">
       {user?.club?.id === club.id ? (
-        user.role === "manager" ? (
-          <div>you re a manager of this club</div>
-        ) : (
-          <div>yOUR A re a runner</div>
-        )
+        <ClubMemberSection user={user} />
       ) : (
         <div className="max-w-6xl mx-4 lg:mx-auto flex flex-col md:flex-row justify-between items-center gap-5">
           <div className="w-full md:w-2/5 flex flex-col gap-5">

@@ -2,12 +2,12 @@ import { Api } from "~/api/axiosInstance";
 import { transformRaceToTable, transformUserResultsToTable } from "~/lib/utils";
 import { IUser } from "../types";
 
-export const getTeamsData = async (user: IUser) => {
+export const getTeamsData = async ({ user }: { user: IUser }) => {
   const teams = await Api().teams.getTeamsByUserId(user.id.toString());
   return { teams };
 };
 
-export const getLastRacesData = async (user: IUser) => {
+export const getLastRacesData = async ({ user }: { user: IUser }) => {
   if (user.role === "manager" && user?.club?.id) {
     const races = await Api().clubs.getClubFinishedRaces(user.club.id);
     return { races, tableRaces: transformRaceToTable(races || []) };
@@ -15,10 +15,13 @@ export const getLastRacesData = async (user: IUser) => {
   return {};
 };
 
-export const handleRegistrationsTab = async (
-  user: IUser,
-  authedUser: IUser
-) => {
+export const handleRegistrationsTab = async ({
+  user,
+  authedUser,
+}: {
+  user: IUser;
+  authedUser: IUser;
+}) => {
   const returnData: any = {};
 
   if (user.role === "viewer") {
@@ -39,7 +42,7 @@ export const handleRegistrationsTab = async (
   return returnData;
 };
 
-export const handleFavoritesTab = async (user: IUser) => {
+export const handleFavoritesTab = async ({ user }: { user: IUser }) => {
   const returnData: any = {};
 
   if (user.role === "viewer") {
@@ -50,7 +53,13 @@ export const handleFavoritesTab = async (user: IUser) => {
   return returnData;
 };
 
-export const handleMyClubTab = async (user: IUser, authedUser: IUser) => {
+export const handleMyClubTab = async ({
+  user,
+  authedUser,
+}: {
+  user: IUser;
+  authedUser: IUser;
+}) => {
   const returnData: any = {};
 
   if (user.role === "manager" && user.id === authedUser?.id) {
@@ -65,10 +74,13 @@ export const handleMyClubTab = async (user: IUser, authedUser: IUser) => {
   return returnData;
 };
 
-export const handlePersonalCalendarTab = async (
-  user: IUser,
-  authedUser: IUser
-) => {
+export const handlePersonalCalendarTab = async ({
+  user,
+  authedUser,
+}: {
+  user: IUser;
+  authedUser: IUser;
+}) => {
   const returnData: any = {};
 
   if (user.role === "runner" && user.id === authedUser?.id) {
@@ -81,11 +93,26 @@ export const handlePersonalCalendarTab = async (
   return returnData;
 };
 
-export const handleResultsTab = async (user: IUser, resultPage: number) => {
+export const handleResultsTab = async ({
+  user,
+  resultPage,
+  resultCategory,
+  resultYear,
+}: {
+  user: IUser;
+  resultPage: number;
+  resultYear?: number;
+  resultCategory?: string;
+}) => {
   const returnData: any = {};
 
   if (user.role === "runner") {
-    const resultsData = await Api().users.getUserResults(user.id, +resultPage);
+    const resultsData = await Api().users.getUserResults({
+      id: user.id,
+      page: +resultPage,
+      resultCategory,
+      resultYear,
+    });
     if (resultsData) {
       returnData.resultsData = { ...resultsData, currentPage: +resultPage };
       returnData.resultsTableData = transformUserResultsToTable(

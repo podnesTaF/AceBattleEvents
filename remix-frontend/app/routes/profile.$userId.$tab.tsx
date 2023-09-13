@@ -32,7 +32,10 @@ export const loader = async ({ params, request }: LoaderArgs) => {
   const { userId } = params;
 
   const scrollY = new URL(request.url).searchParams.get("scrollY");
-  const resultPage = new URL(request.url).searchParams.get("resultPage") || "1";
+  const resultPage = new URL(request.url).searchParams.get("resultPage") || 1;
+  const resultYear = new URL(request.url).searchParams.get("year") || "";
+  const resultCategory =
+    new URL(request.url).searchParams.get("category") || "";
 
   const user = await Api().users.getUserProfile(userId || "");
   const authedUser = await authenticator.isAuthenticated(request);
@@ -52,10 +55,18 @@ export const loader = async ({ params, request }: LoaderArgs) => {
     scrollY,
     user,
     token: authedUser?.token,
+    resultYear,
+    resultCategory,
   };
 
   if (tab && tabHandlers[tab]) {
-    const tabData = await tabHandlers[tab](user, authedUser, resultPage);
+    const tabData = await tabHandlers[tab]({
+      user,
+      authedUser,
+      resultPage,
+      resultYear: resultYear ? +resultYear : undefined,
+      resultCategory,
+    });
     Object.assign(returnData, tabData);
   }
 
@@ -72,17 +83,19 @@ const ProfileTab = () => {
     user,
     favoriteClubs,
     club,
-    races,
+    resultCategory,
+    resultYear,
     tableRaces,
     resultsData,
     resultsTableData,
     token,
   } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!scrollY) return;
     window.scrollTo(0, +scrollY);
-  }, [tab, scrollY, resultsData?.currentPage]);
+  }, [tab, resultsData?.currentPage, scrollY, resultCategory, resultYear]);
 
   const onChangeResultPage = (page: number) => {
     const url = new URL(window.location.href);

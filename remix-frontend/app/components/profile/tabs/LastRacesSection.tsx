@@ -7,6 +7,7 @@ const LastRacesSection = ({ tableData }: { tableData?: any[] }) => {
       <div className="mb-4">
         {tableData?.length ? (
           <CustomTable
+            itemsName="races"
             rows={tableData}
             isLoading={false}
             titleColor="bg-black"

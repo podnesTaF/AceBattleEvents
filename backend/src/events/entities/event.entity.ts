@@ -27,6 +27,11 @@ export class Event {
   @Column()
   description: string;
 
+  @Column({
+    default: 'outdoor',
+  })
+  category: string;
+
   @Column()
   startDateTime: Date;
 

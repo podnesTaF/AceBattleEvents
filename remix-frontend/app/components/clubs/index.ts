@@ -1,6 +1,7 @@
 import ClubCard from "./ClubCard";
 import ClubHeader from "./ClubHeader";
 import ClubInfo from "./ClubInfo";
+import ClubMemberSection from "./ClubMemberSection";
 import ClubResultsFilter from "./ClubResultsFilter";
 import FavoriteClubButton from "./FavoriteClubButton";
 import JoinClubForm from "./JoinClubForm";
@@ -11,6 +12,7 @@ export {
   ClubCard,
   ClubHeader,
   ClubInfo,
+  ClubMemberSection,
   ClubResultsFilter,
   FavoriteClubButton,
   JoinClubForm,

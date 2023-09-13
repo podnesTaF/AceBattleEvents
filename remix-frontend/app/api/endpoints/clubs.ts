@@ -50,13 +50,14 @@ export const ClubApi = (instance: AxiosInstance) => ({
       throw new Error(error.response.data.message);
     }
   },
-  async getJoinRequests(clubId: string) {
+  async getJoinRequests(clubId: string, queries: string) {
     try {
-      const { data: JoinRequests } = await instance.get<JoinRequest[]>(
-        `/club-requests/club/${clubId}`
-      );
+      const { data } = await instance.get<{
+        totalCount: number;
+        joinRequests: JoinRequest[];
+      }>(`/club-requests/club/${clubId}?${queries}&limit=5`);
 
-      return JoinRequests;
+      return data;
     } catch (error: any) {
       throw new Error(error.response.data.message);
     }

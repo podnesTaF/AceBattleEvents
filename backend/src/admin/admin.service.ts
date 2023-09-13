@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateAdminDto } from './dto/create-admin.dto';
-import { UpdateAdminDto } from './dto/update-admin.dto';
 import { Admin } from './entities/admin.entity';
 
 @Injectable()
@@ -25,11 +24,15 @@ export class AdminService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} admin`;
+    return this.adminRepository.findOne({ where: { id } });
   }
 
-  update(id: number, updateAdminDto: UpdateAdminDto) {
-    return `This action updates a #${id} admin`;
+  findByCond(cond: any) {
+    return this.adminRepository.findOne({ where: { ...cond } });
+  }
+
+  update(id: number, dto: { password: string }) {
+    return this.adminRepository.update(id, dto);
   }
 
   remove(id: number) {

@@ -29,7 +29,7 @@ export const transformToClubData = (club?: IClub[] | null) => {
       link: "/clubs/" + club.id,
       value: club.name,
     },
-    country: club.country,
+    country: club.country.name,
     "members count": club.members.length,
     "created at": new Date(club.createdAt).toLocaleDateString(),
     teams: getTeams(club.teams),

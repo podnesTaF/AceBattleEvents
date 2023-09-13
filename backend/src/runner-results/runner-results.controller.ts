@@ -21,7 +21,13 @@ export class RunnerResultsController {
   @Get('/user/:userId')
   getUserResults(
     @Param('userId') userId: string,
-    @Query() queries: { limit?: number; page?: number },
+    @Query()
+    queries: {
+      limit?: number;
+      page?: number;
+      category?: string;
+      year?: string;
+    },
   ) {
     return this.runnerResultsService.getUserResults(+userId, queries);
   }

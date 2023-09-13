@@ -45,14 +45,14 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
   event.prizes = event.prizes.sort((a, b) => a.place - b.place);
 
-  const newsPreview = await Api().news.getNewsPreviews({ itemsAmount: 4 });
+  const { newsPreviews } = await Api().news.getNewsPreviews({ itemsAmount: 4 });
 
   return json({
     event: event,
     startFormated: formatDate(event.startDateTime),
     googleMapsKey: process.env.GOOGLE_MAPS_KEY || "",
     user,
-    newsPreview: newsPreview,
+    newsPreview: newsPreviews,
   });
 };
 

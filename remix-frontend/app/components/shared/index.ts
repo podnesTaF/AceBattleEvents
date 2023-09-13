@@ -1,6 +1,7 @@
 import ConfirmAlert from "./ConfirmAlert";
 import CountDown from "./CountDown";
 import CustomCarousel from "./CustomCarousel";
+import CustomCrumbs from "./CustomCrumbs";
 import CustomTitle from "./CustomTitle";
 import Footer from "./Footer";
 import HeaderTabs from "./HeaderTabs";
@@ -17,6 +18,7 @@ export {
   ConfirmAlert,
   CountDown,
   CustomCarousel,
+  CustomCrumbs,
   CustomTitle,
   Footer,
   HeaderTabs,

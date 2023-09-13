@@ -22,4 +22,14 @@ export class AdminAuthController {
   register(@Body() dto: CreateAdminDto) {
     return this.adminAuthService.register(dto);
   }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Post('change-password')
+  changePassword(
+    @Request() req,
+    @Body() dto: { newPassword: string; repeatPassword: string },
+  ) {
+    return this.adminAuthService.changePassword(req.user.id, dto);
+  }
 }

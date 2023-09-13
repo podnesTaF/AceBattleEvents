@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Api } from "~/api/axiosInstance";
 
 import { LoaderArgs, json, redirect } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 
 import { Snackbar } from "@mui/material";
-import { FilterSelect, JoinRequestCard, SearchField } from "~/components";
+import {
+  FilterSelect,
+  JoinRequestCard,
+  Pagination,
+  SearchField,
+} from "~/components";
 import { useFilter } from "~/lib/shared";
-import { authenticator } from "~/lib/utils";
+import { authenticator, getNewParams } from "~/lib/utils";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const user = await authenticator.isAuthenticated(request);
@@ -18,9 +23,18 @@ export const loader = async ({ params, request }: LoaderArgs) => {
       status: 403,
     });
   }
+
+  const url = request.url;
+  const queries = url.split("?")[1];
+
+  const page = new URL(url).searchParams.get("page") || "1";
+
   const { clubId } = params;
   const club = await Api(user?.token).clubs.getClub(clubId);
-  const requests = await Api(user?.token).clubs.getJoinRequests(clubId!);
+  const requestsData = await Api(user?.token).clubs.getJoinRequests(
+    clubId!,
+    queries
+  );
 
   if (!club) {
     throw new Response("Club not found.", {
@@ -28,11 +42,11 @@ export const loader = async ({ params, request }: LoaderArgs) => {
     });
   }
 
-  return json({ club, requests, user });
+  return json({ club, requestsData, user, page: +page });
 };
 
 const ClubJoinRequest = () => {
-  const { club, requests, user } = useLoaderData<typeof loader>();
+  const { club, requestsData, user, page } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
 
   const [statusAlert, setStatusAlert] = useState<{
@@ -46,6 +60,16 @@ const ClubJoinRequest = () => {
     setSearchValue(newValue);
     onChangeFilter("name", newValue);
   };
+
+  const changePage = (pageNum: number) => {
+    const params = getNewParams(pageNum, filters, scrollY);
+    navigate(`${location.pathname}?${params}`);
+  };
+
+  useEffect(() => {
+    const params = getNewParams(1, filters, scrollY);
+    navigate(`${location.pathname}?${params}`);
+  }, [filters]);
 
   const onStatusChange = async (status: string, userId: number) => {
     if (status === "accept") {
@@ -78,7 +102,7 @@ const ClubJoinRequest = () => {
 
     setTimeout(() => {
       navigate(`/clubs/${club.id}/join-requests`);
-    }, 3000);
+    }, 2000);
   };
 
   return (
@@ -105,8 +129,8 @@ const ClubJoinRequest = () => {
           <div className="w-full md:w-[300px]">
             <FilterSelect
               onChangeFilter={onChangeFilter}
-              selected={filters.find((f) => f.type === "")?.value || ""}
-              label="sort by"
+              selected={filters.find((f) => f.type === "sortby")?.value || ""}
+              label="sortby"
               placeholder="sort by"
               values={[
                 ["latest", "Latest"],
@@ -117,14 +141,23 @@ const ClubJoinRequest = () => {
           </div>
         </div>
         <div className="w-full my-6 border-y-[1px] border-gray-200 rounded-md overflow-hidden">
-          {requests?.length ? (
-            requests?.map((req: any) => (
-              <JoinRequestCard
-                key={req.id}
-                onStatusChange={onStatusChange}
-                request={req}
-              />
-            ))
+          {requestsData?.joinRequests?.length ? (
+            <div className="w-full flex flex-col gap-4">
+              {requestsData?.joinRequests?.map((req: any) => (
+                <JoinRequestCard
+                  key={req.id}
+                  onStatusChange={onStatusChange}
+                  request={req}
+                />
+              ))}
+              <div className="flex justify-center my-4">
+                <Pagination
+                  pagesCount={requestsData.totalCount}
+                  onChangePage={changePage}
+                  currPage={page}
+                />
+              </div>
+            </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-8">
               <h3 className="text-xl font-semibold">No requests</h3>

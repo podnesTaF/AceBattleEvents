@@ -76,7 +76,7 @@ const UserClubSettings = () => {
       await Api().clubs.handleUpdateClubData(club.id, data);
       if (data.name) club.name = data.name;
       if (data.city) club.city = data.city;
-      if (data.country) club.country = data.country;
+      if (data.country) club.country.name = data.country;
       if (data.image) club.logo = data.image;
     } catch (error) {
       console.log(error);
@@ -183,7 +183,7 @@ const UserClubSettings = () => {
                     type={"text"}
                     onSubmit={onUpdate}
                     label={"Country"}
-                    value={club.country}
+                    value={club.country.name}
                     name={"country"}
                   />
                 </div>
@@ -246,6 +246,7 @@ const UserClubSettings = () => {
                 Manage Club Members
               </h3>
               <CustomTable
+                itemsName="Club Members"
                 titleColor="bg-black"
                 isTitleStraight={true}
                 rows={membersRows}

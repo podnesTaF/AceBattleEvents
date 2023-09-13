@@ -2,6 +2,7 @@ import { LoaderArgs, json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { Api } from "~/api/axiosInstance";
 import { Pagination } from "~/components";
+import AdminHeader from "~/components/admin/AdminHeader";
 import { ExpandableTable } from "~/components/results";
 import { adminAuthenticator, teamResultsTable } from "~/lib/utils";
 
@@ -45,14 +46,21 @@ const AdminResults = () => {
     navigate(url.pathname + url.search);
   };
   return (
-    <div className="mx-auto max-w-6xl my-8">
-      <ExpandableTable me={me} headers={[]} rows={tableRows} />
-      <div className="flex justify-center my-4">
-        <Pagination
-          pagesCount={totalPages}
-          onChangePage={onChangePage}
-          currPage={currPage}
-        />
+    <div className="w-full">
+      <AdminHeader
+        description="All Results"
+        title="Results"
+        pageName="Admin Dashboard"
+      />
+      <div className="mx-auto max-w-6xl my-8">
+        <ExpandableTable me={me} headers={[]} rows={tableRows} />
+        <div className="flex justify-center my-4">
+          <Pagination
+            pagesCount={totalPages}
+            onChangePage={onChangePage}
+            currPage={currPage}
+          />
+        </div>
       </div>
     </div>
   );

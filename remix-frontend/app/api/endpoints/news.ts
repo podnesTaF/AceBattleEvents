@@ -6,13 +6,23 @@ export const NewsApi = (instance: AxiosInstance) => ({
   getNews: () => instance.get<INews>("/news"),
   getNewsPreviews: async ({
     itemsAmount,
+    page,
     textLength,
   }: {
     itemsAmount?: number;
     textLength?: number;
+    page?: number;
   }) => {
-    const { data } = await instance.get<NewsPreview[]>(
-      "/news/previews?itemsAmount=" + itemsAmount + "&textLength=" + textLength
+    const { data } = await instance.get<{
+      newsPreviews: NewsPreview[];
+      totalPages: number;
+    }>(
+      "/news/previews?limit=" +
+        itemsAmount +
+        "&textLength=" +
+        textLength +
+        "&page=" +
+        page
     );
     return data;
   },

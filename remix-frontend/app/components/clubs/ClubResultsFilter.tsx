@@ -34,9 +34,9 @@ const ClubResultsFilter: React.FC<Props> = ({ getFilters }) => {
           <div className="w-full md:w-[200px]">
             <FilterSelect
               onChangeFilter={onChangeFilter}
-              selected={filters.find((f) => f.type === "type")?.value || ""}
-              label="type"
-              placeholder="Choose a type"
+              selected={filters.find((f) => f.type === "category")?.value || ""}
+              label="category"
+              placeholder="Choose a category"
               values={[
                 ["indoor", "Indoor"],
                 ["outdoor", "Outdoor"],

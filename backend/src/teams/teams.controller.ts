@@ -99,6 +99,16 @@ export class TeamsController {
     return this.teamsService.countAll();
   }
 
+  @Patch('/personal-bests')
+  updatePersonalBests() {
+    return this.teamsService.updatePersonalBestsForAllTeams();
+  }
+
+  @Patch('/total-points')
+  calcuateTotals(@Query('gender') gender?: string) {
+    return this.teamsService.calculateTeamsPoints(gender || 'male');
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,

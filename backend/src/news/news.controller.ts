@@ -22,11 +22,12 @@ export class NewsController {
 
   @Get('previews')
   getNewsPreviews(
-    @Query() query: { itemsAmount?: string; textLength?: string },
+    @Query() query: { limit?: string; textLength?: string; page?: string },
   ) {
     return this.newsService.getNewsPreviews({
-      itemsAmount: +query.itemsAmount,
+      limit: +query.limit || 5,
       textLength: +query.textLength,
+      page: +query.page || 1,
     });
   }
 

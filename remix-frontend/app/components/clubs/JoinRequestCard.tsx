@@ -2,8 +2,9 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { Avatar, IconButton } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { JoinRequest } from "~/lib/clubs/types";
+import { formatDate } from "~/lib/utils";
 import MessageDialog from "../shared/MessageDialog";
 
 interface Props {
@@ -13,6 +14,11 @@ interface Props {
 
 const JoinRequestCard: React.FC<Props> = ({ request, onStatusChange }) => {
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
+  const [dateOfBirth, setDateOfBirth] = useState<string>("");
+
+  useEffect(() => {
+    setDateOfBirth(formatDate(request.user.dateOfBirth));
+  });
 
   return (
     <div className="border-b-[1px] border-x-[1px] border-gray-200 px-4 py-2 flex flex-col md:flex-row justify-between items-center gap-10">
@@ -30,7 +36,7 @@ const JoinRequestCard: React.FC<Props> = ({ request, onStatusChange }) => {
             {request.user.name} {request.user.surname}
           </h3>
           <p>
-            {request.user?.gender}, {request.user.dateOfBirth}
+            {request.user?.gender}, {dateOfBirth}
           </p>
         </div>
       </div>

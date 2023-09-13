@@ -11,7 +11,14 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
   return (
     <div className={`w-full`}>
       <div className="flex items-center gap-4 mb-2">
-        <img src={"/belgium.svg"} alt={"flag"} width={60} height={40} />
+        {club.country?.flagIconUrl && (
+          <img
+            src={club.country.flagIconUrl}
+            alt={"flag"}
+            width={60}
+            height={40}
+          />
+        )}
         <h4 className="text-2xl font-semibold">{club.name}</h4>
       </div>
       <div className="w-full h-1 rounded-md bg-red-500"></div>
@@ -40,7 +47,7 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
           <div className="mb-4">
             <p className="text-lg mb-1">Location:</p>
             <h4 className="text-xl font-semibold">
-              {club.country}, {club.city}
+              {club.country.name}, {club.city}
             </h4>
           </div>
           <button

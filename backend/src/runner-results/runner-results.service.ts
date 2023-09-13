@@ -82,7 +82,12 @@ export class RunnerResultsService {
 
   async getUserResults(
     userId: number,
-    queries: { limit?: number; page?: number },
+    queries: {
+      limit?: number;
+      page?: number;
+      category?: string;
+      year?: string;
+    },
   ) {
     const limit = +queries.limit || 10;
     const page = +queries.page || 1;
@@ -96,7 +101,7 @@ export class RunnerResultsService {
 
     const pageCount = Math.ceil(totalCount / limit);
 
-    const results = await this.repository
+    const qb = this.repository
       .createQueryBuilder('runnerResult')
       .leftJoinAndSelect('runnerResult.teamResult', 'teamResult')
       .leftJoin('teamResult.team', 'team')
@@ -105,8 +110,20 @@ export class RunnerResultsService {
       .leftJoin('race.winner', 'winner')
       .leftJoin('runnerResult.pbForRunner', 'pbForRunner')
       .leftJoin('runnerResult.runner', 'runner')
-      .where('runner.id = :userId', { userId })
-      .offset(offset)
+      .where('runner.id = :userId', { userId });
+
+    if (queries.category) {
+      qb.andWhere('event.category = :category', { category: queries.category });
+    }
+
+    if (queries.year) {
+      const year = +queries.year;
+      if (!isNaN(year)) {
+        qb.andWhere('YEAR(event.startDateTime) = :year', { year });
+      }
+    }
+
+    qb.offset(offset)
       .limit(limit)
       .select([
         'runnerResult.id',
@@ -121,9 +138,9 @@ export class RunnerResultsService {
         'winner.id',
         'team.id',
         'pbForRunner.id',
-      ])
-      .getRawMany();
+      ]);
 
+    const results = await qb.getRawMany();
     return {
       results,
       totalPages: pageCount,

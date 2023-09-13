@@ -1,5 +1,6 @@
 import { LoaderArgs, json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
+import { useEffect } from "react";
 import { Api } from "~/api/axiosInstance";
 import {
   CustomTable,
@@ -9,7 +10,7 @@ import {
 } from "~/components";
 import { useFilter } from "~/lib/hooks";
 import { countries, years } from "~/lib/shared";
-import { transformForAdminRace } from "~/lib/utils";
+import { getNewParams, transformForAdminRace } from "~/lib/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const url = request.url;
@@ -42,6 +43,13 @@ const RacesIndexPage = () => {
     url.searchParams.set("page", pageNum.toString());
     navigate(url.pathname + url.search);
   };
+
+  useEffect(() => {
+    const params = getNewParams(1, filters, scrollY);
+
+    navigate(`${location.pathname}?${params}`);
+  }, [filters]);
+
   return (
     <>
       <div className="w-full flex flex-col gap-3 sm:flex-row justify-between items-center bg-[#1E1C1F] p-4">

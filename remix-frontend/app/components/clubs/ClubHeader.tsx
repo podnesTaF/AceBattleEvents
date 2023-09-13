@@ -16,8 +16,17 @@ const ClubHeader: React.FC<Props> = ({ club }) => {
         className="object-cover w-full"
       />
       <div className="absolute w-full md:w-3/4 lg:w-1/2 bottom-0 left-0 p-4 md:p-6 bg-gradient-to-b from-transparent to-black">
-        <h4 className="border-b-2 border-red-500 py-2 mb-4 text-lg font-semibold text-white">
-          {club.country}
+        <h4 className="border-b-2 border-red-500 py-2 mb-4 text-xl font-semibold text-white flex items-center">
+          {club.country?.flagIconUrl && (
+            <img
+              src={club.country.flagIconUrl}
+              alt="flag"
+              width={50}
+              height={30}
+              className="mr-2"
+            />
+          )}
+          {club.country.name}
         </h4>
         <h2 className="text-3xl md:text-5xl text-white font-semibold my-4 md:my-6">
           {club.name}

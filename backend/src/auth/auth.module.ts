@@ -6,6 +6,8 @@ import { AdminService } from 'src/admin/admin.service';
 import { Admin } from 'src/admin/entities/admin.entity';
 import { CountryService } from 'src/country/country.service';
 import { Country } from 'src/country/entity/country.entity';
+import { ResetUser } from 'src/reset-user/entities/reset-user.entity';
+import { ResetUserService } from 'src/reset-user/reset-user.service';
 import { UserModule } from '../user/user.module';
 import { AdminAuthController } from './admin-auth.controller';
 import { AdminAuthService } from './admin-auth.service';
@@ -24,7 +26,7 @@ import { LocalStrategy } from './strategies/local-user.strategy';
       secret: 'ahmo-chat',
       signOptions: { expiresIn: '30d' },
     }),
-    TypeOrmModule.forFeature([Country, Admin]),
+    TypeOrmModule.forFeature([Country, Admin, ResetUser]),
   ],
   controllers: [AuthController, AdminAuthController],
   providers: [
@@ -36,6 +38,7 @@ import { LocalStrategy } from './strategies/local-user.strategy';
     AdminAuthService,
     AdminService,
     RolesGuard,
+    ResetUserService,
   ],
   exports: [PassportModule, JwtModule],
 })
