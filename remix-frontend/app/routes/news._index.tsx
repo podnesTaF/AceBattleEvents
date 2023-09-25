@@ -9,6 +9,7 @@ import {
   NewsCard,
   NewsCollage,
   SectionTitle,
+  VideoItem,
   WideCarousel,
 } from "~/components";
 
@@ -43,10 +44,36 @@ const NewsPage = () => {
         <div className="w-full flex">
           <NewsCollage news={newsPreviews.filter((n) => n.mainImage)} />
         </div>
-        <div className="my-6">
+        <div className="my-8">
           <SectionTitle title="Events" />
           <WideCarousel ItemCard={EventItemCard} items={eventsPreviews} />
         </div>
+        <section className="w-full my-8 md:my-10">
+          <div className="max-w-6xl w-full px-4 lg:mx-auto">
+            <SectionTitle title="Videos" align="justify-end" />
+            <div className="w-full flex gap-6 flex-col lg:flex-row">
+              <div className="w-full md:w-1/3 border-b-4 rounded-bl-2xl border-red-500 shadow-md">
+                <VideoItem
+                  videoId="WSUfPBJf_P4"
+                  title="What's Battle Mile Structure and Rules"
+                />
+              </div>
+              <div className="w-full md:w-1/3 border-b-4 rounded-bl-2xl border-red-500 shadow-md">
+                <VideoItem
+                  videoId="RRs8Z7GQmdk"
+                  title="What's Battle Mile? Structure and Rules."
+                />
+              </div>
+              <div className="w-full md:w-1/3 border-b-4 rounded-bl-2xl border-red-500 shadow-md">
+                <VideoItem
+                  videoId="kehD79rNiyU"
+                  title="
+                  Signing of the Memorandum between Battle Mile and Sport for All"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
         <div className="w-full mb-10">
           <h4 className="text-right text-2xl font-semibold uppercase mb-4">
             Other News

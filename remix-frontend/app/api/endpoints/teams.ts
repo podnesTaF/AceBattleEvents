@@ -2,6 +2,7 @@ import { AxiosInstance } from "axios";
 import { ITeam } from "~/lib/teams/types";
 import { ReqTeam, TeamResult } from "~/lib/teams/types/ITeam";
 import { ITeamEvent } from "~/lib/teams/types/Registrations";
+import { IMedia } from "~/lib/types";
 
 export const TeamsApi = (instance: AxiosInstance) => ({
   async getTeams({ params, page }: { params?: string; page?: number }) {
@@ -10,6 +11,17 @@ export const TeamsApi = (instance: AxiosInstance) => ({
         teams: ITeam[];
         totalPages: number;
       }>(`teams?${params}&page=${page}`);
+
+      return teamsData;
+    } catch (error: any) {
+      throw new Error("Failed to fetch data: " + error.message);
+    }
+  },
+  async getPreviewTeams() {
+    try {
+      const { data: teamsData } = await instance.get<
+        { id: number; logo: IMedia; name: string }[]
+      >(`teams/previews`);
 
       return teamsData;
     } catch (error: any) {

@@ -26,8 +26,7 @@ import {
   UnregisteredAthlete,
 } from "~/components";
 import { teamTypes } from "~/lib/teams";
-import { IUser } from "~/lib/types";
-import { AddTeamSchema, authenticator, getCategoryByDoB } from "~/lib/utils";
+import { AddTeamSchema, authenticator, getPickItems } from "~/lib/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
   let user = await authenticator.isAuthenticated(request, {
@@ -57,6 +56,7 @@ const AddTeamIndex = () => {
   const navigate = useNavigate();
 
   const [athleteList, setAthleteList] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState<string>("male");
 
   const [avatarPreviews, setAvatarPreviews] = useState<{
     [key: string]: { url: string; name: string };
@@ -133,6 +133,8 @@ const AddTeamIndex = () => {
         })
       );
 
+      console.log(athleteList);
+
       const team = await Api(user.token).teams.addTeam({
         name: dto.name,
         clubId: club?.id || 0,
@@ -145,7 +147,7 @@ const AddTeamIndex = () => {
         gender: dto.type,
         teamImage: dto.teamImage,
         logo: dto.logo,
-        players: [...players, ...athleteList.map((a) => a.id)],
+        players: [...players, ...athleteList],
       });
 
       if (team) {
@@ -179,7 +181,7 @@ const AddTeamIndex = () => {
           <div className="w-full md:w-2/5">
             <GrayedInput
               name={"country"}
-              value={club?.country || ""}
+              value={club?.country.name || ""}
               label={"Country"}
             />
           </div>
@@ -220,17 +222,15 @@ const AddTeamIndex = () => {
           <h3 className="mb-3 text-2xl font-semibold">Players</h3>
           <PickList
             title={"Athletes from the club"}
-            items={
-              club?.members
-                .filter((member: IUser) => member.role === "runner")
-                .map((item: IUser) => ({
-                  id: item.id,
-                  title: item.name + " " + item.surname,
-                  additionalInfo: getCategoryByDoB(item.dateOfBirth),
-                })) || []
-            }
+            items={getPickItems(
+              club.members.filter(
+                (member) =>
+                  member.role === "runner" && member.gender === activeTab
+              )
+            )}
             tabs={["Male", "Female"]}
             onSelectedListChange={onAltheleListChange}
+            setActiveTab={setActiveTab}
           />
         </div>
         <div className="mx-4 my-6">
@@ -248,6 +248,7 @@ const AddTeamIndex = () => {
               <UnregisteredAthlete
                 field={field}
                 index={index}
+                key={index}
                 avatarPreviews={avatarPreviews}
                 removePlayer={removePlayer}
                 setPlayerDialogOpen={setPlayerDialogOpen}

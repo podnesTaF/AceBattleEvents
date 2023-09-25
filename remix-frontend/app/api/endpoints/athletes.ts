@@ -7,7 +7,7 @@ export const AthletesApi = (instance: AxiosInstance) => ({
       const { data } = await instance.get<{
         athletes: IUser[];
         totalPages: number;
-      }>(`/users/athletes?${params}&limit=5`);
+      }>(`/users/athletes?${params}&limit=9`);
 
       return {
         athletes: data.athletes,
