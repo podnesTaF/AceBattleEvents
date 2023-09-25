@@ -45,7 +45,7 @@ export class Club {
   @JoinTable()
   joinRequests: JoinRequest[];
 
-  @ManyToMany(() => User, (user) => user.favoriteClubs)
+  @ManyToMany(() => User, (user) => user.favoriteClubs, { onDelete: 'CASCADE' })
   favorites: User[];
 
   @CreateDateColumn({ type: 'timestamp' })

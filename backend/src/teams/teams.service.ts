@@ -125,6 +125,13 @@ export class TeamsService {
     };
   }
 
+  findAllPreviews() {
+    return this.repository.find({
+      relations: ['logo'],
+      select: ['id', 'name', 'logo'],
+    });
+  }
+
   async getRegistrations(
     userId: number,
     query: { page?: string; limit?: string },

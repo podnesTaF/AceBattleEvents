@@ -12,6 +12,9 @@ export class PrizeEntity {
   @Column()
   amount: number;
 
+  @Column({ default: 'male' })
+  category: string;
+
   @ManyToOne(() => Event, (event) => event.prizes, { onDelete: 'CASCADE' })
   event: Event;
 }

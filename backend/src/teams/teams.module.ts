@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { BestsService } from 'src/bests/bests.service';
+import { Best } from 'src/bests/entities/best.entity';
 import { ClubService } from 'src/club/club.service';
 import { Club } from 'src/club/entities/club.entity';
 import { CoachService } from 'src/coach/coach.service';
@@ -13,8 +15,6 @@ import { Location } from 'src/locations/entities/locations.entity';
 import { LocationsService } from 'src/locations/locations.service';
 import { Media } from 'src/media/entities/media.entity';
 import { MediaService } from 'src/media/media.service';
-import { PersonalBest } from 'src/personal-bests/entities/personal-best.entity';
-import { PersonalBestsService } from 'src/personal-bests/personal-bests.service';
 import { PlayerEntity } from 'src/players/entities/player.entity';
 import { PlayersService } from 'src/players/players.service';
 import { PrizeEntity } from 'src/prizes/entities/prize.entity';
@@ -36,7 +36,7 @@ import { TeamsService } from './teams.service';
       Event,
       Country,
       PrizeEntity,
-      PersonalBest,
+      Best,
       Media,
       Club,
     ]),
@@ -52,7 +52,7 @@ import { TeamsService } from './teams.service';
     LocationsService,
     CountryService,
     FileService,
-    PersonalBestsService,
+    BestsService,
     MediaService,
     ClubService,
   ],

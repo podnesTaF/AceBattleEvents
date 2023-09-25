@@ -94,9 +94,6 @@ export const getPDFDocument = async (
   doc.font('Helvetica-Bold');
   doc.text(`${viewer.email}`);
   doc.font('Helvetica');
-  doc.text(`Gender:`);
-  doc.font('Helvetica-Bold');
-  doc.text(`${viewer.gender}`);
 
   // Add separator line
   doc.moveDown(0.5);

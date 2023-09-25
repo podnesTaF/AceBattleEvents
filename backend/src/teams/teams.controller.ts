@@ -50,6 +50,11 @@ export class TeamsController {
     return this.teamsService.findAll(queries, +req?.user?.id);
   }
 
+  @Get('/previews')
+  findAllPreviews() {
+    return this.teamsService.findAllPreviews();
+  }
+
   @Get('/snippet/:eventId')
   findAllSnippet(@Param('eventId') eventId: string) {
     return this.teamsService.findAllSnippetByEventId(+eventId);

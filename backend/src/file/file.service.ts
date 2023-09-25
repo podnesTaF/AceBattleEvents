@@ -7,7 +7,7 @@ import { MediaService } from 'src/media/media.service';
 import { ViewerRegistration } from 'src/viewer-registrations/entities/viewer-registration.entity';
 import * as uuid from 'uuid';
 import { googleCloudStorageConfig } from './google-cloud-storage.config';
-import { getPDFDocument } from './utils/get-pdf-document';
+import { getPDFDocument } from './utils/get-pdf-puppener';
 
 export enum FileType {
   IMAGE = 'image',

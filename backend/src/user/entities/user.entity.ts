@@ -83,7 +83,10 @@ export class User {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
-  @ManyToMany(() => Club, (club) => club.favorites, { nullable: true })
+  @ManyToMany(() => Club, (club) => club.favorites, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
   @JoinTable()
   favoriteClubs: Club[];
 

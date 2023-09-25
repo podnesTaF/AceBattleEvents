@@ -1,13 +1,11 @@
 import { Country } from 'src/country/entity/country.entity';
 import { Media } from 'src/media/entities/media.entity';
-import { PersonalBest } from 'src/personal-bests/entities/personal-best.entity';
 import { Team } from 'src/teams/entities/team.entity';
 import {
   Column,
   Entity,
   ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -45,9 +43,4 @@ export class PlayerEntity {
     onDelete: 'CASCADE',
   })
   teams: Team[];
-
-  @OneToMany(() => PersonalBest, (personalBest) => personalBest.player, {
-    onDelete: 'CASCADE',
-  })
-  personalBests: PersonalBest[];
 }

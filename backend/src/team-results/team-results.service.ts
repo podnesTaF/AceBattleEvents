@@ -31,10 +31,14 @@ export class TeamResultsService {
       team,
     });
 
-    if (team.personalBest.resultInMs > teamResult.resultInMs) {
-      team.personalBest = teamResult;
-      await this.teamRepository.save(team);
-    }
+    // if (team.personalBest) {
+    //   if (team?.personalBest?.resultInMs > teamResult.resultInMs) {
+    //     team.personalBest = teamResult;
+    //   }
+    // } else {
+    //   team.personalBest = teamResult;
+    // }
+    // await this.teamRepository.save(team);
 
     await this.changeTotalPointByAddedResult(teamResult);
 

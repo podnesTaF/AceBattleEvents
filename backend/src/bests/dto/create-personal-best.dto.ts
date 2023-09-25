@@ -2,8 +2,8 @@ import { IsNumber } from 'class-validator';
 
 export class CreatePersonalBestDto {
   @IsNumber()
-  distance: number;
+  distanceInCm: number;
 
   @IsNumber()
-  time: number;
+  timeInMs: number;
 }

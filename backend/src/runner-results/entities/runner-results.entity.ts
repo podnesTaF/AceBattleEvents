@@ -26,7 +26,9 @@ export class RunnerResult {
   @ManyToOne(() => User, (user) => user.results, { nullable: true })
   runner: User;
 
-  @ManyToOne(() => TeamResult, (teamResult) => teamResult.runnerResults)
+  @ManyToOne(() => TeamResult, (teamResult) => teamResult.runnerResults, {
+    onDelete: 'CASCADE',
+  })
   teamResult: TeamResult;
 
   @OneToMany(() => Split, (split) => split.runnerResult, {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PersonalBestsService } from 'src/personal-bests/personal-bests.service';
+import { BestsService } from 'src/bests/bests.service';
 import { createDateFromDDMMYYYY } from 'src/utils/date-formater';
 import { Repository } from 'typeorm';
 import { CreatePlayerDto } from './dto/create-player.dto';
@@ -11,7 +11,7 @@ export class PlayersService {
   constructor(
     @InjectRepository(PlayerEntity)
     private repository: Repository<PlayerEntity>,
-    private pbService: PersonalBestsService,
+    private pbService: BestsService,
   ) {}
 
   async create(createPlayerDto: CreatePlayerDto) {

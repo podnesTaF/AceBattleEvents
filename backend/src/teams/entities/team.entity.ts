@@ -44,13 +44,12 @@ export class Team {
   @ManyToOne(() => User, (user) => user.teams, { onDelete: 'CASCADE' })
   manager: User;
 
-  @ManyToOne(() => Club, (club) => club.teams, { nullable: true })
+  @ManyToOne(() => Club, (club) => club.teams, {
+    nullable: true,
+  })
   club: Club;
 
-  @OneToOne(() => Coach, {
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn()
+  @ManyToOne(() => Coach, (coach) => coach.teams)
   coach: Coach;
 
   @ManyToOne(() => Media, { nullable: true })
@@ -62,7 +61,7 @@ export class Team {
   teamImage: Media;
 
   @ManyToMany(() => User, (user) => user.teamsAsRunner, {
-    onDelete: 'NO ACTION',
+    onDelete: 'CASCADE',
   })
   @JoinTable({
     name: 'runner_for_team',
@@ -102,11 +101,12 @@ export class Team {
   @OneToMany(() => TeamResult, (teamResult) => teamResult.team)
   results: TeamResult[];
 
-  @ManyToMany(() => Race, (race) => race.teams, { onDelete: 'CASCADE' })
+  @ManyToMany(() => Race, (race) => race.teams)
   races: Race[];
 
   @OneToOne(() => TeamResult, {
     nullable: true,
+    onDelete: 'CASCADE',
   })
   @JoinColumn()
   personalBest: TeamResult;
