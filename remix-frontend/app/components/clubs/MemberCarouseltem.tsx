@@ -1,4 +1,3 @@
-import { useNavigate } from "@remix-run/react";
 import React from "react";
 
 interface Props {
@@ -7,11 +6,9 @@ interface Props {
 }
 
 const MemberCarouseltem: React.FC<Props> = ({ item, hideRole }) => {
-  const navigate = useNavigate();
   return (
     <div className="max-w-xs max-h-sm mx-auto w-full relative cursor-pointer active:scale-95 flex justify-center items-center shadow-md rounded-md">
       <img
-        onClick={() => navigate(`/athletes/${item.id}`)}
         src={
           item.image
             ? item.image.mediaUrl

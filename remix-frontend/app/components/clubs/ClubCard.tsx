@@ -1,4 +1,4 @@
-import { useNavigate } from "@remix-run/react";
+import { Link, useNavigate } from "@remix-run/react";
 import React from "react";
 import { IClub } from "~/lib/types";
 
@@ -9,7 +9,7 @@ interface ClubCardProps {
 const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
   const navigate = useNavigate();
   return (
-    <div className={`w-full`}>
+    <div className={`w-full border-[1px] border-gray-300 p-3`}>
       <div className="flex items-center gap-4 mb-2">
         {club.country?.flagIconUrl && (
           <img
@@ -29,9 +29,14 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
             <div className="my-1">
               {club.teams?.length ? (
                 club.teams.map((team) => (
-                  <h4 key={team.id} className="text-xl font-semibold underline">
-                    {team.name}
-                  </h4>
+                  <div key={team.id} className="mb-2">
+                    <Link
+                      to={`/teams/${team.id}`}
+                      className="text-xl font-semibold underline"
+                    >
+                      {team.name}
+                    </Link>
+                  </div>
                 ))
               ) : (
                 <h4 className="text-xl font-semibold">
@@ -47,7 +52,7 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
           <div className="mb-4">
             <p className="text-lg mb-1">Location:</p>
             <h4 className="text-xl font-semibold">
-              {club.country.name}, {club.city}
+              {club.country?.name}, {club.city}
             </h4>
           </div>
           <button

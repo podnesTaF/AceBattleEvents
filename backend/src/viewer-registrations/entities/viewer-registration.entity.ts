@@ -1,6 +1,6 @@
 import { Event } from 'src/events/entities/event.entity';
 import { Media } from 'src/media/entities/media.entity';
-import { User } from 'src/user/entities/user.entity';
+import { Member } from 'src/member/entities/member.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -17,14 +17,13 @@ export class ViewerRegistration {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   gender: string;
 
-  @Column({ nullable: true })
-  discoveryMethod: string;
-
-  @ManyToOne(() => User, (user) => user.viewerRegistrations, { nullable: true })
-  viewer: User;
+  @ManyToOne(() => Member, (member) => member.viewerRegistrations, {
+    nullable: true,
+  })
+  viewer: Member;
 
   @ManyToOne(() => Event, (event) => event.viewerRegistrations)
   event: Event;

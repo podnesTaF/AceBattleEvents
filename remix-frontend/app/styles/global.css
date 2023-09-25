@@ -26,7 +26,7 @@ html {
 }
 
 .clip-rect {
-  clip-path: polygon(100% 0, 100% 100%, 20% 100%, 0 80%, 0 0);
+  clip-path: none;
 }
 
 .clip-heptagon {
@@ -110,6 +110,10 @@ html {
 @media screen and (min-width: 640px) {
   .h-calc-screen {
     height: 640px;
+  }
+
+  .clip-rect {
+    clip-path: polygon(100% 0, 100% 100%, 20% 100%, 0 80%, 0 0);
   }
 
   .clip-title {

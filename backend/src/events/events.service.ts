@@ -106,11 +106,6 @@ export class EventsService {
       });
     }
 
-    if (query.check !== 'past event included') {
-      const currentDate = new Date(); // Get the current date
-      qb.andWhere('event.startDateTime > :currentDate', { currentDate });
-    }
-
     const totalItems = await qb.getCount();
 
     const totalPages = Math.ceil(totalItems / limit);

@@ -92,7 +92,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
                     if (typeof r[t] === "object") {
                       if (onEdit && t === "edit") {
                         return (
-                          <td key={i} className="px-6 py-4">
+                          <td key={i} className="p-2 md:p-5">
                             <button
                               onClick={() => onEdit(r[t].link)}
                               className="font-medium text-gray-400 dark:text-blue-500 hover:underline cursor-pointer"
@@ -103,7 +103,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
                         );
                       }
                       return (
-                        <td key={i} className="px-6 py-4">
+                        <td key={i} className="p-2 md:p-5">
                           <Link
                             to={r[t].link || "/error"}
                             className="font-medium text-gray-400 dark:text-blue-500 hover:underline cursor-pointer"
@@ -117,14 +117,14 @@ const CustomTable: React.FC<CustomTableProps> = ({
                         <th
                           scope="row"
                           key={i}
-                          className="p-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                          className="p-2 md:p-5 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
                           {r[t]}
                         </th>
                       );
                     } else {
                       return (
-                        <td key={i} className="p-6">
+                        <td key={i} className="p-2 md:p-5">
                           {" "}
                           {r[t]}
                         </td>

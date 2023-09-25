@@ -312,7 +312,7 @@ const EventPage = () => {
                   <p className="text-xl font-light">{startFormated}</p>
                 </div>
               </div>
-              <div className="w-full min-w-[400px] max-w-[450px] max-h-[400px] md:w-3/5 border-[1px] border-black rounded-md overflow-hidden">
+              <div className="w-full sm:min-w-[400px] max-w-[450px] max-h-[400px] md:w-3/5 border-[1px] border-black rounded-md overflow-hidden">
                 <Map
                   address={transformAddress(event.location)}
                   googleMapsKey={googleMapsKey}

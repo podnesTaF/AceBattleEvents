@@ -107,7 +107,6 @@ export class ClubService {
   async findPure(id: number) {
     const club = await this.repository.findOne({
       where: { id },
-      relations: ['country'],
     });
 
     return club;

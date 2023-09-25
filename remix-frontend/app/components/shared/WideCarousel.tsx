@@ -18,10 +18,10 @@ const WideCarousel = ({ items, ItemCard }: { items: any[]; ItemCard: any }) => {
         <IconButton
           onClick={() => slide("prev")}
           style={{ position: "absolute", backgroundColor: "red" }}
-          className="z-10 left-2 sm:-left-6 top-1/2 transform -translate-y-1/2 opacity-60 rounded-full p-2 hover:opacity-100"
+          className="z-10 left-1 sm:-left-6 top-1/2 transform -translate-y-1/2 opacity-30 rounded-full p-2 hover:opacity-80"
           type="button"
         >
-          <ChevronLeftIcon className="text-white" fontSize="large" />
+          <ChevronLeftIcon className="text-white text-lg md:text-xl" />
         </IconButton>
       )}
       <div className="w-full overflow-x-scroll pb-2 pl-2">
@@ -42,14 +42,15 @@ const WideCarousel = ({ items, ItemCard }: { items: any[]; ItemCard: any }) => {
           ))}
         </div>
       </div>
-      {-translateDistance < (items.length - 1) * 574 && (
+      {-translateDistance <
+        (items.length - 1) * ((ref.current?.offsetWidth || 550) + 24) && (
         <IconButton
           onClick={() => slide("next")}
           style={{ position: "absolute", backgroundColor: "red" }}
-          className="z-10 right-2 sm:-right-6 top-1/2 transform -translate-y-1/2 opacity-60 rounded-full p-2  hover:opacity-100"
+          className="z-10 right-1 sm:-right-6 top-1/2 transform -translate-y-1/2 opacity-30 rounded-full p-2  hover:opacity-80"
           type="button"
         >
-          <ChevronRightIcon className="text-white" fontSize="large" />
+          <ChevronRightIcon className="text-white text-lg md:text-xl" />
         </IconButton>
       )}
     </div>

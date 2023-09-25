@@ -41,7 +41,7 @@ const CustomCarousel: React.FC<CustomCarouselProps> = ({
   };
 
   return (
-    <div className="my-4 w-full sm:w-[400px] h-80 md:h-96 relative flex justify-center items-center">
+    <div className="my-4 w-[400px] h-80 md:h-96 relative flex justify-center items-center">
       <div
         ref={sliderRef}
         className="slider-carousel"
@@ -65,7 +65,7 @@ const CustomCarousel: React.FC<CustomCarouselProps> = ({
         <IconButton
           onClick={() => slide("prev")}
           style={{ position: "absolute", backgroundColor: "white" }}
-          className="left-2 sm:-left-6 top-1/2 transform -translate-y-1/2 opacity-60 rounded-full p-2 hover:opacity-100"
+          className="left-4 sm:-left-6 top-1/2 transform -translate-y-1/2 opacity-60 rounded-full p-2 hover:opacity-100"
           type="button"
         >
           <ChevronLeftIcon />
@@ -75,7 +75,7 @@ const CustomCarousel: React.FC<CustomCarouselProps> = ({
         <IconButton
           onClick={() => slide("next")}
           style={{ position: "absolute", backgroundColor: "white" }}
-          className="right-2 sm:-right-6 top-1/2 transform -translate-y-1/2 opacity-60 rounded-full p-2  hover:opacity-100"
+          className="right-4 sm:-right-6 top-1/2 transform -translate-y-1/2 opacity-60 rounded-full p-2  hover:opacity-100"
           type="button"
         >
           <ChevronRightIcon />

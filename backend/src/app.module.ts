@@ -7,6 +7,7 @@ import { AdminModule } from './admin/admin.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { BestsModule } from './bests/bests.module';
 import { ClubRequestsModule } from './club-requests/club-requests.module';
 import { ClubModule } from './club/club.module';
 import { CoachModule } from './coach/coach.module';
@@ -19,18 +20,19 @@ import { HashtagModule } from './hashtag/hashtag.module';
 import { IntegrationModule } from './integration/integration.module';
 import { LocationsModule } from './locations/locations.module';
 import { MediaModule } from './media/media.module';
+import { MemberModule } from './member/member.module';
 import { NewsModule } from './news/news.module';
-import { PersonalBestsModule } from './personal-bests/personal-bests.module';
 import { PlayersModule } from './players/players.module';
 import { PrizesModule } from './prizes/prizes.module';
 import { RaceModule } from './race/race.module';
+import { ResetUserModule } from './reset-user/reset-user.module';
 import { RunnerResultsModule } from './runner-results/runner-results.module';
 import { SplitsModule } from './splits/splits.module';
 import { TeamResultsModule } from './team-results/team-results.module';
 import { TeamsModule } from './teams/teams.module';
 import { UserModule } from './user/user.module';
 import { ViewerRegistrationsModule } from './viewer-registrations/viewer-registrations.module';
-import { ResetUserModule } from './reset-user/reset-user.module';
+import { VerifyMemberModule } from './verify-member/verify-member.module';
 
 @Module({
   imports: [
@@ -46,7 +48,7 @@ import { ResetUserModule } from './reset-user/reset-user.module';
     TeamsModule,
     CoachModule,
     PlayersModule,
-    PersonalBestsModule,
+    BestsModule,
     PrizesModule,
     ClubModule,
     CountryModule,
@@ -64,6 +66,8 @@ import { ResetUserModule } from './reset-user/reset-user.module';
     SplitsModule,
     AdminModule,
     ResetUserModule,
+    MemberModule,
+    VerifyMemberModule,
   ],
   controllers: [AppController],
   providers: [AppService],

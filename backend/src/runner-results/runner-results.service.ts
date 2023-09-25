@@ -27,7 +27,7 @@ export class RunnerResultsService {
     });
 
     const runner = await this.runnerRepository.findOne({
-      relations: ['personalBest'],
+      relations: ['personalBests'],
       where: { id: dto.runnerId },
     });
 

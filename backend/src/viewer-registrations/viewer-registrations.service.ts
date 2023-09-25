@@ -8,7 +8,7 @@ import { Event } from 'src/events/entities/event.entity';
 import { FileService, FileType } from 'src/file/file.service';
 import { storage } from 'src/file/google-cloud-storage.config';
 import { Location } from 'src/locations/entities/locations.entity';
-import { User } from 'src/user/entities/user.entity';
+import { Member } from 'src/member/entities/member.entity';
 import { Repository } from 'typeorm';
 import { CreateViewerRegistrationDto } from './dto/create-viewer-registration.dto';
 import { UpdateViewerRegistrationDto } from './dto/update-viewer-registration.dto';
@@ -27,23 +27,25 @@ export class ViewerRegistrationsService {
     private repository: Repository<ViewerRegistration>,
     @InjectRepository(Event)
     private eventRepository: Repository<Event>,
-    @InjectRepository(User)
-    private viewerRepository: Repository<User>,
+    @InjectRepository(Member)
+    private viewerRepository: Repository<Member>,
     private fileService: FileService,
   ) {
     sgMail.setApiKey(process.env.SEND_GRID_API_K);
   }
 
   async create(createViewerRegistrationDto: CreateViewerRegistrationDto) {
-    let viewer: User;
-    if (createViewerRegistrationDto.viewerId) {
-      viewer = await this.viewerRepository.findOne({
+    let member: Member | null;
+    try {
+      member = await this.viewerRepository.findOne({
         where: { id: createViewerRegistrationDto.viewerId },
       });
+    } catch (error) {
+      member = null;
     }
 
     const event = await this.eventRepository.findOne({
-      where: { id: createViewerRegistrationDto.eventId },
+      where: { id: 25 },
       relations: ['location', 'location.country'],
     });
 
@@ -80,7 +82,7 @@ export class ViewerRegistrationsService {
     const registration = await this.repository.save({
       ...createViewerRegistrationDto,
       event,
-      viewer,
+      viewer: member,
       qrcode: qr,
     });
 

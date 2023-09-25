@@ -17,10 +17,10 @@ export class TeamResult {
   @Column()
   resultInMs: number;
 
-  @ManyToOne(() => Race, (race) => race.teamResults)
+  @ManyToOne(() => Race, (race) => race.teamResults, { onDelete: 'CASCADE' })
   race: Race;
 
-  @ManyToOne(() => Team, (team) => team.results)
+  @ManyToOne(() => Team, (team) => team.results, { onDelete: 'CASCADE' })
   team: Team;
 
   @OneToMany(() => RunnerResult, (runnerResult) => runnerResult.teamResult, {

@@ -23,7 +23,10 @@ export class Race {
   @JoinTable()
   teams: Team[];
 
-  @ManyToOne(() => Team, (team) => team.wonRaces, { nullable: true })
+  @ManyToOne(() => Team, (team) => team.wonRaces, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
   winner: Team;
 
   @ManyToOne(() => Event, (event) => event.races)

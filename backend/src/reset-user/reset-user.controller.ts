@@ -12,8 +12,8 @@ export class ResetUserController {
   }
 
   @Get('/check/:token')
-  checkToken(@Body() dto: { token: string }) {
-    return this.resetUserService.checkToken(dto.token);
+  checkToken(@Param('token') token: string) {
+    return this.resetUserService.checkToken(token);
   }
 
   @Get('/user/:token')

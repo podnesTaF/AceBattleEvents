@@ -7,6 +7,9 @@ export class CreatePrizeDto {
   @IsNumber()
   place: number;
 
+  @IsOptional()
+  category?: string;
+
   @IsNumber()
   @IsOptional()
   eventId?: number;

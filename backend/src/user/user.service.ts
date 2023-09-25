@@ -35,7 +35,7 @@ export class UserService {
     const qb = this.repository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.image', 'image')
-      .leftJoinAndSelect('user.club', 'club')
+      .leftJoinAndSelect('user.teamsAsRunner', 'teams')
       .leftJoinAndSelect('user.country', 'country')
       .where('user.role = :role', {
         role: 'runner',
@@ -48,9 +48,9 @@ export class UserService {
       });
     }
 
-    if (query.club) {
-      qb.andWhere('club.name LIKE :club', {
-        club: `%${query.club}%`,
+    if (query.team) {
+      qb.andWhere('teams.name LIKE :team', {
+        team: `%${query.team}%`,
       });
     }
 

@@ -12,6 +12,8 @@ export class Split {
   @Column()
   resultInMs: number;
 
-  @ManyToOne(() => RunnerResult, (results) => results.splits)
+  @ManyToOne(() => RunnerResult, (results) => results.splits, {
+    onDelete: 'CASCADE',
+  })
   runnerResult: RunnerResult;
 }

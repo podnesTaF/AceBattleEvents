@@ -29,7 +29,7 @@ const NewsCollage: React.FC<Props> = ({ news }) => {
           <img
             src={news[0].mainImage?.mediaUrl || "/details2.jpg"}
             alt={news[0].title}
-            className="absolute left-0 top-0 object-cover w-full h-full hover:scale-105 transition-all"
+            className="absolute left-0 top-0 object-cover object-center w-full h-full hover:scale-105 transition-all"
           />
           <div className="mt-auto w-full p-4 md:p-6 z-10 bg-gradient-to-b from-transparent to-black">
             <h4 className="text-sm font-semibold text-white uppercase">
@@ -50,7 +50,7 @@ const NewsCollage: React.FC<Props> = ({ news }) => {
             <img
               src={news[1].mainImage?.mediaUrl || "/details2.jpg"}
               alt={news[1].title}
-              className="absolute left-0 top-0 object-cover w-full h-auto hover:scale-105 transition-all"
+              className="absolute left-0 top-0 object-center object-cover w-full h-[188px] hover:scale-105 transition-all"
             />
             <div className="mt-auto w-full p-4 md:p-6 z-10 bg-gradient-to-b from-transparent to-black">
               <h4 className="text-sm font-semibold text-white uppercase">
@@ -70,7 +70,7 @@ const NewsCollage: React.FC<Props> = ({ news }) => {
             <img
               src={news[2].mainImage?.mediaUrl || "/details2.jpg"}
               alt={news[2].title}
-              className="absolute left-0 top-0 object-cover w-full h-auto hover:scale-105 transition-all"
+              className="absolute left-0 top-0 object-center object-cover  h-[188px] w-full hover:scale-105 transition-all"
             />
             <div className="mt-auto w-full p-4 md:p-6 z-10 bg-gradient-to-b from-transparent to-black">
               <h4 className="text-sm font-semibold text-white uppercase">

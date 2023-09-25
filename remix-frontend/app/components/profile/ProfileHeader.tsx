@@ -81,31 +81,33 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
             )}
           </div>
           <div className="flex-1 flex justify-between items-center md:items-start">
-            <div className="md:ml-10 flex flex-col md:h-full mt-5 md:mt-0">
+            <div className="md:ml-10 flex flex-row justify-between md:flex-col md:h-full mt-5 mb-5 md:mt-0 w-full">
               <div className="flex-1">
                 <h3 className="text-3xl md:text-4xl font-semibold">
                   {user.name} <br />
                   {user.surname}
                 </h3>
               </div>
-              <h3 className="text-xl md:text-2xl font-semibold mb-2 mt-4">
-                {getCategoryByDoB(user.dateOfBirth)}
-              </h3>
-              <p className="text-xl font-semibold">
-                {user.club ? (
-                  <Link
-                    to={`/clubs/${user.club.id}`}
-                    className="text-blue-400 hover:underline"
-                  >
-                    {user.club.name}
-                  </Link>
-                ) : (
-                  "No Club"
-                )}
-              </p>
-              <p className="text-xl font-semibold text-gray-400">
-                {user.city} | {user.country?.name}
-              </p>
+              <div>
+                <h3 className="text-xl md:text-2xl font-semibold mb-2 mt-4">
+                  {getCategoryByDoB(user.dateOfBirth)}
+                </h3>
+                <p className="text-xl font-semibold">
+                  {user.club ? (
+                    <Link
+                      to={`/clubs/${user.club.id}`}
+                      className="text-blue-400 hover:underline"
+                    >
+                      {user.club.name}
+                    </Link>
+                  ) : (
+                    "No Club"
+                  )}
+                </p>
+                <p className="text-xl font-semibold text-gray-400">
+                  {user.city} | {user.country?.name}
+                </p>
+              </div>
             </div>
           </div>
           {isAbleToJoin(user) && isAbleToInvite(authedUser) && (

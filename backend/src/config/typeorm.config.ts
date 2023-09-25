@@ -1,6 +1,7 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { config as evnconfig } from 'dotenv';
 import { Admin } from 'src/admin/entities/admin.entity';
+import { Best } from 'src/bests/entities/best.entity';
 import { JoinRequest } from 'src/club-requests/entities/club-request.entity';
 import { Club } from 'src/club/entities/club.entity';
 import { Coach } from 'src/coach/entities/coach.entity';
@@ -10,8 +11,8 @@ import { Event } from 'src/events/entities/event.entity';
 import { Hashtag } from 'src/hashtag/entities/hashtag.entity';
 import { Location } from 'src/locations/entities/locations.entity';
 import { Media } from 'src/media/entities/media.entity';
+import { Member } from 'src/member/entities/member.entity';
 import { News } from 'src/news/entities/news.entity';
-import { PersonalBest } from 'src/personal-bests/entities/personal-best.entity';
 import { PlayerEntity } from 'src/players/entities/player.entity';
 import { PrizeEntity } from 'src/prizes/entities/prize.entity';
 import { Race } from 'src/race/entities/race.entity';
@@ -21,6 +22,7 @@ import { Split } from 'src/splits/entities/splits.entity';
 import { TeamResult } from 'src/team-results/entities/team-results.entity';
 import { Team } from 'src/teams/entities/team.entity';
 import { User } from 'src/user/entities/user.entity';
+import { VerifyMember } from 'src/verify-member/entities/verify-member.entity';
 import { ViewerRegistration } from 'src/viewer-registrations/entities/viewer-registration.entity';
 evnconfig();
 
@@ -40,7 +42,7 @@ const config: TypeOrmModuleOptions = {
     PlayerEntity,
     Team,
     Coach,
-    PersonalBest,
+    Best,
     PrizeEntity,
     Media,
     ViewerRegistration,
@@ -54,6 +56,8 @@ const config: TypeOrmModuleOptions = {
     RunnerResult,
     Split,
     ResetUser,
+    Member,
+    VerifyMember,
   ],
   synchronize: true,
 };

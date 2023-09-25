@@ -1,3 +1,4 @@
+import AboutArticle from "./AboutArticle";
 import ConfirmAlert from "./ConfirmAlert";
 import CountDown from "./CountDown";
 import CustomCarousel from "./CustomCarousel";
@@ -15,6 +16,7 @@ export * from "./forms";
 export * from "./header";
 export * from "./tables";
 export {
+  AboutArticle,
   ConfirmAlert,
   CountDown,
   CustomCarousel,

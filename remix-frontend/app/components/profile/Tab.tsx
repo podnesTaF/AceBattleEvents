@@ -10,13 +10,17 @@ const Tab: React.FC<TabProps> = ({ isActive, onClick, title }) => {
   return (
     <div
       onClick={onClick}
-      className={`rounded-t-lg flex justify-center items-center cursor-pointer py-4 w-1/3 border-[1px] ${
+      className={`rounded-t-lg flex justify-center items-center cursor-pointer py-2 w-full max-w-2/5 px-2 md:w-1/3 border-[1px] ${
         !isActive
           ? "bg-red-600"
           : "border-b-0 border-red-600 bg-white scale-y-[1.03]"
       }`}
     >
-      <p className={`text-xl font-semibold ${!isActive && "text-white"}`}>
+      <p
+        className={`text-lg md:text-xl font-semibold ${
+          !isActive && "text-white"
+        }`}
+      >
         {title}
       </p>
     </div>

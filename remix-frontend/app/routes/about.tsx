@@ -3,7 +3,7 @@ import { Breadcrumbs, Typography } from "@mui/material";
 import { V2_MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { useState } from "react";
-import { HeaderTabs, PageInDevelopment } from "~/components";
+import { AboutArticle, HeaderTabs } from "~/components";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Ace Battle Events | Rules" }];
@@ -11,7 +11,7 @@ export const meta: V2_MetaFunction = () => {
 
 const RulesPage = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const tabs = ["Rules", "Statements and Agreements", "Structure"];
+  const tabs = ["About", "Rules", "Structure"];
 
   const onChangeTab = (tab: number) => {
     setActiveTab(tab);
@@ -41,7 +41,8 @@ const RulesPage = () => {
             {tabs[activeTab]}
           </Typography>
         </Breadcrumbs>
-        {activeTab === 0 && (
+        {activeTab === 0 && <AboutArticle />}
+        {activeTab === 1 && (
           <>
             <div className="w-full mb-10">
               <h3 className="font-semibold text-2xl sm:text-3xl mb-4">
@@ -76,16 +77,14 @@ const RulesPage = () => {
                       panels, which show the total time of each team and the
                       difference between them in a specific time period. This
                       allows the team to control their position and quickly
-                      start a tactical exit to remoteness.
+                      change tactics.
                     </p>
                   </div>
                   <div>
                     <h4 className="font-semibold uppercase">WIN</h4>
                     <p>
                       The team that shows the best combined time of all
-                      participants will win! If the teams showed the same finish
-                      time to the thousandth, the victory is won by the team
-                      whose representative crossed the finish line first.
+                      participants wins!
                     </p>
                   </div>
                 </div>
@@ -97,9 +96,9 @@ const RulesPage = () => {
                     <p>
                       each team has two spare participants, the so-called{" "}
                       <strong>&quot;Jokers&quot;</strong>, who are in the
-                      "corridor", they have the right to replace any member of
-                      their team once at any stage of the distance for any
-                      segment, BUT up to the finish line
+                      "corridor". They have the right to replace any member of
+                      their team at any point of the race, but once a "joker"
+                      enters the race they must continue until the finish line.
                     </p>
                   </div>
                 </div>
@@ -109,7 +108,7 @@ const RulesPage = () => {
               <h2 className="text-3xl md:text-4xl font-semibold mb-6">Team</h2>
               <div className="mb-6">
                 <p>
-                  The team should consist of 7 athletes (5 main + 2 jokers).
+                  The team should consist of 7 athletes (5 starters + 2 jokers).
                 </p>
                 <p className="mb-4">
                   <strong>
@@ -132,22 +131,14 @@ const RulesPage = () => {
                   </div>
                   <div>
                     <strong>Adult Athletes</strong> <br />- 23-35 years
-                    inclusive on the day of the competition), and jokers, who
-                    replaces one of the members of his team over the distance,
-                    he can belong only to the adult age category.
+                    inclusive on the day of the competition, and jokers, who
+                    replaces one of the members of the team over the distance.
                   </div>
                 </div>
-                <p>
-                  Amateur teams are formed without age groups and cannot be
-                  equipped with participants who competed at the official starts
-                  of the Athletics Federation of Ukraine at the level of the
-                  Ukrainian Championships in the last 3 years.
-                </p>
               </div>
             </div>
           </>
         )}
-        {activeTab === 1 && <PageInDevelopment />}
         {activeTab === 2 && (
           <div className="w-full my-8 mb-12">
             <h3 className="font-semibold text-2xl sm:text-3xl mb-4">
@@ -180,7 +171,9 @@ const RulesPage = () => {
               </div>
               <div className="w-full md:w-1/3 flex flex-col gap-4">
                 <h1 className="font-semibold uppercase text-3xl md:text-4xl">
-                  NIKITA
+                  Nikita
+                  <br />
+                  Sydorenko
                 </h1>
                 <p>Administrator</p>
               </div>

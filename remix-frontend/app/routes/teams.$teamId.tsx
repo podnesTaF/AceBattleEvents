@@ -48,15 +48,16 @@ const TeamPage = () => {
 
   return (
     <>
-      <header className="w-full flex justify-center h-96 sm:h-[600px] bg-[url('/page-detail.jpg')] bg-cover bg-no-repeat bg-center relative flex-col ">
+      <header className="w-full flex justify-center h-96 sm:h-[600px] bg-[url('/teams-photo.jpeg')] bg-cover bg-no-repeat bg-center relative flex-col ">
         <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.4)] z-0"></div>
-        <div className="h-3/5 mb-10 sm:mb-0 sm:h-1/2 ml-5 flex flex-col md:flex-row gap-4 justify-center items-center w-3/4 sm:w-3/5 md:w-[600px] z-10">
-          <div className="w-96">
+        <div className="h-3/5 mb-10 sm:mb-0 sm:h-1/2 md:ml-5 flex flex-row gap-4 justify-center items-center w-full sm:w-3/5 md:w-[600px] z-10">
+          <div className="w-1/3">
             <img
               src={team?.logo.mediaUrl || ""}
               alt="avatar"
               width={300}
               height={300}
+              className="object-cover "
             />
           </div>
           <div>

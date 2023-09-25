@@ -113,14 +113,14 @@ const EventCard: React.FC<EventCardProps> = ({
             {showRegisterButton() && (
               <button
                 onClick={() => navigate(`/events/${event.id}/register-team`)}
-                className="p-4 bg-green-500 text-lg sm:text-xl uppercase text-white rounded hover:bg-green-700 drop-shadow-lg active:scale-95"
+                className="p-4 bg-green-500 text-lg sm:text-xl uppercase text-white font-semibold rounded hover:bg-green-700 drop-shadow-lg active:scale-95"
               >
                 Register your team
               </button>
             )}
             <button
               onClick={() => navigate("/events/" + event.id)}
-              className="p-4 border-[1px] border-green-500 text-lg sm:text-xl uppercase rounded hover:bg-gray-100 drop-shadow-lg active:scale-95"
+              className="p-4 border-[1px] border-green-500 bg-green-400 md:bg-white text-white md:text-black font-semibold text-lg sm:text-xl uppercase rounded hover:bg-gray-100 drop-shadow-lg active:scale-95"
             >
               See details
             </button>

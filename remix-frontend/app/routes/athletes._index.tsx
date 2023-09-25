@@ -3,12 +3,12 @@ import { useEffect } from "react";
 import { LoaderArgs, json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 
+import { Pagination } from "@mui/material";
 import { Api } from "~/api/axiosInstance";
 import {
-  CustomTable,
   FilterBage,
   FilterSelect,
-  Pagination,
+  MemberCarouseltem,
   SearchField,
 } from "~/components";
 import { countries, useFilter } from "~/lib/shared";
@@ -20,7 +20,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   const scrollY = new URL(url).searchParams.get("scrollY");
   const params = url.split("?")[1];
   const athletesData = await Api().athletes.getAthletes(params);
-  const clubsData = await Api().clubs.findClubsSnippet();
+  const teamsPreview = await Api().teams.getPreviewTeams();
 
   let page = new URL(url).searchParams.get("page") || "1";
 
@@ -32,7 +32,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 
   return json({
     athletesData,
-    clubsData,
+    teamsPreview,
     tableData,
     currPage: +page,
     scroll: scrollY,
@@ -40,7 +40,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 };
 
 const AthletesIndexPage = () => {
-  const { athletesData, clubsData, tableData, scroll, currPage } =
+  const { athletesData, teamsPreview, tableData, scroll, currPage } =
     useLoaderData<typeof loader>();
 
   const navigate = useNavigate();
@@ -104,10 +104,10 @@ const AthletesIndexPage = () => {
           <div className="w-full sm:w-2/5 md:w-full lg:w-2/5">
             <FilterSelect
               onChangeFilter={onChangeFilter}
-              selected={filters.find((f) => f.type === "club")?.value || ""}
-              label="club"
-              placeholder="Choose a club"
-              values={clubsData.clubs.map((c) => [c.name, c.name])}
+              selected={filters.find((f) => f.type === "team")?.value || ""}
+              label="team"
+              placeholder="Choose a team"
+              values={teamsPreview.map((t) => [t.name, t.name])}
             />
           </div>
           <div className="w-full sm:w-2/5 md:w-full lg:w-2/5">
@@ -130,20 +130,19 @@ const AthletesIndexPage = () => {
           </div>
         </div>
       </div>
-      <div className="my-6">
-        <CustomTable
-          itemsName="athletes"
-          titleColor="bg-black"
-          isTitleStraight={true}
-          rows={tableData}
-          isLoading={false}
-        />
+      <div className="my-8">
+        <div className="flex flex-wrap px-4 xl:px-8 my-4 gap-8 justify-center">
+          {athletesData.athletes.map((player) => (
+            <MemberCarouseltem key={player.id} item={player} />
+          ))}
+        </div>
       </div>
       <div className="flex justify-center">
         <Pagination
-          pagesCount={athletesData.totalPages}
-          onChangePage={changePage}
-          currPage={currPage}
+          count={athletesData.totalPages}
+          onChange={(e, page) => changePage(page)}
+          page={currPage}
+          variant="outlined"
         />
       </div>
     </>

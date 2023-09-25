@@ -30,7 +30,7 @@ const ClubsIndexPage = () => {
         <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.4)] z-0"></div>
       </header>
       <main className="w-full">
-        <div className="px-4 py-2 bg-black flex flex-col sm:flex-row justify-between items-center">
+        <div className="px-4 py-2 bg-black flex flex-col gap-4 sm:flex-row justify-between items-center">
           <div className="w-full sm:w-[300px] md:w-[400px]">
             <SearchField onChangeInput={onChangeInput} value={searchValue} />
           </div>
@@ -45,11 +45,11 @@ const ClubsIndexPage = () => {
             />
           </div>
         </div>
-        <div className="max-w-6xl mx-6 lg:mx-auto my-6">
+        <div className="max-w-6xl mx-3 md:mx-6 lg:mx-auto my-6">
           {data.clubs?.map((club: IClub, i: number) => (
             <div
               key={club.id}
-              className={`w-full sm:w-2/3 ${i % 2 && "ml-auto"} mb-8`}
+              className={`w-full sm:w-2/3 ${i % 2 && "ml-auto"} mb-10`}
             >
               <ClubCard club={club} />
             </div>

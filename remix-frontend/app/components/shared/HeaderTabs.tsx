@@ -33,12 +33,12 @@ const HeaderTabs: React.FC<HeaderTabsProps> = ({
             <div
               key={index}
               onClick={() => onChangeTab(index)}
-              className={`w-1/3 border-r-2 ${
+              className={`w-full max-w-2/5 px-2 md:w-1/3 border-r-2 ${
                 activeTab === index ? "bg-red-500" : "bg-black"
               } border-red-500 flex justify-center items-center py-2`}
             >
               <h4
-                className={`text-xl font-semibold cursor-pointer ${
+                className={`text-lg md:text-xl font-semibold cursor-pointer ${
                   activeTab === index ? "text-white" : "text-gray-400"
                 }`}
               >

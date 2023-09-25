@@ -49,8 +49,8 @@ export class NewsService {
       let previewText = '';
       if (content) {
         previewText =
-          content.text.length > textLength || 80
-            ? content.text.substring(0, textLength || 80) + '...'
+          content.text.length > textLength || 100
+            ? content.text.substring(0, textLength || 100) + '...'
             : content.text;
       }
 
@@ -58,7 +58,7 @@ export class NewsService {
         id: news.id,
         title: news.title,
         previewText: previewText,
-        smallImageUrl: media ? media.smallUrl : '',
+        smallImageUrl: media ? media.mediaUrl : '',
         createdAt: news.createdAt,
         mainImage: news.mainImage,
       };
