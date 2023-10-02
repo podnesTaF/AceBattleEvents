@@ -40,7 +40,7 @@ const VideoItem: React.FC<Props> = ({ videoId, title }) => {
       rel: 0, // Hide related videos
       showinfo: 0, // Hide video title
     },
-    origin: "https://ace-battle-mile.up.railway.app",
+    origin: "https://acebattlemile.up.railway.app",
   };
   return (
     <div className={`video-section w-full ${isFullScreen ? "fullscreen" : ""}`}>

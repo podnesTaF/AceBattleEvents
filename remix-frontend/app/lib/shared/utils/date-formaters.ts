@@ -2,15 +2,24 @@ import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 TimeAgo.addDefaultLocale(en);
 
-export const formatDate = (dateString?: string): string => {
+export const formatDate = (
+  dateString?: string,
+  fullform: boolean = true
+): string => {
   if (!dateString) return "";
-  const date = new Date(dateString);
 
-  const formattedDate: string = date.toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
+  //2023-09-23T16:00:00.000Z
+
+  const date = new Date(Date.parse(dateString));
+  date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+
+  const formattedDate: string = date
+    .toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })
+    .replace(/\//g, ".");
 
   const formattedTime: string = date.toLocaleTimeString("en-US", {
     hour: "numeric",
@@ -18,7 +27,7 @@ export const formatDate = (dateString?: string): string => {
     hour12: true,
   });
 
-  return `${formattedDate}, ${formattedTime}`;
+  return `${formattedDate}${fullform ? ", " + formattedTime : ""}`;
 };
 
 export const isPassed = (date: string) => {

@@ -26,8 +26,8 @@ export const transformUserResultsToTable = (userResults: UserResult[]) => {
     },
     distance: (userResult.runnerResult_distance / 100).toFixed(2),
     result:
-      msToMinutesAndSeconds(userResult.runnerResult_finalResultInMs) +
-      ` ${userResult.pbForRunner_id ? "PB" : ""}`,
+      (msToMinutesAndSeconds(userResult.runnerResult_finalResultInMs) ||
+        "out") + ` ${userResult.pbForRunner_id ? "PB" : ""}`,
     place: userResult.winner_id === userResult.team_id ? "🏆" : "2",
     details: {
       link: "/race/" + userResult.race_id,

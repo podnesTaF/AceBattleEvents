@@ -13,7 +13,6 @@ const ResetPasswordPage = () => {
       if (email) {
         const message = await Api().users.resetPasswordRequest(email);
         if (message) {
-          console.log(message);
           setActiveTab(1);
         }
       }

@@ -22,7 +22,7 @@ const HeaderTabs: React.FC<HeaderTabsProps> = ({
         backgroundImage: `url(${bgImage || "/outdoor-sunny.jpg"})`,
       }}
     >
-      <div className="w-full absolute bg-gradient-to-b from-transparent via-transparent to-black h-full left-0"></div>
+      <div className="w-full absolute bg-gradient-to-b from-transparent  to-black h-full left-0"></div>
       <div className="max-w-6xl w-full px-4 lg:px-0 lg:mx-auto pt-4 mt-auto z-10">
         <div className="w-full flex gap-4 items-center justify-start pb-4 border-b-2 border-red-500">
           <div className="bg-red-500 w-4 h-12"></div>

@@ -1,4 +1,3 @@
-import AboutArticle from "./AboutArticle";
 import ConfirmAlert from "./ConfirmAlert";
 import CountDown from "./CountDown";
 import CustomCarousel from "./CustomCarousel";
@@ -14,9 +13,9 @@ import WideCarousel from "./WideCarousel";
 
 export * from "./forms";
 export * from "./header";
+export * from "./joinus";
 export * from "./tables";
 export {
-  AboutArticle,
   ConfirmAlert,
   CountDown,
   CustomCarousel,

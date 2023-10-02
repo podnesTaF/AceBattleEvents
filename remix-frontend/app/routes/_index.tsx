@@ -11,7 +11,6 @@ import {
   CustomCarousel,
   IntroSlider,
   NewsCard,
-  OtherPlatforms,
   SectionTitle,
   VideoItem,
 } from "~/components";
@@ -42,12 +41,19 @@ export const meta: V2_MetaFunction = () => {
 };
 
 export const loader = async () => {
-  const data = await Api().events.getEvents();
+  const data = await Api().events.getEvents("finished=true");
 
-  const clubs = await Api().clubs.getPreviewClubs();
+  const teams = await Api().teams.getPreviewTeams();
+
+  if (!teams) {
+    throw new Response("Teams not found.", {
+      status: 404,
+    });
+  }
+
   const newsPreviewsData = await Api().news.getNewsPreviews({ itemsAmount: 4 });
 
-  return json({ events: data.events, clubs: clubs, newsPreviewsData });
+  return json({ events: data.events, teams, newsPreviewsData });
 };
 
 export default function Index() {
@@ -102,14 +108,14 @@ export default function Index() {
         <section className="w-full my-4 bg-[#1E1C1F] p-4">
           <div className="max-w-7xl mx-auto my-4 flex flex-col items-center justify-center overflow-hidden">
             <SectionTitle
-              title="Ace Battle Clubs"
+              title="Ace Battle Teams"
               textColor="text-white"
               borderColor="border-white"
             />
-            {data.clubs ? (
+            {data.teams ? (
               <CustomCarousel
-                initTranslate={data.clubs.length * 200 - 600}
-                items={data.clubs}
+                initTranslate={data.teams.length * 200 - 600}
+                items={data.teams}
                 ItemCard={CarouselItem}
               />
             ) : (
@@ -145,7 +151,6 @@ export default function Index() {
             </div>
           </div>
         </section>
-        <OtherPlatforms />
         <div className="w-full bg-red-500 py-4">
           <div className="max-w-6xl mx-4 lg:mx-auto flex justify-between items-center gap-4">
             <h4 className="text-white text-2xl font-semibold">Follow us</h4>

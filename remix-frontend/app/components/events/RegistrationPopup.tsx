@@ -29,7 +29,7 @@ const RegistrationPopup: React.FC<RegistrationPopupProps> = ({
 
   const onCopy = () => {
     navigator.clipboard.writeText(
-      `http://localhost:3000/events/${event.id}/register`
+      `https://acebattlemile.org/events/${event.id}/register`
     );
     setIsCopied(true);
   };
@@ -82,12 +82,6 @@ const RegistrationPopup: React.FC<RegistrationPopupProps> = ({
               </div>
             </div>
             <div className="flex flex-col items-center gap-4 w-full mb-6">
-              <img
-                src={registration.qrcode?.mediaUrl}
-                alt="qrcode"
-                width={200}
-                height={200}
-              />
               <h2 className="text-2xl font-semibold">Download your ticket</h2>
               <button
                 onClick={downloadTicket}
@@ -128,7 +122,7 @@ const RegistrationPopup: React.FC<RegistrationPopupProps> = ({
                   <input
                     disabled
                     className="text-gray-400 px-5 py-2 border-none w-4/5 outline-none disabled:bg-inherit disabled:cursor-text"
-                    value="http://localhost:3000/events/26/register"
+                    value="https://acebattlemile.org/events/26/register"
                   />
                   <button
                     onClick={onCopy}

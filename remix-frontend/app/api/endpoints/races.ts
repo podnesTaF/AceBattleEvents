@@ -22,7 +22,7 @@ export const RacesApi = (instance: AxiosInstance) => ({
 
   async getFullRace(id: string) {
     try {
-      const { data: race } = await instance.get("/race/full-race/" + id);
+      const { data: race } = await instance.get<IRace>("/race/full-race/" + id);
 
       return race;
     } catch (error) {

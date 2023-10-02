@@ -21,7 +21,7 @@ const FormField: React.FC<FormFieldProps> = ({
   lines,
   autoGenerate,
 }) => {
-  const { register, formState, setValue } = useFormContext();
+  const { register, formState, setValue, getValues } = useFormContext();
 
   const generatePass = () => {
     const pass = Math.random().toString(36).slice(-8);
@@ -32,12 +32,13 @@ const FormField: React.FC<FormFieldProps> = ({
     <div className="my-2">
       <label
         htmlFor={name}
-        className="block mb-2 text-md lg:text-lg font-medium text-gray-900 dark:text-white"
+        className="block mb-2 text-md lg:text-lg font-medium text-gray-900"
       >
         {label}
       </label>
       {mask ? (
         <InputMask
+          id={name}
           mask={mask}
           type={type || "text"}
           {...register(name)}
@@ -48,6 +49,7 @@ const FormField: React.FC<FormFieldProps> = ({
         <div className="w-full flex items-center gap-3">
           {lines ? (
             <textarea
+              id={name}
               className="flex-1 bg-gray-50 border shadow-sm text-gray-900 text-sm rounded-lg focus:border-[1px] outline-none block w-full p-2.5 focus:border-blue-500/50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500/500 dark:focus:border-blue-500/50"
               placeholder={placeholder}
               {...register(name)}
@@ -55,6 +57,8 @@ const FormField: React.FC<FormFieldProps> = ({
             ></textarea>
           ) : (
             <input
+              id={name}
+              autoComplete="on"
               type={type || "text"}
               {...register(name)}
               className="flex-1 bg-gray-50 border shadow-sm text-gray-900 text-sm rounded-lg focus:border-[1px] outline-none block w-full p-2.5 focus:border-blue-500/50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500/500 dark:focus:border-blue-500/50"

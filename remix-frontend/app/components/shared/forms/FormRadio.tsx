@@ -1,5 +1,4 @@
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import { red } from "@mui/material/colors";
 import React from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -15,26 +14,15 @@ const FormRadio: React.FC<FormRadioProps> = ({ options, name }) => {
   const {
     register,
     formState: { errors },
-    getValues,
   } = useFormContext();
 
   return (
-    <RadioGroup name={name}>
+    <RadioGroup {...register(name)}>
       {options.map((option, i) => (
         <FormControlLabel
           key={i}
-          control={
-            <Radio
-              value={option.value}
-              {...register(name)}
-              sx={{
-                color: red[600],
-                "&.Mui-checked": {
-                  color: red[600],
-                },
-              }}
-            />
-          }
+          value={option.value}
+          control={<Radio color="success" />}
           label={option.label}
         />
       ))}

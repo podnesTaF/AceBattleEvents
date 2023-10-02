@@ -9,15 +9,18 @@ interface CustomCrumbsProps {
     icon?: any;
     active?: boolean;
   }[];
+  color?: string;
 }
 
-const CustomCrumbs: React.FC<CustomCrumbsProps> = ({ links }) => {
+const CustomCrumbs: React.FC<CustomCrumbsProps> = ({ links, color }) => {
   return (
-    <Breadcrumbs aria-label="breadcrumb">
+    <Breadcrumbs aria-label="breadcrumb" color={color && "white"}>
       {links.map((link, idx) => (
         <Link
           key={idx}
-          className={`hover:underline ${link.active && "text-red-500"}`}
+          className={`hover:underline ${link.active && "text-red-500"} ${
+            color ? color : ""
+          }`}
           color="inherit"
           to={link.url}
         >

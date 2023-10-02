@@ -94,10 +94,10 @@ const CustomTable: React.FC<CustomTableProps> = ({
                         return (
                           <td key={i} className="p-2 md:p-5">
                             <button
-                              onClick={() => onEdit(r[t].link)}
+                              onClick={() => onEdit(r[t]?.link)}
                               className="font-medium text-gray-400 dark:text-blue-500 hover:underline cursor-pointer"
                             >
-                              {r[t].value}
+                              {r[t]?.value}
                             </button>
                           </td>
                         );
@@ -105,10 +105,10 @@ const CustomTable: React.FC<CustomTableProps> = ({
                       return (
                         <td key={i} className="p-2 md:p-5">
                           <Link
-                            to={r[t].link || "/error"}
+                            to={r[t]?.link || "/error"}
                             className="font-medium text-gray-400 dark:text-blue-500 hover:underline cursor-pointer"
                           >
-                            {r[t].value}
+                            {r[t]?.value}
                           </Link>
                         </td>
                       );

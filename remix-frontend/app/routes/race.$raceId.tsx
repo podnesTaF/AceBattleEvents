@@ -1,12 +1,10 @@
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import HomeIcon from "@mui/icons-material/Home";
-import { Breadcrumbs } from "@mui/material";
 import { LoaderArgs, V2_MetaFunction, json } from "@remix-run/node";
-import { Link, Outlet, useLoaderData, useNavigate } from "@remix-run/react";
+import { Outlet, useLoaderData, useNavigate } from "@remix-run/react";
 import { useState } from "react";
 import { Api } from "~/api/axiosInstance";
-import { HeaderTabs } from "~/components";
-import { getBattle } from "~/lib/utils";
+import { CustomCrumbs, HeaderTabs } from "~/components";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Ace Battle Events | Race Details" }];
@@ -15,18 +13,38 @@ export const meta: V2_MetaFunction = () => {
 export const loader = async ({ request, params }: LoaderArgs) => {
   const raceId = params.raceId;
 
+  const { url } = request;
+  const tabName = url.split("/").pop();
+  let tab = 0;
+
+  switch (tabName) {
+    case "runners":
+      tab = 1;
+      break;
+    case "pacer-joker":
+      tab = 2;
+      break;
+    default:
+      tab = 0;
+      break;
+  }
+
   if (!raceId) {
     throw new Response("No raceId provided");
   }
 
   const race = await Api().races.getFullRace(raceId);
 
-  return json({ race });
+  if (!race) {
+    throw new Response("No race found");
+  }
+
+  return json({ race, tab });
 };
 
 const RacePage = () => {
-  const { race } = useLoaderData<typeof loader>();
-  const [activeTab, setActiveTab] = useState(0);
+  const { race, tab } = useLoaderData<typeof loader>();
+  const [activeTab, setActiveTab] = useState(tab);
   const navigate = useNavigate();
 
   const onChangeTab = (tab: number) => {
@@ -38,25 +56,39 @@ const RacePage = () => {
     );
   };
 
+  const links = [
+    {
+      title: "Home",
+      url: "/",
+      icon: HomeIcon,
+    },
+    {
+      title: "Event results",
+      url: "/results",
+    },
+    {
+      title: race.event.title,
+      url: "/results/" + race.event.id,
+    },
+    {
+      title: race.name,
+      url: "/race/" + race.id,
+      icon: EmojiEventsIcon,
+      active: true,
+    },
+  ];
+
   return (
     <>
       <HeaderTabs
         bgImage="/auth-intro.jpg"
         tabs={["Overview", "Runners Results", "Pacer-Joker"]}
-        title={getBattle(race) || ""}
+        title={race.name}
         activeTab={activeTab}
         onChangeTab={onChangeTab}
       />
-      <main className="max-w-6xl mx-4 lg:mx-auto my-6">
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link className="hover:underline" color="inherit" to="/">
-            <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-            Home
-          </Link>
-          <Link to={"/race/" + race.id} className="text-red-500">
-            <EmojiEventsIcon /> Race
-          </Link>
-        </Breadcrumbs>
+      <main className="max-w-6xl mx-4 lg:mx-auto my-6 mb-10">
+        <CustomCrumbs links={links} />
         <Outlet />
       </main>
     </>
