@@ -5,7 +5,8 @@ import { Event } from 'src/events/entities/event.entity';
 import { Media } from 'src/media/entities/media.entity';
 import { Race } from 'src/race/entities/race.entity';
 import { TeamResult } from 'src/team-results/entities/team-results.entity';
-import { User } from 'src/user/entities/user.entity';
+import { Manager } from 'src/users/entities/manager.entity';
+import { Runner } from 'src/users/entities/runner.entity';
 import {
   Column,
   Entity,
@@ -41,8 +42,8 @@ export class Team {
   @ManyToOne(() => Country, (country) => country.teams)
   country: Country;
 
-  @ManyToOne(() => User, (user) => user.teams, { onDelete: 'CASCADE' })
-  manager: User;
+  @ManyToOne(() => Manager, (manager) => manager.teams, { onDelete: 'CASCADE' })
+  manager: Manager;
 
   @ManyToOne(() => Club, (club) => club.teams, {
     nullable: true,
@@ -60,7 +61,7 @@ export class Team {
   @JoinColumn()
   teamImage: Media;
 
-  @ManyToMany(() => User, (user) => user.teamsAsRunner, {
+  @ManyToMany(() => Runner, (runner) => runner.teamsAsRunner, {
     onDelete: 'CASCADE',
   })
   @JoinTable({
@@ -74,7 +75,7 @@ export class Team {
       referencedColumnName: 'id',
     },
   })
-  players: User[];
+  players: Runner[];
 
   @ManyToMany(() => Event, (event) => event.teams, {
     onDelete: 'CASCADE',

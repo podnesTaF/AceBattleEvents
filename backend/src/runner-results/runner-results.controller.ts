@@ -15,7 +15,7 @@ export class RunnerResultsController {
 
   @Post()
   createRunnerResult(@Body() dto: CreateRunnerResultDto) {
-    return this.runnerResultsService.create(dto);
+    return this.runnerResultsService.create(dto, dto.teamResultId);
   }
 
   @Get('/user/:userId')

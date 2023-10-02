@@ -2,7 +2,9 @@ import { JoinRequest } from 'src/club-requests/entities/club-request.entity';
 import { Country } from 'src/country/entity/country.entity';
 import { Media } from 'src/media/entities/media.entity';
 import { Team } from 'src/teams/entities/team.entity';
-import { User } from 'src/user/entities/user.entity';
+import { Manager } from 'src/users/entities/manager.entity';
+import { Runner } from 'src/users/entities/runner.entity';
+import { Spectator } from 'src/users/entities/spectator.entity';
 import {
   Column,
   CreateDateColumn,
@@ -11,6 +13,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -29,8 +32,11 @@ export class Club {
   @ManyToOne(() => Country, { nullable: true })
   country: Country;
 
-  @OneToMany(() => User, (user) => user.club)
-  members: User[];
+  @OneToMany(() => Runner, (runner) => runner.club)
+  runners: Runner[];
+
+  @OneToOne(() => Manager, (manager) => manager.club)
+  manager: Manager;
 
   @OneToMany(() => Team, (team) => team.club)
   teams: Team[];
@@ -45,8 +51,10 @@ export class Club {
   @JoinTable()
   joinRequests: JoinRequest[];
 
-  @ManyToMany(() => User, (user) => user.favoriteClubs, { onDelete: 'CASCADE' })
-  favorites: User[];
+  @ManyToMany(() => Spectator, (spectator) => spectator.favoriteClubs, {
+    onDelete: 'CASCADE',
+  })
+  favorites: Spectator[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

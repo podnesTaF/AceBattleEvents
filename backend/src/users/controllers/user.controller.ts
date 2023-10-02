@@ -4,14 +4,12 @@ import {
   Get,
   Param,
   Patch,
-  Post,
-  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UserService } from './user.service';
+import { UpdateUserDto } from '../dtos/update-user.dto';
+import { UserService } from '../services/user.service';
 
 @Controller('users')
 export class UserController {
@@ -20,21 +18,6 @@ export class UserController {
   @Get()
   getAllUsers() {
     return this.userService.findAll();
-  }
-
-  @Get('/athletes')
-  getAllRunners(@Query() queries: any) {
-    return this.userService.findAllRunners(queries);
-  }
-
-  @Post('/points/calculate')
-  updatePoints(@Query('gender') gender: string) {
-    return this.userService.calculateUsersPoints(gender);
-  }
-
-  @Post('/ranking/calculate')
-  updateRanking(@Query('gender') gender: string) {
-    return this.userService.updateRanking(gender);
   }
 
   @Get('/me')
@@ -46,11 +29,6 @@ export class UserController {
   @Get(':id')
   getUserProfile(@Param('id') id: number) {
     return this.userService.findById(id);
-  }
-
-  @Get(':id/favorite-clubs')
-  getFavoriteClubs(@Param('id') id: number) {
-    return this.userService.findFavoriteClubs(id);
   }
 
   @Patch('/image')
@@ -73,11 +51,6 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   updateProfileData(@Request() req, @Body() body: UpdateUserDto) {
     return this.userService.updateProfileData(req.user.id, body);
-  }
-
-  @Patch('/personal-bests')
-  updatePersonalBests() {
-    return this.userService.updatePersonalBestsForAllRunners();
   }
 
   @Get('count')

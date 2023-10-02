@@ -5,17 +5,29 @@ import { Country } from 'src/country/entity/country.entity';
 import { Split } from 'src/splits/entities/splits.entity';
 import { SplitsService } from 'src/splits/splits.service';
 import { TeamResult } from 'src/team-results/entities/team-results.entity';
-import { User } from 'src/user/entities/user.entity';
-import { UserService } from 'src/user/user.service';
+import { Runner } from 'src/users/entities/runner.entity';
+import { RunnerService } from 'src/users/services/runner.service';
 import { RunnerResult } from './entities/runner-results.entity';
 import { RunnerResultsController } from './runner-results.controller';
 import { RunnerResultsService } from './runner-results.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([RunnerResult, TeamResult, User, Split, Country]),
+    TypeOrmModule.forFeature([
+      RunnerResult,
+      TeamResult,
+      Runner,
+      Split,
+      Country,
+    ]),
   ],
   controllers: [RunnerResultsController],
-  providers: [RunnerResultsService, SplitsService, UserService, CountryService],
+  providers: [
+    RunnerResultsService,
+    SplitsService,
+    RunnerService,
+    CountryService,
+  ],
+  exports: [RunnerResultsService],
 })
 export class RunnerResultsModule {}

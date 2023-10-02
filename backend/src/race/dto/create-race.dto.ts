@@ -4,6 +4,9 @@ export class CreateRaceDto {
   @IsString()
   startTime: string;
 
+  @IsString()
+  name: string;
+
   @IsNumber()
   eventId: number;
 

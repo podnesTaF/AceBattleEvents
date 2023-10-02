@@ -1,4 +1,5 @@
-import { IsNumber } from 'class-validator';
+import { IsArray, IsNumber } from 'class-validator';
+import { CreateRunnerResultDto } from 'src/runner-results/dto/create-runner-result.dto';
 
 export class CreateTeamResultDto {
   @IsNumber()
@@ -9,4 +10,7 @@ export class CreateTeamResultDto {
 
   @IsNumber()
   raceId: number;
+
+  @IsArray()
+  runnerResults: CreateRunnerResultDto[];
 }

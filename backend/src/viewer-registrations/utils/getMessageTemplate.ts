@@ -113,7 +113,7 @@ export const successRegisterTemplate = (
             <p class='center'>Have fun together with your friends! <br>
                   Share this link!</p>
               <div class="info-container">
-                  <p class='center text'>https://acebattlemile.up.railway.app/join-us</p>
+                  <p class='center text'>https://acebattlemile.org/join-us</p>
               </div>
               <p class="right">Attached you will find your ticket.</p> 
           </div>

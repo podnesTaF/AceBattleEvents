@@ -19,7 +19,13 @@ export class Race {
   @Column()
   startTime: Date;
 
-  @ManyToMany(() => Team, (team) => team.races, { onDelete: 'CASCADE' })
+  @Column()
+  name: string;
+
+  @Column({ default: 'male' })
+  type: string;
+
+  @ManyToMany(() => Team, (team) => team.races)
   @JoinTable()
   teams: Team[];
 

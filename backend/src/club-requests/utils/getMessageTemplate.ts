@@ -1,8 +1,9 @@
 import { Club } from 'src/club/entities/club.entity';
-import { User } from 'src/user/entities/user.entity';
+import { Manager } from 'src/users/entities/manager.entity';
+import { Runner } from 'src/users/entities/runner.entity';
 import { formatDate } from 'src/utils/date-formater';
 
-export const acceptJoinRequestTemplate = (club: Club, manager: User) => {
+export const acceptJoinRequestTemplate = (club: Club, manager: Manager) => {
   return `
     <!DOCTYPE html>
     <html>
@@ -119,7 +120,7 @@ export const acceptJoinRequestTemplate = (club: Club, manager: User) => {
               You can contact your club manager to ask what do next. Here is his
               email:
             </p>
-            <h4 class="center">${manager.email}</h4>
+            <h4 class="center">${manager.user.email}</h4>
           </div>
           <div class="wrapper">
             <div class="btn-wrapper green">
@@ -134,7 +135,7 @@ export const acceptJoinRequestTemplate = (club: Club, manager: User) => {
             <div class="btn-wrapper yellow">
               <a
                 class="btn"
-                href="http://localhost:3000/profile/${manager.id}"
+                href="http://localhost:3000/profile/${manager.user.id}"
                 target="_blank"
               >
                 manager page
@@ -149,7 +150,7 @@ export const acceptJoinRequestTemplate = (club: Club, manager: User) => {
 
 export const joinRequestTemplate = (
   club: Club,
-  user: User,
+  runner: Runner,
   motivation: string,
 ) => {
   return `
@@ -251,7 +252,7 @@ export const joinRequestTemplate = (
       />
       <div class="title-container">
         <h3>
-          ${user.name} ${user.surname}<br />
+          ${runner.user.name} ${runner.user.surname}<br />
           wants to join your club!
         </h3>
       </div>
@@ -259,16 +260,18 @@ export const joinRequestTemplate = (
       <div class="info-container">
         <div class="container">
           <p>email:</p>
-          <h4>${user.email}</h4>
+          <h4>${runner.user.email}</h4>
         </div>
         <div class="container">
           <p class="text">Date of Brirth</p>
-          <h4>${formatDate(user.dateOfBirth) || '-'}</h4>
+          <h4>${formatDate(runner.dateOfBirth) || '-'}</h4>
         </div>
         <div class="container">
           <p class="text">Profile:</p>
           <h4>
-            <a href="http://localhost:3000/profile/${user.id}" target="_blank"
+            <a href="http://localhost:3000/profile/${
+              runner.user.id
+            }" target="_blank"
               >user profile</a
             >
           </h4>

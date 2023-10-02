@@ -71,5 +71,5 @@ export class Event {
   hashtags: Hashtag[];
 
   @OneToMany(() => Race, (race) => race.event, { nullable: true })
-  races: Race;
+  races: Race[];
 }

@@ -9,6 +9,9 @@ export class Split {
   @Column()
   distance: number;
 
+  @Column({ nullable: true })
+  splitType: string;
+
   @Column()
   resultInMs: number;
 
