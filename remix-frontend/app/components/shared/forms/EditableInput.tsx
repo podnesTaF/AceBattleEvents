@@ -35,7 +35,7 @@ const EditableInput: React.FC<Props> = ({
     <div className="my-2 w-full">
       <label
         htmlFor={name}
-        className="block mb-2 text-md lg:text-lg font-medium text-gray-900 dark:text-white"
+        className="block mb-2 text-md lg:text-lg font-medium text-white"
       >
         {label}
       </label>

@@ -4,6 +4,7 @@ import {
   CreateViewer,
   IViewer,
 } from "~/lib/registrations/types/ViewerRegister";
+import { BestJokerPair, BestSportsmen, EventPodium, IMedia } from "~/lib/types";
 
 export const EventsApi = (instance: AxiosInstance) => ({
   async getEvents(params?: string) {
@@ -44,6 +45,29 @@ export const EventsApi = (instance: AxiosInstance) => ({
     } catch (e) {
       console.log(e);
       return [];
+    }
+  },
+
+  async getEventResults(id: string) {
+    try {
+      const { data } = await instance.get<{
+        eventTitle: string;
+        podium: EventPodium;
+        bestSportsmen: BestSportsmen;
+        bestJokerPair: BestJokerPair;
+        introImage: IMedia;
+        racesByType: {
+          [type: string]: {
+            id: number;
+            name: string;
+            startTime: string;
+          }[];
+        };
+      }>(`events/results/${id}`);
+
+      return data;
+    } catch (error) {
+      console.log(error);
     }
   },
 

@@ -4,7 +4,7 @@ import { RemixForm } from "~/components/shared/forms/CustomForm";
 import { authenticator, loginSchema } from "~/lib/utils";
 
 export const action = async ({ request }: { request: Request }) => {
-  return authenticator.authenticate("user-pass", request, {
+  return authenticator.authenticate("user-session", request, {
     successRedirect: "/",
     failureRedirect: "/auth/login",
   });
@@ -65,8 +65,8 @@ const LoginPage = () => {
       </RemixForm>
       <p>
         Don't have an account yet?{" "}
-        <Link to="/auth/register" className="underline text-blue-400">
-          Sign up
+        <Link to="/join-us" className="underline text-blue-400">
+          Join us
         </Link>
       </p>
       <p className="mt-3">

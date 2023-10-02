@@ -7,9 +7,9 @@ import { Country } from 'src/country/entity/country.entity';
 import { createDateFromDDMMYYYY } from 'src/utils/date-formater';
 import { generateRandomPassword } from 'src/utils/random-password';
 import * as uuid from 'uuid';
-import { CreateUserDto } from '../user/dto/create-user.dto';
-import { User } from '../user/entities/user.entity';
-import { UserService } from '../user/user.service';
+import { CreateUserDto } from '../users/dtos/create-user.dto';
+import { User } from '../users/entities/user.entity';
+import { UserService } from '../users/services/user.service';
 
 import { ResetUserService } from 'src/reset-user/reset-user.service';
 import { changePasswordTemplate } from './utils/getChangePassTemplate';
@@ -37,16 +37,18 @@ export class AuthService {
     return null;
   }
 
-  generateJwtToken(data: { id: number; email: string }) {
-    const payload = { email: data.email, sub: data.id, roles: ['user'] };
+  generateJwtToken(data: { id: number; email: string; roles: string[] }) {
+    const payload = { email: data.email, sub: data.id, roles: data.roles };
     return this.jwtService.sign(payload);
   }
 
-  async login(user: User, role?: string) {
+  async login(user: User, userType: string) {
     const { password, ...userData } = user;
+    const roles = [userType];
+
     return {
       ...userData,
-      token: this.generateJwtToken(userData),
+      token: this.generateJwtToken({ ...userData, roles }),
     };
   }
 

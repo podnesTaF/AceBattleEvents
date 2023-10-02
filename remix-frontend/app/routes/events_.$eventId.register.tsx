@@ -46,13 +46,10 @@ export const action = async ({ request, params }: ActionArgs) => {
 
   try {
     const registration = await Api().events.registerViewer({
-      eventId: eventId || "",
       firstName,
       lastName,
       gender,
       email,
-      discoveryMethod,
-      viewerId: authedUser?.id,
     });
 
     if (registration) {
@@ -84,6 +81,7 @@ const RegisterAsViewer = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isFormShown, setIsFormShown] = useState(user ? false : true);
   const [formatedDate, setFormatedDate] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -225,15 +223,14 @@ const RegisterAsViewer = () => {
                     onChangeFilter={() => {}}
                   />
                 </div>
-                <div className="w-full lg:w-6/12">
-                  <FormSelect
-                    name={"discoveryMethod"}
-                    label={"How did you hear about “Ace Battle Mile”?"}
-                    placeholder={"Choose an option"}
-                    values={Object.entries(genders)}
-                    onChangeFilter={() => {}}
-                  />
-                </div>
+              </div>
+              <div className="md:w-2/3 mx-4 md:mx-auto">
+                <FormField
+                  lines={6}
+                  name="interest"
+                  placeholder="write your answer here (optional)..."
+                  label="How did you find out about this event?"
+                />
               </div>
               <div className="w-full mt-4">
                 <AgreeCheck
@@ -242,11 +239,7 @@ const RegisterAsViewer = () => {
                 />
               </div>
               <div className="w-[240px] mx-auto">
-                <FormButton
-                  className="w-full"
-                  title="Submit"
-                  isLoading={false}
-                />
+                <FormButton title="Submit" isLoading={isLoading} />
               </div>
             </form>
           </FormProvider>

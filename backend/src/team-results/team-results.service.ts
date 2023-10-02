@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Race } from 'src/race/entities/race.entity';
+import { RunnerResultsService } from 'src/runner-results/runner-results.service';
 import { Team } from 'src/teams/entities/team.entity';
 import { Repository } from 'typeorm';
 import { CreateTeamResultDto } from './dto/create-team-result.dto';
@@ -15,6 +16,7 @@ export class TeamResultsService {
     private raceRepository: Repository<Race>,
     @InjectRepository(Team)
     private teamRepository: Repository<Team>,
+    private runnerResultService: RunnerResultsService,
   ) {}
 
   async create(dto: CreateTeamResultDto) {
@@ -23,6 +25,7 @@ export class TeamResultsService {
     });
     const team = await this.teamRepository.findOne({
       where: { id: dto.teamId },
+      relations: ['personalBest'],
     });
 
     const teamResult = await this.repository.save({
@@ -30,6 +33,10 @@ export class TeamResultsService {
       race,
       team,
     });
+
+    for (let results of dto.runnerResults) {
+      await this.runnerResultService.create(results, teamResult.id);
+    }
 
     // if (team.personalBest) {
     //   if (team?.personalBest?.resultInMs > teamResult.resultInMs) {

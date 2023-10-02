@@ -42,7 +42,7 @@ export class CreateMemberDto {
 
   @IsBoolean()
   @IsOptional()
-  attendBrussels: boolean;
+  attendBrussels?: boolean;
 
   @IsBoolean()
   acceptTerms: boolean;

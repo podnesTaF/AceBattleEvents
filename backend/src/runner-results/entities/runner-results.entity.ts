@@ -1,6 +1,6 @@
 import { Split } from 'src/splits/entities/splits.entity';
 import { TeamResult } from 'src/team-results/entities/team-results.entity';
-import { User } from 'src/user/entities/user.entity';
+import { Runner } from 'src/users/entities/runner.entity';
 import {
   Column,
   Entity,
@@ -17,14 +17,14 @@ export class RunnerResult {
   @Column()
   distance: number;
 
-  @Column()
+  @Column({ nullable: true })
   finalResultInMs: number;
 
   @Column({ nullable: true })
   runnerType: string;
 
-  @ManyToOne(() => User, (user) => user.results, { nullable: true })
-  runner: User;
+  @ManyToOne(() => Runner, (runner) => runner.results, { nullable: true })
+  runner: Runner;
 
   @ManyToOne(() => TeamResult, (teamResult) => teamResult.runnerResults, {
     onDelete: 'CASCADE',
@@ -36,6 +36,6 @@ export class RunnerResult {
   })
   splits: Split[];
 
-  @ManyToOne(() => User, (user) => user.personalBests, { nullable: true })
-  pbForRunner: User;
+  @ManyToOne(() => Runner, (runner) => runner.personalBests, { nullable: true })
+  pbForRunner: Runner;
 }

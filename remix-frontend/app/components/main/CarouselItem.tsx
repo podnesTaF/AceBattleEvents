@@ -9,7 +9,7 @@ const CarouselItem: React.FC<Props> = ({ item }) => {
   const navigate = useNavigate();
   return (
     <div
-      onClick={() => navigate(`/${item.gender ? "teams" : "clubs"}/${item.id}`)}
+      onClick={() => navigate(`/teams/${item.id}`)}
       className="w-full overflow-hidden relative cursor-pointer active:scale-95 flex justify-center items-center"
     >
       <img

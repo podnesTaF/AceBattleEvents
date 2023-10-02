@@ -133,8 +133,6 @@ const AddTeamIndex = () => {
         })
       );
 
-      console.log(athleteList);
-
       const team = await Api(user.token).teams.addTeam({
         name: dto.name,
         clubId: club?.id || 0,

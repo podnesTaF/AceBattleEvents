@@ -25,6 +25,7 @@ export type IFutureEvent = {
   description: string;
   introImage?: any;
 };
+
 export type EventShortform = {
   id: number;
   title: string;

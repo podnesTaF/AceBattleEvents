@@ -16,8 +16,8 @@ const FormButton: React.FC<FormButtonProps> = ({
   return (
     <button
       type="submit"
-      {...props}
       className="text-white text-lg uppercase w-full my-2 bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg px-2 py-1 md:px-3 md:py-2  text-center mr-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 inline-flex items-center justify-center disabled:bg-green-200"
+      {...props}
     >
       {(isLoading || isSubmitting) && (
         <svg

@@ -8,7 +8,7 @@ import { CountryService } from 'src/country/country.service';
 import { Country } from 'src/country/entity/country.entity';
 import { ResetUser } from 'src/reset-user/entities/reset-user.entity';
 import { ResetUserService } from 'src/reset-user/reset-user.service';
-import { UserModule } from '../user/user.module';
+import { UserModule } from '../users/modules/user.module';
 import { AdminAuthController } from './admin-auth.controller';
 import { AdminAuthService } from './admin-auth.service';
 import { AuthController } from './auth.controller';

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 interface FormSelectProps {
@@ -8,6 +8,7 @@ interface FormSelectProps {
   onChangeFilter: (value: string) => void;
   selected?: string | number;
   name: string;
+  defaultValue?: number | string;
 }
 
 const FormSelect: React.FC<FormSelectProps> = ({
@@ -17,7 +18,14 @@ const FormSelect: React.FC<FormSelectProps> = ({
   values,
   onChangeFilter,
   selected,
+  defaultValue,
 }) => {
+  const [localSelected, setLocalSelected] = useState(selected);
+
+  useEffect(() => {
+    setLocalSelected(selected);
+  }, [selected]);
+
   const {
     register,
     formState: { errors },
@@ -26,23 +34,20 @@ const FormSelect: React.FC<FormSelectProps> = ({
   return (
     <div className="my-2">
       <label
-        htmlFor="small"
-        className="block mb-2 text-md lg:text-lg font-medium text-gray-900 dark:text-white"
+        htmlFor={name}
+        className="block mb-2 text-md lg:text-lg font-medium text-gray-900 "
       >
         {label}
       </label>
       <div className="relative">
         <select
           {...register(name)}
-          value={selected}
-          id="small"
-          onChange={(e) => {
-            onChangeFilter(e.target.value);
-          }}
-          defaultValue={0}
+          id={name}
+          defaultValue={defaultValue || 0}
+          autoComplete="on"
           className="block w-full text-sm shadow-sm text-gray-900 border rounded-md  p-2.5 outline-none bg-gray-50 focus:border-[1px]  dark:bg-gray-700 dark:border-gray-600 focus:border-blue-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none"
         >
-          <option value={"0"}>{placeholder}</option>
+          <option value={defaultValue || ""}>{placeholder}</option>
           {values.map((v, i) => (
             <option key={i} value={v[0]}>
               {v[1]}

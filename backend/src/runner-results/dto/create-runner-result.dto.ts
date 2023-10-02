@@ -3,7 +3,8 @@ import { CreateSplitDto } from 'src/splits/dto/create-split.dto';
 
 export class CreateRunnerResultDto {
   @IsNumber()
-  teamResultId: number;
+  @IsOptional()
+  teamResultId?: number;
 
   @IsNumber()
   runnerId: number;
@@ -16,7 +17,8 @@ export class CreateRunnerResultDto {
   distance: number;
 
   @IsNumber()
-  finalResultInMs: number;
+  @IsOptional()
+  finalResultInMs?: number;
 
   @IsArray()
   splits: CreateSplitDto[];

@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import sgMail from '@sendgrid/mail';
 import { Club } from 'src/club/entities/club.entity';
-import { User } from 'src/user/entities/user.entity';
+import { Manager } from 'src/users/entities/manager.entity';
+import { Runner } from 'src/users/entities/runner.entity';
 import { Repository } from 'typeorm';
 import { CreateClubRequestDto } from './dto/create-club-request.dto';
 import { UpdateClubRequestDto } from './dto/update-club-request.dto';
@@ -17,8 +18,10 @@ export class ClubRequestsService {
   constructor(
     @InjectRepository(JoinRequest)
     private joinRequestRepository: Repository<JoinRequest>,
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
+    @InjectRepository(Manager)
+    private managerRepository: Repository<Manager>,
+    @InjectRepository(Runner)
+    private runnerRepository: Repository<Runner>,
     @InjectRepository(Club)
     private clubRepository: Repository<Club>,
   ) {
@@ -27,17 +30,19 @@ export class ClubRequestsService {
 
   async create(
     createClubRequestDto: CreateClubRequestDto,
-    userId: number,
+    runnerId: number,
   ): Promise<JoinRequest> {
     const { clubId, motivation } = createClubRequestDto;
 
     // Find the user and club entities
-    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const runner = await this.runnerRepository.findOne({
+      where: { id: runnerId },
+    });
     const club = await this.clubRepository.findOne({
       where: { id: clubId },
-      relations: ['members'],
+      relations: ['runners', 'manager'],
     });
-    const manager = club.members.find((member) => member.role === 'manager');
+    const manager = club.manager;
     if (!manager) {
       throw new Error('Manager not found');
     }
@@ -45,7 +50,7 @@ export class ClubRequestsService {
     // Create a new JoinRequest entity
     const joinRequest = new JoinRequest();
     joinRequest.motivation = motivation;
-    joinRequest.user = user;
+    joinRequest.runner = runner;
     joinRequest.club = club;
 
     // Save the JoinRequest entity to the database
@@ -54,10 +59,10 @@ export class ClubRequestsService {
     );
 
     const msg = {
-      to: manager.email,
+      to: manager.user.email,
       from: 'it.podnes@gmail.com',
       subject: `${club.name} - Join Request!`,
-      html: joinRequestTemplate(club, user, motivation),
+      html: joinRequestTemplate(club, runner, motivation),
     };
 
     try {
@@ -110,27 +115,29 @@ export class ClubRequestsService {
     };
   }
 
-  async acceptJoinRequest(clubId: number, userId: number) {
-    const user = await this.userRepository.findOne({ where: { id: userId } });
+  async acceptJoinRequest(clubId: number, runnerId: number) {
+    const runner = await this.runnerRepository.findOne({
+      where: { id: runnerId },
+    });
 
     const club = await this.clubRepository.findOne({
       where: { id: clubId },
-      relations: ['members'],
+      relations: ['members', 'manager'],
     });
 
-    const manager = club.members.find((member) => member.role === 'manager');
+    const manager = club.manager;
 
     // Remove the user from the club's join requests
-    await this.joinRequestRepository.delete({ user, club });
+    await this.joinRequestRepository.delete({ runner, club });
 
     // Add the user to the club's members
-    club.members.push(user);
+    club.runners.push(runner);
 
     // Save the club
     await this.clubRepository.save(club);
 
     const msg = {
-      to: user.email,
+      to: runner.user.email,
       from: 'it.podnes@gmail.com',
       subject: `${club.name} - Join Request Accepted!`,
       html: acceptJoinRequestTemplate(club, manager),
@@ -142,11 +149,13 @@ export class ClubRequestsService {
       console.log('error sending email', error.message);
     }
 
-    return { message: `${user.role} ${user.name} added to the club` };
+    return { message: `Runner ${runner.user.name} added to the club` };
   }
 
-  async declineJoinRequest(clubId: number, userId: number) {
-    const user = await this.userRepository.findOne({ where: { id: userId } });
+  async declineJoinRequest(clubId: number, runnerId: number) {
+    const runner = await this.runnerRepository.findOne({
+      where: { id: runnerId },
+    });
 
     const club = await this.clubRepository.findOne({
       where: { id: clubId },
@@ -154,9 +163,9 @@ export class ClubRequestsService {
     });
 
     // Remove the user from the club's join requests
-    await this.joinRequestRepository.delete({ user, club });
+    await this.joinRequestRepository.delete({ runner, club });
 
-    return { message: `${user.role} ${user.name} declined to join the club` };
+    return { message: `Runner ${runner.user.name} declined to join the club` };
   }
 
   findAll() {

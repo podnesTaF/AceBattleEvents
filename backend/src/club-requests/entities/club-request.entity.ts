@@ -1,5 +1,5 @@
 import { Club } from 'src/club/entities/club.entity';
-import { User } from 'src/user/entities/user.entity';
+import { Runner } from 'src/users/entities/runner.entity';
 import {
   Column,
   CreateDateColumn,
@@ -16,8 +16,8 @@ export class JoinRequest {
   @Column()
   motivation: string;
 
-  @ManyToOne(() => User, (user) => user.joinRequests)
-  user: User;
+  @ManyToOne(() => Runner, (runner) => runner.joinRequests)
+  runner: Runner;
 
   @ManyToOne(() => Club, (club) => club.joinRequests)
   club: Club;

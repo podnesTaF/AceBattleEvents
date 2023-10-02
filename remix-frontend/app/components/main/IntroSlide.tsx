@@ -29,7 +29,7 @@ const IntroSlide: React.FC<Props> = ({
 
   return (
     <div
-      onClick={() => navigate("events/" + event.id)}
+      onClick={() => navigate("/results/" + event.id)}
       className={`${
         isActive ? "block" : "hidden"
       } w-full h-full relative cursor-pointer overflow-hidden`}
@@ -39,9 +39,6 @@ const IntroSlide: React.FC<Props> = ({
           <h4 className="text-lg sm:text-xl text-white uppercase font-semibold">
             Team running game
           </h4>
-          <h5 className="text-lg sm:text-xl text-white uppercase font-semibold">
-            Competitions
-          </h5>
         </div>
         <h4 className="text-2xl sm:text-4xl font-semibold text-white mb-2 md:mb-4">
           {event.title}
@@ -74,7 +71,7 @@ const IntroSlide: React.FC<Props> = ({
       </div>
       <img
         src={
-          event.introImage?.mediaUrl ||
+          event.minorImage?.mediaUrl ||
           "https://storage.googleapis.com/abe_cloud_storage/image/large/dccfea3d-a639-4569-9c06-b37bbbb37130.jpg"
         }
         alt="bg"

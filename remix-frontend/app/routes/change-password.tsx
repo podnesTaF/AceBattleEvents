@@ -37,8 +37,6 @@ export const loader = async ({ request }: LoaderArgs) => {
     user = await Api().users.getResetUser(token);
   }
 
-  console.log("user", user);
-
   if (!user) {
     throw new Response("User not found");
   }

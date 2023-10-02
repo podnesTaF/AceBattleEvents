@@ -6,5 +6,6 @@ export * from "./main";
 export * from "./media";
 export * from "./news";
 export * from "./profile";
+export * from "./races";
 export * from "./shared";
 export * from "./teams";

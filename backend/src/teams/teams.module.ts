@@ -19,8 +19,12 @@ import { PlayerEntity } from 'src/players/entities/player.entity';
 import { PlayersService } from 'src/players/players.service';
 import { PrizeEntity } from 'src/prizes/entities/prize.entity';
 import { PrizesService } from 'src/prizes/prizes.service';
-import { User } from 'src/user/entities/user.entity';
-import { UserService } from 'src/user/user.service';
+import { Manager } from 'src/users/entities/manager.entity';
+import { Runner } from 'src/users/entities/runner.entity';
+import { Spectator } from 'src/users/entities/spectator.entity';
+import { ManagerService } from 'src/users/services/manager.service';
+import { RunnerService } from 'src/users/services/runner.service';
+import { SpectatorService } from 'src/users/services/spectator.service';
 import { Team } from './entities/team.entity';
 import { TeamsController } from './teams.controller';
 import { TeamsService } from './teams.service';
@@ -31,7 +35,6 @@ import { TeamsService } from './teams.service';
       Team,
       PlayerEntity,
       Coach,
-      User,
       Location,
       Event,
       Country,
@@ -39,6 +42,9 @@ import { TeamsService } from './teams.service';
       Best,
       Media,
       Club,
+      Manager,
+      Spectator,
+      Runner,
     ]),
   ],
   controllers: [TeamsController],
@@ -46,7 +52,6 @@ import { TeamsService } from './teams.service';
     TeamsService,
     PlayersService,
     CoachService,
-    UserService,
     EventsService,
     PrizesService,
     LocationsService,
@@ -55,6 +60,9 @@ import { TeamsService } from './teams.service';
     BestsService,
     MediaService,
     ClubService,
+    ManagerService,
+    RunnerService,
+    SpectatorService,
   ],
   exports: [TeamsService],
 })

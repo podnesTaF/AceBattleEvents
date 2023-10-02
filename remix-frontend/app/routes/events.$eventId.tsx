@@ -6,7 +6,7 @@ import {
   useParams,
   useRouteError,
 } from "@remix-run/react";
-import axios from "axios";
+import { useState } from "react";
 import { Api } from "~/api/axiosInstance";
 import {
   CarouselItem,
@@ -17,23 +17,27 @@ import {
   NewsCard,
   PrizesPodium,
   SectionTitle,
+  TimeTable,
   WideCarousel,
 } from "~/components";
-import { IEvent } from "~/lib/types";
+import { IPrize } from "~/lib/types";
 import {
   authenticator,
   formatDate,
   getGoogleMapsLink,
-  plans,
   transformAddress,
 } from "~/lib/utils";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const { eventId } = params;
 
-  const { data: event } = await axios.get<IEvent>(
-    "https://abe-server.up.railway.app/api/v1/events/" + eventId
-  );
+  if (!eventId) {
+    throw new Response("Event id is required.", {
+      status: 400,
+    });
+  }
+
+  const event = await Api().events.getEvent(eventId);
 
   if (!event) {
     throw new Response("Event not found.", {
@@ -46,6 +50,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
   event.prizes = event.prizes.sort((a, b) => a.place - b.place);
 
   const { newsPreviews } = await Api().news.getNewsPreviews({ itemsAmount: 4 });
+  const isEventPast = new Date(event.startDateTime) < new Date();
 
   return json({
     event: event,
@@ -53,16 +58,39 @@ export const loader = async ({ params, request }: LoaderArgs) => {
     googleMapsKey: process.env.GOOGLE_MAPS_KEY || "",
     user,
     newsPreview: newsPreviews,
+    isEventPast,
   });
 };
 
+const getAdditionalPrizes = (prizes: IPrize[], podiumPrizes: IPrize[]) => {
+  return prizes.filter(
+    (p) => !podiumPrizes.find((podium) => podium.id === p.id)
+  );
+};
+
 const EventPage = () => {
-  const { event, googleMapsKey, user, startFormated, newsPreview } =
-    useLoaderData<typeof loader>();
+  const {
+    event,
+    googleMapsKey,
+    user,
+    startFormated,
+    newsPreview,
+    isEventPast,
+  } = useLoaderData<typeof loader>();
+
+  const [podiumPrizes, setPodiumPrizes] = useState<IPrize[]>(
+    event.prizes
+      ?.sort((a, b) => a.place - b.place)
+      .filter((p) => p.category === "male" && p.place <= 3)
+  );
 
   return (
     <>
-      <EventHeader userRole={user?.role} event={event} />
+      <EventHeader
+        userRole={user?.role}
+        event={event}
+        isEventPast={isEventPast}
+      />
       <main>
         <section className="my-6">
           <div className="max-w-7xl mx-4 lg:mx-auto">
@@ -83,20 +111,20 @@ const EventPage = () => {
               <div className="flex justify-between gap-4 items-center">
                 <div className="w-full md:w-2/3">
                   <p className="mb-6">
-                    Just a few years ago, we, as the Ace Battle Mile organizers,
-                    set our sights on going international, and this autumn, we
+                    Just a few years ago the Ace Battle Mile organizers set
+                    their sights on going international, and this autumn, they
                     are taking confident steps to realize that goal. The
                     European debut will take place on September 23rd in
                     Brussels, where the first races of the{" "}
                     <strong>ACE Battle Mile</strong> teams will unfold.
                   </p>
                   <p className="mb-6">
-                    ACE BM is a team racing event where professional athletes
-                    engage in unique battles over the course of a mile. Its aim
-                    is to create a new subculture and establish a fresh team
-                    racing format in Europe, bringing together people from all
-                    walks of life and fostering a sense of unity and teamwork
-                    among participants.
+                    ACE BATTLE MILE is a team racing event where professional
+                    athletes engage in unique battles over the course of a mile.
+                    Its aim is to create a new subculture and establish a fresh
+                    team racing format in Europe, bringing together people from
+                    all walks of life and fostering a sense of unity and
+                    teamwork among participants.
                   </p>
                   <ul className="list-disc mb-6">
                     <li>
@@ -105,7 +133,7 @@ const EventPage = () => {
                     </li>
                     <li>
                       At any point on the track, a so-called “joker” can enter,
-                      completely changing the course of the competition.
+                      completely changing the dynamics of the competition.
                     </li>
                   </ul>
                 </div>
@@ -126,10 +154,10 @@ const EventPage = () => {
                     <h5 className="font-semibold text-2xl">Professionals</h5>
                     <div className="flex items-center w-full">
                       <h3 className="text-2xl font-semibold w-1/2 border-r-2 border-black text-center">
-                        4 Male <br /> Teams
+                        2 Men&apos;s <br /> Teams
                       </h3>
                       <h3 className="text-2xl font-semibold w-1/2 text-center">
-                        4 Female <br /> Teams
+                        2 Women&apos;s <br /> Teams
                       </h3>
                     </div>
                     <p>
@@ -141,10 +169,10 @@ const EventPage = () => {
                     <h5 className="font-semibold text-2xl">Kids. U16</h5>
                     <div className="flex items-center w-full">
                       <h3 className="text-2xl font-semibold w-1/2 border-r-2 border-black text-center">
-                        2 Boys <br /> Teams
+                        2 Boys&apos; <br /> Teams
                       </h3>
                       <h3 className="text-2xl font-semibold w-1/2 text-center">
-                        2 Girls <br /> Teams
+                        2 Girls&apos; <br /> Teams
                       </h3>
                     </div>
                     <p>
@@ -175,9 +203,7 @@ const EventPage = () => {
         <section className="max-w-6xl my-8 mx-4 lg:mx-auto">
           <h3 className="text-center text-3xl font-semibold">Prizes</h3>
           <div className="my-4 mb-8">
-            <PrizesPodium
-              prizes={event.prizes?.sort((a, b) => a.place - b.place)}
-            />
+            <PrizesPodium prizes={podiumPrizes} />
             <p className="text-end">prize funds per team</p>
           </div>
           <div className="mt-6 my-20 relative mx-3 sm:mx-6">
@@ -200,37 +226,52 @@ const EventPage = () => {
                         Place
                       </p>
                     </div>
-                    <div className="w-3/4">
+                    <div className="w-2/4">
                       <p className="text-xl uppercase text-center text-white">
                         Award
                       </p>
                     </div>
+                    <div className="w-1/4">
+                      <p className="text-xl uppercase text-center text-white">
+                        Category
+                      </p>
+                    </div>
                   </div>
                 )}
-                {event.prizes.slice(3).map((prize) => (
-                  <div
-                    key={prize.id}
-                    className={"p-4 shadow w-full flex bg-white/80"}
-                  >
-                    <div className="w-1/4 border-r-[1px] border-black">
-                      <p className="text-2xl uppercase text-center ">
-                        {prize.place}
-                      </p>
+                {getAdditionalPrizes(event.prizes, podiumPrizes).map(
+                  (prize) => (
+                    <div
+                      key={prize.id}
+                      className={"p-4 shadow w-full flex bg-white/80"}
+                    >
+                      <div className="w-1/4 border-r-[1px] border-black">
+                        <p className="text-2xl uppercase text-center ">
+                          {prize.place}
+                        </p>
+                      </div>
+                      <div className="w-2/4">
+                        <p className="text-2xl uppercase text-center">
+                          {prize.amount} $
+                        </p>
+                      </div>
+                      <div className="w-1/4">
+                        <p className="text-2xl uppercase text-center">
+                          {prize.category}
+                        </p>
+                      </div>
                     </div>
-                    <div className="w-3/4">
-                      <p className="text-2xl uppercase text-center">
-                        {prize.amount} $
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                  )
+                )}
                 <div className="my-4">
                   <ul className="list-disc ml-4">
                     <li className="font-semibold text-xl ">
-                      the fastest mile: 500 €
+                      the fastest men&apos;s mile: 200 €
+                    </li>
+                    <li className="font-semibold text-xl ">
+                      the fastest women&apos;s mile: 200 €
                     </li>
                     <li className="font-semibold text-xl">
-                      the fastest pacer-joker: 500 €
+                      the fastest pacer-joker: 200 €
                     </li>
                   </ul>
                 </div>
@@ -247,7 +288,7 @@ const EventPage = () => {
             />
             <div className="max-w-4xl flex gap-6 justify-between mx-auto my-6">
               <h1 className="-rotate-90 translate-x-80 font-bold text-8xl text-[#D9DADB] uppercase hidden md:block w-1/3">
-                Action plan
+                Battle plan
               </h1>
               <div className="flex flex-col gap-6 w-full md:w-2/3">
                 <ul>
@@ -260,17 +301,24 @@ const EventPage = () => {
                 </ul>
                 <ul className="flex flex-col gap-1 w-full">
                   <li className="text-xl font-semibold mb-4 text-white">
-                    September 23, Saturday, 3 pm - 8pm
+                    September 23, Saturday, 4 pm - 8pm
                   </li>
-                  {plans.map((p, i) => (
-                    <li
-                      key={i}
-                      className="text-xl text-white border-b-[1px] border-[#D9DADB] pb-1"
-                    >
-                      {p}
-                    </li>
-                  ))}
+                  <div className="mx-4">
+                    <TimeTable />
+                  </div>
                 </ul>
+                <div className="flex justify-between my-4">
+                  <h2 className="text-xl text-white font-semibold">
+                    Download Conditions:
+                  </h2>
+                  <a
+                    href="/eng_mile_of_brussels_regulation_v3.pdf"
+                    className="text-white underline text-xl"
+                    download
+                  >
+                    Conditions
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -278,7 +326,7 @@ const EventPage = () => {
         <section className="w-full my-6">
           <div className="max-w-7xl mx-4 lg:mx-auto lg:min-h-[700px] bg-none border-[1px] border-red-500  lg:border-none lg:bg-[url('/rect.svg')] bg-no-repeat bg-contain md:py-6 md:pl-8 flex flex-col gap-4 md:gap-8">
             <h3 className="font-semibold uppercase text-3xl text-center lg:text-left">
-              LOCATIONS AND DATES
+              LOCATION AND DATE
             </h3>
             <div className="flex gap-6 flex-col md:gap-8 md:flex-row p-2 w-full lg:w-4/5 items-center justify-center">
               <div className="w-full md:w-2/5 p-4 flex flex-col justify-center">
@@ -321,11 +369,13 @@ const EventPage = () => {
             </div>
           </div>
         </section>
-        <EventUsersAction
-          eventId={event.id}
-          isParticipant={false}
-          userRole={user?.role}
-        />
+        {!isEventPast && (
+          <EventUsersAction
+            eventId={event.id}
+            isParticipant={false}
+            userRole={user?.role}
+          />
+        )}
       </main>
     </>
   );

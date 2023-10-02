@@ -2,6 +2,7 @@ import { IClub } from "~/lib/clubs/types";
 import { ICountry } from "~/lib/countries/types";
 import { IEvent } from "~/lib/events/types";
 import { IMedia } from "~/lib/media/types/IMedia";
+import { ITeamResult } from "~/lib/types";
 import { IUser } from "~/lib/user/types/IUser";
 import { ICoach } from "./ICoach";
 
@@ -21,10 +22,7 @@ export type ITeam = {
   events: IEvent[];
   rank: number | null;
   totalPoints: number | null;
-  personalBest: {
-    id: number;
-    resultInMs: number;
-  } | null;
+  personalBest: ITeamResult | null;
 };
 
 export type ReqTeam = {

@@ -50,6 +50,11 @@ export class EventsController {
     return this.eventsService.getAllInShort();
   }
 
+  @Get('results/:id')
+  findEventResults(@Param('id') id: string) {
+    return this.eventsService.getAllResults(+id);
+  }
+
   @Get(':id')
   findById(@Param('id') id: string) {
     return this.eventsService.getEventById(+id);

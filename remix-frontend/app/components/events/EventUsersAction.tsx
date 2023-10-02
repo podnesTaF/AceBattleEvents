@@ -24,7 +24,7 @@ const EventUsersAction: React.FC<IEventUsersActionProps> = ({
         <h2 className="text-3xl uppercase font-semibold mb-8 text-white w-full md:w-1/2">
           {userRole === "manager"
             ? "ADD YOUR TEAM AND BE ABLE TO WIN SUPER PRIZE!"
-            : "Attend the Event and get unique experience!"}
+            : "Attend the Event for a unique experience!"}
         </h2>
         <button
           onClick={() => {

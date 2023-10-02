@@ -2,13 +2,10 @@ import { IEvent } from "~/lib/events/types";
 import { IMedia, IUser } from "~/lib/types";
 
 export type CreateViewer = {
-  eventId: string;
   firstName?: string;
   lastName?: string;
   email?: string;
   gender?: string;
-  discoveryMethod?: string;
-  viewerId?: number;
 };
 
 export type IViewer = {

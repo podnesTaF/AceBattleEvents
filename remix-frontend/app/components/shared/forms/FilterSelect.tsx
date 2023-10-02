@@ -22,7 +22,7 @@ const FilterSelect: React.FC<FilterSelectProps> = ({
       {!labelHidden && (
         <label
           htmlFor="small"
-          className="block mb-2 text-sm text-gray-900 dark:text-white uppercase font-thin"
+          className="block mb-2 text-sm text-gray-900 uppercase font-thin"
         >
           {label}
         </label>

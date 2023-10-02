@@ -17,17 +17,6 @@ export const TeamsApi = (instance: AxiosInstance) => ({
       throw new Error("Failed to fetch data: " + error.message);
     }
   },
-  async getPreviewTeams() {
-    try {
-      const { data: teamsData } = await instance.get<
-        { id: number; logo: IMedia; name: string }[]
-      >(`teams/previews`);
-
-      return teamsData;
-    } catch (error: any) {
-      throw new Error("Failed to fetch data: " + error.message);
-    }
-  },
 
   async getTeamsSnippetsByEventId(
     id?: number
@@ -40,6 +29,18 @@ export const TeamsApi = (instance: AxiosInstance) => ({
       return data;
     } catch (error: any) {
       return error.message;
+    }
+  },
+
+  async getPreviewTeams() {
+    try {
+      const { data: teamsData } = await instance.get<
+        { id: number; logo: IMedia; name: string }[]
+      >(`teams/previews`);
+
+      return teamsData;
+    } catch (error: any) {
+      throw new Error("Failed to fetch data: " + error.message);
     }
   },
 

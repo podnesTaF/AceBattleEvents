@@ -1,21 +1,19 @@
-import EventCard from "./EventCard";
 import EventHeader from "./EventHeader";
 import EventUsersAction from "./EventUsersAction";
-import FutureEventCard from "./FutureEventCard";
 import Map from "./Map";
 import PrizesPodium from "./PrizesPodium";
 import RegistrationPopup from "./RegistrationPopup";
+import ResultPodium from "./ResultPodium";
 import StatisticCards from "./StatisticCards";
-import UpcomingEventDesc from "./UpcomingEventDesc";
+import TimeTable from "./TimeTable";
 
 export {
-  EventCard,
   EventHeader,
   EventUsersAction,
-  FutureEventCard,
   Map,
   PrizesPodium,
   RegistrationPopup,
+  ResultPodium,
   StatisticCards,
-  UpcomingEventDesc,
+  TimeTable,
 };

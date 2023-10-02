@@ -30,9 +30,12 @@ import { RunnerResultsModule } from './runner-results/runner-results.module';
 import { SplitsModule } from './splits/splits.module';
 import { TeamResultsModule } from './team-results/team-results.module';
 import { TeamsModule } from './teams/teams.module';
-import { UserModule } from './user/user.module';
-import { ViewerRegistrationsModule } from './viewer-registrations/viewer-registrations.module';
+import { ManagerModule } from './users/modules/manager.module';
+import { RunnerModule } from './users/modules/runner.module';
+import { SpectatorModule } from './users/modules/spectator.module';
+import { UserModule } from './users/modules/user.module';
 import { VerifyMemberModule } from './verify-member/verify-member.module';
+import { ViewerRegistrationsModule } from './viewer-registrations/viewer-registrations.module';
 
 @Module({
   imports: [
@@ -68,6 +71,9 @@ import { VerifyMemberModule } from './verify-member/verify-member.module';
     ResetUserModule,
     MemberModule,
     VerifyMemberModule,
+    ManagerModule,
+    SpectatorModule,
+    RunnerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

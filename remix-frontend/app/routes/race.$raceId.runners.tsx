@@ -1,8 +1,8 @@
 import { LoaderArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Api } from "~/api/axiosInstance";
-import { CustomTable } from "~/components";
-import { getBestAthletesTable } from "~/lib/utils";
+import { ResultsTable } from "~/components";
+import { getFullDistanceAthletes, getRunnerResultsTable } from "~/lib/utils";
 
 export const loader = async ({ request, params }: LoaderArgs) => {
   const { raceId } = params;
@@ -13,21 +13,23 @@ export const loader = async ({ request, params }: LoaderArgs) => {
 
   const race = await Api().races.getFullRace(raceId);
 
-  return json({ tableRows: getBestAthletesTable(race) });
+  if (!race) {
+    throw new Response("No race found");
+  }
+
+  const atheltes = getFullDistanceAthletes(race);
+
+  return json({ atheltes });
 };
 
 export default function RacePage() {
-  const { tableRows } = useLoaderData<typeof loader>();
+  const { atheltes } = useLoaderData<typeof loader>();
 
   return (
     <div className="my-6">
-      <CustomTable
-        itemsName="results"
-        height="h-full"
-        titleColor="bg-black"
-        isTitleStraight={true}
-        rows={tableRows || []}
-        isLoading={false}
+      <ResultsTable
+        tranformedResults={getRunnerResultsTable(atheltes)}
+        position={0}
       />
     </div>
   );

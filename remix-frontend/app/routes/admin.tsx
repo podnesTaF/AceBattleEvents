@@ -1,6 +1,6 @@
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
-import EventNoteIcon from "@mui/icons-material/EventNote";
+import EventIcon from "@mui/icons-material/Event";
 import FeedIcon from "@mui/icons-material/Feed";
 import GroupsIcon from "@mui/icons-material/Groups";
 import PermMediaIcon from "@mui/icons-material/PermMedia";
@@ -15,7 +15,7 @@ export const meta: V2_MetaFunction = () => {
 const tabs = [
   {
     title: "Events",
-    icon: <EventNoteIcon />,
+    icon: <EventIcon />,
     hiddenTabs: [
       {
         title: "All events",

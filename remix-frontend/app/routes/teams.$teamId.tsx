@@ -48,7 +48,12 @@ const TeamPage = () => {
 
   return (
     <>
-      <header className="w-full flex justify-center h-96 sm:h-[600px] bg-[url('/teams-photo.jpeg')] bg-cover bg-no-repeat bg-center relative flex-col ">
+      <header className="w-full flex justify-center h-96 sm:h-[600px] relative flex-col ">
+        <img
+          src={team.teamImage?.mediaUrl || "/profile-bg-lg.jpg"}
+          alt="team-photo"
+          className="absolute -z-10 top-0 left-0 w-full h-full object-cover object-top"
+        />
         <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.4)] z-0"></div>
         <div className="h-3/5 mb-10 sm:mb-0 sm:h-1/2 md:ml-5 flex flex-row gap-4 justify-center items-center w-full sm:w-3/5 md:w-[600px] z-10">
           <div className="w-1/3">
@@ -60,18 +65,13 @@ const TeamPage = () => {
               className="object-cover "
             />
           </div>
-          <div>
-            <h2 className="text-white uppercase font-semibold text-3xl sm:text-5xl mb-5">
-              {team.name}
-            </h2>
-            <h4 className="text-white text-2xl uppercase">
-              club &quot;{team.club.name}&quot;
-            </h4>
-          </div>
+          <h2 className="text-white uppercase font-semibold text-3xl sm:text-5xl mb-5">
+            {team.name}
+          </h2>
         </div>
       </header>
       <main>
-        <div className="px-5 sm:px-10 py-5 bg-red-500">
+        <div className="px-5 sm:px-10 py-5 bg-[#1E1C1F]">
           <h3 className="text-3xl text-white font-semibold">ABOUT TEAM</h3>
         </div>
         <div className="max-w-7xl my-6 mx-auto">
@@ -81,7 +81,7 @@ const TeamPage = () => {
                 Coach
               </h4>
               <h2 className="text-2xl md:text-3xl font-semibold">
-                {team.coach.name} {team.coach.surname}
+                {team.coach?.name} {team.coach?.surname}
               </h2>
             </div>
             {team.personalBest && (

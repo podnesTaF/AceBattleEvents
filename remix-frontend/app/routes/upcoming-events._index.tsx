@@ -4,8 +4,9 @@ import {
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
-import { FutureEventCard, UpcomingEventDesc } from "~/components";
-import { IFutureEvent } from "~/lib/events/types/IEvent";
+import FutureEventCard from "~/components/events/FutureEventCard";
+import UpcomingEventDesc from "~/components/events/UpcomingEventDesc";
+import { IFutureEvent } from "~/lib/types";
 import { authenticator, getEvents } from "~/lib/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {

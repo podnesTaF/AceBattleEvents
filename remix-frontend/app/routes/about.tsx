@@ -3,7 +3,8 @@ import { Breadcrumbs, Typography } from "@mui/material";
 import { V2_MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { useState } from "react";
-import { AboutArticle, HeaderTabs } from "~/components";
+import { HeaderTabs } from "~/components";
+import AboutArticle from "~/components/about/AboutArticle";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Ace Battle Events | Rules" }];
