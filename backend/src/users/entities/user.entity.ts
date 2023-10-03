@@ -1,10 +1,12 @@
 import { Country } from 'src/country/entity/country.entity';
+import { Feedback } from 'src/feedbacks/entities/feedback.entity';
 import { Media } from 'src/media/entities/media.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -65,4 +67,7 @@ export class User {
     nullable: true,
   })
   runner: Runner;
+
+  @OneToMany(() => Feedback, (feedback) => feedback.user)
+  feedbacks: Feedback[];
 }

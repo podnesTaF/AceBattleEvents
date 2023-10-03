@@ -8,6 +8,7 @@ import { Coach } from 'src/coach/entities/coach.entity';
 import { Content } from 'src/content/entities/content.entity';
 import { Country } from 'src/country/entity/country.entity';
 import { Event } from 'src/events/entities/event.entity';
+import { Feedback } from 'src/feedbacks/entities/feedback.entity';
 import { Hashtag } from 'src/hashtag/entities/hashtag.entity';
 import { Location } from 'src/locations/entities/locations.entity';
 import { Media } from 'src/media/entities/media.entity';
@@ -64,6 +65,7 @@ const config: TypeOrmModuleOptions = {
     Manager,
     Runner,
     Spectator,
+    Feedback,
   ],
   synchronize: true,
 };
