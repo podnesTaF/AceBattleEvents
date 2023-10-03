@@ -33,6 +33,13 @@ const Registrations: React.FC<RegistrationsProps> = ({
             index={i}
           />
         ))}
+        {!viewers?.length && !registrations?.length && (
+          <div className="w-full py-6 border-gray-300 border-2">
+            <p className="text-center text-3xl font-semibold text-gary-400">
+              You have no Registrations for any events
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

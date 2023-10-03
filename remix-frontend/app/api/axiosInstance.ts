@@ -4,6 +4,7 @@ import {
   AthletesApi,
   ClubApi,
   EventsApi,
+  FeedbackApi,
   MediaApi,
   MemberApi,
   NewsApi,
@@ -23,6 +24,7 @@ interface ApiReturnType {
   races: ReturnType<typeof RacesApi>;
   admin: ReturnType<typeof AdminApi>;
   member: ReturnType<typeof MemberApi>;
+  feedback: ReturnType<typeof FeedbackApi>;
 }
 
 // https://abe-server.up.railway.app/api/v1
@@ -45,5 +47,6 @@ export const Api = (token?: string): ApiReturnType => {
     races: RacesApi(instance),
     admin: AdminApi(instance),
     member: MemberApi(instance),
+    feedback: FeedbackApi(instance),
   };
 };

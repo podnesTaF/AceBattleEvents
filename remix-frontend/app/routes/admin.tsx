@@ -102,6 +102,21 @@ const tabs = [
     ],
     name: "news",
   },
+  {
+    title: "Comments",
+    icon: <FeedIcon />,
+    hiddenTabs: [
+      {
+        title: "All comments",
+        link: "/admin/comments",
+      },
+      {
+        title: "Add news",
+        link: "/admin/comments/add",
+      },
+    ],
+    name: "comments",
+  },
 ];
 
 export const loader = async ({ request }: { request: Request }) => {

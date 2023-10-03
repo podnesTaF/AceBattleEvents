@@ -222,7 +222,7 @@ export class EventsService {
         'races.teamResults.team.logo',
         'races.teamResults.runnerResults',
         'races.teamResults.runnerResults.runner',
-        'races.teamResults.runnerResults.runner.image',
+        'races.teamResults.runnerResults.runner.user.image',
       ],
     });
 

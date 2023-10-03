@@ -36,10 +36,14 @@ export class UserService {
       relations: [
         'image',
         'country',
-        'club',
-        'favoriteClubs',
-        'personalBests',
-        'results',
+        'runner',
+        'runner.personalBests',
+        'runner.results',
+        'runner.club',
+        'manager',
+        'manager.club',
+        'spectator',
+        'spectator.favoriteClubs',
       ],
     });
     return user;

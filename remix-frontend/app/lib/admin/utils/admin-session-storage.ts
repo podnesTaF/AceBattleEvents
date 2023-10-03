@@ -4,7 +4,7 @@ const secret = process.env.SESSION_SECRET || "secret";
 export let adminSessionStorage = createCookieSessionStorage({
   cookie: {
     name: "abe-admin-session",
-    sameSite: "none",
+    sameSite: "lax",
     path: "/",
     httpOnly: true,
     secrets: [secret],

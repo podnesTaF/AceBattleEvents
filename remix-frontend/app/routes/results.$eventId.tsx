@@ -113,7 +113,7 @@ const EventResults = () => {
                       <div className="w-1/2">
                         <img
                           src={
-                            eventResults.bestSportsmen[gender].runner.image
+                            eventResults.bestSportsmen[gender].runner.user.image
                               ?.mediaUrl || "/abm-logo-black.svg"
                           }
                           alt="image"
@@ -122,9 +122,10 @@ const EventResults = () => {
                       </div>
                       <div className="w-1/2 p-2 sm:p-4">
                         <h3 className="text-xl font-semibold mb-6 uppercase text-center">
-                          {eventResults.bestSportsmen[gender].runner.name +
+                          {eventResults.bestSportsmen[gender].runner.user.name +
                             " " +
-                            eventResults.bestSportsmen[gender].runner.surname}
+                            eventResults.bestSportsmen[gender].runner.user
+                              .surname}
                         </h3>
                         <div className="flex justify-between gap-4 mb-5 items-center">
                           <h5 className="font-semibold uppercase">
@@ -164,9 +165,9 @@ const EventResults = () => {
                             to={"/profile/" + runnerRes.runner.id}
                             className="text-xl font-semibold text-gray-400 cursor-pointer hover:text-gray-500"
                           >
-                            {runnerRes.runner.name +
+                            {runnerRes.runner.user.name +
                               " " +
-                              runnerRes.runner.surname +
+                              runnerRes.runner.user.surname +
                               " (" +
                               runnerRes.runnerType.slice(0, -2) +
                               ")"}

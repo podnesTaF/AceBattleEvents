@@ -78,7 +78,7 @@ export const UserApi = (instance: AxiosInstance) => ({
   async getFavoriteClubs(id: number) {
     try {
       const { data: clubs } = await instance.get<IClub[]>(
-        `/users/${id}/favorite-clubs`
+        `/spectators/${id}/favorite-clubs`
       );
       return clubs;
     } catch (error) {

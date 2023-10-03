@@ -89,16 +89,20 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
                 </h3>
               </div>
               <div>
-                <h3 className="text-xl md:text-2xl font-semibold mb-2 mt-4">
-                  {getCategoryByDoB(user.dateOfBirth)}
-                </h3>
+                {user.role === "runner" && (
+                  <h3 className="text-xl md:text-2xl font-semibold mb-2 mt-4">
+                    {getCategoryByDoB(user.runner?.dateOfBirth)}
+                  </h3>
+                )}
                 <p className="text-xl font-semibold">
-                  {user.club ? (
+                  {user.role &&
+                  user.role !== "spectator" &&
+                  (user as any)[user.role].club ? (
                     <Link
-                      to={`/clubs/${user.club.id}`}
+                      to={`/clubs/${(user as any)[user.role].club.id}`}
                       className="text-blue-400 hover:underline"
                     >
-                      {user.club.name}
+                      {(user as any)[user.role].club.name}
                     </Link>
                   ) : (
                     "No Club"
@@ -117,7 +121,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
               </button>
             </div>
           )}
-          {user.role === "runner" && (
+          {user.runner && (
             <div className="w-full md:max-w-xs my-auto border-red-500 border-[1px] shadow-md p-4">
               <div className="flex gap-4 mb-5 items-center">
                 <img
@@ -133,20 +137,23 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
               <div className="w-full flex flex-col gap-4">
                 <div className="flex justify-between gap-4">
                   <p className="font-semibold">Overall men&apos;s rank:</p>
-                  <p className="font-semibold">{user.rank || "-"}</p>
+                  <p className="font-semibold">{user.runner.rank || "-"}</p>
                 </div>
                 <div className="flex justify-between gap-4">
                   <p className="font-semibold">Personal Mile Best:</p>
                   <p className="font-semibold">
                     {msToMinutesAndSeconds(
-                      user.personalBests?.find((pb) => pb.distance === 160934)
-                        ?.finalResultInMs
+                      user.runner.personalBests?.find(
+                        (pb) => pb.distance === 160934
+                      )?.finalResultInMs
                     ) || "-"}
                   </p>
                 </div>
                 <div className="flex justify-between gap-4">
                   <p className="font-semibold">Finished Races:</p>
-                  <p className="font-semibold">{user.results?.length || 0}</p>
+                  <p className="font-semibold">
+                    {user.runner.results?.length || 0}
+                  </p>
                 </div>
               </div>
             </div>

@@ -98,7 +98,8 @@ export const teamResultsTable = (teamResults: ITeamResult[]) => {
       link: "/events/" + teamResult.race.event.id,
     },
     runnerResults: teamResult.runnerResults.map((runnerResult) => ({
-      runner: runnerResult.runner.name + " " + runnerResult.runner.surname,
+      runner:
+        runnerResult.runner.user.name + " " + runnerResult.runner.user.surname,
       gender: runnerResult.runner.gender,
       category: getCategoryByDoB(runnerResult.runner.dateOfBirth),
       distance: runnerResult.distance,
@@ -165,9 +166,9 @@ export const getPacersJokersResultTable = (
       sportsmen: firstPair
         .map(
           (res) =>
-            res.runner.name +
+            res.runner.user.name +
             " " +
-            res.runner.surname +
+            res.runner.user.surname +
             ` (${res.runnerType.slice(0, -2)})`
         )
         .join(" / "),
@@ -182,9 +183,9 @@ export const getPacersJokersResultTable = (
       sportsmen: secondPair
         .map(
           (res) =>
-            res.runner.name +
+            res.runner.user.name +
             " " +
-            res.runner.surname +
+            res.runner.user.surname +
             ` (${res.runnerType.slice(0, -2)})`
         )
         .join(" / "),
@@ -206,7 +207,8 @@ export const getRunnerResultsTable = (runnerResults: IRunnerResult[]) => {
     rank: runnerResult.runner.rank !== 9999 ? runnerResult.runner.rank : "-",
     runner: {
       link: "/profile/" + runnerResult.runner.id,
-      value: runnerResult.runner.name + " " + runnerResult.runner.surname,
+      value:
+        runnerResult.runner.user.name + " " + runnerResult.runner.user.surname,
     },
     "cat.": getCategoryByDoB(runnerResult.runner.dateOfBirth),
     distance: getMeters(runnerResult.distance) + " m",

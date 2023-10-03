@@ -81,7 +81,7 @@ export class RunnerResultsService {
   }
 
   async getUserResults(
-    userId: number,
+    runnerId: number,
     queries: {
       limit?: number;
       page?: number;
@@ -96,7 +96,7 @@ export class RunnerResultsService {
     const totalCount = await this.repository
       .createQueryBuilder('runnerResult')
       .leftJoin('runnerResult.runner', 'runner')
-      .where('runner.id = :userId', { userId })
+      .where('runner.id = :runnerId', { runnerId })
       .getCount();
 
     const pageCount = Math.ceil(totalCount / limit);
@@ -110,7 +110,7 @@ export class RunnerResultsService {
       .leftJoin('race.winner', 'winner')
       .leftJoin('runnerResult.pbForRunner', 'pbForRunner')
       .leftJoin('runnerResult.runner', 'runner')
-      .where('runner.id = :userId', { userId });
+      .where('runner.id = :runnerId', { runnerId });
 
     if (queries.category) {
       qb.andWhere('event.category = :category', { category: queries.category });

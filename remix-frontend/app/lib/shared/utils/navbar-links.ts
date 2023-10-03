@@ -5,4 +5,5 @@ export const links = [
   { to: "/results", label: "Results" },
   { to: "/athletes", label: "Athletes" },
   { to: "/about", label: "About ABM" },
+  { to: "/comments", label: "Comments" },
 ];

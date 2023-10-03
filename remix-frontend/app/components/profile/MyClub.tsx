@@ -19,9 +19,7 @@ const MyClub: React.FC<MyClubProps> = ({ club }) => {
         <div className="px-4 mb-4 w-full">
           <CustomTable
             itemsName="athletes"
-            rows={transformIntoMembers(
-              club.members.filter((m) => m.role === "runner")
-            )}
+            rows={transformIntoMembers(club.runners)}
             isLoading={false}
             titleColor="bg-black"
             isTitleStraight={true}

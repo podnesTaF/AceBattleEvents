@@ -33,7 +33,8 @@ const JokerResultDetails: React.FC<Props> = ({ runnerResults }) => {
                     isJoker ? "text-white" : "text-gray-400"
                   } font-semibold sm:texl-lg text-xl`}
                 >
-                  {runnerResult.runner.name} {runnerResult.runner.surname}
+                  {runnerResult.runner.user.name}{" "}
+                  {runnerResult.runner.user.surname}
                 </h4>
                 <div className="flex justify-around gap-6">
                   <div>
@@ -45,7 +46,7 @@ const JokerResultDetails: React.FC<Props> = ({ runnerResults }) => {
                   <div>
                     <h5 className="text-lg font-semibold">Nat.</h5>
                     <img
-                      src={runnerResult.runner.country.flagIconUrl}
+                      src={runnerResult.runner.user.country.flagIconUrl}
                       alt="flag"
                       width={40}
                       height={30}

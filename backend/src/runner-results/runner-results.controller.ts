@@ -18,9 +18,9 @@ export class RunnerResultsController {
     return this.runnerResultsService.create(dto, dto.teamResultId);
   }
 
-  @Get('/user/:userId')
+  @Get('/user/:runnerId')
   getUserResults(
-    @Param('userId') userId: string,
+    @Param('runnerId') runnerId: string,
     @Query()
     queries: {
       limit?: number;
@@ -29,7 +29,7 @@ export class RunnerResultsController {
       year?: string;
     },
   ) {
-    return this.runnerResultsService.getUserResults(+userId, queries);
+    return this.runnerResultsService.getUserResults(+runnerId, queries);
   }
 
   @Patch(':id')
