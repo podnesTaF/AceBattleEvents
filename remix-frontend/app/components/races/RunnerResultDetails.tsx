@@ -34,13 +34,13 @@ const RunnerResultDetails = ({
             <h5 className="text-lg font-semibold uppercase">nat.</h5>
             <div className="flex gap-4">
               <img
-                src={runnerResult.runner.country.flagIconUrl}
+                src={runnerResult.runner.user.country.flagIconUrl}
                 alt="flag"
                 width={40}
                 height={40}
               />
               <h5 className="text-lg uppercase">
-                {runnerResult.runner.country.name}
+                {runnerResult.runner.user.country.name}
               </h5>
             </div>
           </div>

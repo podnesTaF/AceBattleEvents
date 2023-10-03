@@ -1,17 +1,17 @@
 import { UserResult } from "~/lib/types";
 import { formatDate, msToMinutesAndSeconds } from "~/lib/utils";
-import { IUser } from "../types";
+import { IRunner } from "../types";
 
-export const transformDataAthletes = (data: IUser[]) => {
-  return data.map((runner: IUser, i) => ({
+export const transformDataAthletes = (data: IRunner[]) => {
+  return data.map((runner: IRunner, i) => ({
     rank: runner.rank || "-",
-    name: runner.name + " " + runner.surname,
+    name: runner.user.name + " " + runner.user.surname,
     gender: runner.gender,
     "date of birth": formatDate(runner.dateOfBirth),
     club: runner.club?.name || "no club",
-    country: runner.country?.name,
+    country: runner.user.country?.name,
     profile: {
-      link: "/profile/" + runner.id,
+      link: "/profile/" + runner.user.id,
       value: "visit page",
     },
   }));

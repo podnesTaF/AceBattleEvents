@@ -10,7 +10,6 @@ export const action = async ({ request }: { request: Request }) => {
 };
 
 export async function loader({ request }: LoaderArgs) {
-  // If the user is already authenticated redirect to /dashboard directly
   return await adminAuthenticator.isAuthenticated(request, {
     successRedirect: "/admin",
   });

@@ -13,7 +13,7 @@ import {
 } from "~/components";
 import { countries, useFilter } from "~/lib/shared";
 import { genders } from "~/lib/teams";
-import { getNewParams, transformDataAthletes } from "~/lib/utils";
+import { getNewParams } from "~/lib/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const url = request.url;
@@ -28,19 +28,16 @@ export const loader = async ({ request }: LoaderArgs) => {
     page = "1";
   }
 
-  const tableData = transformDataAthletes(athletesData.athletes);
-
   return json({
     athletesData,
     teamsPreview,
-    tableData,
     currPage: +page,
     scroll: scrollY,
   });
 };
 
 const AthletesIndexPage = () => {
-  const { athletesData, teamsPreview, tableData, scroll, currPage } =
+  const { athletesData, teamsPreview, scroll, currPage } =
     useLoaderData<typeof loader>();
 
   const navigate = useNavigate();

@@ -175,10 +175,10 @@ export const TeamsApi = (instance: AxiosInstance) => ({
     }
   },
 
-  async getPersonalCalendar() {
+  async getPersonalCalendar(runnerId: number) {
     try {
       const { data: calendar } = await instance.get<ITeamEvent[]>(
-        `/teams/user-registrations`
+        `/teams/${runnerId}/user-registrations`
       );
       return calendar;
     } catch (error) {

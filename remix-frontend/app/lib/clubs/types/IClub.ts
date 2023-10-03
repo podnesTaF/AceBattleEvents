@@ -1,13 +1,14 @@
 import { IMedia } from "~/lib/media/types/IMedia";
 import { ITeam } from "~/lib/teams/types/ITeam";
 import { ICountry } from "~/lib/types";
-import { IUser } from "~/lib/user/types/IUser";
+import { IManager, IRunner } from "~/lib/user/types/IUser";
 
 export type IClub = {
   id: number;
   name: string;
   country: ICountry;
-  members: IUser[];
+  runners: IRunner[];
+  manager: IManager;
   createdAt: string;
   city: string;
   teams: ITeam[];

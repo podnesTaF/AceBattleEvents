@@ -1,4 +1,5 @@
 export * from "./clubs/types";
+export * from "./comments/types";
 export * from "./countries/types";
 export * from "./events/types";
 export * from "./media/types";

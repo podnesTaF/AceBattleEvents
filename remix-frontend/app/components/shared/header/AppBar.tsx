@@ -54,7 +54,7 @@ const AppBar: React.FC<AppBarProps> = ({ admin, user }) => {
     <>
       <div
         className={`relative w-full ${
-          admin ? "mb-[96px] lg:mb-[92px]" : "mb-[50px] lg:mb-[52px]"
+          admin ? "mb-[96px] lg:mb-[92px]" : "mb-[80px] lg:mb-[80px]"
         } 
         ${isScrollingUp ? "lg:mb-12" : ""}`}
       >
@@ -64,61 +64,57 @@ const AppBar: React.FC<AppBarProps> = ({ admin, user }) => {
               <AdminStripe admin={admin} />
             </div>
           )}
-          <AuthStripe user={user} />
+          <AuthStripe user={user} isScrollingUp={isScrollingUp} />
           <div
-            className={`lg:flex justify-between items-center px-5 z-30 ${
+            className={`lg:flex justify-between z-30 ${
               isScrollingUp ? "py-0" : "lg:py-2"
             } transition-all bg-[#1E1C1F] items-center w-full z-10 shadow-lg`}
           >
-            <div className={"flex justify-between items-center"}>
-              <div className="lg:hidden">
-                <IconButton
-                  onClick={() => setOpen(true)}
-                  className={"text-white items-center"}
-                >
-                  <MenuIcon sx={{ fontSize: 40, color: "white" }} />
-                </IconButton>
-              </div>
-              <img
-                onClick={() => navigate("/")}
-                src="/acebattlemile.svg"
-                alt="abe"
-                className={`cursor-pointer h-5 md:h-7 hover:opacity-90 active:scale-[0.97] transition-all ${
-                  !isScrollingUp ? "block lg:hidden xl:block" : "hidden"
-                }`}
-                height={28}
-              />
-              <img
-                onClick={() => navigate("/")}
-                src="/abm-short-logo-white.svg"
-                alt="abe"
-                height={45}
-                className={`h-9 md:h-11 cursor-pointer hover:opacity-90 active:scale-[0.97] ${
-                  isScrollingUp ? "block" : "hidden lg:block xl:hidden"
-                }`}
-              />
-            </div>
-            <nav className={"hidden lg:flex lg:gap-4 xl:gap-6 items-center"}>
-              {links.map((link, index) => (
-                <Link key={index} to={link.to} className="hover:opacity-80">
-                  <p
-                    className={`text-lg uppercase font-semibold ${
-                      pathname.split("/")[1] === link.to.split("/")[1]
-                        ? "text-[#FF0000]"
-                        : "text-white"
-                    }`}
+            <div className="lg:flex justify-between items-center w-full px-4 max-w-[1500px] mx-auto">
+              <div className={"flex justify-between items-center"}>
+                <div className="lg:hidden">
+                  <IconButton
+                    onClick={() => setOpen(true)}
+                    className={"text-white items-center"}
                   >
-                    {link.label}
-                  </p>
-                </Link>
-              ))}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              ></div>
-            </nav>
+                    <MenuIcon sx={{ fontSize: 40, color: "white" }} />
+                  </IconButton>
+                </div>
+                <img
+                  onClick={() => navigate("/")}
+                  src="/acebattlemile.svg"
+                  alt="abe"
+                  className={`cursor-pointer h-5 md:h-7 hover:opacity-90 active:scale-[0.97] transition-all ${
+                    !isScrollingUp ? "block lg:hidden xl:block" : "hidden"
+                  }`}
+                  height={28}
+                />
+                <img
+                  onClick={() => navigate("/")}
+                  src="/abm-short-logo-white.svg"
+                  alt="abe"
+                  height={45}
+                  className={`h-9 md:h-11 cursor-pointer hover:opacity-90 active:scale-[0.97] ${
+                    isScrollingUp ? "block" : "hidden lg:block xl:hidden"
+                  }`}
+                />
+              </div>
+              <nav className={"hidden lg:flex lg:gap-4 xl:gap-6 items-center"}>
+                {links.map((link, index) => (
+                  <Link key={index} to={link.to} className="hover:opacity-80">
+                    <p
+                      className={`text-lg uppercase font-semibold ${
+                        pathname.split("/")[1] === link.to.split("/")[1]
+                          ? "text-[#FF0000]"
+                          : "text-white"
+                      }`}
+                    >
+                      {link.label}
+                    </p>
+                  </Link>
+                ))}
+              </nav>
+            </div>
           </div>
         </div>
       </div>

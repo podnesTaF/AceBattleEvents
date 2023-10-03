@@ -8,8 +8,8 @@ export const getTeamsData = async ({ user }: { user: IUser }) => {
 };
 
 export const getLastRacesData = async ({ user }: { user: IUser }) => {
-  if (user.role === "manager" && user?.club?.id) {
-    const races = await Api().clubs.getClubFinishedRaces(user.club.id);
+  if (user.role === "manager" && user?.manager?.club?.id) {
+    const races = await Api().clubs.getClubFinishedRaces(user.manager.club.id);
     return { races, tableRaces: transformRaceToTable(races || []) };
   }
   return {};
@@ -24,7 +24,7 @@ export const handleRegistrationsTab = async ({
 }) => {
   const returnData: any = {};
 
-  if (user.role === "viewer") {
+  if (user.role === "spectator") {
     const registrations = await Api(
       authedUser?.token
     ).users.getMyRegistrations();
@@ -45,8 +45,8 @@ export const handleRegistrationsTab = async ({
 export const handleFavoritesTab = async ({ user }: { user: IUser }) => {
   const returnData: any = {};
 
-  if (user.role === "viewer") {
-    const favorites = await Api().users.getFavoriteClubs(user.id);
+  if (user.role === "spectator" && user?.spectator) {
+    const favorites = await Api().users.getFavoriteClubs(user.spectator.id);
     returnData.favoriteClubs = favorites;
   }
 
@@ -83,10 +83,10 @@ export const handlePersonalCalendarTab = async ({
 }) => {
   const returnData: any = {};
 
-  if (user.role === "runner" && user.id === authedUser?.id) {
+  if (user.runner && user.id === authedUser?.id) {
     const personalCalendar = await Api(
       authedUser.token
-    ).teams.getPersonalCalendar();
+    ).teams.getPersonalCalendar(user.runner.id);
     returnData.teamRegistrations = personalCalendar;
   }
 
@@ -106,9 +106,9 @@ export const handleResultsTab = async ({
 }) => {
   const returnData: any = {};
 
-  if (user.role === "runner") {
+  if (user.runner) {
     const resultsData = await Api().users.getUserResults({
-      id: user.id,
+      id: user.runner.id,
       page: +resultPage,
       resultCategory,
       resultYear,

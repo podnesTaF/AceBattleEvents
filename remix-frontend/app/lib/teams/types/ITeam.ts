@@ -3,7 +3,7 @@ import { ICountry } from "~/lib/countries/types";
 import { IEvent } from "~/lib/events/types";
 import { IMedia } from "~/lib/media/types/IMedia";
 import { ITeamResult } from "~/lib/types";
-import { IUser } from "~/lib/user/types/IUser";
+import { IRunner, IUser } from "~/lib/user/types/IUser";
 import { ICoach } from "./ICoach";
 
 export type ITeam = {
@@ -18,7 +18,7 @@ export type ITeam = {
   coach: ICoach;
   logo: IMedia;
   teamImage: IMedia;
-  players: IUser[];
+  players: IRunner[];
   events: IEvent[];
   rank: number | null;
   totalPoints: number | null;

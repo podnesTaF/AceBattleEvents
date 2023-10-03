@@ -1,4 +1,4 @@
-import { IRunnerResult, ITeam, IUser } from "~/lib/types";
+import { IRunner, IRunnerResult, ITeam } from "~/lib/types";
 
 export type EventPodium = {
   [gender: string]: {
@@ -11,7 +11,7 @@ export type EventPodium = {
 
 export type BestSportsmen = {
   [gender: string]: {
-    runner: IUser;
+    runner: IRunner;
     finalResultInMs: number;
   };
 };

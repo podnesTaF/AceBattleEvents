@@ -1,5 +1,5 @@
 import { ITeam } from "~/lib/teams/types";
-import { IUser } from "~/lib/user/types/IUser";
+import { IRunner, IUser } from "~/lib/user/types/IUser";
 import { getAgeCategory } from "./date-formaters";
 
 export const transformIntoTeamsTable = (data: ITeam[]) => {
@@ -39,11 +39,11 @@ export const transfromIntoPlayersTable = (data: IUser[]) => {
   });
 };
 
-export const transformIntoMembers = (members: IUser[]) => {
-  return members.map((member) => ({
-    name: member.name + " " + member.surname,
-    gender: member.gender,
-    "date of birth": new Date(member.dateOfBirth || 0).toLocaleDateString(
+export const transformIntoMembers = (runners: IRunner[]) => {
+  return runners.map((runner) => ({
+    name: runner.user.name + " " + runner.user.surname,
+    gender: runner.gender,
+    "date of birth": new Date(runner.dateOfBirth || 0).toLocaleDateString(
       "en-GB",
       {
         day: "2-digit",
@@ -52,9 +52,9 @@ export const transformIntoMembers = (members: IUser[]) => {
       }
     ),
     "member since": "28/07/2022",
-    country: member.country,
+    country: runner.user.country,
     results: {
-      link: `/profile/${member.id}/Results?scrollY=800`,
+      link: `/profile/${runner.user.id}/Results?scrollY=800`,
       value: "see profile",
     },
   }));

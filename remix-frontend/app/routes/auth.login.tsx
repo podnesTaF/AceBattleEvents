@@ -35,7 +35,7 @@ const LoginPage = () => {
                   <input
                     name={"email"}
                     type={"email"}
-                    className="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:border-2 outline-none border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
+                    className="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:border-2 outline-none border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={"enter your email"}
                   />
                   <Errors className="text-red-500 text-sm" />
@@ -49,7 +49,7 @@ const LoginPage = () => {
                   <input
                     name={"password"}
                     type={"password"}
-                    className="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:border-2 outline-none border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
+                    className="bg-gray-50 border text-gray-900 text-sm rounded-lg focus:border-2 outline-none border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={"enter your password"}
                   />
                   <Errors className="text-red-500 text-sm" />
