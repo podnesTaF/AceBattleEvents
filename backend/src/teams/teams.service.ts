@@ -238,7 +238,7 @@ export class TeamsService {
   }
 
   async findAllByUser(userId?: number) {
-    return this.repository
+    const teams = await this.repository
       .createQueryBuilder('team')
       .leftJoinAndSelect('team.players', 'player')
       .leftJoinAndSelect('team.coach', 'coach')
@@ -246,14 +246,16 @@ export class TeamsService {
       .leftJoinAndSelect('team.country', 'country')
       .leftJoinAndSelect('team.club', 'club')
       .leftJoinAndSelect('team.personalBest', 'personalBest')
-      .leftJoinAndSelect('club.members', 'member')
+      .leftJoinAndSelect('club.runners', 'runners')
+      .leftJoinAndSelect('club.manager', 'manager')
       .where('player.id = :runnerId', { runnerId: userId })
-      .orWhere('member.role = :role and member.id = :managerId', {
+      .orWhere('manager.user.id = :managerId', {
         managerId: userId,
-        role: 'manager',
       })
       .leftJoinAndSelect('team.players', 'players')
+      .leftJoinAndSelect('players.user', 'user')
       .getMany();
+    return teams;
   }
 
   findOne(id: number) {
@@ -269,7 +271,7 @@ export class TeamsService {
         'country',
         'players.image',
         'players.country',
-        'club.members',
+        'club.runners',
         'personalBest',
       ],
     });

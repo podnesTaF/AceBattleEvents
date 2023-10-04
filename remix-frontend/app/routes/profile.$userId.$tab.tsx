@@ -61,6 +61,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
   if (tab && tabHandlers[tab]) {
     const tabData = await tabHandlers[tab]({
+      runner: user.runner,
       user,
       authedUser,
       resultPage,

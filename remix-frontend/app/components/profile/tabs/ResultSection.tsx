@@ -1,5 +1,5 @@
 import { useNavigate } from "@remix-run/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ClubResultsFilter, CustomTable, Pagination } from "~/components";
 import { IUser, UserResult } from "~/lib/types";
 import { getNewParams } from "~/lib/utils";
@@ -25,12 +25,9 @@ const ResultsSection: React.FC<IResultsData> = ({
   const [filters, setFilters] = useState<{ type: string; value: any }[]>([]);
   const getFilters = (filters: any) => {
     setFilters(filters);
-  };
-
-  useEffect(() => {
     const params = getNewParams(1, filters, scrollY);
     navigate(`${location.pathname}?${params}`);
-  }, [filters]);
+  };
 
   if (user.role === "runner" && resultsData) {
     return (
