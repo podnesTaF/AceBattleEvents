@@ -110,43 +110,45 @@ const FeedbackCard: React.FC<Props> = ({
             )}
           </div>
         </div>
-        <div className="flex justify-around gap-6">
-          {editMode ? (
-            <>
-              <IconButton onClick={cancelChnages}>
-                <CloseIcon />
-              </IconButton>
-              <IconButton onClick={submitChanges}>
-                <CheckIcon />
-              </IconButton>
-            </>
-          ) : (
-            <div className="flex w-full justify-between my-2">
-              {!feedback.approved ? (
-                <div
-                  onClick={approve}
-                  className="bg-green-500 px-4 py-2 cursor-pointer hover:opacity-80"
-                >
-                  <h5 className="text-lg md:text-xl font-semibold text-white">
-                    Approve
-                  </h5>
-                </div>
-              ) : (
-                <div
-                  onClick={disapprove}
-                  className="bg-red-500 px-4 py-2 hover:opacity-80"
-                >
-                  <h5 className="text-lg md:text-xl font-semibold text-white">
-                    Disapprove
-                  </h5>
-                </div>
-              )}
-              <IconButton onClick={() => setEditMode(true)}>
-                <EditIcon />
-              </IconButton>
-            </div>
-          )}
-        </div>
+        {editable && (
+          <div className="flex justify-around gap-6">
+            {editMode ? (
+              <>
+                <IconButton onClick={cancelChnages}>
+                  <CloseIcon />
+                </IconButton>
+                <IconButton onClick={submitChanges}>
+                  <CheckIcon />
+                </IconButton>
+              </>
+            ) : (
+              <div className="flex w-full justify-between my-2">
+                {!feedback.approved ? (
+                  <div
+                    onClick={approve}
+                    className="bg-green-500 px-4 py-2 cursor-pointer hover:opacity-80"
+                  >
+                    <h5 className="text-lg md:text-xl font-semibold text-white">
+                      Approve
+                    </h5>
+                  </div>
+                ) : (
+                  <div
+                    onClick={disapprove}
+                    className="bg-red-500 px-4 py-2 hover:opacity-80"
+                  >
+                    <h5 className="text-lg md:text-xl font-semibold text-white">
+                      Disapprove
+                    </h5>
+                  </div>
+                )}
+                <IconButton onClick={() => setEditMode(true)}>
+                  <EditIcon />
+                </IconButton>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </Fade>
   );

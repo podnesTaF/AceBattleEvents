@@ -63,10 +63,10 @@ export const TeamsApi = (instance: AxiosInstance) => ({
     }
   },
 
-  async getTeamsByUserId(id?: string) {
+  async getTeamsByUserId(runnerId?: string) {
     try {
       const { data: teamsData } = await instance.get<ITeam[]>(
-        `teams/user/${id}`
+        `teams/user/${runnerId}`
       );
 
       return teamsData;

@@ -1,9 +1,9 @@
 import { Api } from "~/api/axiosInstance";
 import { transformRaceToTable, transformUserResultsToTable } from "~/lib/utils";
-import { IUser } from "../types";
+import { IRunner, IUser } from "../types";
 
-export const getTeamsData = async ({ user }: { user: IUser }) => {
-  const teams = await Api().teams.getTeamsByUserId(user.id.toString());
+export const getTeamsData = async ({ runner }: { runner: IRunner }) => {
+  const teams = await Api().teams.getTeamsByUserId(runner.id.toString());
   return { teams };
 };
 

@@ -10,11 +10,15 @@ const PersonalCalendarSection = ({
 }) => {
   if (user.role === "runner" && teamRegistrations) {
     return (
-      <div>
+      <div className="p-4">
         {teamRegistrations.length ? (
           <Registrations registrations={teamRegistrations} />
         ) : (
-          <h3 className="text-2xl">You don't have any registrations yet</h3>
+          <div className="w-full py-6 border-gray-300 border-2">
+            <p className="text-center text-3xl font-semibold text-gary-400">
+              You have no Registrations for any events
+            </p>
+          </div>
         )}
       </div>
     );

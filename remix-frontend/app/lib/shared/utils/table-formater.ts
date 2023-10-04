@@ -1,5 +1,5 @@
 import { ITeam } from "~/lib/teams/types";
-import { IRunner, IUser } from "~/lib/user/types/IUser";
+import { IRunner } from "~/lib/user/types/IUser";
 import { getAgeCategory } from "./date-formaters";
 
 export const transformIntoTeamsTable = (data: ITeam[]) => {
@@ -20,15 +20,15 @@ export const transformIntoTeamsTable = (data: ITeam[]) => {
   });
 };
 
-export const transfromIntoPlayersTable = (data: IUser[]) => {
+export const transfromIntoPlayersTable = (data: IRunner[]) => {
   return data.map((player) => {
-    const { name, surname, dateOfBirth } = player;
+    const { user, dateOfBirth } = player;
 
     if (!dateOfBirth) return null;
 
     return {
-      name,
-      surname,
+      name: user?.name,
+      surname: user?.surname,
       dateOfBirth: new Date(dateOfBirth).toLocaleDateString("en-GB", {
         day: "2-digit",
         month: "2-digit",
