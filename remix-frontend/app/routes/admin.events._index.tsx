@@ -15,7 +15,7 @@ import { getNewParams } from "~/lib/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const url = request.url;
-  const params = url.split("?")[1] + "&check=past event included";
+  const params = url.split("?")[1] + "&finished=true";
   const currPage = new URL(url).searchParams.get("page") || "1";
 
   const eventsData = await Api().events.getEvents(params);
