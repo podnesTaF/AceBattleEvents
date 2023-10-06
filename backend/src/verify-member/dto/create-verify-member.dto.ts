@@ -1,9 +1,15 @@
-import { IsObject, IsString } from 'class-validator';
+import { IsObject, IsOptional, IsString } from 'class-validator';
 import { Member } from 'src/member/entities/member.entity';
+import { User } from 'src/users/entities/user.entity';
 
 export class CreateVerifyMemberDto {
   @IsObject()
-  member: Member;
+  @IsOptional()
+  member?: Member;
+
+  @IsObject()
+  @IsOptional()
+  user?: User;
 
   @IsString()
   token: string;

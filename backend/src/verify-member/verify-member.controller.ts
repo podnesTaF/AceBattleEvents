@@ -22,6 +22,11 @@ export class VerifyMemberController {
     return this.verifyMemberService.getMember(token);
   }
 
+  @Get('/user/:token')
+  getUserByToken(@Param('token') token: string) {
+    return this.verifyMemberService.getUser(token);
+  }
+
   @Get()
   findAll() {
     return this.verifyMemberService.findAll();

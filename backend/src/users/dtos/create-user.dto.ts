@@ -1,13 +1,14 @@
 import {
   IsEmail,
-  IsNumber,
   IsObject,
   IsOptional,
   IsString,
   Length,
 } from 'class-validator';
-import { Club } from 'src/club/entities/club.entity';
+import { UserRole } from 'src/auth/roles.enum';
 import { Media } from 'src/media/entities/media.entity';
+import { CreateRunnerDto } from './create-runner.dto';
+import { CreateSpectatorDto } from './create-spectator.dto';
 
 export class CreateUserDto {
   @Length(2)
@@ -18,9 +19,6 @@ export class CreateUserDto {
 
   @IsEmail(undefined, { message: 'Wrong email' })
   email: string;
-
-  @Length(6, 32, { message: 'Password has be at last 6 characters' })
-  password: string;
 
   @IsObject()
   @IsOptional()
@@ -33,21 +31,17 @@ export class CreateUserDto {
   country: string;
 
   @IsString()
-  role: string;
+  role: UserRole;
 
   @IsString()
   @IsOptional()
-  gender: string;
+  interest: string;
 
-  @IsString()
+  @IsObject()
   @IsOptional()
-  dateOfBirth: string;
+  runner: CreateRunnerDto;
 
-  @IsString()
+  @IsObject()
   @IsOptional()
-  worldAthleticsUrl?: string;
-
-  @IsNumber()
-  @IsOptional()
-  club?: Club;
+  spectator: CreateSpectatorDto;
 }

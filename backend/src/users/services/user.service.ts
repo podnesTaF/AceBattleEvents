@@ -1,12 +1,20 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import sgMail from '@sendgrid/mail';
 import * as bcrypt from 'bcrypt';
 import { CountryService } from 'src/country/country.service';
 import { Country } from 'src/country/entity/country.entity';
+import { getVerificationLetterTemplate } from 'src/member/utils/getLetterTemplate';
+import { generateRandomPassword } from 'src/utils/random-password';
+import { VerifyMemberService } from 'src/verify-member/verify-member.service';
 import { Repository } from 'typeorm';
+import * as uuid from 'uuid';
+import { CreateUserDto } from '../dtos/create-user.dto';
 import { LoginUserDto } from '../dtos/login-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { User } from '../entities/user.entity';
+import { RunnerService } from './runner.service';
+import { SpectatorService } from './spectator.service';
 
 @Injectable()
 export class UserService {
@@ -14,10 +22,105 @@ export class UserService {
     @InjectRepository(User)
     private repository: Repository<User>,
     private countryService: CountryService,
+    private runnerService: RunnerService,
+    private spectatorService: SpectatorService,
+    private verifyRepository: VerifyMemberService,
   ) {}
 
-  create(dto: any) {
-    return this.repository.save({ ...dto });
+  async create(dto: CreateUserDto) {
+    const isDuplicate = await this.repository.findOne({
+      where: [{ email: dto.email }],
+    });
+
+    if (isDuplicate) {
+      throw new ForbiddenException('User with this email already exists');
+    }
+    try {
+      const user = new User();
+
+      user.role = dto.role;
+      user.name = dto.name;
+      user.surname = dto.surname;
+      user.email = dto.email;
+      user.city = dto.city;
+      let country = await this.countryService.returnIfExist({
+        name: dto.country,
+      });
+
+      if (!country) {
+        country = await this.countryService.create(dto.country);
+      }
+      user.country = country;
+      user.interest = dto.interest;
+
+      const newUser = await this.repository.save(user);
+
+      if (dto.runner) {
+        await this.runnerService.create(dto.runner, newUser);
+      } else if (dto.spectator) {
+        await this.spectatorService.create(dto.spectator, newUser);
+      }
+
+      const randomToken = uuid.v4().toString();
+
+      const verification = await this.verifyRepository.create({
+        token: randomToken,
+        user: newUser,
+      });
+
+      const msg = {
+        to: newUser.email,
+        from: 'it.podnes@gmail.com',
+        subject: 'Verify email address | Ace Battle Mile',
+        html: getVerificationLetterTemplate({
+          token: verification.token,
+          ticket: false,
+        }),
+      };
+
+      try {
+        await sgMail.send(msg);
+      } catch (error) {
+        console.log('error sending email', error.message);
+      }
+
+      return this.repository.save(newUser);
+    } catch (error) {
+      throw new ForbiddenException('Register error');
+    }
+  }
+
+  async completeVerification({
+    user,
+    token,
+    newPassword,
+  }: {
+    user: User;
+    token: string;
+    newPassword?: string;
+  }) {
+    try {
+      const fullUser = await this.repository.findOne({
+        where: { id: user.id },
+      });
+
+      fullUser.verified = true;
+
+      let randomPassword: string;
+      if (!newPassword) {
+        randomPassword = generateRandomPassword();
+      }
+      const hashedPassword = await bcrypt.hash(newPassword || 'podnes', 10);
+
+      fullUser.password = hashedPassword;
+
+      await this.verifyRepository.delete(token);
+
+      return this.repository.save(fullUser);
+    } catch (error) {
+      console.log(error.message);
+      throw new Error(error.message);
+    }
   }
 
   findAll() {

@@ -19,6 +19,7 @@ export class VerifyMemberService {
       ...dto,
       expires: new Date(expires),
       member: dto.member,
+      user: dto.user,
     });
   }
 
@@ -42,6 +43,17 @@ export class VerifyMemberService {
     const verification = await this.repository.findOne({
       where: { token },
       relations: ['member'],
+    });
+
+    if (!verification) return null;
+
+    return verification.member;
+  }
+
+  async getUser(token: string) {
+    const verification = await this.repository.findOne({
+      where: { token },
+      relations: ['user'],
     });
 
     if (!verification) return null;

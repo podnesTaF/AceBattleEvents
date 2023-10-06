@@ -1,4 +1,3 @@
-import { Best } from 'src/bests/entities/best.entity';
 import { Country } from 'src/country/entity/country.entity';
 import { ViewerRegistration } from 'src/viewer-registrations/entities/viewer-registration.entity';
 import {
@@ -59,12 +58,6 @@ export class Member {
 
   @ManyToOne(() => Country)
   country: Country;
-
-  @OneToMany(() => Best, (best) => best.memberPb, { nullable: true })
-  personalBests: Best[];
-
-  @OneToMany(() => Best, (best) => best.memberSb, { nullable: true })
-  seasonBests: Best[];
 
   @OneToMany(
     () => ViewerRegistration,

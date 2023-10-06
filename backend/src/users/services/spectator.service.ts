@@ -2,7 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Club } from 'src/club/entities/club.entity';
 import { Repository } from 'typeorm';
+import { CreateSpectatorDto } from '../dtos/create-spectator.dto';
 import { Spectator } from '../entities/spectator.entity';
+import { User } from '../entities/user.entity';
 
 @Injectable()
 export class SpectatorService {
@@ -10,6 +12,15 @@ export class SpectatorService {
     @InjectRepository(Spectator)
     private repository: Repository<Spectator>,
   ) {}
+
+  async create(dto: CreateSpectatorDto, user: User): Promise<Spectator> {
+    return this.repository.save({
+      viewerRegistrations: [],
+      favoriteClubs: [],
+      ageRange: dto.ageRange,
+      user,
+    });
+  }
 
   async findFavoriteClubs(id: number) {
     const user = await this.repository
