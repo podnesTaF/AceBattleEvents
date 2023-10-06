@@ -113,8 +113,8 @@ const EventResults = () => {
                       <div className="w-1/2">
                         <img
                           src={
-                            eventResults.bestSportsmen[gender].runner.user.image
-                              ?.mediaUrl || "/abm-logo-black.svg"
+                            eventResults.bestSportsmen[gender].runner.user
+                              ?.image?.mediaUrl || "/abm-logo-black.svg"
                           }
                           alt="image"
                           className="w-full h-full object-cover"
@@ -122,10 +122,11 @@ const EventResults = () => {
                       </div>
                       <div className="w-1/2 p-2 sm:p-4">
                         <h3 className="text-xl font-semibold mb-6 uppercase text-center">
-                          {eventResults.bestSportsmen[gender].runner.user.name +
+                          {eventResults.bestSportsmen[gender].runner.user
+                            ?.name +
                             " " +
                             eventResults.bestSportsmen[gender].runner.user
-                              .surname}
+                              ?.surname}
                         </h3>
                         <div className="flex justify-between gap-4 mb-5 items-center">
                           <h5 className="font-semibold uppercase">

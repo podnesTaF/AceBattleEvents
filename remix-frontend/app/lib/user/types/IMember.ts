@@ -2,9 +2,9 @@ export type CreateMemberDto = {
   role: string;
   category: string;
 
-  firstName: string;
+  name: string;
 
-  lastName: string;
+  surname: string;
 
   email: string;
 
@@ -38,9 +38,9 @@ export type JoinFormValues = {
   role: string;
   category: string;
 
-  firstName: string;
+  name: string;
 
-  lastName: string;
+  surname: string;
 
   email: string;
 
@@ -52,7 +52,7 @@ export type JoinFormValues = {
 
   dateOfBirth?: string;
 
-  ageRage?: string;
+  ageRange?: string;
 
   interest: string;
 

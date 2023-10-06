@@ -13,7 +13,7 @@ import {
   SlideLayout,
   UserDataFields,
 } from "~/components";
-import { BestResult, JoinFormValues } from "~/lib/user/types/IMember";
+import { JoinFormValues } from "~/lib/user/types/IMember";
 import {
   getResultIsMs,
   isValidToGoNext,
@@ -42,26 +42,35 @@ const JoinUs = () => {
   const { formState, handleSubmit, control, getValues, watch } = form;
 
   const onSubmit = async (dto: JoinFormValues) => {
-    let personalBests: BestResult[] = [];
-    let seasonBests: BestResult[] = [];
+    let runner: any = null;
+    let spectator: any = null;
 
     if (dto.role === "runner") {
-      personalBests = dto.personalBests.map((pb) => ({
+      runner = {
+        dateOfBirth: dto.dateOfBirth,
+        gender: dto.gender,
+        category: dto.category,
+      };
+      runner.personalBests = dto.personalBests.map((pb) => ({
         distanceInCm: +pb.distanceInCm,
         timeInMs: getResultIsMs(pb.result),
       }));
 
-      seasonBests = dto.seasonBests.map((sb) => ({
+      runner.seasonBests = dto.seasonBests.map((sb) => ({
         distanceInCm: +sb.distanceInCm,
         timeInMs: +getResultIsMs(sb.result),
       }));
+    } else if (dto.role === "spectator") {
+      spectator = {
+        ageRange: dto.ageRange,
+      };
     }
 
     try {
-      const res = await Api().member.createMember({
+      const res = await Api().users.registerUser({
         ...dto,
-        personalBests,
-        seasonBests,
+        runner,
+        spectator,
       });
       if (res) {
         setEmail(dto.email);
