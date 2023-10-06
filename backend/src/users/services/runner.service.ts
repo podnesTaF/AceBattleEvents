@@ -1,15 +1,50 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Best } from 'src/bests/entities/best.entity';
 import { RunnerResult } from 'src/runner-results/entities/runner-results.entity';
+import { createDateFromDDMMYYYY } from 'src/utils/date-formater';
 import { Repository } from 'typeorm';
+import { CreateRunnerDto } from '../dtos/create-runner.dto';
 import { Runner } from '../entities/runner.entity';
+import { User } from '../entities/user.entity';
 
 @Injectable()
 export class RunnerService {
   constructor(
     @InjectRepository(Runner)
     private repository: Repository<Runner>,
+    @InjectRepository(Best)
+    private bestsRepository: Repository<Best>,
   ) {}
+
+  async create(dto: CreateRunnerDto, user: User) {
+    const runner = new Runner();
+
+    runner.user = user;
+    runner.selfDefinedPB = [];
+    runner.selfDefinedSB = [];
+    const date = createDateFromDDMMYYYY(dto.dateOfBirth);
+    runner.dateOfBirth = date.toDateString();
+
+    for (let i = 0; i < dto.personalBests.length; i++) {
+      const best = await this.bestsRepository.save({
+        distanceInCm: dto.personalBests[i].distanceInCm,
+        timeInMs: dto.personalBests[i].timeInMs,
+      });
+      runner.selfDefinedPB.push(best);
+    }
+
+    for (let i = 0; i < dto.seasonBests.length; i++) {
+      const best = await this.bestsRepository.save({
+        distanceInCm: dto.seasonBests[i].distanceInCm,
+        timeInMs: dto.seasonBests[i].timeInMs,
+      });
+      runner.selfDefinedSB.push(best);
+    }
+    runner.category = dto.category;
+
+    return this.repository.save(runner);
+  }
 
   async findAll(query: any) {
     const page = +query.page || 1; // Default to page 1 if not provided

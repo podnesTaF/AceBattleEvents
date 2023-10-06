@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Best } from 'src/bests/entities/best.entity';
 import { CountryService } from 'src/country/country.service';
 import { Country } from 'src/country/entity/country.entity';
 import { Split } from 'src/splits/entities/splits.entity';
@@ -19,6 +20,7 @@ import { RunnerResultsService } from './runner-results.service';
       Runner,
       Split,
       Country,
+      Best,
     ]),
   ],
   controllers: [RunnerResultsController],

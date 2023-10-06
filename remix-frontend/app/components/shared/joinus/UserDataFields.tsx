@@ -11,18 +11,10 @@ const UserDataFields: React.FC<UserDataFieldsProps> = ({ role }) => {
     <div className="w-full flex-col gap-6">
       <div className="flex flex-col md:flex-row justify-between gap-0 md:gap-6 flex-nowrap">
         <div className="w-full md:w-1/2">
-          <FormField
-            name="firstName"
-            label="First name"
-            placeholder="e.g John"
-          />
+          <FormField name="name" label="First name" placeholder="e.g John" />
         </div>
         <div className="w-full md:w-1/2">
-          <FormField
-            name="lastName"
-            label="Last name"
-            placeholder="e.g Smith"
-          />
+          <FormField name="surname" label="Last name" placeholder="e.g Smith" />
         </div>
       </div>
       <div className="flex flex-col md:flex-row justify-between gap-0 md:gap-6 flex-nowrap">

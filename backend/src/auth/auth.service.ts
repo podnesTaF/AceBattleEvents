@@ -3,9 +3,6 @@ import { JwtService } from '@nestjs/jwt';
 import sgMail from '@sendgrid/mail';
 import * as bcrypt from 'bcrypt';
 import { CountryService } from 'src/country/country.service';
-import { Country } from 'src/country/entity/country.entity';
-import { createDateFromDDMMYYYY } from 'src/utils/date-formater';
-import { generateRandomPassword } from 'src/utils/random-password';
 import * as uuid from 'uuid';
 import { CreateUserDto } from '../users/dtos/create-user.dto';
 import { User } from '../users/entities/user.entity';
@@ -54,37 +51,9 @@ export class AuthService {
 
   async register(dto: CreateUserDto) {
     try {
-      let randomPassword: string;
-      if (!dto.password) {
-        randomPassword = generateRandomPassword();
-      }
-      const hashedPassword = await bcrypt.hash(dto.password || 'podnes', 10);
-      const countryIfExist = await this.countryService.returnIfExist({
-        name: dto.country,
-      });
-      let country: Country | null;
-      if (!countryIfExist) {
-        country = await this.countryService.create(dto.country);
-      } else {
-        country = countryIfExist;
-      }
-      const { password, ...userData } = await this.userService.create({
-        email: dto.email,
-        name: dto.name,
-        surname: dto.surname,
-        city: dto.city,
-        country,
-        password: hashedPassword,
-        image: dto.image || null,
-        role: dto.role,
-        dateOfBirth: createDateFromDDMMYYYY(dto.dateOfBirth),
-        worldAthleticsUrl: dto.worldAthleticsUrl || null,
-        gender: dto.gender || null,
-        club: dto.club || null,
-      });
+      const userData = await this.userService.create(dto);
       return {
         ...userData,
-        token: this.generateJwtToken(userData),
       };
     } catch (err) {
       throw new ForbiddenException('Register error');

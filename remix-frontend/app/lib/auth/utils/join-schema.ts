@@ -35,8 +35,8 @@ export const joinSchema = yup.object().shape({
       result: yup.string().required("Please provide the result"),
     })
   ),
-  firstName: yup.string().required("Please provide your first name"),
-  lastName: yup.string().required("Please provide your last name"),
+  name: yup.string().required("Please provide your first name"),
+  surname: yup.string().required("Please provide your last name"),
   country: yup.string().required("Please provide your country"),
   city: yup.string().required("Please provide your city"),
   gender: yup.string().required("Please provide your gender"),
@@ -78,8 +78,8 @@ export const isValidToGoNext = (step: number, values: any): boolean => {
         : true;
     case 6:
       if (
-        !values.firstName ||
-        !values.lastName ||
+        !values.name ||
+        !values.surname ||
         !values.city ||
         !values.country ||
         !values.gender

@@ -7,7 +7,6 @@ import { Spectator } from 'src/users/entities/spectator.entity';
 import { User } from 'src/users/entities/user.entity';
 import { ManagerService } from 'src/users/services/manager.service';
 import { SpectatorService } from 'src/users/services/spectator.service';
-import { UserService } from 'src/users/services/user.service';
 import { ClubController } from './club.controller';
 import { ClubService } from './club.service';
 import { Club } from './entities/club.entity';
@@ -17,13 +16,7 @@ import { Club } from './entities/club.entity';
     TypeOrmModule.forFeature([Club, User, Country, Spectator, Manager]),
   ],
   controllers: [ClubController],
-  providers: [
-    ClubService,
-    UserService,
-    CountryService,
-    SpectatorService,
-    ManagerService,
-  ],
+  providers: [ClubService, CountryService, SpectatorService, ManagerService],
   exports: [ClubService],
 })
 export class ClubModule {}

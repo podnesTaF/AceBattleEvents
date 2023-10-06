@@ -2,18 +2,21 @@ import { AxiosInstance } from "axios";
 import { IClub } from "~/lib/clubs/types";
 import { UserResult } from "~/lib/races/types/userResult";
 import { IViewer } from "~/lib/registrations/types/ViewerRegister";
-import { IUser } from "~/lib/user/types/IUser";
+import { CreateUserDto, IUser } from "~/lib/user/types/IUser";
 
 export const UserApi = (instance: AxiosInstance) => ({
-  async registerUser(data: IUser) {
+  async registerUser(data: CreateUserDto) {
     try {
       const { data: userData } = await instance.post<IUser>(
-        `/auth/register`,
+        `/users/register`,
         data
       );
       return userData;
     } catch (error: any) {
-      throw new Error("Failed to register: " + error.message);
+      console.log(error);
+      throw new Error(
+        "Failed to register: " + error?.response?.data?.message || error.message
+      );
     }
   },
   async loginUser(dto: {

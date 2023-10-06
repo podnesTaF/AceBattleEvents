@@ -42,6 +42,7 @@ const VerifyMember = () => {
   const { member, generateTicket } = useLoaderData<typeof loader>();
   const [ticketLoading, setTicketLoading] = useState<boolean>(false);
   const [ticket, setTicket] = useState<IMedia>();
+  const [verified, setVerified] = useState<boolean>(false);
 
   useEffect(() => {
     if (generateTicket && !ticket && member) {

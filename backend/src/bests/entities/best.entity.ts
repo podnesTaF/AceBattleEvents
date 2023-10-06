@@ -1,4 +1,4 @@
-import { Member } from 'src/member/entities/member.entity';
+import { Runner } from 'src/users/entities/runner.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -12,13 +12,13 @@ export class Best {
   @Column()
   timeInMs: number;
 
-  @ManyToOne(() => Member, (member) => member.personalBests, {
+  @ManyToOne(() => Runner, (runner) => runner.selfDefinedSB, {
     onDelete: 'CASCADE',
   })
-  memberPb: Member;
+  runnerSb: Runner;
 
-  @ManyToOne(() => Member, (member) => member.seasonBests, {
+  @ManyToOne(() => Runner, (runner) => runner.selfDefinedPB, {
     onDelete: 'CASCADE',
   })
-  memberSb: Member;
+  runnerPb: Runner;
 }

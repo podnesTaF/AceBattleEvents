@@ -11,10 +11,10 @@ export class CreateMemberDto {
   category: RunnerCategory;
 
   @IsString()
-  firstName: string;
+  name: string;
 
   @IsString()
-  lastName: string;
+  surname: string;
 
   @IsString()
   email: string;

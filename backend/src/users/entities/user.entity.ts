@@ -15,6 +15,11 @@ import { Manager } from './manager.entity';
 import { Runner } from './runner.entity';
 import { Spectator } from './spectator.entity';
 
+export enum MemberRole {
+  RUNNER = 'runner',
+  SPECTATOR = 'spectator',
+}
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -31,6 +36,12 @@ export class User {
 
   @Column({ default: 'user' })
   role: string;
+
+  @Column({ nullable: true, type: 'text' })
+  interest: string;
+
+  @Column({ default: false })
+  verified: boolean;
 
   @Column()
   city: string;
@@ -52,6 +63,12 @@ export class User {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
+
+  @Column({ default: false })
+  acceptTerms: boolean;
+
+  @Column({ default: false })
+  acceptNews: boolean;
 
   @OneToOne(() => Spectator, (spectator) => spectator.user, {
     nullable: true,

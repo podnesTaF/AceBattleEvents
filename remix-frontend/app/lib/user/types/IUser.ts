@@ -1,7 +1,13 @@
 import { IClub } from "~/lib/clubs/types";
 import { ICountry } from "~/lib/countries/types";
 import { IMedia } from "~/lib/media/types/IMedia";
-import { IRunnerResult, ITeam } from "~/lib/types";
+import {
+  CreateRunnerDto,
+  CreateSpectatorDto,
+  IRunner,
+  ISpectator,
+  ITeam,
+} from "~/lib/types";
 
 export interface IUser {
   id: number;
@@ -38,21 +44,14 @@ export interface IManager {
   club?: IClub;
 }
 
-export interface IRunner {
-  id: number;
-  gender?: string;
-  dateOfBirth?: string;
-  totalPoints?: number;
-  rank?: number;
-  personalBests?: IRunnerResult[];
-  results?: IRunnerResult[];
-  user: IUser;
-  teams?: ITeam[];
-  club?: IClub;
-}
-
-export interface ISpectator {
-  id: number;
-  favoriteClubs?: IClub;
-  user: IUser;
-}
+export type CreateUserDto = {
+  name: string;
+  surname: string;
+  email: string;
+  city: string;
+  country: string;
+  role: string;
+  interest: string;
+  runner?: CreateRunnerDto;
+  spectator?: CreateSpectatorDto;
+};
