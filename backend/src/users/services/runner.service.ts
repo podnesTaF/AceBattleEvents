@@ -23,9 +23,9 @@ export class RunnerService {
     runner.user = user;
     runner.selfDefinedPB = [];
     runner.selfDefinedSB = [];
+    runner.gender = dto.gender;
     const date = createDateFromDDMMYYYY(dto.dateOfBirth);
     runner.dateOfBirth = date.toDateString();
-
     for (let i = 0; i < dto.personalBests.length; i++) {
       const best = await this.bestsRepository.save({
         distanceInCm: dto.personalBests[i].distanceInCm,

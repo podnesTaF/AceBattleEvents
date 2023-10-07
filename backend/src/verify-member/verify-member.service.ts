@@ -58,7 +58,7 @@ export class VerifyMemberService {
 
     if (!verification) return null;
 
-    return verification.member;
+    return verification.user;
   }
 
   async delete(token: string) {
