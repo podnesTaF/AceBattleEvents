@@ -16,6 +16,7 @@ const FeedbackForm = ({ user }: { user: IUser | null }) => {
     message: string;
     aboutCommnetator: string;
   }>({
+    mode: "onBlur",
     resolver: yupResolver(FeedbackSchema),
   });
 
@@ -32,6 +33,8 @@ const FeedbackForm = ({ user }: { user: IUser | null }) => {
         message: "Feedback was sent successfully!",
         isOpen: true,
       });
+
+      form.reset();
     } else {
       setStatusAlert({
         message: "Something went wrong!",
@@ -74,7 +77,14 @@ const FeedbackForm = ({ user }: { user: IUser | null }) => {
           </div>
           {user ? (
             <div className="w-full flex justify-end">
-              <FormButton title="Send feedback!" isLoading={false} />
+              <FormButton
+                title="Send feedback!"
+                isLoading={false}
+                disabled={
+                  form.formState.isSubmitting || !form.formState.isValid
+                }
+                isSubmitting={form.formState.isSubmitting}
+              />
             </div>
           ) : (
             <div>

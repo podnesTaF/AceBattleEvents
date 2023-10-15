@@ -122,9 +122,7 @@ export const getVerificationLetterTemplate = ({
         <div class="btn-wrapper green">
           <a
             class="btn"
-            href="https://acebattlemile.org/verify-member?token=${token}&ticket=${
-    ticket || ''
-  }"
+            href="https://acebattlemile.org/verify-member?token=${token}"
             target="_blank"
           >
             verify email

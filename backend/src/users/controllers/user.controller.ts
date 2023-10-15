@@ -11,6 +11,7 @@ import {
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
+import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
 
 @Controller('users')
@@ -20,6 +21,19 @@ export class UserController {
   @Post('/register')
   register(@Body() body: CreateUserDto) {
     return this.userService.create(body);
+  }
+
+  @Post('/verify')
+  verifyMember(
+    @Body()
+    dto: {
+      user: User;
+      token: string;
+      ticket: boolean;
+      password: string;
+    },
+  ) {
+    return this.userService.completeVerification(dto);
   }
 
   @Get()

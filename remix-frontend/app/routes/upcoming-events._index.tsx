@@ -26,7 +26,7 @@ const CloseEventsIndex = () => {
   const futureEvents: IFutureEvent[] = [
     {
       id: 1,
-      title: "London Mile",
+      title: "Mace of London",
       description: "The Presentation of Ace Battle Mile in London, UK",
       season: "Spring 2024",
       introImage: {

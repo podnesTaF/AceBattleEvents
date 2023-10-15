@@ -15,11 +15,6 @@ import { MemberService } from './member.service';
 export class MemberController {
   constructor(private readonly memberService: MemberService) {}
 
-  // @Post()
-  // create(@Body() createMemberDto: CreateMemberDto) {
-  //   return this.memberService.create(createMemberDto);
-  // }
-
   @Post('/verify')
   verifyMember(
     @Body() dto: { member: Member; token: string; ticket: boolean },

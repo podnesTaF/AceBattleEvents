@@ -5,7 +5,7 @@ const AuthLayout = () => {
     <div className="w-full">
       <div className="w-full flex justify-center items-center relative h-40 md:h-60 bg-[url('/auth-intro.jpg')] bg-cover bg-center">
         <div className="absolute left-0 top-0 h-full w-full bg-black/40"></div>
-        <h2 className="text-2xl md:text-4xl text-white z-10">Sign up</h2>
+        <h2 className="text-2xl md:text-4xl text-white z-10">Sign in</h2>
       </div>
       <div className="relative w-full flex justify-center items-center mb-8">
         <div className="bg-red-500 absolute left-0 top-0 w-screen md:w-1/2 lg:w-1/3 h-full z-0"></div>

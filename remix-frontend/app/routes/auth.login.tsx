@@ -1,20 +1,24 @@
 import { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { RemixForm } from "~/components/shared/forms/CustomForm";
 import { authenticator, loginSchema } from "~/lib/utils";
 
 export const action = async ({ request }: { request: Request }) => {
   return authenticator.authenticate("user-session", request, {
     successRedirect: "/",
-    failureRedirect: "/auth/login",
+    failureRedirect: "/auth/login?error=Invalid credentials",
   });
 };
 
 export async function loader({ request }: LoaderArgs) {
   // If the user is already authenticated redirect to /dashboard directly
-  return await authenticator.isAuthenticated(request, {
+  await authenticator.isAuthenticated(request, {
     successRedirect: "/",
   });
+
+  const error = new URL(request.url).searchParams.get("error");
+
+  return { error };
 }
 
 export const meta: V2_MetaFunction = () => {
@@ -22,6 +26,7 @@ export const meta: V2_MetaFunction = () => {
 };
 
 const LoginPage = () => {
+  const { error } = useLoaderData<typeof loader>();
   return (
     <div className="py-4 px-2 md:px-4 lg:px-8 md:min-h-[600px] min-w-[250px] sm:min-w-[400px] flex flex-col justify-center">
       <h3 className="text-center text-2xl mb-4">Sign in</h3>
@@ -56,7 +61,11 @@ const LoginPage = () => {
                 </>
               )}
             </Field>
-            <Errors />
+            {error && (
+              <div>
+                <h3 className="w-full text-red-500 my-2">{error}</h3>
+              </div>
+            )}
             <Button className="text-white text-lg uppercase w-full my-2 bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg px-2 py-1 md:px-3 md:py-2  text-center mr-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 inline-flex items-center justify-center disabled:bg-green-200">
               Connect battle mile
             </Button>

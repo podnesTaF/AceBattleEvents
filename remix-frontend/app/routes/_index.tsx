@@ -23,7 +23,7 @@ const networksLinks = [
   },
   {
     title: "Instagram",
-    href: "https://www.instagram.com/battle_mile/",
+    href: "https://www.instagram.com/ace_battle_mile/",
     icon: InstagramIcon,
   },
   {
@@ -156,7 +156,7 @@ export default function Index() {
             <h4 className="text-white text-2xl font-semibold">Follow us</h4>
             <div className="flex gap-4">
               {networksLinks.map((link, i) => (
-                <a href={link.href} key={i}>
+                <a href={link.href} target="_blank" key={i}>
                   <IconButton sx={{ bgcolor: "white" }}>
                     <link.icon className="text-red-500" fontSize="large" />
                   </IconButton>

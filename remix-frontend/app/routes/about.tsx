@@ -148,7 +148,7 @@ const RulesPage = () => {
             <div className="flex flex-wrap justify-around gap-6">
               <div className="w-full sm:w-1/3 flex flex-col gap-4">
                 <h1 className="font-semibold uppercase text-3xl md:text-4xl">
-                  Yuri
+                  Iurii
                   <br />
                   Podnebesnyi
                 </h1>

@@ -35,69 +35,69 @@ export class UserService {
     if (isDuplicate) {
       throw new ForbiddenException('User with this email already exists');
     }
-    try {
-      const user = new User();
+    const user = new User();
 
-      user.role = dto.role;
-      user.name = dto.name;
-      user.surname = dto.surname;
-      user.email = dto.email;
-      user.city = dto.city;
-      let country = await this.countryService.returnIfExist({
-        name: dto.country,
-      });
+    user.role = dto.role;
+    user.name = dto.name;
+    user.surname = dto.surname;
+    user.email = dto.email;
+    user.city = dto.city;
+    let country = await this.countryService.returnIfExist({
+      name: dto.country,
+    });
 
-      if (!country) {
-        country = await this.countryService.create(dto.country);
-      }
-      user.country = country;
-      user.interest = dto.interest;
-
-      const newUser = await this.repository.save(user);
-
-      if (dto.runner) {
-        await this.runnerService.create(dto.runner, newUser);
-      } else if (dto.spectator) {
-        await this.spectatorService.create(dto.spectator, newUser);
-      }
-
-      const randomToken = uuid.v4().toString();
-
-      const verification = await this.verifyRepository.create({
-        token: randomToken,
-        user: newUser,
-      });
-
-      const msg = {
-        to: newUser.email,
-        from: 'it.podnes@gmail.com',
-        subject: 'Verify email address | Ace Battle Mile',
-        html: getVerificationLetterTemplate({
-          token: verification.token,
-          ticket: false,
-        }),
-      };
-
-      try {
-        await sgMail.send(msg);
-      } catch (error) {
-        console.log('error sending email', error.message);
-      }
-
-      return this.repository.save(newUser);
-    } catch (error) {
-      throw new ForbiddenException('Register error');
+    if (!country) {
+      country = await this.countryService.create(dto.country);
     }
+    user.country = country;
+    user.interest = dto.interest;
+
+    const newUser = await this.repository.save(user);
+
+    if (dto.runner) {
+      try {
+        await this.runnerService.create(dto.runner, newUser);
+      } catch (error) {
+        throw new ForbiddenException(error.message);
+      }
+    } else if (dto.spectator) {
+      await this.spectatorService.create(dto.spectator, newUser);
+    }
+
+    const randomToken = uuid.v4().toString();
+
+    const verification = await this.verifyRepository.create({
+      token: randomToken,
+      user: newUser,
+    });
+
+    const msg = {
+      to: newUser.email,
+      from: 'it.podnes@gmail.com',
+      subject: 'Verify email address | Ace Battle Mile',
+      html: getVerificationLetterTemplate({
+        token: verification.token,
+        ticket: false,
+      }),
+    };
+
+    try {
+      await sgMail.send(msg);
+    } catch (error) {
+      console.log('error sending email', error.message);
+    }
+
+    return this.repository.save(newUser);
   }
 
   async completeVerification({
     user,
     token,
-    newPassword,
+    password,
   }: {
     user: User;
     token: string;
-    newPassword?: string;
+    password?: string;
   }) {
     try {
       const fullUser = await this.repository.findOne({
@@ -107,10 +107,10 @@ export class UserService {
       fullUser.verified = true;
 
       let randomPassword: string;
-      if (!newPassword) {
+      if (!password) {
         randomPassword = generateRandomPassword();
       }
-      const hashedPassword = await bcrypt.hash(newPassword || 'podnes', 10);
+      const hashedPassword = await bcrypt.hash(password || 'podnes', 10);
 
       fullUser.password = hashedPassword;
 

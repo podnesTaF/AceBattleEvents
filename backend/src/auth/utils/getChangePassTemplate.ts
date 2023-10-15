@@ -117,7 +117,7 @@ export const changePasswordTemplate = ({
           <div class="btn-wrapper green">
             <a
               class="btn"
-              href="http://localhost:3000/change-password?token=${token}&type=${type}"
+              href="https://acebattlemile.org/change-password?token=${token}&type=${type}"
               target="_blank"
             >
               change password

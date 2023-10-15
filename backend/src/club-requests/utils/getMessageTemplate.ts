@@ -126,7 +126,7 @@ export const acceptJoinRequestTemplate = (club: Club, manager: Manager) => {
             <div class="btn-wrapper green">
               <a
                 class="btn"
-                href="http://localhost:3000/clubs/${club.id}"
+                href="https://acebattlemile.org/clubs/${club.id}"
                 target="_blank"
               >
                 visit club page
@@ -135,7 +135,7 @@ export const acceptJoinRequestTemplate = (club: Club, manager: Manager) => {
             <div class="btn-wrapper yellow">
               <a
                 class="btn"
-                href="http://localhost:3000/profile/${manager.user.id}"
+                href="https://acebattlemile.org/profile/${manager.user.id}"
                 target="_blank"
               >
                 manager page
@@ -269,7 +269,7 @@ export const joinRequestTemplate = (
         <div class="container">
           <p class="text">Profile:</p>
           <h4>
-            <a href="http://localhost:3000/profile/${
+            <a href="https://acebattlemile.org/profile/${
               runner.user.id
             }" target="_blank"
               >user profile</a
@@ -286,7 +286,7 @@ export const joinRequestTemplate = (
       <div class="wrapper">
         <a
           class="btn"
-          href="http://localhost:3000/clubs/${club.id}/join-requests"
+          href="https://acebattlemile.org/clubs/${club.id}/join-requests"
           target="_blank"
         >
           Manage join requests
