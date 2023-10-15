@@ -54,7 +54,7 @@ const AppBar: React.FC<AppBarProps> = ({ admin, user }) => {
     <>
       <div
         className={`relative w-full ${
-          admin ? "mb-[96px] lg:mb-[92px]" : "mb-[80px] lg:mb-[80px]"
+          admin ? "mb-[96px] lg:mb-[92px]" : "mb-[56px] md:mb-[80px]"
         } 
         ${isScrollingUp ? "lg:mb-12" : ""}`}
       >
@@ -120,7 +120,7 @@ const AppBar: React.FC<AppBarProps> = ({ admin, user }) => {
       </div>
 
       {pathname === "/" && <AnnonceStripe />}
-      <CustomDrawer setOpen={setOpen} open={open} />
+      <CustomDrawer setOpen={setOpen} open={open} user={user} />
     </>
   );
 };

@@ -82,7 +82,7 @@ const CommentsPage = () => {
             Feedback
           </h3>
         </div>
-        <div className="flex justify-around gap-8">
+        <div className="flex justify-around gap-8 flex-wrap">
           {feedbacks.map((comment, index) => (
             <FeedbackCard feedback={comment} key={comment.id} index={index} />
           ))}

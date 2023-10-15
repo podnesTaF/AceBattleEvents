@@ -19,6 +19,43 @@ export const UserApi = (instance: AxiosInstance) => ({
       );
     }
   },
+  async checkTokenToVerify(token: string) {
+    try {
+      const { data: isValid } = await instance.get<boolean>(
+        "/verify-member/check/" + token
+      );
+      return isValid;
+    } catch (error) {
+      throw new Error("Error cheking the validity of the token");
+    }
+  },
+  async getUserToVerify(token: string) {
+    try {
+      const { data: user } = await instance.get<any>(
+        "/verify-member/user/" + token
+      );
+      return user;
+    } catch (error) {}
+  },
+  async verify({
+    user,
+    token,
+    password,
+  }: {
+    user: any;
+    token: string;
+    password: string;
+  }) {
+    try {
+      const { data } = await instance.post<IUser>("/users/verify", {
+        token,
+        user,
+        password,
+      });
+
+      return data;
+    } catch (error) {}
+  },
   async loginUser(dto: {
     email: FormDataEntryValue | null;
     password: FormDataEntryValue | null;

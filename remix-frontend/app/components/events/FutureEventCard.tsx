@@ -7,7 +7,7 @@ const FutureEventCard = ({ futureEvent }: { futureEvent: IFutureEvent }) => {
         {futureEvent.title}
       </h1>
       <div
-        className={`w-full bg-contain md:bg-cover bg-no-repeat relative flex justify-center py-10`}
+        className={`w-full min-h-[400px] bg-contain md:bg-cover bg-no-repeat relative flex justify-center items-end md:items-center py-5 md:py-10`}
       >
         <img
           src={futureEvent.introImage?.mediaUrl || "/card1.jpg"}
@@ -21,14 +21,14 @@ const FutureEventCard = ({ futureEvent }: { futureEvent: IFutureEvent }) => {
           alt="logo"
           className="w-[150px] absolute top-4 right-4 -z-10"
         />
-        <div className="px-5 md:py-5 w-full lg:w-[820px] backdrop-blur-xl">
-          <h3 className="p-3 bg-black/50 text-white md:bg-none text-xl uppercase text-center w-full mb-10 md:my-5">
+        <div className="px-5 md:py-5 w-full h-fit lg:w-[820px] backdrop-blur-sm">
+          <h3 className="p-3 bg-black/50 text-white md:bg-none  md:text-xl font-semibold text-center mb-5 w-full md:my-5">
             {futureEvent.description.length < 100
               ? futureEvent.description
               : futureEvent.description.slice(0, 97) + "..."}
           </h3>
           <div className="flex flex-col md:flex-row w-full">
-            <div className="min-h-[400px] w-full flex justify-center items-center">
+            <div className="md:min-h-[400px] mb-5  w-full flex justify-center items-center">
               <div>
                 <h1 className="text-4xl text-white uppercase mb-3 text-center">
                   {futureEvent.season}

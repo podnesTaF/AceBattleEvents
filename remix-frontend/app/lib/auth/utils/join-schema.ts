@@ -56,6 +56,17 @@ export const joinSchema = yup.object().shape({
   acceptNews: yup.boolean(),
 });
 
+export const setPasswordSchema = yup.object().shape({
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Please provide a password"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), ""], "Passwords must match")
+    .required("Please confirm your password"),
+});
+
 export const isValidToGoNext = (step: number, values: any): boolean => {
   switch (step) {
     case 1:
@@ -67,7 +78,7 @@ export const isValidToGoNext = (step: number, values: any): boolean => {
     case 4:
       return values.personalBests.length
         ? values.personalBests.filter(
-            (item: any) => item.distance && item.result
+            (item: any) => item.distanceInCm && item.result
           ).length
         : true;
     case 5:

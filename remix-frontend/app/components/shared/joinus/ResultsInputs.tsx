@@ -33,7 +33,7 @@ const ResultsInputs: React.FC<ResultsInputsProps> = ({
       <div className="flex sm:flex-col w-full">
         <div className="mb-4 mr-3 sm:mb-2 sm:mr-4 w-full">
           <FormSelect
-            name={`${name}.${i}.distance`}
+            name={`${name}.${i}.distanceInCm`}
             label="Distance"
             defaultValue={0}
             placeholder="Choose distance"

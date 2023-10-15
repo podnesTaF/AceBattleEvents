@@ -221,7 +221,7 @@ export const getRunnerResultsTable = (runnerResults: IRunnerResult[]) => {
       ) + " / km",
     records:
       runnerResult.runner?.personalBests?.find(
-        (pb) => pb.distance === runnerResult.distance
+        (pb: IRunnerResult) => pb.distance === runnerResult.distance
       )?.id === runnerResult.id
         ? "PB"
         : "-",
