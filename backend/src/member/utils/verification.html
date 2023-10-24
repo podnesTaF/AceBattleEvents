@@ -1,14 +1,4 @@
-export const getVerificationLetterTemplate = ({
-  name,
-  token,
-  ticket,
-}: {
-  name: string;
-  token: string;
-  ticket: boolean;
-}) => {
-  return `
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <style>
@@ -72,7 +62,7 @@ export const getVerificationLetterTemplate = ({
         />
       </div>
       <div class="main-container">
-        <div class="title-text">Hi, ${name}</div>
+        <div class="title-text">Hi, Oleksii</div>
         <div class="title-text mb-4">
           You are about to become a Ace Battle Mile member!
         </div>
@@ -105,5 +95,3 @@ export const getVerificationLetterTemplate = ({
     </div>
   </body>
 </html>
-    `;
-};

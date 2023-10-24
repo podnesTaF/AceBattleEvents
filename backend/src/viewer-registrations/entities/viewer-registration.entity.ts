@@ -1,6 +1,6 @@
 import { Event } from 'src/events/entities/event.entity';
 import { Media } from 'src/media/entities/media.entity';
-import { Member } from 'src/member/entities/member.entity';
+import { Spectator } from 'src/users/entities/spectator.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -20,10 +20,10 @@ export class ViewerRegistration {
   @Column({ nullable: true })
   gender: string;
 
-  @ManyToOne(() => Member, (member) => member.viewerRegistrations, {
+  @ManyToOne(() => Spectator, (spectator) => spectator.viewerRegistrations, {
     nullable: true,
   })
-  viewer: Member;
+  viewer: Spectator;
 
   @ManyToOne(() => Event, (event) => event.viewerRegistrations)
   event: Event;

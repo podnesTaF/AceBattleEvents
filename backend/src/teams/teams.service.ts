@@ -174,6 +174,7 @@ export class TeamsService {
 
     for (let i = 0; i < teams.length; i++) {
       for (let j = 0; j < teams[i].events.length; j++) {
+        if (teams[i].events[j].startDateTime < new Date()) continue;
         teamsForEvents.push({
           event: removeUnnecessary(teams[i].events[j]),
           team: teams[i],
@@ -204,6 +205,7 @@ export class TeamsService {
       .leftJoinAndSelect('team.coach', 'coach')
       .leftJoinAndSelect('team.players', 'players')
       .where('players.id = :id', { id: playerId })
+      .andWhere('events.endDate > :now', { now: new Date() })
       .getMany();
 
     const transformedData = teams.flatMap((team) => {
@@ -269,8 +271,9 @@ export class TeamsService {
         'club',
         'logo',
         'country',
-        'players.image',
-        'players.country',
+        'players.user',
+        'players.user.image',
+        'players.user.country',
         'club.runners',
         'personalBest',
       ],

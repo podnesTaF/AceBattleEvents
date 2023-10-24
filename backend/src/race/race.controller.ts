@@ -39,6 +39,13 @@ export class RaceController {
     return this.raceService.getAllRacesByEvent(+eventId);
   }
 
+  @Get('/last-matches')
+  getLastMatches(
+    @Query() query: { runnerId?: string; teamId?: string; managerId?: string },
+  ) {
+    return this.raceService.getLastMatches(query);
+  }
+
   @Get('/full-race/:id')
   getFullRace(@Param('id') id: string) {
     return this.raceService.getFullRace(+id);

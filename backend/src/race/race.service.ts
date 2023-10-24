@@ -113,6 +113,52 @@ export class RaceService {
     });
   }
 
+  getLastMatches(query: {
+    runnerId?: string;
+    teamId?: string;
+    managerId?: string;
+  }) {
+    const qb = this.repository
+      .createQueryBuilder('race')
+      .leftJoinAndSelect('race.event', 'event')
+      .leftJoinAndSelect('event.location', 'location')
+      .leftJoinAndSelect('location.country', 'country')
+      .leftJoinAndSelect('race.winner', 'winner')
+      .leftJoinAndSelect('race.teamResults', 'teamResults')
+      .leftJoinAndSelect('teamResults.team', 'team');
+
+    if (query.runnerId) {
+      qb.leftJoinAndSelect('teamResults.runnerResults', 'runnerResults')
+        .leftJoinAndSelect('runnerResults.runner', 'runner')
+        .where('runner.id = :runnerId', {
+          runnerId: +query.runnerId,
+        });
+    }
+
+    if (query.managerId) {
+      qb.leftJoinAndSelect('team.manager', 'manager').where(
+        'manager.id = :managerId',
+        {
+          managerId: +query.managerId,
+        },
+      );
+    }
+
+    if (query.teamId) {
+      qb.andWhere('team.id = :teamId', {
+        teamId: +query.teamId,
+      });
+    }
+
+    qb.andWhere('race.startTime < :now', {
+      now: new Date(), // Current time
+    })
+      .orderBy('race.startTime', 'DESC') // Order by startTime in descending order
+      .take(2);
+
+    return qb.getMany();
+  }
+
   async getFullRace(id: number) {
     return this.repository.findOne({
       where: { id },

@@ -9,9 +9,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { CompleteVerificationDto } from '../dtos/complete-verification.dto';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
-import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
 
 @Controller('users')
@@ -26,12 +26,7 @@ export class UserController {
   @Post('/verify')
   verifyMember(
     @Body()
-    dto: {
-      user: User;
-      token: string;
-      ticket: boolean;
-      password: string;
-    },
+    dto: CompleteVerificationDto,
   ) {
     return this.userService.completeVerification(dto);
   }

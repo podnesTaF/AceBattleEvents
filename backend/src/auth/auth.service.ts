@@ -41,6 +41,7 @@ export class AuthService {
 
   async login(user: User, userType: string) {
     const { password, ...userData } = user;
+    console.log(userType);
     const roles = [userType];
 
     return {

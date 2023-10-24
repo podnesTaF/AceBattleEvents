@@ -5,10 +5,10 @@ import * as bcrypt from 'bcrypt';
 import { CountryService } from 'src/country/country.service';
 import { Country } from 'src/country/entity/country.entity';
 import { getVerificationLetterTemplate } from 'src/member/utils/getLetterTemplate';
-import { generateRandomPassword } from 'src/utils/random-password';
 import { VerifyMemberService } from 'src/verify-member/verify-member.service';
 import { Repository } from 'typeorm';
 import * as uuid from 'uuid';
+import { CompleteVerificationDto } from '../dtos/complete-verification.dto';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { LoginUserDto } from '../dtos/login-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
@@ -41,6 +41,7 @@ export class UserService {
     user.name = dto.name;
     user.surname = dto.surname;
     user.email = dto.email;
+    user.image = dto.image;
     user.city = dto.city;
     let country = await this.countryService.returnIfExist({
       name: dto.country,
@@ -73,9 +74,13 @@ export class UserService {
 
     const msg = {
       to: newUser.email,
-      from: 'it.podnes@gmail.com',
-      subject: 'Verify email address | Ace Battle Mile',
+      from: {
+        email: 'it.podnes@gmail.com',
+        name: 'Ace Battle Mile',
+      },
+      subject: 'Confirm your email address | Ace Battle Mile',
       html: getVerificationLetterTemplate({
+        name: newUser.name,
         token: verification.token,
         ticket: false,
       }),
@@ -94,11 +99,7 @@ export class UserService {
     user,
     token,
     password,
-  }: {
-    user: User;
-    token: string;
-    password?: string;
-  }) {
+  }: CompleteVerificationDto) {
     try {
       const fullUser = await this.repository.findOne({
         where: { id: user.id },
@@ -106,11 +107,7 @@ export class UserService {
 
       fullUser.verified = true;
 
-      let randomPassword: string;
-      if (!password) {
-        randomPassword = generateRandomPassword();
-      }
-      const hashedPassword = await bcrypt.hash(password || 'podnes', 10);
+      const hashedPassword = await bcrypt.hash(password, 10);
 
       fullUser.password = hashedPassword;
 

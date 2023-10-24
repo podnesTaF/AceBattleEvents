@@ -95,7 +95,6 @@ export class RunnerService {
       totalPages,
     };
   }
-
   findById(id: number) {
     return this.repository.findOne({ where: { id } });
   }

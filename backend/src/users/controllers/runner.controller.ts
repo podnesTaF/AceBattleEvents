@@ -9,7 +9,6 @@ export class RunnerController {
   getAllRunners(@Query() queries: any) {
     return this.runnerService.findAll(queries);
   }
-
   @Post('/points/calculate')
   updatePoints(@Query('gender') gender: string) {
     return this.runnerService.calculateUsersPoints(gender);

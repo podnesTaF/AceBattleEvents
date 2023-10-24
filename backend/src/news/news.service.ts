@@ -21,6 +21,7 @@ export class NewsService {
       relations: ['contents', 'hashtags', 'contents.media', 'mainImage'],
       take: limit,
       skip: page ? (page - 1) * limit : 0,
+      order: { createdAt: 'DESC' },
     });
   }
 
@@ -49,8 +50,8 @@ export class NewsService {
       let previewText = '';
       if (content) {
         previewText =
-          content.text.length > textLength || 100
-            ? content.text.substring(0, textLength || 100) + '...'
+          content.text.length > (textLength || 90)
+            ? content.text.substring(0, textLength || 90) + '...'
             : content.text;
       }
 

@@ -84,7 +84,6 @@ export class TeamsController {
   }
 
   @Get('/:id/user-registrations')
-  @UseGuards(JwtAuthGuard)
   findAllRegByUser(@Param('id') id: string) {
     return this.teamsService.getRegistrationsByPlayerId(+id);
   }
