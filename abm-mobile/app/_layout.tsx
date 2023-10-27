@@ -1,16 +1,16 @@
 import React from 'react'
-import { Stack, Tabs } from 'expo-router'
+import { Tabs } from 'expo-router'
 import { StyleSheet, Image} from 'react-native'
 
 const Layout = () => {
   return (
     <Tabs>
         <Tabs.Screen name='index' options={{
-            headerTitle: "Test Page",
-            headerBackground: () => ( <Image style={styles.headerImage} source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/3/36/Hopetoun_falls.jpg' }} />)
+            headerTitle: "Ace Battle Mile",
+              headerTitleStyle: { fontSize: 24 },
         }} />
-        <Tabs.Screen name="(tabs)" options={{
-            headerShown: false
+        <Tabs.Screen name="(drawer)" options={{
+         
         }} />
         <Tabs.Screen name="modal" />
     </Tabs>
