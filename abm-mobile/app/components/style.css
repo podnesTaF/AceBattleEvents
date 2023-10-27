@@ -1,0 +1,18 @@
+.container {
+    background-color: rgba(54, 36, 174, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    margin: 50px;
+}
+
+.container > span {
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}

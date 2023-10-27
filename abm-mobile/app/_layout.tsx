@@ -1,17 +1,27 @@
 import React from 'react'
-import { Stack } from 'expo-router'
+import { Tabs } from 'expo-router'
+import { StyleSheet, Image} from 'react-native'
 
 const Layout = () => {
   return (
-    <Stack>
-        <Stack.Screen name='index' options={{
-            title: 'Login'
+    <Tabs>
+        <Tabs.Screen name='index' options={{
+            headerTitle: "Ace Battle Mile",
+              headerTitleStyle: { fontSize: 24 },
         }} />
-        <Stack.Screen name="(tabs)" options={{
-            headerShown: false
+        <Tabs.Screen name="(drawer)" options={{
+         
         }} />
-    </Stack>
+        <Tabs.Screen name="modal" />
+    </Tabs>
   )
 }
 
 export default Layout
+
+const styles = StyleSheet.create({
+  headerImage: {
+    height: 17,
+    alignSelf: 'center'
+  }
+})

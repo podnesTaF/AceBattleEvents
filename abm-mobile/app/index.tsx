@@ -11,7 +11,7 @@ const Page = () => {
       <Link href={"/register"} asChild>
       <Button  title='Register with link' />
       </Link>
-      <Link href={"/(tabs)/one"} replace asChild>
+      <Link href={"/(tabs)/(one)/one"} replace asChild>
         <Button  title='Login' />
       </Link>
     </View>
