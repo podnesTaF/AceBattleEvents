@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const Page = () => {
+const Athletes = () => {
   return (
     <View>
-      <Text>Disclaimer</Text>
+      <Text>Athletes Tab</Text>
     </View>
   )
 }
 
-export default Page
+export default Athletes
