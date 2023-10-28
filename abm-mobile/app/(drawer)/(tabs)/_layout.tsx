@@ -13,12 +13,15 @@ const Layout = () => {
             <Ionicons name={'home'} size={size} color={color}/> 
           )
         }} />
-        <Tabs.Screen name="athletes" options={{
+        <Tabs.Screen name="(athletes)" options={{
           headerShown: false,
           tabBarLabel: "Athletes",
           tabBarIcon: ({size, color}) => (
             <Ionicons name={'body'} size={size} color={color}/> 
           )
+        }} />
+         <Tabs.Screen name="(team)" options={{
+          href: null
         }} />
          <Tabs.Screen name="notifications" options={{
           headerShown: false,

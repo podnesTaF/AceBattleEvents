@@ -2,12 +2,13 @@ import { View, Text, Image} from 'react-native'
 import React from 'react'
 import Drawer from 'expo-router/drawer'
 import {Ionicons} from '@expo/vector-icons'
+import CustomDrawerContent from '../../components/CustomDrawerContent'
 
 
 const Layout = () => {
   return (
     <Drawer
-      initialRouteName='(tabs)'
+    drawerContent={(props) => <CustomDrawerContent {...props}/>}
       >
         <Drawer.Screen name="(tabs)" options={{
           drawerLabel: 'Home',
