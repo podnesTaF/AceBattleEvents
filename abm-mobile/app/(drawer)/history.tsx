@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const HistoryScreen = () => {
+const History = () => {
   return (
     <View>
-      <Text>HistoryScreen</Text>
+      <Text>Abm History</Text>
     </View>
   )
 }
 
-export default HistoryScreen
+export default History

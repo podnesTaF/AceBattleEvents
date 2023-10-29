@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const Modal = () => {
+const AccountScreen = () => {
   return (
     <View>
-      <Text>Modal</Text>
+      <Text>AccountScreen</Text>
     </View>
   )
 }
 
-export default Modal
+export default AccountScreen

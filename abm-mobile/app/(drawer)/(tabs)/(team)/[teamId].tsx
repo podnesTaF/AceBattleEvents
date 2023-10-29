@@ -2,13 +2,13 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { useLocalSearchParams } from 'expo-router'
 
-const Page = () => {
-    const {id} = useLocalSearchParams<{id: string}>();
+const TeamScreen = () => {
+    const params = useLocalSearchParams()
   return (
     <View>
-      <Text>Hi: {id}</Text>
+      <Text>Team: {params.teamId}</Text>
     </View>
   )
 }
 
-export default Page
+export default TeamScreen
