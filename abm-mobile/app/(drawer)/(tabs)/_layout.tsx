@@ -1,17 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Tabs } from 'expo-router'
 import { StyleSheet, Image} from 'react-native'
 import {Ionicons} from "@expo/vector-icons"
+import HomeTabTitle from '../../../components/HomeTabTitle'
 
 const Layout = () => {
+  const [user, setUser] = useState(true)
   return (
-    <Tabs screenOptions={{headerShown: false}}>
+    <Tabs>
         <Tabs.Screen name='home'  options={{
-          headerShown: false,
           tabBarLabel: "Home",
           tabBarIcon: ({size, color}) => (
             <Ionicons name={'home'} size={size} color={color}/> 
-          )
+          ),
+          headerStyle: {
+            backgroundColor: '#1C1E1F',
+            borderBottomEndRadius: 12,
+            borderBottomStartRadius: 12
+          },
+          headerTintColor: '#fff',
+          title: 'Ace Battle Mile',
+          headerTitle: props => <HomeTabTitle user={user} />,
         }} />
         <Tabs.Screen name="(athletes)" options={{
           headerShown: false,
@@ -30,7 +39,7 @@ const Layout = () => {
             <Ionicons name={'notifications'} size={size} color={color}/> 
           )
         }} />
-        <Tabs.Screen name="account" options={{
+        <Tabs.Screen name="(account)" options={{
           headerShown: false,
           tabBarLabel: "My account",
           tabBarIcon: ({size, color}) => (

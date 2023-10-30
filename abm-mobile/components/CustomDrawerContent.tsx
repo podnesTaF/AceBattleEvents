@@ -4,7 +4,7 @@ import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawe
 
 const CustomDrawerContent = (props: any) => {
     return (
-        <DrawerContentScrollView style={{backgroundColor: 'primary.500', flex:1}} {...props}>
+        <DrawerContentScrollView style={{backgroundColor: "#1F1C1E", flex:1}} {...props}>
             <View>
                 <View style={{flexDirection: 'row', gap: 4, marginLeft: 16, marginBottom: 16}}>
                 <Text style={{fontSize: 24, fontWeight:"600"}}>Ace Battle Mile</Text>

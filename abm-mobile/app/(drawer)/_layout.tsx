@@ -3,6 +3,7 @@ import React from 'react'
 import Drawer from 'expo-router/drawer'
 import {Ionicons} from '@expo/vector-icons'
 import CustomDrawerContent from '../../components/CustomDrawerContent'
+import LogoTitle from '../../components/LogoTitle'
 
 
 const Layout = () => {
@@ -12,22 +13,32 @@ const Layout = () => {
       >
         <Drawer.Screen name="(tabs)" options={{
           drawerLabel: 'Home',
-          title:"Ace Battle Events"
+          headerStyle: {
+            backgroundColor: '#1C1E1F',
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          title: 'Ace Battle Mile',
+          headerTitle: props => <LogoTitle {...props} />,
         }} />
         <Drawer.Screen name="events" options={{
-                    headerTitle: "Ace Battle Events",
+                    title: 'Events',
                     drawerLabel: "Events"
                 }} />
          <Drawer.Screen name="rules" options={{
-                    headerTitle: "Ace Battle Events",
+                      headerShown: false,
                     drawerLabel: "ABM Rules"
                 }} />
            <Drawer.Screen name="history" options={{
-             headerTitle: "Ace Battle Events",
+             headerShown: false,
              drawerLabel: "ABM History"
            }} />
             <Drawer.Screen name="news" options={{
-             headerTitle: "Ace Battle Events",
+               headerShown: false,
              drawerLabel: "News"
            }} />
     </Drawer>
