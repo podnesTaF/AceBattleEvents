@@ -1,15 +1,14 @@
-import { View, Text, Image} from 'react-native'
+
 import React from 'react'
 import Drawer from 'expo-router/drawer'
-import {Ionicons} from '@expo/vector-icons'
-import CustomDrawerContent from '../../components/CustomDrawerContent'
-import LogoTitle from '../../components/LogoTitle'
+import CustomDrawerContent from '@Components/CustomDrawerContent'
+import LogoTitle from '@Components/LogoTitle'
 
 
 const Layout = () => {
   return (
     <Drawer
-    drawerContent={(props) => <CustomDrawerContent {...props}/>}
+      drawerContent={(props: any) => <CustomDrawerContent {...props}/>}
       >
         <Drawer.Screen name="(tabs)" options={{
           drawerLabel: 'Home',
@@ -23,7 +22,7 @@ const Layout = () => {
             fontWeight: 'bold',
           },
           title: 'Ace Battle Mile',
-          headerTitle: props => <LogoTitle {...props} />,
+          headerTitle: (props: any) => <LogoTitle {...props} />,
         }} />
         <Drawer.Screen name="events" options={{
                     title: 'Events',

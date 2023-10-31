@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Tabs } from 'expo-router'
 import { StyleSheet, Image} from 'react-native'
 import {Ionicons} from "@expo/vector-icons"
-import HomeTabTitle from '../../../components/HomeTabTitle'
+import HomeTabTitle from '@Components/HomeTabTitle'
 
 const Layout = () => {
   const [user, setUser] = useState(true)
