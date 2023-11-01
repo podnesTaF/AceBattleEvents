@@ -11,7 +11,8 @@ module.exports = function (api) {
         "alias": {
           "@Components": "./src/components",
           "@Constants": "./src/constants",
-          "@Assets": "./assets"
+          "@Assets": "./assets",
+          "@Utils": "./src/utils"
         },
         "extensions": [
           ".js",

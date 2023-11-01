@@ -2,9 +2,13 @@ import React from 'react'
 import { useRouter } from 'expo-router'
 import { SafeAreaView  } from 'react-native-safe-area-context';
 import UpcomingEventCard from '@Components/events/UpcomingEventCard';
-import { HStack, Heading, VStack, Image, Box, ScrollView, Center, Pressable } from '@gluestack-ui/themed';
+import { HStack, Heading, VStack, Image, Box, ScrollView, Center, Pressable, Text, View} from '@gluestack-ui/themed';
 import { infoCards } from '@Constants/info-contents';
 import StatCard from '@Components/custom/StatCard';
+import { newsPreviews, teams, users } from '@Constants/dummy-data';
+import AthletePodiumCard from '@Components/athletes/AthletePodiumCard';
+import TeamLogoCard from '@Components/teams/TeamLogoCard';
+import NewsCard from '@Components/news/NewsCard';
 
 const Page = () => {
     const router = useRouter()
@@ -53,6 +57,37 @@ const Page = () => {
                 </Pressable>
              </HStack>
           </Center>
+          <Center mb={'$5'} px={'$4'}>
+            <HStack space='lg' width={"$full"}>
+                {[2,1,3].map((rank, i) => (
+                  <HStack key={rank} height={"$56"} flex={1}>
+                    <AthletePodiumCard user={users.find(user => user.runner.rank === rank)} />
+                  </HStack>
+                ))}
+            </HStack>
+          </Center>
+        </Box>
+        <Box m={'$4'}>
+            <Heading size={'xl'} mb={"$3"}>ABM TEAMS</Heading>
+            <View flexDirection='row' flexWrap='wrap' justifyContent='space-around' gap={'$5'}>
+              {teams.map(team => (
+               <Box key={team.id} width={"$2/5"}>
+                 <TeamLogoCard  team={team}/>
+               </Box>
+              ))}
+            </View>
+        </Box>
+        <Box my="$6" px={'$4'}>
+          <Heading size='xl'>Latest News</Heading>
+            <ScrollView horizontal={true}>
+              <HStack space='xl'>
+                  {newsPreviews.map((news) => (
+                   <Box key={news.id} maxWidth={380}>
+                     <NewsCard news={news}  />
+                   </Box>
+                  ))}
+              </HStack>
+            </ScrollView>
         </Box>
       </ScrollView>
     // </SafeAreaView>

@@ -12,7 +12,10 @@ export {
 } from 'expo-router';
 
 export const unstable_settings = {
-  initialRouteName: '(drawer)/(tabs)/home',
+  initialRouteName: '(drawer)/(tabs)',
+  tabs: {
+    initialRouteName: 'home',
+  }
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
