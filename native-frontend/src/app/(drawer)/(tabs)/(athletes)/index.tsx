@@ -1,12 +1,58 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text } from "react-native";
+import React from "react";
+import { Box, HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
+import { runners, teams, users } from "@Constants/dummy-data";
+import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
+import AthletePreviewCard from "@Components/athletes/AthletePreviewCard";
+import HorizontalListLayout from "@Components/common/HorizontalListLayout";
+import UserCard from "@Components/user/UserCard";
 
 const Athletes = () => {
   return (
-    <View>
-      <Text>Athletes Tab</Text>
-    </View>
-  )
-}
+    <ScrollView bg={"$fff9ff"}>
+      <VStack my={"$4"} space="sm">
+        <HStack mx={"$4"}>
+          <Heading size="lg">Top </Heading>
+          <Heading size="lg" color="$red500">
+            AB{" "}
+          </Heading>
+          <Heading size="lg">Teams</Heading>
+        </HStack>
+        <HorizontalListLayout
+          identifier="team"
+          items={teams}
+          ItemComponent={TeamPreviewCard}
+        />
+      </VStack>
+      <VStack my={"$4"} space="sm">
+        <HStack mx={"$4"}>
+          <Heading size="lg">Top </Heading>
+          <Heading size="lg" color="$red500">
+            AB{" "}
+          </Heading>
+          <Heading size="lg">Runners</Heading>
+        </HStack>
+        <HorizontalListLayout
+          identifier="runner"
+          items={runners}
+          ItemComponent={AthletePreviewCard}
+        />
+      </VStack>
+      <VStack mt={"$4"} mb={'$8'} space="sm">
+        <HStack mx={"$4"}>
+          <Heading size="lg">Your </Heading>
+          <Heading size="lg" color="$red500">
+            Followings
+          </Heading>
+        </HStack>
+        <VStack px={"$3"} width={"$full"} borderColor="$red500" bgColor="$white" borderTopWidth={3} borderBottomWidth={3}>
+          {users.map((user, i) => (
+            <UserCard user={user} key={user.id} isLastElement={i === users.length - 1} />
+          ))}
+        </VStack>
+      </VStack>
+    </ScrollView>
+  );
+};
 
-export default Athletes
+export default Athletes;

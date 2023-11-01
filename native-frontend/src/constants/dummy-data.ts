@@ -4,7 +4,8 @@ export const users = [
         name: "Oleg",
         surname: "Kayafa",
         runner: {
-            rank: 1
+            rank: 1,
+            dateOfBirth: "1992-09-23T00:00:00.000Z"
         }
     },
     {
@@ -12,16 +13,171 @@ export const users = [
         name: "Dmyrtiy",
         surname: "Nicolaychuk",
         runner: {
-            rank: 2
-        }
+            rank: 2,
+            dateOfBirth: "1997-09-23T00:00:00.000Z"
+        },
+        image: {
+            "id": 113,
+            "title": "nikolajchuk-dmitrij.jpg",
+            "mediaUrl": "https://storage.googleapis.com/abe_cloud_storage/image/large/56ff5950-ba01-483b-98e2-cfd12a5bc82e.jpg",
+            "smallUrl": "https://storage.googleapis.com/abe_cloud_storage/image/small/small_56ff5950-ba01-483b-98e2-cfd12a5bc82e.jpg",
+            "mediaType": "image"
+        },
     },
     {
         id: 3,
         name: "Giovanni",
         surname: "Gatto",
         runner: {
-            rank: 3
-        }
+            rank: 3,
+            dateOfBirth: "2002-09-23T00:00:00.000Z"
+        },
+        "image": {
+            "id": 118,
+            "title": "kogut-tetiana.jpg",
+            "mediaUrl": "https://storage.googleapis.com/abe_cloud_storage/image/large/1848e3d2-4fea-4c7f-85f3-c93c4632c9bb.jpg",
+            "smallUrl": "https://storage.googleapis.com/abe_cloud_storage/image/small/small_1848e3d2-4fea-4c7f-85f3-c93c4632c9bb.jpg",
+            "mediaType": "image"
+        },
+    }
+]
+
+
+export const runners = [
+    {
+        "id": 10,
+        "dateOfBirth": "2001-01-17 00:00:00.000",
+        "gender": "male",
+        "worldAthleticsUrl": "https://worldathletics.org/athletes/ukraine/dmytrii-nikolaichuk-14596852",
+        "category": "professional",
+        "totalPoints": 252520,
+        "rank": 2,
+        "user": {
+            "id": 10,
+            "name": "Dmytriy",
+            "surname": "Nikolaychuk",
+            "email": "dn@gmail.com",
+            "role": "runner",
+            "interest": null,
+            "verified": false,
+            "city": "Kyiv",
+            "password": "$2b$10$vgZ65ufuNtmb3orscAM11OeI05itNUffR2AkE1xqTzAJ7rkdcGoPy",
+            "createdAt": "2023-08-18T08:29:02.528Z",
+            "updatedAt": "2023-10-01T10:07:40.000Z",
+            "acceptTerms": false,
+            "acceptNews": false,
+            "image": {
+                "id": 113,
+                "title": "nikolajchuk-dmitrij.jpg",
+                "mediaUrl": "https://storage.googleapis.com/abe_cloud_storage/image/large/56ff5950-ba01-483b-98e2-cfd12a5bc82e.jpg",
+                "smallUrl": "https://storage.googleapis.com/abe_cloud_storage/image/small/small_56ff5950-ba01-483b-98e2-cfd12a5bc82e.jpg",
+                "mediaType": "image"
+            },
+            "country": {
+                "id": 3,
+                "name": "Ukraine",
+                "code": "UKR",
+                "flagIconUrl": "https://flagcdn.com/ua.svg"
+            }
+        },
+        "teamsAsRunner": [
+            {
+                "id": 43,
+                "name": "Kyiv-Men",
+                "gender": "male",
+                "city": "Kyiv",
+                "totalPoints": 1220000,
+                "rank": 1
+            }
+        ]
+    },
+    {
+        "id": 45,
+        "dateOfBirth": "2003-10-02 00:00:00.000",
+        "gender": "female",
+        "worldAthleticsUrl": "https://worldathletics.org/athletes/ukraine/tetiana-chornovol-14894572",
+        "category": "professional",
+        "totalPoints": 295533,
+        "rank": 2,
+        "user": {
+            "id": 45,
+            "name": "Tetiana",
+            "surname": "CHORNOVOL",
+            "email": "tet@gmail.com",
+            "role": "runner",
+            "interest": null,
+            "verified": false,
+            "city": "Kyiv",
+            "password": "$2b$10$Ds1a0bJv.XjUL0rf2pLrK.1QtiGm3aMSKy5lwPh8SNVul30fAB9pu",
+            "createdAt": "2023-08-20T08:50:16.664Z",
+            "updatedAt": "2023-10-01T09:53:42.306Z",
+            "acceptTerms": false,
+            "acceptNews": false,
+            "image": null,
+            "country": {
+                "id": 3,
+                "name": "Ukraine",
+                "code": "UKR",
+                "flagIconUrl": "https://flagcdn.com/ua.svg"
+            }
+        },
+        "teamsAsRunner": [
+            {
+                "id": 44,
+                "name": "Kyiv-Women",
+                "gender": "female",
+                "city": "Kyiv",
+                "totalPoints": 1448250,
+                "rank": 1
+            }
+        ]
+    },
+    {
+        "id": 43,
+        "dateOfBirth": "2003-03-18 00:00:00.000",
+        "gender": "female",
+        "worldAthleticsUrl": "https://worldathletics.org/athletes/ukraine/tetiana-kohut-14848656",
+        "category": "professional",
+        "totalPoints": 296650,
+        "rank": 3,
+        "user": {
+            "id": 43,
+            "name": "Tetiana",
+            "surname": "KOHUT",
+            "email": "kog@gmail.com",
+            "role": "runner",
+            "interest": null,
+            "verified": false,
+            "city": "Kyiv",
+            "password": "$2b$10$A1fHseP6tdbS6tNSmVpeku7jC3CUntgVCgpQMLYLCxrjWkF4eFo6e",
+            "createdAt": "2023-08-20T08:50:16.655Z",
+            "updatedAt": "2023-10-01T09:53:42.511Z",
+            "acceptTerms": false,
+            "acceptNews": false,
+            "image": {
+                "id": 118,
+                "title": "kogut-tetiana.jpg",
+                "mediaUrl": "https://storage.googleapis.com/abe_cloud_storage/image/large/1848e3d2-4fea-4c7f-85f3-c93c4632c9bb.jpg",
+                "smallUrl": "https://storage.googleapis.com/abe_cloud_storage/image/small/small_1848e3d2-4fea-4c7f-85f3-c93c4632c9bb.jpg",
+                "mediaType": "image"
+            },
+            "country": {
+                "id": 3,
+                "name": "Ukraine",
+                "code": "UKR",
+                "flagIconUrl": "https://flagcdn.com/ua.svg"
+            }
+        },
+        "teamsAsRunner": [
+            {
+                "id": 44,
+                "name": "Kyiv-Women",
+                "gender": "female",
+                "city": "Kyiv",
+                "totalPoints": 1448250,
+                "rank": 1
+            }
+        ]
     }
 ]
 
@@ -547,6 +703,57 @@ export const newsPreviews = [
             "title": "cover_bm_return_en.png",
             "mediaUrl": "https://storage.googleapis.com/abe_cloud_storage/image/large/515620f5-bb18-4aac-b882-410f66942f69.png",
             "smallUrl": "https://storage.googleapis.com/abe_cloud_storage/image/small/small_515620f5-bb18-4aac-b882-410f66942f69.png",
+            "mediaType": "image"
+        }
+    }
+]
+
+export const teamsPreview = [
+    {
+        "id": 43,
+        "name": "Kyiv-Men",
+        "rank": 1,
+        "logo": {
+            "id": 92,
+            "title": "kyiv_club.png",
+            "mediaUrl": "https://storage.googleapis.com/abe_cloud_storage/image/large/5654006a-4f44-4b36-a07b-07417a8c88f3.png",
+            "smallUrl": "https://storage.googleapis.com/abe_cloud_storage/image/small/small_5654006a-4f44-4b36-a07b-07417a8c88f3.png",
+            "mediaType": "image"
+        }
+    },
+    {
+        "id": 42,
+        "name": "Brussels-Men",
+        "rank": 2,
+        "logo": {
+            "id": 91,
+            "title": "brussels_club.png",
+            "mediaUrl": "https://storage.googleapis.com/abe_cloud_storage/image/large/d529f8ff-2c17-416b-addc-c847196b0cf2.png",
+            "smallUrl": "https://storage.googleapis.com/abe_cloud_storage/image/small/small_d529f8ff-2c17-416b-addc-c847196b0cf2.png",
+            "mediaType": "image"
+        }
+    },
+    {
+        "id": 44,
+        "name": "Kyiv-Women",
+        "rank": 1,
+        "logo": {
+            "id": 92,
+            "title": "kyiv_club.png",
+            "mediaUrl": "https://storage.googleapis.com/abe_cloud_storage/image/large/5654006a-4f44-4b36-a07b-07417a8c88f3.png",
+            "smallUrl": "https://storage.googleapis.com/abe_cloud_storage/image/small/small_5654006a-4f44-4b36-a07b-07417a8c88f3.png",
+            "mediaType": "image"
+        },
+    },
+    {
+        "id": 45,
+        "name": "Brussels-Women",
+        "rank": 2,
+        "logo": {
+            "id": 91,
+            "title": "brussels_club.png",
+            "mediaUrl": "https://storage.googleapis.com/abe_cloud_storage/image/large/d529f8ff-2c17-416b-addc-c847196b0cf2.png",
+            "smallUrl": "https://storage.googleapis.com/abe_cloud_storage/image/small/small_d529f8ff-2c17-416b-addc-c847196b0cf2.png",
             "mediaType": "image"
         }
     }
