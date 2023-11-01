@@ -6,7 +6,8 @@
     "paths": {
       "@Constants/*": ["src/constants/*"],
       "@Components/*": ["src/components/*"],
-      "@Assets/*": ["assets/*"]
+      "@Assets/*": ["assets/*"],
+      "@Utils/*": ["src/utils/*"]
     }
   },
   "include": [
