@@ -43,6 +43,31 @@ export const users = [
 ]
 
 
+export const managers = [
+    {
+        "id": 1,
+        "name": "Oleksii",
+        "surname": "Kulivets",
+        "email": "oleksii_kulivets@gmail.com",
+        "description": "manager",
+        image: {
+            "id": 113,
+            "title": "nikolajchuk-dmitrij.jpg",
+            "mediaUrl": "https://storage.googleapis.com/abe_cloud_storage/image/large/56ff5950-ba01-483b-98e2-cfd12a5bc82e.jpg",
+            "smallUrl": "https://storage.googleapis.com/abe_cloud_storage/image/small/small_56ff5950-ba01-483b-98e2-cfd12a5bc82e.jpg",
+            "mediaType": "image"
+        },
+    },
+    {
+        "id": 2,
+        "name": "Oleksii",
+        "surname": "Kulivets",
+        "email": "oleksii_kulivets@gmail.com",
+        "description": "Coach of the Kyiv teams"
+    },
+]
+
+
 export const runners = [
     {
         "id": 10,
@@ -796,5 +821,189 @@ export const events = [
         },
         "teamsCount": 4,
         "totalPrize": 6000
+    }
+]
+
+
+export const races = [
+    {
+        "id": 12,
+        "startTime": "2023-09-23T17:00:00.000Z",
+        "name": "Men Team Brussels - Men Team Kyiv",
+        "type": "male",
+        "event": {
+            "id": 25,
+            "title": "Brussels Mile",
+            "description": "The First Ace Battle Mile competition in Europe. Top athletes are invited to run a mile together in the running battle.",
+            "category": "outdoor",
+            "startDateTime": "2023-09-23T16:00:00.000Z",
+            "endDate": "2023-09-23T20:00:00.000Z",
+            "location": {
+                "id": 32,
+                "address": "Sportpark De Drie Linden",
+                "zipCode": "1170",
+                "city": "Brussels",
+                "country": {
+                    "id": 1,
+                    "name": "Belgium",
+                    "code": "BEL",
+                    "flagIconUrl": "https://flagcdn.com/be.svg"
+                }
+            }
+        },
+        "winner": {
+            "id": 43,
+            "name": "Kyiv-Men",
+            "gender": "male",
+            "city": "Kyiv",
+            "totalPoints": 1220000,
+            "rank": 1
+        },
+        "teamResults": [
+            {
+                "id": 21,
+                "resultInMs": 1207090,
+                "team": {
+                    "id": 43,
+                    "name": "Kyiv-Men",
+                    "gender": "male",
+                    "city": "Kyiv",
+                    "totalPoints": 1220000,
+                    "rank": 1
+                }
+            },
+            {
+                "id": 22,
+                "resultInMs": 1251300,
+                "team": {
+                    "id": 42,
+                    "name": "Brussels-Men",
+                    "gender": "male",
+                    "city": "Brussels",
+                    "totalPoints": 1255365,
+                    "rank": 2
+                }
+            }
+        ]
+    },
+    {
+        "id": 23,
+        "startTime": "2023-09-23T18:00:00.000Z",
+        "name": "Women final: Team Brussels - Team Kyiv",
+        "type": "female",
+        "event": {
+            "id": 25,
+            "title": "Brussels Mile",
+            "description": "The First Ace Battle Mile competition in Europe. Top athletes are invited to run a mile together in the running battle.",
+            "category": "outdoor",
+            "startDateTime": "2023-09-23T16:00:00.000Z",
+            "endDate": "2023-09-23T20:00:00.000Z",
+            "location": {
+                "id": 32,
+                "address": "Sportpark De Drie Linden",
+                "zipCode": "1170",
+                "city": "Brussels",
+                "country": {
+                    "id": 1,
+                    "name": "Belgium",
+                    "code": "BEL",
+                    "flagIconUrl": "https://flagcdn.com/be.svg"
+                }
+            }
+        },
+        "winner": {
+            "id": 44,
+            "name": "Kyiv-Women",
+            "gender": "female",
+            "city": "Kyiv",
+            "totalPoints": 1448250,
+            "rank": 1
+        },
+        "teamResults": [
+            {
+                "id": 33,
+                "resultInMs": 1448250,
+                "team": {
+                    "id": 44,
+                    "name": "Kyiv-Women",
+                    "gender": "female",
+                    "city": "Kyiv",
+                    "totalPoints": 1448250,
+                    "rank": 1
+                }
+            },
+            {
+                "id": 34,
+                "resultInMs": 1464580,
+                "team": {
+                    "id": 45,
+                    "name": "Brussels-Women",
+                    "gender": "female",
+                    "city": "Brussels",
+                    "totalPoints": 1464580,
+                    "rank": 2
+                }
+            }
+        ]
+    },
+    {
+        "id": 24,
+        "startTime": "2023-09-23T19:00:00.000Z",
+        "name": "Men Final",
+        "type": "male",
+        "event": {
+            "id": 25,
+            "title": "Brussels Mile",
+            "description": "The First Ace Battle Mile competition in Europe. Top athletes are invited to run a mile together in the running battle.",
+            "category": "outdoor",
+            "startDateTime": "2023-09-23T16:00:00.000Z",
+            "endDate": "2023-09-23T20:00:00.000Z",
+            "location": {
+                "id": 32,
+                "address": "Sportpark De Drie Linden",
+                "zipCode": "1170",
+                "city": "Brussels",
+                "country": {
+                    "id": 1,
+                    "name": "Belgium",
+                    "code": "BEL",
+                    "flagIconUrl": "https://flagcdn.com/be.svg"
+                }
+            }
+        },
+        "winner": {
+            "id": 43,
+            "name": "Kyiv-Men",
+            "gender": "male",
+            "city": "Kyiv",
+            "totalPoints": 1220000,
+            "rank": 1
+        },
+        "teamResults": [
+            {
+                "id": 35,
+                "resultInMs": 1237920,
+                "team": {
+                    "id": 43,
+                    "name": "Kyiv-Men",
+                    "gender": "male",
+                    "city": "Kyiv",
+                    "totalPoints": 1220000,
+                    "rank": 1
+                }
+            },
+            {
+                "id": 36,
+                "resultInMs": 1272810,
+                "team": {
+                    "id": 42,
+                    "name": "Brussels-Men",
+                    "gender": "male",
+                    "city": "Brussels",
+                    "totalPoints": 1255365,
+                    "rank": 2
+                }
+            }
+        ]
     }
 ]
