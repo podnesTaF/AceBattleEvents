@@ -8,22 +8,31 @@ import {
   Text,
 } from "@gluestack-ui/themed";
 import { Link } from "expo-router";
+import TeamPreview from "./TeamPreview";
 
-interface TeamProps {
+interface ItemProps {
   team: any;
 }
 
-const TeamPreviewCard: React.FC<TeamProps> = ({ team }) => {
+interface TeamProps {
+  team: any;
+  Item: React.FC<ItemProps>;
+  minWidth?: number;
+  imageProportion?: number;
+  shadow?: boolean;
+}
+
+const TeamPreviewCard: React.FC<TeamProps> = ({ team, Item, imageProportion, minWidth, shadow }) => {
   return (
     <VStack
-      minWidth={340}
+      minWidth={minWidth || "$full"}
       rounded={"$md"}
       bg={"$white"}
-      softShadow="1"
+      softShadow={shadow ? "1" : undefined}
       overflow="hidden"
     >
       <Box
-        flex={3}
+        flex={imageProportion || 1}
         height={"$40"}
         width={"$full"}
         position="relative"
@@ -36,35 +45,7 @@ const TeamPreviewCard: React.FC<TeamProps> = ({ team }) => {
           size="full"
         />
       </Box>
-      <Box flex={1} p={"$2"}>
-        <HStack alignItems="center">
-          <Box flex={1}>
-          <Image
-            role={"img"}
-            source={{ uri: team.logo.mediaUrl }}
-            alt={"team logo"}
-            size="xs"
-            mr={"$3"}
-          />
-          </Box>
-          <VStack space="sm" flex={5}>
-            <Heading size={"md"}>Team {team.name}</Heading>
-            <HStack
-              justifyContent="space-between"
-              alignItems="flex-end"
-            >
-              <Heading size={"xs"} color="$coolGray300">
-                Rank {team.rank}
-              </Heading>
-              <Link href={"/(drawer)/(tabs)/(team)/33"}>
-                <Text color="$red500" fontWeight="600">
-                  visit team page
-                </Text>
-              </Link>
-            </HStack>
-          </VStack>
-        </HStack>
-      </Box>
+      <Item team={team} />
     </VStack>
   );
 };

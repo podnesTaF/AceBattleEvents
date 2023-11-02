@@ -1,13 +1,20 @@
 
 import React from 'react'
-import { Center } from '@gluestack-ui/themed'
+import { Center, Pressable } from '@gluestack-ui/themed'
 import SearchBar from '@Components/common/SearchBar'
+import { useRouter } from 'expo-router'
+import FakeSearchBar from '@Components/common/FakeSearchBar'
 
 const AthletesPageTitle = () => {
+  const router = useRouter()
   return (
-    <Center width={"95%"} >
-        <SearchBar placeholder='Search for an athlete...' value={''} onChange={(text) => {}} />
-    </Center>
+    <Pressable  width={'95%'}  onPress={() => router.push("/modal")}>
+      {({pressed}: {pressed: boolean}) => (
+        <Center opacity={pressed ? "$90" : "$100"} >
+          <FakeSearchBar  placeholder='Search for an athlete...' />
+        </Center>
+      )}
+    </Pressable>
   )
 }
 

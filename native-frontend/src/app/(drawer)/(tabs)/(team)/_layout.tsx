@@ -6,7 +6,11 @@ const TeamLayout = () => {
   return (
     <Stack>
         <Stack.Screen name={'[teamId]'} options={{
-            headerTitle: "Team Page"
+          headerStyle: {
+            backgroundColor: '#1C1E1F'
+          },
+          headerTintColor: '#fff',
+            title: "Team Page"
         }} />
     </Stack>
   )

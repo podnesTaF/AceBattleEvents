@@ -6,10 +6,11 @@ import { Ionicons } from '@expo/vector-icons';
 
 interface Props {
     user: any;
+    description?: string;
     isLastElement?: boolean
 }
 
-const UserCard: React.FC<Props> = ({user, isLastElement}) => {
+const UserCard: React.FC<Props> = ({user, isLastElement,description}) => {
   return (
     <Pressable>
         {({pressed}: {pressed: boolean}) => (
@@ -25,12 +26,15 @@ const UserCard: React.FC<Props> = ({user, isLastElement}) => {
                        {user.runner && <Heading size={'xs'} color="$coolGray300">{
                             getCategoryByDoB(user.runner.dateOfBirth)
                        } | {user.runner.teamsAsRunner?.length ? user.runner.teamsAsRunner[0].name : 'no team'}</Heading>}
+                       {description && (
+                        <Heading size={'xs'} color="$coolGray300">{description}</Heading>
+                       )}
                     </VStack>
                 </HStack>
-                <Button action='primary' variant='outline'>
+                {user.runner && <Button action='primary' variant='outline'>
                        <Ionicons name='person-add-outline' size={16} />
                         <ButtonText ml={"$2"}>followi...</ButtonText>
-                    </Button>
+                </Button>}
             </HStack>
         )}
     </Pressable>
