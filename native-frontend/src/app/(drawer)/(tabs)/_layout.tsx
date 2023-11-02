@@ -30,6 +30,7 @@ const Layout = () => {
           )
         }} />
          <Tabs.Screen name="(team)" options={{
+          headerShown: false,
           href: null
         }} />
          <Tabs.Screen name="notifications" options={{

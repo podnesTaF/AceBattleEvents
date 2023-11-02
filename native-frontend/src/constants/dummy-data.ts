@@ -758,3 +758,43 @@ export const teamsPreview = [
         }
     }
 ]
+
+
+export const events = [
+    {
+        "id": 25,
+        "title": "Brussels Mile",
+        "description": "The First Ace Battle Mile competition in Europe. Top athletes are invited to run a mile together in the running battle.",
+        "category": "outdoor",
+        "startDateTime": "2023-09-23T16:00:00.000Z",
+        "endDate": "2023-09-23T20:00:00.000Z",
+        "introImage": {
+            "id": 90,
+            "title": "brussle-mile-photo.jpg",
+            "mediaUrl": "https://storage.googleapis.com/abe_cloud_storage/image/large/9314ea99-2cd2-4f86-b6ea-1cb63ef9c21f.jpg",
+            "smallUrl": "https://storage.googleapis.com/abe_cloud_storage/image/small/small_9314ea99-2cd2-4f86-b6ea-1cb63ef9c21f.jpg",
+            "mediaType": "image"
+        },
+        "minorImage": {
+            "id": 178,
+            "title": "podium-brussels.JPG",
+            "mediaUrl": "https://storage.googleapis.com/abe_cloud_storage/image/large/c5ff9532-96a8-4d6a-957e-706e654e494f.JPG",
+            "smallUrl": "https://storage.googleapis.com/abe_cloud_storage/image/small/small_c5ff9532-96a8-4d6a-957e-706e654e494f.JPG",
+            "mediaType": "image"
+        },
+        "location": {
+            "id": 32,
+            "address": "Sportpark De Drie Linden",
+            "zipCode": "1170",
+            "city": "Brussels",
+            "country": {
+                "id": 1,
+                "name": "Belgium",
+                "code": "BEL",
+                "flagIconUrl": "https://flagcdn.com/be.svg"
+            }
+        },
+        "teamsCount": 4,
+        "totalPrize": 6000
+    }
+]

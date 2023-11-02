@@ -6,6 +6,7 @@ import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
 import AthletePreviewCard from "@Components/athletes/AthletePreviewCard";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
 import UserCard from "@Components/user/UserCard";
+import TeamPreview from "@Components/teams/TeamPreview";
 
 const Athletes = () => {
   return (
@@ -22,6 +23,7 @@ const Athletes = () => {
           identifier="team"
           items={teams}
           ItemComponent={TeamPreviewCard}
+          additionalProps={{ Item: TeamPreview, imageProportion: 3, minWidth: 340}}
         />
       </VStack>
       <VStack my={"$4"} space="sm">
@@ -38,16 +40,27 @@ const Athletes = () => {
           ItemComponent={AthletePreviewCard}
         />
       </VStack>
-      <VStack mt={"$4"} mb={'$8'} space="sm">
+      <VStack mt={"$4"} mb={"$8"} space="sm">
         <HStack mx={"$4"}>
           <Heading size="lg">Your </Heading>
           <Heading size="lg" color="$red500">
             Followings
           </Heading>
         </HStack>
-        <VStack px={"$3"} width={"$full"} borderColor="$red500" bgColor="$white" borderTopWidth={3} borderBottomWidth={3}>
+        <VStack
+          px={"$3"}
+          width={"$full"}
+          borderColor="$red500"
+          bgColor="$white"
+          borderTopWidth={3}
+          borderBottomWidth={3}
+        >
           {users.map((user, i) => (
-            <UserCard user={user} key={user.id} isLastElement={i === users.length - 1} />
+            <UserCard
+              user={user}
+              key={user.id}
+              isLastElement={i === users.length - 1}
+            />
           ))}
         </VStack>
       </VStack>
