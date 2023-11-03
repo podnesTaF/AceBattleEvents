@@ -1007,3 +1007,88 @@ export const races = [
         ]
     }
 ]
+
+
+export const testUserRunner = {
+    "id": 12,
+    "name": "Andriy",
+    "surname": "Krakovetskyy",
+    "email": "ak@gmail.com",
+    "role": "runner",
+    "interest": null,
+    "verified": false,
+    "city": "Vinitsya",
+    "password": "$2b$10$FkiiUcWlqaqsrG6SaBP9mOW70fuNjPlurv9tferYkkyXP76xWw93G",
+    "createdAt": "2023-08-18T08:30:59.750Z",
+    "updatedAt": "2023-10-01T10:07:40.000Z",
+    "acceptTerms": false,
+    "acceptNews": false,
+    "image": {
+        "id": 112,
+        "title": "krakoveczkij-scaled.jpg",
+        "mediaUrl": "https://storage.googleapis.com/abe_cloud_storage/image/large/ae1925bf-61cc-48cf-9461-aa733160e0d7.jpg",
+        "smallUrl": "https://storage.googleapis.com/abe_cloud_storage/image/small/small_ae1925bf-61cc-48cf-9461-aa733160e0d7.jpg",
+        "mediaType": "image"
+    },
+    "country": {
+        "id": 3,
+        "name": "Ukraine",
+        "code": "UKR",
+        "flagIconUrl": "https://flagcdn.com/ua.svg"
+    },
+    "runner": {
+        "id": 12,
+        "dateOfBirth": "2000-01-01 00:00:00.000",
+        "gender": "male",
+        "worldAthleticsUrl": "https://worldathletics.org/athletes/ukraine/andriy-krakovetskyy-14779410",
+        "category": "professional",
+        "totalPoints": 260381,
+        "rank": 9,
+        "personalBests": [
+            {
+                "id": 122,
+                "distance": 160934,
+                "finalResultInMs": 251010,
+                "runnerType": null
+            }
+        ],
+        "results": [
+            {
+                "id": 122,
+                "distance": 160934,
+                "finalResultInMs": 251010,
+                "runnerType": null
+            },
+            {
+                "id": 172,
+                "distance": 160934,
+                "finalResultInMs": 254650,
+                "runnerType": null
+            }
+        ],
+        "club": {
+            "id": 16,
+            "name": "Kyiv BM",
+            "city": "Kyiv",
+            "createdAt": "2023-08-01T19:43:25.897Z",
+            "updatedAt": "2023-09-14T08:18:49.673Z"
+        },
+        "user": {
+            "id": 12,
+            "name": "Andriy",
+            "surname": "Krakovetskyy",
+            "email": "ak@gmail.com",
+            "role": "runner",
+            "interest": null,
+            "verified": false,
+            "city": "Vinitsya",
+            "password": "$2b$10$FkiiUcWlqaqsrG6SaBP9mOW70fuNjPlurv9tferYkkyXP76xWw93G",
+            "createdAt": "2023-08-18T08:30:59.750Z",
+            "updatedAt": "2023-10-01T10:07:40.000Z",
+            "acceptTerms": false,
+            "acceptNews": false
+        }
+    },
+    "manager": null,
+    "spectator": null
+}
