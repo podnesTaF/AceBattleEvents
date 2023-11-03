@@ -20,7 +20,7 @@ const Layout = () => {
             <AthletesPageTitle />
           ),
         }} />
-        <Stack.Screen name='[athleteId]' options={{
+        <Stack.Screen name='[userId]' options={{
           headerTitle: "Athelte page"
         }} />
         <Stack.Screen

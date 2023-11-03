@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { TapGestureHandler, RotationGestureHandler } from 'react-native-gesture-handler';
 import React, { useEffect, useState } from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { Box, HStack, Heading, Image, ScrollView } from "@gluestack-ui/themed";
