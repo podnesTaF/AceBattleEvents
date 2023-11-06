@@ -6,6 +6,7 @@ import AthletePreviewCard from "@Components/athletes/AthletePreviewCard";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
 import UserCard from "@Components/user/UserCard";
 import TeamPreview from "@Components/teams/TeamPreview";
+import Container from "@Components/common/Container";
 
 const Athletes = () => {
 
@@ -47,14 +48,7 @@ const Athletes = () => {
             Followings
           </Heading>
         </HStack>
-        <VStack
-          px={"$3"}
-          width={"$full"}
-          borderColor="$red500"
-          bgColor="$white"
-          borderTopWidth={3}
-          borderBottomWidth={3}
-        >
+        <Container>
           {users.map((user, i) => (
             <UserCard
               user={user}
@@ -62,7 +56,7 @@ const Athletes = () => {
               isLastElement={i === users.length - 1}
             />
           ))}
-        </VStack>
+        </Container>
       </VStack>
     </ScrollView>
   );

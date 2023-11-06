@@ -10,8 +10,8 @@ interface Props {
 
 const EventCard: React.FC<Props> = ({event,  team}) => {
   return (
-    <Box>
-        <Heading size={"lg"} mb={"$4"}>
+    <Box p={"$3"} backgroundColor='$white' borderBottomColor='$red500' borderBottomWidth={4} >
+        <Heading textAlign='center' size={"lg"} mb={"$4"}>
             {event.title}
         </Heading>
         <VStack space="md" width={'$full'}>

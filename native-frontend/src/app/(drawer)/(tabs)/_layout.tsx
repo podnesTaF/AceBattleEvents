@@ -47,6 +47,9 @@ const Layout = () => {
             <Ionicons name={'person'} size={size} color={color}/> 
           )
         }} />
+        <Tabs.Screen name={"(users)"} options={{
+          href: null,
+        }} />
     </Tabs> 
   )
 }
