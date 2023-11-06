@@ -1,6 +1,5 @@
-import { View, Text } from "react-native";
 import React from "react";
-import { Box, HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
+import { HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
 import { runners, teams, users } from "@Constants/dummy-data";
 import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
 import AthletePreviewCard from "@Components/athletes/AthletePreviewCard";
@@ -9,6 +8,7 @@ import UserCard from "@Components/user/UserCard";
 import TeamPreview from "@Components/teams/TeamPreview";
 
 const Athletes = () => {
+
   return (
     <ScrollView bg={"$fff9ff"}>
       <VStack my={"$4"} space="sm">

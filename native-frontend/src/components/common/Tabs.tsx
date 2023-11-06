@@ -8,6 +8,7 @@ interface TabsProps {
   items: string[];
   onChangeTab: (tabIndex: number) => void;
   activeIndex: number;
+  size?: "sm" | "md" | "lg"
 }
 
 const Tabs: React.FC<TabsProps> = ({
@@ -15,12 +16,14 @@ const Tabs: React.FC<TabsProps> = ({
   items,
   onChangeTab,
   activeIndex,
+  size
 }) => {
   return (
     <HStack w={"$full"} left={"-$4"}>
       {items.map((item, index) => (
         <TabItem
           item={item}
+          size={size}
           index={index}
           onPress={onChangeTab}
           isLast={index === items.length - 1}

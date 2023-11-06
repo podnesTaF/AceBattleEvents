@@ -9,8 +9,9 @@ import { ScrollView } from "react-native-gesture-handler";
 import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
 import TeamDescription from "@Components/teams/TeamDescription";
 import ResultsTab from "@Components/athletes/tabs/ResultsTab";
+import CompetitionsTab from "@Components/athletes/tabs/CompetitionsTab";
 
-const tabs = ["BIO", "Teams", "Results"];
+const tabs = ["BIO", "Teams", "Results", 'Competitions'];
 
 const AthleteScreen = () => {
   const params = useLocalSearchParams();
@@ -34,6 +35,7 @@ const AthleteScreen = () => {
               </Box>
               <Box left={"-$12"}>
               <Tabs
+                size="md"
                 items={tabs}
                 onChangeTab={onChangeTab}
                 activeIndex={activeTab}
@@ -55,6 +57,9 @@ const AthleteScreen = () => {
         }
         {activeTab === 2 && (
           <ResultsTab />
+        )}
+        {activeTab === 3 && (
+          <CompetitionsTab />
         )}
       <Image
             source={require("@Assets/images/main-bg.png")}
