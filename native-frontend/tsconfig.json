@@ -7,7 +7,7 @@
       "@Constants/*": ["src/constants/*"],
       "@Components/*": ["src/components/*"],
       "@Assets/*": ["assets/*"],
-      "@Utils/*": ["src/utils/*"]
+      "@lib/*": ["src/lib/*"]
     }
   },
   "include": [

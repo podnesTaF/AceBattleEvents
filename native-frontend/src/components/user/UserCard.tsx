@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { Avatar, AvatarFallbackText, AvatarImage, Button, ButtonText, HStack, Heading, Pressable, VStack } from '@gluestack-ui/themed';
-import { getCategoryByDoB } from '@Utils/date-formatters';
+import { getCategoryByDoB } from '@lib/utils';
 import { Ionicons } from '@expo/vector-icons';
 
 interface Props {

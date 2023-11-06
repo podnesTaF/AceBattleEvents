@@ -1,4 +1,4 @@
-import { msToMinutesAndSeconds } from '@Utils/result-converters';
+import { msToMinutesAndSeconds } from '@lib/utils';
 import { Box, Button, ButtonText, Center, HStack, Heading, Image, Text, VStack } from '@gluestack-ui/themed';
 import React from 'react'
 

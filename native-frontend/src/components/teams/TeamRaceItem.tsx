@@ -1,5 +1,4 @@
-import { getBattleName } from '@Utils/race-converters';
-import { msToMinutesAndSeconds } from '@Utils/result-converters';
+import { msToMinutesAndSeconds, getBattleName } from '@lib/utils';
 import { Button, ButtonText, HStack, Heading } from '@gluestack-ui/themed'
 import React from 'react'
 
