@@ -1,7 +1,7 @@
 import React from 'react'
 import { VStack, Image, Box, HStack, Heading} from '@gluestack-ui/themed'
-import { formatDate } from '@Utils/date-formatters'
-import { convertFlagIntoPng } from '@Utils/data-converters'
+import { formatDate } from '@lib/utils'
+import { convertFlagIntoPng } from '@lib/utils'
 
 interface AthleteBioTabProps {
     user: any

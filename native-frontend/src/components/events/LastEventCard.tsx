@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, HStack, Heading, Image} from '@gluestack-ui/themed';
-import { formatDate } from '@Utils/date-formatters';
+import { formatDate } from '@lib/utils';
 import { Link } from 'expo-router';
 
 interface Props {

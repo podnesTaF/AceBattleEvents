@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, HStack, Text, Image, VStack } from "@gluestack-ui/themed";
-import { getTimeAgo } from "@Utils/date-formatters";
+import { getTimeAgo } from "@lib/utils";
 import { Link } from "expo-router";
 
 interface NewsCardProps {

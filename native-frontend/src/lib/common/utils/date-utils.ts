@@ -45,3 +45,53 @@ export const getTimeAgo = (date: string) => {
   
     return `${formattedDate}${fullform ? ", " + formattedTime : ""}`;
   };
+
+  
+
+  export const getAgeCategory = (dateOfBirth: string): string => {
+    const age = new Date().getFullYear() - new Date(dateOfBirth).getFullYear();
+    if (age < 18) {
+      return "U18";
+    } else if (age < 20) {
+      return "U20";
+    } else if (age < 23) {
+      return "U23";
+    } else {
+      return "Senior";
+    }
+  };
+
+  export const isPassed = (date: string) => {
+    return new Date(date).getTime() < Date.now();
+  };
+
+  export function convertDateFormat(inputDate: string) {
+    // Convert the input string to a Date object
+    const dateObject = new Date(inputDate);
+  
+    // Define an array of month names
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+  
+    // Extract day and month information
+    const day = dateObject.getDate();
+    const month = monthNames[dateObject.getMonth()];
+  
+    // Generate the desired format
+    const outputFormat = `${day} of ${month}`;
+  
+    return outputFormat;
+  }
+  

@@ -12,7 +12,7 @@ module.exports = function (api) {
           "@Components": "./src/components",
           "@Constants": "./src/constants",
           "@Assets": "./assets",
-          "@Utils": "./src/utils"
+          "@lib": "./src/lib",
         },
         "extensions": [
           ".js",

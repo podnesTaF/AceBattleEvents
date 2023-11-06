@@ -1,5 +1,5 @@
 
-import { convertFlagIntoPng } from '@Utils/data-converters';
+import { convertFlagIntoPng } from '@lib/utils';
 import { Box, HStack, VStack, Text, Heading,Image} from '@gluestack-ui/themed';
 import React from 'react'
 
