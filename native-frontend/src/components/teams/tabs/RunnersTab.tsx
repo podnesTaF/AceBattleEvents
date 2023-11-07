@@ -3,6 +3,7 @@ import React from "react";
 import { Box, FlatList, Heading, VStack, Image } from "@gluestack-ui/themed";
 import UserCard from "@Components/user/UserCard";
 import { users } from "@Constants/dummy-data";
+import Container from "@Components/common/Container";
 
 const RunnersTab = ({ team }: { team: any }) => {
   return (
@@ -11,35 +12,21 @@ const RunnersTab = ({ team }: { team: any }) => {
         <Heading size="sm" mb={"$2"}>
           Coaches
         </Heading>
-        <VStack
-          px={"$3"}
-          width={"$full"}
-          borderColor="$red500"
-          bgColor="$white"
-          borderTopWidth={3}
-          borderBottomWidth={3}
-        >
+        <Container>
           <UserCard description="Coach of the Kyiv-men" user={team.coach} />
-        </VStack>
+        </Container>
       </VStack>
       <VStack>
         <Heading size={"sm"} mb={"$2"}>
           Runners
         </Heading>
-        <VStack
-          px={"$3"}
-          width={"$full"}
-          borderColor="$red500"
-          bgColor="$white"
-          borderTopWidth={3}
-          borderBottomWidth={3}
-        >
+        <Container>
           <FlatList
             data={users}
             renderItem={({ item }) => <UserCard user={item} />}
             keyExtractor={(item: any) => item.id}
           />
-        </VStack>
+        </Container>
       </VStack>
     </VStack>
   );

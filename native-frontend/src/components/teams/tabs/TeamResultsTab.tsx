@@ -5,6 +5,7 @@ import PersonalBestCard from '../PersonalBestCard'
 import { FlatList } from 'react-native-gesture-handler'
 import { races } from '@Constants/dummy-data'
 import TeamRaceItem from '../TeamRaceItem'
+import Container from '@Components/common/Container'
 
 const TeamResultsTab = ({team}: {team: any}) => {
   return (
@@ -16,20 +17,13 @@ const TeamResultsTab = ({team}: {team: any}) => {
         <VStack space={"md"}>
             <Heading mx={'$3'} size={'md'}>All Results</Heading>
         </VStack>
-        <VStack
-          px={"$3"}
-          width={"$full"}
-          borderColor="$red500"
-          bgColor="$white"
-          borderTopWidth={3}
-          borderBottomWidth={3}
-        >
+        <Container>
             <FlatList
                 data={races}
                 renderItem={({ item, index }) => <TeamRaceItem race={item} isLast={races.length - 1 === index} />}
                 keyExtractor={(item: any) => item.id}
             />
-        </VStack>
+        </Container>
     </VStack>
   )
 }

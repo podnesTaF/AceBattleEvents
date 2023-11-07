@@ -5,18 +5,14 @@ import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import { GluestackUIProvider } from "@gluestack-ui/themed"
 import { config } from "@gluestack-ui/config"
+import { store } from '@lib/store';
+import { Provider } from 'react-redux';
 
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from 'expo-router';
 
-export const unstable_settings = {
-  initialRouteName: '(drawer)/(tabs)',
-  tabs: {
-    initialRouteName: 'home',
-  }
-};
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -49,10 +45,12 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <GluestackUIProvider config={config}>
-      <Stack>
-        <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-      </Stack>
-    </GluestackUIProvider>
+    <Provider store={store}>
+      <GluestackUIProvider config={config}>
+        <Stack screenOptions={{headerShown: false}}>
+          <Stack.Screen name="index" />
+        </Stack>
+      </GluestackUIProvider>
+    </Provider>
   );
 }

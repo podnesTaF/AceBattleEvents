@@ -1092,3 +1092,111 @@ export const testUserRunner = {
     "manager": null,
     "spectator": null
 }
+
+export const textUserManager = {
+    "id": 1,
+    "name": "Oleksii",
+    "surname": "Pidnebesnyi",
+    "email": "apodnes@gmail.com",
+    "role": "manager",
+    "interest": null,
+    "verified": false,
+    "city": "Brussels",
+    "password": "$2b$10$vX2gmX4eBD5I1ud4mekM2.wKqSxV0LDdqra2Mq0cvvSdFksDXTJyS",
+    "createdAt": "2023-06-24T10:03:33.765Z",
+    "updatedAt": "2023-10-21T09:05:43.000Z",
+    "acceptTerms": false,
+    "acceptNews": false,
+    "image": {
+        "id": 185,
+        "title": "charleroi.jpg",
+        "mediaUrl": "https://storage.googleapis.com/abe_cloud_storage/image/large/838b618e-a0d5-47c8-a22e-a88d0e9662bb.jpg",
+        "smallUrl": "https://storage.googleapis.com/abe_cloud_storage/image/small/small_838b618e-a0d5-47c8-a22e-a88d0e9662bb.jpg",
+        "mediaType": "image"
+    },
+    "country": {
+        "id": 1,
+        "name": "Belgium",
+        "code": "BEL",
+        "flagIconUrl": "https://flagcdn.com/be.svg"
+    },
+    "runner": null,
+    "manager": {
+        "id": 1,
+        "phone": "+32476032419",
+        "club": {
+            "id": 16,
+            "name": "Kyiv BM",
+            "city": "Kyiv",
+            "createdAt": "2023-08-01T19:43:25.897Z",
+            "updatedAt": "2023-09-14T08:18:49.673Z"
+        },
+        "user": {
+            "id": 1,
+            "name": "Oleksii",
+            "surname": "Pidnebesnyi",
+            "email": "apodnes@gmail.com",
+            "role": "manager",
+            "interest": null,
+            "verified": false,
+            "city": "Brussels",
+            "password": "$2b$10$vX2gmX4eBD5I1ud4mekM2.wKqSxV0LDdqra2Mq0cvvSdFksDXTJyS",
+            "createdAt": "2023-06-24T10:03:33.765Z",
+            "updatedAt": "2023-10-21T09:05:43.000Z",
+            "acceptTerms": false,
+            "acceptNews": false
+        }
+    },
+    "spectator": null
+}
+
+export const testUserSpectator = {
+    "id": 104,
+    "name": "Iurii ",
+    "surname": "Pidnebesnyi ",
+    "email": "podnes@gmail.com",
+    "role": "spectator",
+    "interest": "Fan",
+    "verified": true,
+    "city": "Brussels ",
+    "password": "$2b$10$YYok4dOFFBYrZmEhscb1ie9UfrCNHC3iI1h.jVMK9u3QM5kUhATvy",
+    "createdAt": "2023-10-25T20:23:32.450Z",
+    "updatedAt": "2023-10-25T20:24:35.000Z",
+    "acceptTerms": false,
+    "acceptNews": false,
+    "image": {
+        "id": 194,
+        "title": "20231024_105821.jpg",
+        "mediaUrl": "https://storage.googleapis.com/abe_cloud_storage/image/large/2965f17d-ee67-4d70-a8b7-3938c0c7c834.jpg",
+        "smallUrl": "https://storage.googleapis.com/abe_cloud_storage/image/small/small_2965f17d-ee67-4d70-a8b7-3938c0c7c834.jpg",
+        "mediaType": "image"
+    },
+    "country": {
+        "id": 1,
+        "name": "Belgium",
+        "code": "BEL",
+        "flagIconUrl": "https://flagcdn.com/be.svg"
+    },
+    "runner": null,
+    "manager": null,
+    "spectator": {
+        "id": 106,
+        "ageRange": ">45",
+        "favoriteClubs": [],
+        "user": {
+            "id": 104,
+            "name": "Iurii ",
+            "surname": "Pidnebesnyi ",
+            "email": "podnes@gmail.com",
+            "role": "spectator",
+            "interest": "Fan",
+            "verified": true,
+            "city": "Brussels ",
+            "password": "$2b$10$YYok4dOFFBYrZmEhscb1ie9UfrCNHC3iI1h.jVMK9u3QM5kUhATvy",
+            "createdAt": "2023-10-25T20:23:32.450Z",
+            "updatedAt": "2023-10-25T20:24:35.000Z",
+            "acceptTerms": false,
+            "acceptNews": false
+        }
+    }
+}

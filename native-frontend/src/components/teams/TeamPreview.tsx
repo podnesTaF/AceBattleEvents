@@ -28,7 +28,7 @@ const TeamPreview: React.FC<TeamProps> = ({team}) => {
             <Heading size={"xs"} color="$coolGray300">
                 Rank {team.rank}
             </Heading>
-            <Link href={"/(drawer)/(tabs)/(team)/33"}>
+            <Link href={"/(modals)/(team)/22"} asChild>
                 <Text color="$red500" fontWeight="600">
                 visit team page
                 </Text>

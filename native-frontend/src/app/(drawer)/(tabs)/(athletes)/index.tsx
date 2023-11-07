@@ -1,14 +1,17 @@
-import { View, Text } from "react-native";
 import React from "react";
-import { Box, HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
+import { HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
 import { runners, teams, users } from "@Constants/dummy-data";
 import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
 import AthletePreviewCard from "@Components/athletes/AthletePreviewCard";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
 import UserCard from "@Components/user/UserCard";
 import TeamPreview from "@Components/teams/TeamPreview";
+import Container from "@Components/common/Container";
+import { useGetAthletesQuery } from "@lib/user/services/RunnerService";
 
 const Athletes = () => {
+  const {data, error} = useGetAthletesQuery("");
+
   return (
     <ScrollView bg={"$fff9ff"}>
       <VStack my={"$4"} space="sm">
@@ -47,14 +50,7 @@ const Athletes = () => {
             Followings
           </Heading>
         </HStack>
-        <VStack
-          px={"$3"}
-          width={"$full"}
-          borderColor="$red500"
-          bgColor="$white"
-          borderTopWidth={3}
-          borderBottomWidth={3}
-        >
+        <Container>
           {users.map((user, i) => (
             <UserCard
               user={user}
@@ -62,7 +58,7 @@ const Athletes = () => {
               isLastElement={i === users.length - 1}
             />
           ))}
-        </VStack>
+        </Container>
       </VStack>
     </ScrollView>
   );
