@@ -5,14 +5,17 @@ import { Stack } from 'expo-router'
 const SettingsLayout = () => {
   return (
     <Stack>
-      <Stack.Screen name={'index'} options={{
-        headerShown: false
-      }} />
       <Stack.Screen name={'change-data'} options={{
-          headerTitle: "Change data",
+          headerStyle: {
+            backgroundColor: '#1C1E1F',
+          },
+          headerTintColor: '#fff'
       }} />
       <Stack.Screen name={"change-password"} options={{
-          headerTitle: "Change password"
+         headerStyle: {
+          backgroundColor: '#1C1E1F',
+        },
+        headerTintColor: '#fff'
       }} />
     </Stack>
   )

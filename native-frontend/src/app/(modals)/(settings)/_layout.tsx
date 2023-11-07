@@ -5,8 +5,14 @@ import { Stack } from 'expo-router'
 const SettingLayout = () => {
   return (
     <Stack>
+        <Stack.Screen name={'index'} options={{
+          headerStyle: {
+            backgroundColor: '#1C1E1F',
+          },
+          headerTintColor: '#fff'
+        }} />
         <Stack.Screen name={'(main)'} options={{
-            headerTitle: "Settings",
+            headerShown: false
         }} />
     </Stack>
   )

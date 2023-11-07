@@ -7,8 +7,10 @@ import HorizontalListLayout from "@Components/common/HorizontalListLayout";
 import UserCard from "@Components/user/UserCard";
 import TeamPreview from "@Components/teams/TeamPreview";
 import Container from "@Components/common/Container";
+import { useGetAthletesQuery } from "@lib/user/services/RunnerService";
 
 const Athletes = () => {
+  const {data, error} = useGetAthletesQuery("");
 
   return (
     <ScrollView bg={"$fff9ff"}>
