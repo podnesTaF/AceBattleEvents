@@ -3,6 +3,7 @@ import React from 'react'
 import { Avatar, AvatarFallbackText, AvatarImage, Button, ButtonText, HStack, Heading, Pressable, VStack } from '@gluestack-ui/themed';
 import { getCategoryByDoB } from '@lib/utils';
 import { Ionicons } from '@expo/vector-icons';
+import { Link } from 'expo-router';
 
 interface Props {
     user: any;
@@ -12,6 +13,7 @@ interface Props {
 
 const UserCard: React.FC<Props> = ({user, isLastElement,description}) => {
   return (
+    <Link href={`/(modals)/(profile)/${user.id}`} asChild>
     <Pressable>
         {({pressed}: {pressed: boolean}) => (
             <HStack opacity={pressed ? "$80" : "$100"} justifyContent='space-between' py={"$3"} borderBottomWidth={isLastElement ? 0 : 1} borderColor='$coolGray300'>
@@ -38,6 +40,7 @@ const UserCard: React.FC<Props> = ({user, isLastElement,description}) => {
             </HStack>
         )}
     </Pressable>
+    </Link>
   )
 }
 

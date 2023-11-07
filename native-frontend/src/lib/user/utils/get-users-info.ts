@@ -1,4 +1,4 @@
-import { formatDate } from "@lib/utils";
+import { formatDate } from "@lib/common/utils";
 import { IUser } from "../models";
 
 export type InfoItem = {

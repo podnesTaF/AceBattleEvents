@@ -9,19 +9,19 @@ const AccountLayout = () => {
     if(user) {
        return <Stack>
             <Stack.Screen name={'index'} options={{
-                headerTitle: "Welcome"
+               title: "User profile"
             }} />
-<Stack.Screen name={'profile'} options={{
-                headerTitle:"User profile"
-            }} />
-            <Stack.Screen name={'settings'} options={{
-                headerTitle:"User Settings"
+            <Stack.Screen name={'profile'} options={{
+               headerTitle: "User profile"  
             }} />
              <Stack.Screen name={'followings'} options={{
                 headerTitle:"User Followings"
             }} />
             <Stack.Screen name={'calendar'} options={{
                 headerTitle:"User Calendar"
+            }} />
+             <Stack.Screen name={'manage-teams'} options={{
+                title:"Manage Team"
             }} />
         </Stack>
     }

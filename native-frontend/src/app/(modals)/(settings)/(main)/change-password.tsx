@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const ManageTeamScreen = () => {
+const ChangeUserPassword = () => {
   return (
     <View>
-      <Text>ManageTeamScreen</Text>
+      <Text>ChangeUserPassword</Text>
     </View>
   )
 }
 
-export default ManageTeamScreen
+export default ChangeUserPassword

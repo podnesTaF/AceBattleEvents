@@ -13,7 +13,7 @@ const UserInfoList: React.FC<Props> = ({items}) => {
   return (
     <VStack  space={"lg"} p="$4" borderLeftWidth={'$4'} bgColor={"$white"} borderColor='$red500'>
         {items.map((item, i) => (
-            <HStack justifyContent='space-between' alignItems='center'>
+            <HStack key={i} justifyContent='space-between' alignItems='center'>
                 <Heading size={"md"}>
                     {item.label}
                 </Heading>

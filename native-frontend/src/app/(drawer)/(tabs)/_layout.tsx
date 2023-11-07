@@ -3,9 +3,11 @@ import { Tabs } from 'expo-router'
 import { StyleSheet, Image} from 'react-native'
 import {Ionicons} from "@expo/vector-icons"
 import HomeTabTitle from '@Components/HomeTabTitle'
+import { testUserRunner } from '@Constants/dummy-data'
+import { IUser } from '@lib/models'
 
 const Layout = () => {
-  const [user, setUser] = useState(true)
+  const [user, setUser] = useState<any>(testUserRunner)
   return (
     <Tabs>
         <Tabs.Screen name='home'  options={{
@@ -29,10 +31,6 @@ const Layout = () => {
             <Ionicons name={'body'} size={size} color={color}/> 
           )
         }} />
-         <Tabs.Screen name="(team)" options={{
-          headerShown: false,
-          href: null
-        }} />
          <Tabs.Screen name="notifications" options={{
           headerShown: false,
           tabBarLabel: "Notifications",
@@ -46,9 +44,6 @@ const Layout = () => {
           tabBarIcon: ({size, color}) => (
             <Ionicons name={'person'} size={size} color={color}/> 
           )
-        }} />
-        <Tabs.Screen name={"(users)"} options={{
-          href: null,
         }} />
     </Tabs> 
   )

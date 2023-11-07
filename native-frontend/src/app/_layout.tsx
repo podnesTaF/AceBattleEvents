@@ -13,12 +13,6 @@ export {
   ErrorBoundary,
 } from 'expo-router';
 
-export const unstable_settings = {
-  initialRouteName: '(drawer)/(tabs)',
-  tabs: {
-    initialRouteName: 'home',
-  }
-};
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -53,8 +47,8 @@ function RootLayoutNav() {
   return (
     <Provider store={store}>
       <GluestackUIProvider config={config}>
-        <Stack>
-          <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+        <Stack screenOptions={{headerShown: false}}>
+          <Stack.Screen name="index" />
         </Stack>
       </GluestackUIProvider>
     </Provider>

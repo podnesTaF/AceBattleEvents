@@ -51,7 +51,7 @@ const AthletePreviewCard: React.FC<AthleteProps> = ({ runner }) => {
                  Rank {runner.rank > 1000 ? '-' : runner.rank}
               </Heading>
               </HStack>
-              <Link href={"/(drawer)/(tabs)/(athletes)/33"}>
+              <Link href={"/(modals)/(profile)/33"} asChild>
                 <Text color="$red500" fontWeight="600">
                   visit runner profile
                 </Text>

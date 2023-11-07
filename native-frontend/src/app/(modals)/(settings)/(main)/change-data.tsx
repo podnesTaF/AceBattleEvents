@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const SettingsScreen = () => {
+const ChangeUserData = () => {
   return (
     <View>
-      <Text>SettingsScreen</Text>
+      <Text>ChangeUserData</Text>
     </View>
   )
 }
 
-export default SettingsScreen
+export default ChangeUserData

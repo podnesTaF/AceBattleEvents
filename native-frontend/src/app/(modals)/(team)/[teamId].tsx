@@ -1,5 +1,4 @@
-import { TapGestureHandler, RotationGestureHandler } from 'react-native-gesture-handler';
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { Box, HStack, Heading, Image, ScrollView } from "@gluestack-ui/themed";
 import { teams } from "@Constants/dummy-data";
@@ -24,6 +23,7 @@ const TeamScreen = () => {
     <>
       <Stack.Screen
         options={{
+          headerShown: true,
           headerTitle: ({ tintColor }) => (
             <Box w={"$full"}>
               <HStack py={"$2"} space="sm" w={"$full"} alignItems="center">
