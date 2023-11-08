@@ -1,17 +1,16 @@
-import React from "react";
+import TitleRect from "@Components/common/TitleRect";
+import { Ionicons } from "@expo/vector-icons";
 import {
   Box,
-  VStack,
+  Button,
+  ButtonIcon,
+  ButtonText,
   Image,
-  HStack,
-  Heading,
-  Text,
   Pressable,
+  VStack,
 } from "@gluestack-ui/themed";
 import { Link, useRouter } from "expo-router";
-import TeamPreview from "./TeamPreview";
-import { Ionicons } from "@expo/vector-icons";
-import TitleRect from "@Components/common/TitleRect";
+import React from "react";
 
 interface ItemProps {
   team: any;
@@ -24,16 +23,25 @@ interface TeamProps {
   imageProportion?: number;
   shadow?: boolean;
   showLink?: boolean;
+  editable?: boolean;
 }
 
-const TeamPreviewCard: React.FC<TeamProps> = ({ team, Item, imageProportion, minWidth, shadow, showLink}) => {
+const TeamPreviewCard: React.FC<TeamProps> = ({
+  team,
+  Item,
+  imageProportion,
+  minWidth,
+  shadow,
+  showLink,
+  editable,
+}) => {
   const router = useRouter();
 
   const handlePress = () => {
     if (showLink) {
       router.push(`/teams/${team.id}`);
     }
-  }
+  };
   return (
     <VStack
       minWidth={minWidth || "$full"}
@@ -43,23 +51,41 @@ const TeamPreviewCard: React.FC<TeamProps> = ({ team, Item, imageProportion, min
       overflow="hidden"
     >
       <Pressable onPress={handlePress}>
-        {({pressed}: {pressed: boolean}) => (
+        {({ pressed }: { pressed: boolean }) => (
           <Box
-          opacity={pressed ? 0.9 : 1}
-          flex={imageProportion || 1}
-          height={"$40"}
-          width={"$full"}
-          position="relative"
-          alignItems="stretch"
-        >
-          <TitleRect title={team.name} icon={"md-people"} />
-          <Image
-            role={"img"}
-            source={{ uri: "https://acebattlemile.org/profile-bg-lg.jpg" }}
-            alt={"team preview"}
-            size="full"
-          />
-        </Box>
+            opacity={pressed ? 0.9 : 1}
+            flex={imageProportion || 1}
+            height={"$40"}
+            width={"$full"}
+            position="relative"
+            alignItems="stretch"
+          >
+            <TitleRect title={team.name} icon={"md-people"} />
+            <Image
+              role={"img"}
+              source={{ uri: "https://acebattlemile.org/profile-bg-lg.jpg" }}
+              alt={"team preview"}
+              size="full"
+            />
+            {editable && (
+              <Box position="absolute" right={"$2"} top={"$2"}>
+                <Link
+                  href={{
+                    pathname: "/manage-team",
+                    params: { teamId: team.id },
+                  }}
+                  asChild
+                >
+                  <Button size="sm" action="primary" variant="solid">
+                    <ButtonIcon>
+                      <Ionicons name="md-create" size={16} color="white" />
+                    </ButtonIcon>
+                    <ButtonText>Edit</ButtonText>
+                  </Button>
+                </Link>
+              </Box>
+            )}
+          </Box>
         )}
       </Pressable>
       <Item team={team} />

@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { Stack, useLocalSearchParams } from "expo-router";
-import { Box, HStack, Heading, Image, ScrollView } from "@gluestack-ui/themed";
-import { teams } from "@Constants/dummy-data";
+import withWatermarkBg from "@Components/HOCs/withWatermark";
 import Tabs from "@Components/common/Tabs";
+import ContactTab from "@Components/teams/tabs/ContactTab";
 import HomeTeamTab from "@Components/teams/tabs/HomeTeamTab";
 import RunnersTab from "@Components/teams/tabs/RunnersTab";
 import TeamResultsTab from "@Components/teams/tabs/TeamResultsTab";
-import ContactTab from "@Components/teams/tabs/ContactTab";
+import { teams } from "@Constants/dummy-data";
+import { Box, HStack, Heading, Image, ScrollView } from "@gluestack-ui/themed";
+import { Stack, useLocalSearchParams } from "expo-router";
+import React, { useState } from "react";
 
 const tabs = ["Home", "Runners", "Results", "Contact"];
 
@@ -52,26 +53,10 @@ const TeamScreen = () => {
         </ScrollView>
       )}
       {activeTab === 1 && <RunnersTab team={team} />}
-      {activeTab === 2 && (
-        <TeamResultsTab team={team} />
-      )}
-      {activeTab === 3 && (
-        <ContactTab />
-      )}
-      <Image
-            source={require("@Assets/images/main-bg.png")}
-            role={"img"}
-            alt="bg"
-            position='absolute'
-            size={"full"}
-            left={0}
-            bottom={0}
-            top={0}
-            right={0}
-            zIndex={-10}
-        />
+      {activeTab === 2 && <TeamResultsTab team={team} />}
+      {activeTab === 3 && <ContactTab />}
     </>
   );
 };
 
-export default TeamScreen;
+export default withWatermarkBg(TeamScreen);

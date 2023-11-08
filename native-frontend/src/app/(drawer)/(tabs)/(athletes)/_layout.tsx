@@ -23,18 +23,6 @@ const Layout = () => {
         <Stack.Screen name='[userId]' options={{
           headerTitle: "Athelte page"
         }} />
-        <Stack.Screen
-          name="modal"
-          options={{
-            // Set the presentation mode to modal for our modal route.
-            presentation: 'modal',
-            headerStyle: {
-              backgroundColor: '#1C1E1F',
-            },
-            headerTintColor: '#fff',
-            title: "Find An Athlete"
-          }}
-      />
     </Stack>
   )
 }

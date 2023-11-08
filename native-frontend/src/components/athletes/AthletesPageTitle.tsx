@@ -8,7 +8,7 @@ import FakeSearchBar from '@Components/common/FakeSearchBar'
 const AthletesPageTitle = () => {
   const router = useRouter()
   return (
-    <Pressable  width={'95%'}  onPress={() => router.push("/modal")}>
+    <Pressable  width={'95%'}  onPress={() => router.push("/(modals)/(find)/find-athlete")}>
       {({pressed}: {pressed: boolean}) => (
         <Center opacity={pressed ? "$90" : "$100"} >
           <FakeSearchBar  placeholder='Search for an athlete...' />

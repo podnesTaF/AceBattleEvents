@@ -4,29 +4,34 @@ import Drawer from 'expo-router/drawer'
 import CustomDrawerContent from '@Components/CustomDrawerContent'
 import LogoTitle from '@Components/LogoTitle'
 import { DrawerToggleButton } from "@react-navigation/drawer";
+import { usePathname, useRouter } from 'expo-router';
 
 
 const Layout = () => {
+  const pathname = usePathname();
+
   return (
     <Drawer
-      screenOptions={{ headerShown: false}}
+      screenOptions={({route}) => ({
+        headerStyle: {
+          backgroundColor: '#1C1E1F',
+          elevation: 0,
+          shadowOpacity: 0,
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+        headerShown: pathname === '/home' || route.name !== '(tabs)',
+        headerLeft: (props) => <DrawerToggleButton {...props} />,
+        title: 'Ace Battle Mile',
+        headerTitle: (props: any) => 
+         <LogoTitle {...props} />,
+      })}
       drawerContent={(props: any) => <CustomDrawerContent {...props}/>}
       >
-        <Drawer.Screen name="(tabs)" options={{
-          drawerLabel: 'Home',
-          headerStyle: {
-            backgroundColor: '#1C1E1F',
-            elevation: 0,
-            shadowOpacity: 0,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerShown: true,
-          headerLeft: (props) => <DrawerToggleButton {...props} />,
-          title: 'Ace Battle Mile',
-          headerTitle: (props: any) => <LogoTitle {...props} />,
+        <Drawer.Screen key={'homepage'} name="(tabs)" options={{
+           drawerLabel: 'Home',
         }} />
         <Drawer.Screen name="events" options={{
                     title: 'Events',

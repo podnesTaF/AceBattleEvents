@@ -32,6 +32,7 @@
     "expo-system-ui": "~2.4.0",
     "expo-web-browser": "~12.3.2",
     "javascript-time-ago": "^2.5.9",
+    "lucide-react-native": "^0.292.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.48.2",
