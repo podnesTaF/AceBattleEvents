@@ -1,16 +1,11 @@
-import { View, Text } from "react-native";
-import React, { useState } from "react";
-import { Link, Stack } from "expo-router";
+import HomeTabTitle from "@Components/HomeTabTitle";
+import ProfileItem from "@Components/profile/ProfileItem";
+import { textUserManager } from "@Constants/dummy-data";
 import { Box, HStack, Pressable } from "@gluestack-ui/themed";
 import { getAccountItems } from "@lib/user/utils/get-account-items";
-import {
-  testUserRunner,
-  testUserSpectator,
-  textUserManager,
-  users,
-} from "@Constants/dummy-data";
-import ProfileItem from "@Components/profile/ProfileItem";
-import HomeTabTitle from "@Components/HomeTabTitle";
+import { Link, Stack } from "expo-router";
+import React, { useState } from "react";
+import { Text, View } from "react-native";
 
 const AccountPage = () => {
   const [user, setUser] = useState<any>(textUserManager);
@@ -22,6 +17,7 @@ const AccountPage = () => {
             headerStyle: {
               backgroundColor: "#1C1E1F",
             },
+            headerTintColor: "#fff",
             headerTitle: () => (
               <Box width={"95%"} my={"$2"}>
                 <HomeTabTitle user={user} />
@@ -32,7 +28,7 @@ const AccountPage = () => {
         <HStack flexWrap="wrap" m={"$4"} space="lg">
           {getAccountItems(user).map((item, i) => (
             <Link key={i} href={item.link} asChild>
-              <Pressable width={'46%'}>
+              <Pressable width={"46%"}>
                 <ProfileItem {...item} />
               </Pressable>
             </Link>

@@ -10,7 +10,7 @@ const Layout = () => {
   const [user, setUser] = useState<any>(testUserRunner)
   return (
     <Tabs>
-        <Tabs.Screen name='home'  options={{
+        <Tabs.Screen name='home' options={{
           tabBarLabel: "Home",
           tabBarIcon: ({size, color}) => (
             <Ionicons name={'home'} size={size} color={color}/> 

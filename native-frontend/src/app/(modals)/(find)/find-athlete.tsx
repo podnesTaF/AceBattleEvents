@@ -5,17 +5,25 @@ import SearchBar from '@Components/common/SearchBar';
 import { teamsPreview, users } from '@Constants/dummy-data';
 import UserCard from '@Components/user/UserCard';
 
-const modal = () => {
+const FindAthelteModal = () => {
     const navigation = useNavigation();
     const [query, setQuery] = useState('')
   return (
     <>
     <Stack.Screen
         options={{
+            headerStyle: {
+                backgroundColor: "#1C1E1F",
+            },
+            headerTintColor: "#fff",
+            headerShown: true,
             headerTitle: () => (
-                <Box width={'100%'} ml={"-$10"}>
-                <SearchBar variant='dark' placeholder='Search by name...' value={query} onChange={(text) => setQuery(text)} />
-                </Box>
+                    <VStack mt={"$4"} mb={"$2"} width={'100%'} ml={"-$10"} alignItems='center'>
+                        <Heading size="sm" color="$coolGray200">
+                            Find Athlete
+                        </Heading>
+                        <SearchBar variant='dark' placeholder='Search by name...' value={query} onChange={(text) => setQuery(text)} />
+                    </VStack>
             )
         }}
   />
@@ -45,4 +53,4 @@ const modal = () => {
   )
 }
 
-export default modal
+export default FindAthelteModal
