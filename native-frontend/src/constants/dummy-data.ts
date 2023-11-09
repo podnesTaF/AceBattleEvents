@@ -1293,3 +1293,21 @@ export const testUserSpectator = {
     },
   },
 };
+
+export const coaches = [
+  {
+    id: 1,
+    name: "Oleksii",
+    surname: "Kulivets",
+  },
+  {
+    id: 2,
+    name: "Vitaliy",
+    surname: "Sabulyak",
+  },
+  {
+    id: 3,
+    name: "Jan",
+    surname: "Vindel",
+  },
+];

@@ -1,14 +1,19 @@
 import Container from "@Components/common/Container";
 import FormField from "@Components/common/forms/FormField";
+import FormImagePicker from "@Components/common/forms/FormImagePicker";
+import FormRadioGroup from "@Components/common/forms/FormRadioGroup";
 import PickField from "@Components/common/forms/PickField";
 import { runners, teams } from "@Constants/dummy-data";
 import { Box, VStack } from "@gluestack-ui/themed";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
+  resetTeam,
   selectManageTeam,
   setAvailablePlayers,
   setDefaultTeam,
   setInputValue,
+  setLogo,
+  setTeamImage,
 } from "@lib/teams/slices";
 import { AddTeamSchema, mapRunnersToPickItems } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
@@ -22,6 +27,7 @@ const ManageTeam = () => {
   const { defaultTeam, newValues } = useSelector(selectManageTeam);
 
   useEffect(() => {
+    dispatch(resetTeam());
     if (params.teamId) {
       dispatch(setDefaultTeam(teams[0]));
     }
@@ -45,6 +51,14 @@ const ManageTeam = () => {
     dispatch(setInputValue({ name, value }));
   };
 
+  const onImagePicked = (image: string, name: string) => {
+    if (name === "logo") {
+      dispatch(setLogo(image));
+    } else if (name === "teamImage") {
+      dispatch(setTeamImage(image));
+    }
+  };
+
   const onSubmit = async (dto: any) => {
     console.log(dto);
   };
@@ -63,7 +77,7 @@ const ManageTeam = () => {
       <Box my={"$4"}>
         <Container vertical={true}>
           <FormProvider {...form}>
-            <VStack>
+            <VStack space="xs">
               <FormField
                 name="name"
                 label={"Team Name"}
@@ -85,6 +99,40 @@ const ManageTeam = () => {
                 label={"Coach"}
                 placeholder={"Select coach"}
                 multiple={false}
+              />
+              <FormRadioGroup
+                name={"gender"}
+                parentLabel={"Team Type"}
+                options={[
+                  {
+                    label: "Men's",
+                    value: "male",
+                  },
+                  {
+                    label: "Women's",
+                    value: "female",
+                  },
+                ]}
+              />
+              <PickField
+                name="players"
+                label={"Players"}
+                placeholder={"Select runners"}
+                multiple={true}
+              />
+              <FormImagePicker
+                placeholder="Select team logo"
+                name="logo"
+                defaultImageName={defaultTeam?.logo?.title}
+                onImagePicked={onImagePicked}
+                label="Team Logo"
+              />
+              <FormImagePicker
+                placeholder="Select team image"
+                name="teamImage"
+                defaultImageName={defaultTeam?.teamImage?.title}
+                onImagePicked={onImagePicked}
+                label="Team Image"
               />
             </VStack>
           </FormProvider>

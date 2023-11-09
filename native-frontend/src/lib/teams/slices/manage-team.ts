@@ -8,11 +8,7 @@ interface ManageTeamState {
     name: string;
     city: string;
     gender: string;
-    coach: {
-      id?: number;
-      name: string;
-      surname: string;
-    };
+    coach: number;
     players: number[];
     logo?: IMedia;
     teamImage?: IMedia;
@@ -21,14 +17,10 @@ interface ManageTeamState {
     name: string;
     city: string;
     gender: string;
-    coach: {
-      id?: number;
-      name: string;
-      surname: string;
-    };
+    coach?: number;
     players: number[];
-    logo?: IMedia;
-    teamImage?: IMedia;
+    logo?: string;
+    teamImage?: string;
   };
   availablePlayers: PickItem[];
   avaliableCoaches: {
@@ -42,10 +34,6 @@ const initialState: ManageTeamState = {
     name: "",
     city: "",
     gender: "",
-    coach: {
-      name: "",
-      surname: "",
-    },
     players: [],
   },
   availablePlayers: [],
@@ -62,20 +50,23 @@ export const manageTeamSlice = createSlice({
         name: action.payload.name,
         city: action.payload.city,
         gender: action.payload.gender,
-        coach: action.payload.coach,
+        coach: action.payload.coach.id,
         players: action.payload.players.map((player) => player.id),
         logo: action.payload.logo,
         teamImage: action.payload.teamImage,
       };
+
       state.newValues = {
         name: action.payload.name,
         city: action.payload.city,
         gender: action.payload.gender,
-        coach: action.payload.coach,
+        coach: action.payload.coach.id,
         players: action.payload.players.map((player) => player.id),
-        logo: action.payload.logo,
-        teamImage: action.payload.teamImage,
       };
+    },
+    resetTeam: (state) => {
+      state.defaultTeam = undefined;
+      state.newValues = JSON.parse(JSON.stringify(initialState.newValues));
     },
     setAvailablePlayers: (state, action: PayloadAction<any[]>) => {
       state.availablePlayers = action.payload;
@@ -91,25 +82,23 @@ export const manageTeamSlice = createSlice({
         (state.newValues as any)[action.payload.name] = action.payload.value;
       }
     },
-    setCoach: (
-      state,
-      action: PayloadAction<{ name: string; surname: string }>
-    ) => {
+    setCoach: (state, action: PayloadAction<number>) => {
       state.newValues.coach = action.payload;
     },
     setPlayers: (state, action: PayloadAction<number[]>) => {
       state.newValues.players = action.payload;
     },
-    setLogo: (state, action: PayloadAction<IMedia>) => {
+    setLogo: (state, action: PayloadAction<string>) => {
       state.newValues.logo = action.payload;
     },
-    setTeamImage: (state, action: PayloadAction<IMedia>) => {
+    setTeamImage: (state, action: PayloadAction<string>) => {
       state.newValues.teamImage = action.payload;
     },
   },
 });
 
 export const {
+  resetTeam,
   setDefaultTeam,
   setInputValue,
   setCoach,

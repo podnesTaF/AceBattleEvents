@@ -38,7 +38,7 @@ const FormField: React.FC<FormFieldProps> = ({
   const { control, formState } = useFormContext();
 
   return (
-    <FormControl isInvalid={!!formState.errors[name]} mb="$2" size={size}>
+    <FormControl isInvalid={!!formState.errors[name]} size={size}>
       <HStack>
         <Controller
           control={control}

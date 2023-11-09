@@ -1,17 +1,17 @@
 import {
-  AddIcon,
   AlertCircleIcon,
   Box,
-  Button,
-  ButtonIcon,
   FormControl,
   FormControlError,
   FormControlErrorIcon,
   FormControlErrorText,
   HStack,
+  Icon,
+  Pressable,
   Text,
 } from "@gluestack-ui/themed";
 import { Link } from "expo-router";
+import { ChevronRightCircle } from "lucide-react-native";
 import React from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -31,10 +31,11 @@ const PickField: React.FC<PickFieldProps> = ({
   const { formState } = useFormContext();
 
   return (
-    <FormControl isInvalid={!!formState.errors[name]} mb={"$2"} size="md">
+    <FormControl isInvalid={!!formState.errors[name]} size="md">
       <HStack
         space="md"
-        mb="$1"
+        py={"$3"}
+        alignItems="center"
         borderBottomWidth={1}
         borderBottomColor="$coolGray300"
       >
@@ -43,25 +44,32 @@ const PickField: React.FC<PickFieldProps> = ({
             {label}
           </Text>
         </Box>
-        <HStack space={"md"} justifyContent="space-between" flex={2}>
-          <Text size={"sm"} fontWeight="600">
-            {placeholder}
-          </Text>
-          <Link
-            href={{
-              pathname: "/(modals)/(pick)/pick-items" as any,
-              params: {
-                name,
-                multiple: multiple ? "true" : "false",
-              },
-            }}
-            asChild
-          >
-            <Button size="sm" rounded="$full" p={"$1"}>
-              <ButtonIcon as={AddIcon} size="sm" />
-            </Button>
-          </Link>
-        </HStack>
+        <Link
+          href={{
+            pathname: "/(modals)/(pick)/pick-items" as any,
+            params: {
+              name,
+              multiple: multiple ? "true" : "false",
+            },
+          }}
+          asChild
+        >
+          <Pressable flex={2}>
+            {({ pressed }: { pressed: boolean }) => (
+              <HStack
+                opacity={pressed ? 0.8 : 1}
+                space={"md"}
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Text size={"sm"} fontWeight="600">
+                  {placeholder}
+                </Text>
+                <Icon as={ChevronRightCircle} size="lg" />
+              </HStack>
+            )}
+          </Pressable>
+        </Link>
       </HStack>
       <FormControlError>
         <FormControlErrorIcon as={AlertCircleIcon} />
