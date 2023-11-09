@@ -1,4 +1,3 @@
-import { View, Text } from "react-native";
 import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -23,6 +22,7 @@ interface FormFieldProps {
   variant?: "underlined" | "outline" | "rounded";
   size?: any;
   inputProportion?: number;
+  customOnChange?: (value: string, name: string) => void;
 }
 
 const FormField: React.FC<FormFieldProps> = ({
@@ -32,12 +32,13 @@ const FormField: React.FC<FormFieldProps> = ({
   type,
   variant,
   size,
-  inputProportion
+  inputProportion,
+  customOnChange,
 }) => {
   const { control, formState } = useFormContext();
 
   return (
-    <FormControl isInvalid={!!formState.errors[name]} mb="$2" size={size}>
+    <FormControl isInvalid={!!formState.errors[name]} size={size}>
       <HStack>
         <Controller
           control={control}
@@ -54,7 +55,10 @@ const FormField: React.FC<FormFieldProps> = ({
                 flex={inputProportion || 2}
                 placeholder={placeholder}
                 onBlur={onBlur}
-                onChangeText={onChange}
+                onChangeText={(text) => {
+                  customOnChange && customOnChange(text, name);
+                  onChange(text);
+                }}
                 value={value}
                 autoCapitalize="none"
               />

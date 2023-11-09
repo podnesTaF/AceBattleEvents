@@ -1,4 +1,13 @@
-import { IUser, IRunner, ICountry, IMedia, IEvent, ITeamResult, ICoach } from "@lib/models";
+import { ICountry } from "@lib/countries/models/ICountry";
+import {
+  IClub,
+  ICoach,
+  IEvent,
+  IMedia,
+  IRunner,
+  ITeamResult,
+  IUser,
+} from "@lib/models";
 
 export type ITeam = {
   id: number;
