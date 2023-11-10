@@ -1,6 +1,5 @@
-import { Box, HStack, Text } from "@gluestack-ui/themed";
+import { HStack } from "@gluestack-ui/themed";
 import React from "react";
-import { Pressable } from "react-native";
 import TabItem from "./TabItem";
 
 interface TabsProps {
@@ -8,7 +7,7 @@ interface TabsProps {
   items: string[];
   onChangeTab: (tabIndex: number) => void;
   activeIndex: number;
-  size?: "sm" | "md" | "lg"
+  size?: "sm" | "md" | "lg";
 }
 
 const Tabs: React.FC<TabsProps> = ({
@@ -16,10 +15,10 @@ const Tabs: React.FC<TabsProps> = ({
   items,
   onChangeTab,
   activeIndex,
-  size
+  size,
 }) => {
   return (
-    <HStack w={"$full"} left={"-$4"}>
+    <HStack w={"$full"}>
       {items.map((item, index) => (
         <TabItem
           item={item}

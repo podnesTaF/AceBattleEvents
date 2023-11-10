@@ -9,14 +9,18 @@ import {
   FormControlErrorText,
   FormControlLabel,
   FormControlLabelText,
-  HStack,
+  Icon,
   Input,
   InputField,
   InputSlot,
+  VStack,
 } from "@gluestack-ui/themed";
+import { LucideIcon } from "lucide-react-native";
+
 interface FormFieldProps {
   name: string;
   label: string;
+  labelIcon?: LucideIcon;
   placeholder?: string;
   type?: "text" | "password" | undefined;
   variant?: "underlined" | "outline" | "rounded";
@@ -24,6 +28,8 @@ interface FormFieldProps {
   inputProportion?: number;
   customOnChange?: (value: string, name: string) => void;
   defaultValue?: string;
+  lines?: number;
+  vertical?: boolean;
 }
 
 const FormField: React.FC<FormFieldProps> = ({
@@ -36,40 +42,59 @@ const FormField: React.FC<FormFieldProps> = ({
   inputProportion,
   customOnChange,
   defaultValue,
+  labelIcon,
+  vertical,
 }) => {
   const { control, formState } = useFormContext();
 
   return (
     <FormControl isInvalid={!!formState.errors[name]} size={size}>
-      <HStack>
+      <VStack
+        minWidth={"$64"}
+        maxWidth={vertical ? "$72" : undefined}
+        height={vertical ? "$16" : undefined}
+      >
         <Controller
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
-            <Input flex={1} mb={"$1"} variant={variant}>
-              <InputSlot flex={1} alignItems="flex-start">
-                <FormControlLabel>
+            <>
+              {vertical && (
+                <FormControlLabel alignSelf="flex-start">
+                  {labelIcon && <Icon mr={"$2"} as={labelIcon} size={"md"} />}
                   <FormControlLabelText size={"md"} fontWeight="600">
                     {label}
                   </FormControlLabelText>
                 </FormControlLabel>
-              </InputSlot>
-              <InputField
-                flex={inputProportion || 2}
-                placeholder={placeholder}
-                onBlur={onBlur}
-                onChangeText={(text) => {
-                  customOnChange && customOnChange(text, name);
-                  onChange(text);
-                }}
-                value={value}
-                autoCapitalize="none"
-              />
-            </Input>
+              )}
+              <Input flex={1} mb={"$1"} variant={variant}>
+                {!vertical && (
+                  <InputSlot flex={1} alignItems="flex-start">
+                    <FormControlLabel>
+                      <FormControlLabelText size={"md"} fontWeight="600">
+                        {label}
+                      </FormControlLabelText>
+                    </FormControlLabel>
+                  </InputSlot>
+                )}
+                <InputField
+                  type={type || "text"}
+                  flex={inputProportion || 2}
+                  placeholder={placeholder}
+                  onBlur={onBlur}
+                  onChangeText={(text) => {
+                    customOnChange && customOnChange(text, name);
+                    onChange(text);
+                  }}
+                  value={value}
+                  autoCapitalize="none"
+                />
+              </Input>
+            </>
           )}
           name={name}
           defaultValue={formState.defaultValues?.[name] || defaultValue || ""}
         />
-      </HStack>
+      </VStack>
       <FormControlError>
         <FormControlErrorIcon as={AlertCircleIcon} />
         <FormControlErrorText>

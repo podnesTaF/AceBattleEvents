@@ -5,7 +5,13 @@ import HomeTeamTab from "@Components/teams/tabs/HomeTeamTab";
 import RunnersTab from "@Components/teams/tabs/RunnersTab";
 import TeamResultsTab from "@Components/teams/tabs/TeamResultsTab";
 import { teams } from "@Constants/dummy-data";
-import { Box, HStack, Heading, Image, ScrollView } from "@gluestack-ui/themed";
+import {
+  HStack,
+  Heading,
+  Image,
+  ScrollView,
+  VStack,
+} from "@gluestack-ui/themed";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 
@@ -26,8 +32,15 @@ const TeamScreen = () => {
         options={{
           headerShown: true,
           headerTitle: ({ tintColor }) => (
-            <Box w={"$full"}>
-              <HStack py={"$2"} space="sm" w={"$full"} alignItems="center">
+            <VStack alignItems="center" width={"100%"} space="md" left={"-$16"}>
+              <HStack
+                py={"$2"}
+                space="sm"
+                w={"$full"}
+                justifyContent="center"
+                alignItems="center"
+                left={"-$4"}
+              >
                 <Image
                   role={"img"}
                   alt={"team logo"}
@@ -39,11 +52,12 @@ const TeamScreen = () => {
                 </Heading>
               </HStack>
               <Tabs
+                activeColor={"$red500"}
                 items={tabs}
                 onChangeTab={onChangeTab}
                 activeIndex={activeTab}
               />
-            </Box>
+            </VStack>
           ),
         }}
       />

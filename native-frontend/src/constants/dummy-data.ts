@@ -1,3 +1,5 @@
+import { INotification } from "@lib/models";
+
 export const users = [
   {
     id: 1,
@@ -46,7 +48,7 @@ export const users = [
   },
 ];
 
-export const managers = [
+export const managers: any = [
   {
     id: 1,
     name: "Oleksii",
@@ -1309,5 +1311,29 @@ export const coaches = [
     id: 3,
     name: "Jan",
     surname: "Vindel",
+  },
+];
+
+export const notifications: INotification[] = [
+  {
+    id: 1,
+    sender: managers[0],
+    createdAt: "2023-10-25T20:23:32.450Z",
+    text: "Hello, I am Oleksii, the founder of Ace Battle Mile. I am happy to see you here!",
+    title: "Welcome to Ace Battle Mile!",
+  },
+  {
+    id: 2,
+    sender: managers[1],
+    createdAt: "2023-10-10T20:23:32.450Z",
+    text: "Welcome to Ace Battle Mile! You can find all the information about the upcoming events here.",
+    title: "Welcome to Ace Battle Mile!",
+  },
+  {
+    id: 3,
+    sender: managers[0],
+    createdAt: "2023-10-19T20:23:32.450Z",
+    text: "Hello, I am Oleksii, the founder of Ace Battle Mile. I am happy to see you here!",
+    title: "Welcome to Ace Battle Mile!",
   },
 ];
