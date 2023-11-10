@@ -3,11 +3,11 @@ import AthleteScreenContent from "@Components/athletes/screens/AthleteScreenCont
 import ProfileHeader from "@Components/common/ProfileHeader";
 import Tabs from "@Components/common/Tabs";
 import { testUserRunner } from "@Constants/dummy-data";
-import { Box } from "@gluestack-ui/themed";
+import { Box, Heading, VStack } from "@gluestack-ui/themed";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 
-const tabs = ["BIO", "Teams", "Results", "Competitions"];
+const tabs = ["BIO", "Teams", "Results", "Events"];
 
 const ProfileScreen = () => {
   const params = useLocalSearchParams();
@@ -26,19 +26,23 @@ const ProfileScreen = () => {
           headerShown: true,
           headerTintColor: "#fff",
           headerTitle: () => (
-            <Box w={"$full"}>
-              <Box w={"97%"}>
+            <VStack width={"$full"} left={"-$16"} pt={"$5"}>
+              <Heading textAlign="center" size={"xs"} color="$coolGray300">
+                Athlete Profile
+              </Heading>
+              <Box>
                 <ProfileHeader user={testUserRunner} />
               </Box>
-              <Box left={"-$12"}>
+              <Box flex={1}>
                 <Tabs
-                  size="md"
+                  size="sm"
                   items={tabs}
+                  activeColor="$red500"
                   onChangeTab={onChangeTab}
                   activeIndex={activeTab}
                 />
               </Box>
-            </Box>
+            </VStack>
           ),
         }}
       />

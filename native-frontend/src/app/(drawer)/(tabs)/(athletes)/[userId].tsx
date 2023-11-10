@@ -26,15 +26,16 @@ const AthleteScreen = () => {
           headerTintColor: "#fff",
           headerTitle: () => (
             <Box w={"$full"}>
-              <Box w={"97%"}>
+              <Box>
                 <ProfileHeader user={testUserRunner} />
               </Box>
-              <Box left={"-$12"}>
+              <Box left={"-$16"}>
                 <Tabs
                   size="md"
                   items={tabs}
                   onChangeTab={onChangeTab}
                   activeIndex={activeTab}
+                  activeColor="$red500"
                 />
               </Box>
             </Box>

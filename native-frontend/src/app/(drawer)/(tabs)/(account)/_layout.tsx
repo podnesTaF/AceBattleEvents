@@ -1,4 +1,5 @@
 import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -8,6 +9,7 @@ const AccountLayout = () => {
   if (user) {
     return (
       <SafeAreaView>
+        <StatusBar style={"light"} />
         <Stack
           screenOptions={{
             headerStyle: {

@@ -4,6 +4,7 @@ import { textUserManager } from "@Constants/dummy-data";
 import { Box, HStack, Pressable } from "@gluestack-ui/themed";
 import { getAccountItems } from "@lib/user/utils/get-account-items";
 import { Link, Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { Text, View } from "react-native";
 
@@ -12,6 +13,7 @@ const AccountPage = () => {
   if (user) {
     return (
       <>
+        <StatusBar style={"light"} />
         <Stack.Screen
           options={{
             headerStyle: {
@@ -20,7 +22,7 @@ const AccountPage = () => {
             headerTintColor: "#fff",
             headerTitle: () => (
               <Box width={"95%"} my={"$2"}>
-                <HomeTabTitle user={user} />
+                <HomeTabTitle annotation="personal account" user={user} />
               </Box>
             ),
           }}

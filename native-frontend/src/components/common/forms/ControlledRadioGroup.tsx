@@ -22,7 +22,7 @@ const ControlledRadioGroup: React.FC<ControlledRadioGroupProps> = ({
         onChange={(value) => {
           customOnChange && customOnChange(value, name);
         }}
-        value={value}
+        value={value || ""}
       >
         <VStack space="md">
           {items.map((item, i) => (
