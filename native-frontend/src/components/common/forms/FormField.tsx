@@ -23,6 +23,7 @@ interface FormFieldProps {
   size?: any;
   inputProportion?: number;
   customOnChange?: (value: string, name: string) => void;
+  defaultValue?: string;
 }
 
 const FormField: React.FC<FormFieldProps> = ({
@@ -34,6 +35,7 @@ const FormField: React.FC<FormFieldProps> = ({
   size,
   inputProportion,
   customOnChange,
+  defaultValue,
 }) => {
   const { control, formState } = useFormContext();
 
@@ -65,9 +67,7 @@ const FormField: React.FC<FormFieldProps> = ({
             </Input>
           )}
           name={name}
-          defaultValue={
-            formState.defaultValues ? formState.defaultValues[name] : ""
-          }
+          defaultValue={formState.defaultValues?.[name] || defaultValue || ""}
         />
       </HStack>
       <FormControlError>

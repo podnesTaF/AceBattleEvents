@@ -1,14 +1,18 @@
 import PickAthletesList from "@Components/athletes/PickAthletesList";
 import PickCoachScreenContent from "@Components/athletes/screens/PickCoachScreenContent";
-import { Heading, VStack } from "@gluestack-ui/themed";
+import { Button, ButtonText, Heading } from "@gluestack-ui/themed";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { usePathname } from "expo-router/src/hooks";
-import React from "react";
+import React, { useState } from "react";
 
 const PickItemsModal = () => {
   const pathname = usePathname();
   const params = useLocalSearchParams<{ name?: string; multiple?: string }>();
-  const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
+  const [save, setSave] = useState(false);
+  const onSave = () => {
+    setSave(true);
+  };
+
   return (
     <>
       <Stack.Screen
@@ -19,14 +23,19 @@ const PickItemsModal = () => {
               Pick {params.name}
             </Heading>
           ),
+          headerRight: () => (
+            <Button onPress={onSave}>
+              <ButtonText>Save</ButtonText>
+            </Button>
+          ),
         }}
       />
       {params.name === "players" && (
-        <VStack p={"$4"}>
-          <PickAthletesList />
-        </VStack>
+        <PickAthletesList save={save} setSave={setSave} />
       )}
-      {params.name === "coach" && <PickCoachScreenContent />}
+      {params.name === "coach" && (
+        <PickCoachScreenContent save={save} setSave={setSave} />
+      )}
     </>
   );
 };

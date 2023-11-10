@@ -1,37 +1,48 @@
-import ItemCheckbox from "@Components/common/forms/ItemCheckbox";
-import { CheckboxGroup, VStack } from "@gluestack-ui/themed";
+import ControlledCheckboxGroup from "@Components/common/forms/ControlledCheckboxGroup";
+import { VStack } from "@gluestack-ui/themed";
 import { selectManageTeam, setPlayers } from "@lib/teams/slices";
-import { PickItem } from "@lib/types";
-import React, { useState } from "react";
-import { ScrollView } from "react-native-gesture-handler";
+import { useNavigation } from "expo-router";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-interface Props {}
-
-const PickAthletesList = () => {
+const PickAthletesList = ({
+  save,
+  setSave,
+}: {
+  save: boolean;
+  setSave: Function;
+}) => {
   const { availablePlayers } = useSelector(selectManageTeam);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const { newValues } = useSelector(selectManageTeam);
   const dispatch = useDispatch();
+  const navigator = useNavigation();
+
+  useEffect(() => {
+    setSelectedItems(newValues.players.map((player) => player.toString()));
+  }, []);
+
+  useEffect(() => {
+    if (save) {
+      dispatch(setPlayers(selectedItems.map((item) => +item)));
+      setSave(false);
+      navigator.goBack();
+    }
+  }, [save, setSave]);
 
   const onChangeItems = (items: string[]) => {
     setSelectedItems(items);
-    dispatch(setPlayers(items.map((item) => +item)));
   };
 
   return (
-    <ScrollView>
-      <CheckboxGroup value={selectedItems} onChange={onChangeItems}>
-        <VStack space={"md"}>
-          {availablePlayers.map((item: PickItem, i) => (
-            <ItemCheckbox
-              key={item.id}
-              item={item}
-              isLastElement={availablePlayers.length - 1 === i}
-            />
-          ))}
-        </VStack>
-      </CheckboxGroup>
-    </ScrollView>
+    <VStack p={"$4"}>
+      <ControlledCheckboxGroup
+        items={availablePlayers}
+        customOnChange={onChangeItems}
+        name={"players"}
+        value={selectedItems}
+      />
+    </VStack>
   );
 };
 

@@ -21,6 +21,7 @@ interface FormRadioGroupProps {
   name: string;
   parentLabel: string;
   customOnChange?: (value: string, name: string) => void;
+  defaultValue?: string;
 }
 
 const FormRadioGroup: React.FC<FormRadioGroupProps> = ({
@@ -28,6 +29,7 @@ const FormRadioGroup: React.FC<FormRadioGroupProps> = ({
   name,
   parentLabel,
   customOnChange,
+  defaultValue,
 }) => {
   const { control, formState } = useFormContext();
 
@@ -47,7 +49,9 @@ const FormRadioGroup: React.FC<FormRadioGroupProps> = ({
           render={({ field: { onChange, value } }) => (
             <RadioGroup
               onChange={(value) => {
-                customOnChange && customOnChange(value, name);
+                if (customOnChange) {
+                  customOnChange(value, name);
+                }
                 onChange(value);
               }}
               value={value}
@@ -65,9 +69,7 @@ const FormRadioGroup: React.FC<FormRadioGroupProps> = ({
             </RadioGroup>
           )}
           name={name}
-          defaultValue={
-            formState.defaultValues ? formState.defaultValues[name] : undefined
-          }
+          defaultValue={formState.defaultValues?.[name] || defaultValue || ""}
         />
       </Box>
     </HStack>
