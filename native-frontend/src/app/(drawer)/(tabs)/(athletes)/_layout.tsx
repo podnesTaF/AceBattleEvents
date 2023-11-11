@@ -1,30 +1,34 @@
-import React, { useState } from 'react'
-import { Stack, useNavigation } from 'expo-router'
-import { Box, Center, Text } from '@gluestack-ui/themed'
-import SearchBar from '@Components/common/SearchBar'
-import AthletesPageTitle from '@Components/athletes/AthletesPageTitle'
-import { Ionicons } from '@expo/vector-icons'
-import { HeaderBackButton } from '@react-navigation/elements'
+import SearchTitle from "@Components/common/SearchTitle";
+import { Stack } from "expo-router";
+import React from "react";
 
 const Layout = () => {
-
   return (
     <Stack>
-        <Stack.Screen name='index' options={{
+      <Stack.Screen
+        name="index"
+        options={{
           headerStyle: {
-            backgroundColor: '#1C1E1F',
+            backgroundColor: "#1C1E1F",
           },
-          headerTintColor: '#fff',
-          title: 'Ace Battle Mile',
+          headerTintColor: "#fff",
+          title: "Ace Battle Mile",
           headerTitle: (props) => (
-            <AthletesPageTitle />
+            <SearchTitle
+              link={"/(modals)/(find)/find-athlete"}
+              placeholder="Search for an athlete..."
+            />
           ),
-        }} />
-        <Stack.Screen name='[userId]' options={{
-          headerTitle: "Athelte page"
-        }} />
+        }}
+      />
+      <Stack.Screen
+        name="[userId]"
+        options={{
+          headerTitle: "Athelte page",
+        }}
+      />
     </Stack>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

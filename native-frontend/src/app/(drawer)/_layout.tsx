@@ -38,7 +38,7 @@ const Layout = () => {
         }}
       />
       <Drawer.Screen
-        name="events"
+        name="(events)"
         options={{
           title: "Events",
           drawerLabel: "Events",

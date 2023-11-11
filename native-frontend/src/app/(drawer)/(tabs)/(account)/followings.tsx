@@ -1,8 +1,8 @@
 import withWatermarkBg from "@Components/HOCs/withWatermark";
 import LogoTitle from "@Components/LogoTitle";
-import AthletesPageTitle from "@Components/athletes/AthletesPageTitle";
 import Container from "@Components/common/Container";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
+import SearchTitle from "@Components/common/SearchTitle";
 import TeamPreview from "@Components/teams/TeamPreview";
 import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
 import UserCard from "@Components/user/UserCard";
@@ -31,7 +31,10 @@ const Followings = () => {
             >
               <LogoTitle {...props} />
               <Box width={"95%"}>
-                <AthletesPageTitle />
+                <SearchTitle
+                  link={"/(modals)/(find)/find-athlete"}
+                  placeholder="Search for an athlete..."
+                />
               </Box>
             </VStack>
           ),
