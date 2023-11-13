@@ -1,4 +1,3 @@
-import Container from "@Components/common/Container";
 import SearchTitle from "@Components/common/SearchTitle";
 import EventCard from "@Components/events/EventCard";
 import RegistrationsSection from "@Components/events/RegistrationsSection";
@@ -27,25 +26,21 @@ const EventsScreen = () => {
         }}
       />
       <ScrollView>
-        <VStack mx={"$3"} mb={"$4"} space="lg">
-          <Heading size={"lg"} textTransform="uppercase" fontWeight="bold">
-            Upcoming Events
-          </Heading>
+        <VStack mx={"$3"} mb={"$12"} space="lg" mt={"$4"}>
+          <Heading size={"lg"}>Upcoming Events</Heading>
           <UpcomingEventCard />
         </VStack>
-        <Container vertical>
-          <Box p={"$3"}>
-            <Heading size={"lg"} textTransform="uppercase" fontWeight="bold">
-              Your Registrations
-            </Heading>
-            <RegistrationsSection user={user} events={events} />
-          </Box>
-        </Container>
+        <Box p={"$3"}>
+          <Heading size={"lg"}>Your Registrations</Heading>
+          <RegistrationsSection user={user} events={events} />
+        </Box>
         <VStack space="md" mb={"$1/3"}>
-          <Heading size="lg">Past Events</Heading>
-          <Container>
+          <Heading mx={"$4"} size="lg">
+            Past Events
+          </Heading>
+          <Box p={"$3"} bg={"$white"}>
             <EventCard event={events[0] as any} />
-          </Container>
+          </Box>
         </VStack>
       </ScrollView>
     </>

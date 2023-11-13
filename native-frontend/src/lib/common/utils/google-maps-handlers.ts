@@ -12,7 +12,7 @@ export const transformAddress = (location: ILocation): string => {
     ", " +
     location.city +
     ", " +
-    location.country +
+    location.country.name +
     ", " +
     location.zipCode
   );

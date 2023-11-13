@@ -6,9 +6,10 @@ interface TabItemProps {
   index: number;
   onPress: (tabIndex: number) => void;
   isLast?: boolean;
-  activeIndex: number;
+  activeIndex?: number;
   size?: "sm" | "md" | "lg";
   activeColor?: string;
+  passiveColor?: any;
 }
 
 const TabItem: React.FC<TabItemProps> = ({
@@ -18,6 +19,7 @@ const TabItem: React.FC<TabItemProps> = ({
   isLast,
   activeIndex,
   activeColor,
+  passiveColor,
   size,
 }) => {
   return (
@@ -36,7 +38,11 @@ const TabItem: React.FC<TabItemProps> = ({
           <Text
             size={size || "lg"}
             fontWeight="600"
-            color={index === activeIndex ? activeColor : "$coolGray400"}
+            color={
+              index === activeIndex
+                ? activeColor
+                : passiveColor || "$coolGray400"
+            }
           >
             {item}
           </Text>
