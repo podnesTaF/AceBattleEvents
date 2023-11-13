@@ -8,6 +8,7 @@ import {
 } from "@gluestack-ui/themed";
 import { IEvent } from "@lib/models";
 import { convertFlagIntoPng, formatDate } from "@lib/utils";
+import { Link } from "expo-router";
 import React from "react";
 
 interface Props {
@@ -53,7 +54,11 @@ const EventCard: React.FC<Props> = ({ event, children }) => {
         {children}
         <HStack justifyContent="space-between" space="md">
           <Text size={"md"}>Details</Text>
-          <Heading size={"md"}>visit event page</Heading>
+          <Link href={`/(drawer)/(events)/${event.id}`} asChild>
+            <Heading size={"md"} color={"$amber400"}>
+              visit event page
+            </Heading>
+          </Link>
         </HStack>
       </VStack>
     </Box>

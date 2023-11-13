@@ -8,6 +8,8 @@ import React from "react";
 const Layout = () => {
   const pathname = usePathname();
 
+  console.log(pathname);
+
   return (
     <Drawer
       screenOptions={({ route }) => ({
@@ -22,8 +24,8 @@ const Layout = () => {
         },
         headerShown:
           pathname === "/home" ||
-          pathname === "/notifications" ||
-          route.name !== "(tabs)",
+          pathname === "/events" ||
+          pathname === "/notifications",
         headerLeft: (props) => <DrawerToggleButton {...props} />,
         title: "Ace Battle Mile",
         headerTitle: (props: any) => <LogoTitle {...props} />,
