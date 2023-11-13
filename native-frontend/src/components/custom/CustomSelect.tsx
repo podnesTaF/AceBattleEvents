@@ -44,6 +44,9 @@ const CustomSelect: React.FC<Props> = ({
           <SelectDragIndicatorWrapper>
             <SelectDragIndicator />
           </SelectDragIndicatorWrapper>
+          {defaultPlaceholder && (
+            <SelectItem label={defaultPlaceholder} value="" />
+          )}
           {items.map((item, index) => (
             <SelectItem key={index} label={item.label} value={item.value} />
           ))}

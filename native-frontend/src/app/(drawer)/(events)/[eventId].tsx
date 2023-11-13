@@ -30,6 +30,10 @@ const EventScreen = () => {
   const onChangeTab = (tabIndex: number) => {
     if (tabs[tabIndex] === "Participants") {
       router.push("/participants");
+    } else if (tabs[tabIndex] === "Schedule") {
+      router.push("/timetable");
+    } else {
+      router.push("/results");
     }
   };
 

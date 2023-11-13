@@ -1,6 +1,20 @@
+import Container from "@Components/common/Container";
+import HeaderSubtitledTitle from "@Components/common/HeaderSubtitledTitle";
 import Tabs from "@Components/common/Tabs";
 import CustomSelect from "@Components/custom/CustomSelect";
-import { Box, HStack, Heading, VStack } from "@gluestack-ui/themed";
+import TeamDescription from "@Components/teams/TeamDescription";
+import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
+import UserCard from "@Components/user/UserCard";
+import { teams, users } from "@Constants/dummy-data";
+import {
+  Box,
+  FlatList,
+  HStack,
+  Heading,
+  ScrollView,
+  VStack,
+} from "@gluestack-ui/themed";
+import { IUser } from "@lib/models";
 import { Stack } from "expo-router";
 import React, { useState } from "react";
 
@@ -17,6 +31,19 @@ const filters = {
       value: "female",
     },
   ],
+  teams: teams.map((team) => ({
+    label: team.name,
+    value: team.id,
+  })),
+};
+
+const groupedData = {
+  O: users.filter(
+    (user) =>
+      user.surname[0].toUpperCase() === "O" ||
+      user.name[0].toUpperCase() === "O"
+  ),
+  G: users.slice(1),
 };
 
 const participants = () => {
@@ -36,14 +63,11 @@ const participants = () => {
           headerTintColor: "#fff",
           headerTitle: ({ tintColor }) => (
             <VStack space={"md"} alignItems="center" w={"$full"} left={"-$16"}>
-              <VStack alignItems="center">
-                <Heading size="lg" color={tintColor}>
-                  Participants
-                </Heading>
-                <Heading size="xs" color={tintColor}>
-                  Brussels Mile
-                </Heading>
-              </VStack>
+              <HeaderSubtitledTitle
+                title={"Participants"}
+                subtitle="Brussels mile"
+                tintColor={tintColor}
+              />
               <Tabs
                 activeColor={"#ff0000"}
                 activeIndex={activeTab}
@@ -54,27 +78,116 @@ const participants = () => {
           ),
         }}
       />
-      <Box pt={"$4"} alignItems="center">
-        <Box
-          w={"$80"}
-          rounded={"$lg"}
-          borderColor="$coolGray400"
-          borderWidth={1}
-        >
-          <HStack px={"$3"} py={"$1"} space="lg" alignItems="center">
-            <Heading color="$coolGray400" flex={1} size={"sm"}>
-              Category
-            </Heading>
-            <Box flex={2}>
-              <CustomSelect
-                onChange={(value) => console.log(value)}
-                items={filters.category}
-                defaultPlaceholder="All"
-              />
+      <VStack>
+        {activeTab === 0 && (
+          <>
+            <HStack
+              p={"$4"}
+              alignItems="center"
+              justifyContent="center"
+              space="md"
+            >
+              <Box
+                w={"$1/2"}
+                rounded={"$lg"}
+                borderColor="$coolGray400"
+                borderWidth={1}
+              >
+                <HStack px={"$3"} py={"$1"} space="lg" alignItems="center">
+                  <Heading color="$coolGray400" size={"sm"}>
+                    Category
+                  </Heading>
+                  <Box flex={1}>
+                    <CustomSelect
+                      onChange={(value) => console.log(value)}
+                      items={filters.category}
+                      defaultPlaceholder="All"
+                    />
+                  </Box>
+                </HStack>
+              </Box>
+            </HStack>
+            <FlatList
+              height={"$full"}
+              mx={"$2"}
+              data={teams}
+              keyExtractor={(item: any) => item.id.toString()}
+              ItemSeparatorComponent={() => <Box h={"$4"} />}
+              ListFooterComponent={() => <Box h={"$24"} />}
+              renderItem={({ item }) => (
+                <TeamPreviewCard
+                  Item={TeamDescription}
+                  team={item}
+                  imageProportion={1}
+                />
+              )}
+            />
+          </>
+        )}
+        {activeTab === 1 && (
+          <ScrollView>
+            <HStack
+              p={"$4"}
+              alignItems="center"
+              justifyContent="center"
+              space="md"
+            >
+              <Box
+                w={"$1/2"}
+                rounded={"$lg"}
+                borderColor="$coolGray400"
+                borderWidth={1}
+              >
+                <HStack px={"$3"} py={"$1"} space="lg" alignItems="center">
+                  <Heading color="$coolGray400" size={"sm"}>
+                    Category
+                  </Heading>
+                  <Box flex={1}>
+                    <CustomSelect
+                      onChange={(value) => console.log(value)}
+                      items={filters.category}
+                      defaultPlaceholder="All"
+                    />
+                  </Box>
+                </HStack>
+              </Box>
+              <Box
+                w={"$1/2"}
+                rounded={"$lg"}
+                borderColor="$coolGray400"
+                borderWidth={1}
+              >
+                <HStack px={"$3"} py={"$1"} space="lg" alignItems="center">
+                  <Heading color="$coolGray400" size={"sm"}>
+                    Team
+                  </Heading>
+                  <Box flex={1}>
+                    <CustomSelect
+                      onChange={(value) => console.log(value)}
+                      items={filters.teams}
+                      defaultPlaceholder="All"
+                    />
+                  </Box>
+                </HStack>
+              </Box>
+            </HStack>
+            <Box pb={"$4"}>
+              {Object.keys(groupedData).map((key, i) => (
+                <VStack key={i}>
+                  <Heading px={"$6"} py={"$2"} color={"$coolGray400"}>
+                    {key}
+                  </Heading>
+                  <Container>
+                    {(groupedData as any)[key].map((user: IUser, i: number) => (
+                      <UserCard key={user.id} user={user} />
+                    ))}
+                  </Container>
+                </VStack>
+              ))}
             </Box>
-          </HStack>
-        </Box>
-      </Box>
+          </ScrollView>
+        )}
+      </VStack>
     </>
   );
 };
