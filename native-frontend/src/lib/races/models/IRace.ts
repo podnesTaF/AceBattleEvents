@@ -1,4 +1,4 @@
-import { ITeam, ITeamResult, IEvent } from "@lib/models";
+import { IEvent, ITeam, ITeamResult } from "@lib/models";
 
 export type IRace = {
   id: number;
@@ -8,4 +8,10 @@ export type IRace = {
   winner: ITeam | null;
   event: IEvent;
   teamResults?: ITeamResult[];
+};
+
+export type RaceShortForm = {
+  id: number;
+  name: string;
+  startTime: string;
 };

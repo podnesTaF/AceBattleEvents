@@ -911,12 +911,13 @@ export const events = [
   },
 ];
 
-export const races = [
+export const races: any[] = [
   {
     id: 12,
     startTime: "2023-09-23T17:00:00.000Z",
     name: "Men Team Brussels - Men Team Kyiv",
     type: "male",
+    teams: teams.slice(0, 2),
     event: {
       id: 25,
       title: "Brussels Mile",
@@ -1007,6 +1008,7 @@ export const races = [
       totalPoints: 1448250,
       rank: 1,
     },
+    teams: teams.slice(2),
     teamResults: [
       {
         id: 33,
@@ -1039,6 +1041,7 @@ export const races = [
     startTime: "2023-09-23T19:00:00.000Z",
     name: "Men Final",
     type: "male",
+    teams: teams.slice(0, 2),
     event: {
       id: 25,
       title: "Brussels Mile",
@@ -1337,3 +1340,360 @@ export const notifications: INotification[] = [
     title: "Welcome to Ace Battle Mile!",
   },
 ];
+
+export const eventPodium = {
+  eventTitle: "Brussels Mile",
+  introImage: {
+    id: 90,
+    title: "brussle-mile-photo.jpg",
+    mediaUrl:
+      "https://storage.googleapis.com/abe_cloud_storage/image/large/9314ea99-2cd2-4f86-b6ea-1cb63ef9c21f.jpg",
+    smallUrl:
+      "https://storage.googleapis.com/abe_cloud_storage/image/small/small_9314ea99-2cd2-4f86-b6ea-1cb63ef9c21f.jpg",
+    mediaType: "image",
+  },
+  podium: {
+    male: {
+      "1": {
+        team: {
+          id: 43,
+          name: "Kyiv-Men",
+          gender: "male",
+          city: "Kyiv",
+          totalPoints: 1220000,
+          rank: 1,
+          logo: {
+            id: 92,
+            title: "kyiv_club.png",
+            mediaUrl:
+              "https://storage.googleapis.com/abe_cloud_storage/image/large/5654006a-4f44-4b36-a07b-07417a8c88f3.png",
+            smallUrl:
+              "https://storage.googleapis.com/abe_cloud_storage/image/small/small_5654006a-4f44-4b36-a07b-07417a8c88f3.png",
+            mediaType: "image",
+          },
+        },
+        resultInMs: 2445010,
+      },
+      "2": {
+        team: {
+          id: 42,
+          name: "Brussels-Men",
+          gender: "male",
+          city: "Brussels",
+          totalPoints: 1255365,
+          rank: 2,
+          logo: {
+            id: 91,
+            title: "brussels_club.png",
+            mediaUrl:
+              "https://storage.googleapis.com/abe_cloud_storage/image/large/d529f8ff-2c17-416b-addc-c847196b0cf2.png",
+            smallUrl:
+              "https://storage.googleapis.com/abe_cloud_storage/image/small/small_d529f8ff-2c17-416b-addc-c847196b0cf2.png",
+            mediaType: "image",
+          },
+        },
+        resultInMs: 2524110,
+      },
+      "3": null,
+    },
+    female: {
+      "1": {
+        team: {
+          id: 44,
+          name: "Kyiv-Women",
+          gender: "female",
+          city: "Kyiv",
+          totalPoints: 1448250,
+          rank: 1,
+          logo: {
+            id: 92,
+            title: "kyiv_club.png",
+            mediaUrl:
+              "https://storage.googleapis.com/abe_cloud_storage/image/large/5654006a-4f44-4b36-a07b-07417a8c88f3.png",
+            smallUrl:
+              "https://storage.googleapis.com/abe_cloud_storage/image/small/small_5654006a-4f44-4b36-a07b-07417a8c88f3.png",
+            mediaType: "image",
+          },
+        },
+        resultInMs: 1448250,
+      },
+      "2": {
+        team: {
+          id: 45,
+          name: "Brussels-Women",
+          gender: "female",
+          city: "Brussels",
+          totalPoints: 1464580,
+          rank: 2,
+          logo: {
+            id: 91,
+            title: "brussels_club.png",
+            mediaUrl:
+              "https://storage.googleapis.com/abe_cloud_storage/image/large/d529f8ff-2c17-416b-addc-c847196b0cf2.png",
+            smallUrl:
+              "https://storage.googleapis.com/abe_cloud_storage/image/small/small_d529f8ff-2c17-416b-addc-c847196b0cf2.png",
+            mediaType: "image",
+          },
+        },
+        resultInMs: 1464580,
+      },
+      "3": null,
+    },
+  },
+  bestSportsmen: {
+    male: {
+      id: 120,
+      distance: 160934,
+      finalResultInMs: 248360,
+      runnerType: null,
+      runner: {
+        id: 10,
+        dateOfBirth: "2001-01-17 00:00:00.000",
+        gender: "male",
+        worldAthleticsUrl:
+          "https://worldathletics.org/athletes/ukraine/dmytrii-nikolaichuk-14596852",
+        category: "professional",
+        totalPoints: 252520,
+        rank: 2,
+        user: {
+          id: 10,
+          name: "Dmytriy",
+          surname: "Nikolaychuk",
+          email: "dn@gmail.com",
+          role: "runner",
+          interest: null,
+          verified: false,
+          city: "Kyiv",
+          password:
+            "$2b$10$vgZ65ufuNtmb3orscAM11OeI05itNUffR2AkE1xqTzAJ7rkdcGoPy",
+          createdAt: "2023-08-18T08:29:02.528Z",
+          updatedAt: "2023-10-01T10:07:40.000Z",
+          acceptTerms: false,
+          acceptNews: false,
+          image: {
+            id: 113,
+            title: "nikolajchuk-dmitrij.jpg",
+            mediaUrl:
+              "https://storage.googleapis.com/abe_cloud_storage/image/large/56ff5950-ba01-483b-98e2-cfd12a5bc82e.jpg",
+            smallUrl:
+              "https://storage.googleapis.com/abe_cloud_storage/image/small/small_56ff5950-ba01-483b-98e2-cfd12a5bc82e.jpg",
+            mediaType: "image",
+          },
+        },
+      },
+    },
+    female: {
+      id: 165,
+      distance: 160934,
+      finalResultInMs: 292710,
+      runnerType: null,
+      runner: {
+        id: 77,
+        dateOfBirth: "2000-07-10 00:00:00.000",
+        gender: "female",
+        worldAthleticsUrl:
+          "https://worldathletics.org/athletes/bulgaria/lilyana-georgieva-14645269",
+        category: "professional",
+        totalPoints: 292710,
+        rank: 1,
+        user: {
+          id: 77,
+          name: "Lilyana",
+          surname: "Georgieva",
+          email: "georgieva@gmail.com",
+          role: "runner",
+          interest: null,
+          verified: false,
+          city: "Sophia",
+          password:
+            "$2b$10$KLp/Uey6.bQo2y0TE2qgPOnssPniw0ldXU0Z9h7GhO4b817D.F8Ge",
+          createdAt: "2023-09-14T08:00:43.803Z",
+          updatedAt: "2023-10-01T09:51:24.000Z",
+          acceptTerms: false,
+          acceptNews: false,
+          image: {
+            id: 175,
+            title: "lilyana.jpg",
+            mediaUrl:
+              "https://storage.googleapis.com/abe_cloud_storage/image/large/35b6fc63-a3d0-4a01-9896-ed863a78f1c8.jpg",
+            smallUrl:
+              "https://storage.googleapis.com/abe_cloud_storage/image/small/small_35b6fc63-a3d0-4a01-9896-ed863a78f1c8.jpg",
+            mediaType: "image",
+          },
+        },
+      },
+    },
+  },
+  bestJokerPair: {
+    male: {
+      runners: [
+        {
+          id: 119,
+          distance: 80934,
+          finalResultInMs: 229040,
+          runnerType: "joker-2",
+          runner: {
+            id: 88,
+            dateOfBirth: "2002-03-09 00:00:00.000",
+            gender: "male",
+            worldAthleticsUrl:
+              "https://worldathletics.org/athletes/netherlands/jurgen-wielart-14429680",
+            category: "professional",
+            totalPoints: 263828,
+            rank: 12,
+            user: {
+              id: 88,
+              name: "Ivan",
+              surname: "Ivanov",
+              email: "ivanov@gmail.com",
+              role: "runner",
+              interest: null,
+              verified: false,
+              city: "Sophia",
+              password:
+                "$2b$10$PQuO5rZGSFEzsfVZEmXhx.PpaLbk.KjxFehivuJ/qE2KYI1CXRTz6",
+              createdAt: "2023-09-26T11:15:09.138Z",
+              updatedAt: "2023-10-01T09:29:59.000Z",
+              acceptTerms: false,
+              acceptNews: false,
+              image: null,
+            },
+          },
+        },
+        {
+          id: 123,
+          distance: 70934,
+          finalResultInMs: null,
+          runnerType: "pacer-2",
+          runner: {
+            id: 11,
+            dateOfBirth: "1996-07-02 00:00:00.000",
+            gender: "male",
+            worldAthleticsUrl: "",
+            category: "professional",
+            totalPoints: 256975,
+            rank: 5,
+            user: {
+              id: 11,
+              name: "Yevhen",
+              surname: "Kuznetsov",
+              email: "yk@gmailc.com",
+              role: "runner",
+              interest: null,
+              verified: false,
+              city: "Dripto",
+              password:
+                "$2b$10$Iivj6oDlBPVuycg0rfJkHeRubyj/v1oM3/wKQwB4yuiNYdOZ4ARFS",
+              createdAt: "2023-08-18T08:30:07.273Z",
+              updatedAt: "2023-10-01T10:07:43.000Z",
+              acceptTerms: false,
+              acceptNews: false,
+              image: null,
+            },
+          },
+        },
+      ],
+      finalResultInMs: 229040,
+    },
+    female: {
+      runners: [
+        {
+          id: 156,
+          distance: 80934,
+          finalResultInMs: 270670,
+          runnerType: "joker-1",
+          runner: {
+            id: 49,
+            dateOfBirth: "2003-03-10 00:00:00.000",
+            gender: "female",
+            worldAthleticsUrl:
+              "https://worldathletics.org/athletes/ukraine/anzhela-bondar-14848662",
+            category: "professional",
+            totalPoints: 307402,
+            rank: 10,
+            user: {
+              id: 49,
+              name: "Anzhelika",
+              surname: "BONDAR",
+              email: "bond@gmail.com",
+              role: "runner",
+              interest: null,
+              verified: false,
+              city: "Kyiv",
+              password:
+                "$2b$10$9g0F..sngUb1dHGU9pB5QO6mHtDLkodjIdEqRGITV0ko6sEYPriGy",
+              createdAt: "2023-08-20T08:54:11.799Z",
+              updatedAt: "2023-10-01T09:53:41.767Z",
+              acceptTerms: false,
+              acceptNews: false,
+              image: {
+                id: 117,
+                title: "bondar-angelina.jpg",
+                mediaUrl:
+                  "https://storage.googleapis.com/abe_cloud_storage/image/large/d2f3cfd2-4549-4323-b33b-421d81cb2d34.jpg",
+                smallUrl:
+                  "https://storage.googleapis.com/abe_cloud_storage/image/small/small_d2f3cfd2-4549-4323-b33b-421d81cb2d34.jpg",
+                mediaType: "image",
+              },
+            },
+          },
+        },
+        {
+          id: 161,
+          distance: 70934,
+          finalResultInMs: null,
+          runnerType: "pacer-1",
+          runner: {
+            id: 46,
+            dateOfBirth: "2004-09-02 00:00:00.000",
+            gender: "female",
+            worldAthleticsUrl:
+              "https://worldathletics.org/athletes/ukraine/alina-korsunska-14929254",
+            category: "professional",
+            totalPoints: 298918,
+            rank: 5,
+            user: {
+              id: 46,
+              name: "Alina",
+              surname: "KORSUNSKA",
+              email: "kors@gmail.com",
+              role: "runner",
+              interest: null,
+              verified: false,
+              city: "Kyiv",
+              password:
+                "$2b$10$L75vOycFTNO3ZK8FKLyAJ.0M4zH/J2KS24/0PtO2P2/s4GqcoyMv6",
+              createdAt: "2023-08-20T08:51:55.416Z",
+              updatedAt: "2023-10-01T09:51:34.000Z",
+              acceptTerms: false,
+              acceptNews: false,
+              image: null,
+            },
+          },
+        },
+      ],
+      finalResultInMs: 270670,
+    },
+  },
+  racesByType: {
+    male: [
+      {
+        id: 12,
+        name: "Men Team Brussels - Men Team Kyiv",
+        startTime: "2023-09-23T17:00:00.000Z",
+      },
+      {
+        id: 24,
+        name: "Men Final",
+        startTime: "2023-09-23T19:00:00.000Z",
+      },
+    ],
+    female: [
+      {
+        id: 23,
+        name: "Women final: Team Brussels - Team Kyiv",
+        startTime: "2023-09-23T18:00:00.000Z",
+      },
+    ],
+  },
+};

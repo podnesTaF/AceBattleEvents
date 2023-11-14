@@ -8,8 +8,6 @@ import React from "react";
 const Layout = () => {
   const pathname = usePathname();
 
-  console.log(pathname);
-
   return (
     <Drawer
       screenOptions={({ route }) => ({
