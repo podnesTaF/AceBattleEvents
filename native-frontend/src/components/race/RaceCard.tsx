@@ -1,11 +1,11 @@
 import { Button, ButtonText, HStack, Heading } from "@gluestack-ui/themed";
-import { IRace } from "@lib/models";
+import { IRace, RaceShortForm } from "@lib/models";
 import { formatDate, getBattleName } from "@lib/utils";
 import { Link } from "expo-router";
 import React from "react";
 
 interface Props {
-  race: IRace;
+  race: IRace | RaceShortForm;
   isLast?: boolean;
   registrationAvailable?: boolean;
 }
@@ -27,7 +27,7 @@ const RaceCard = ({
         {formatDate(race.startTime, false, true)}
       </Heading>
       <Heading flex={1} size={"sm"}>
-        {getBattleName(race)}
+        {race.name ? race.name : getBattleName(race as IRace)}
       </Heading>
       <Link href={`/(modals)/(race)/${race.id}`} asChild>
         <Button size={"sm"}>
