@@ -1,18 +1,44 @@
-import { View, Text, Button, Image} from 'react-native'
-import React from 'react'
-import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { Box, Button, ButtonText, VStack } from "@gluestack-ui/themed";
+import { useAppSelector, useLogout } from "@lib/hooks";
+import { selectIsAuth } from "@lib/store";
+import {
+  DrawerContentScrollView,
+  DrawerItemList,
+} from "@react-navigation/drawer";
+import React from "react";
+import LogoTitle from "./LogoTitle";
 
 const CustomDrawerContent = (props: any) => {
-    return (
-        <DrawerContentScrollView style={{backgroundColor: "#1F1C1E", flex:1}} {...props}>
-            <View>
-                <View style={{flexDirection: 'row', gap: 4, marginLeft: 16, marginBottom: 16}}>
-                <Text style={{fontSize: 24, fontWeight:"600"}}>Ace Battle Mile</Text>
-                </View>
-                <DrawerItemList {...props} />
-            </View>
-        </DrawerContentScrollView>
-    );
-}
+  const isAuth = useAppSelector(selectIsAuth);
+  const logout = useLogout();
 
-export default CustomDrawerContent
+  return (
+    <DrawerContentScrollView
+      style={{ backgroundColor: "#1F1C1E", flex: 1 }}
+      {...props}
+    >
+      <Box flex={1}>
+        <VStack>
+          <Box px={"$2"} py={"$4"} pb={"$8"}>
+            <LogoTitle />
+          </Box>
+          <DrawerItemList {...props} />
+        </VStack>
+        {isAuth && (
+          <Box p={"$2"} mt={"auto"}>
+            <Button
+              onPress={logout}
+              action={"negative"}
+              variant="solid"
+              w={"$full"}
+            >
+              <ButtonText>Logout</ButtonText>
+            </Button>
+          </Box>
+        )}
+      </Box>
+    </DrawerContentScrollView>
+  );
+};
+
+export default CustomDrawerContent;

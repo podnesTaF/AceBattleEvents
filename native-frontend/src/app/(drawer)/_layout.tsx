@@ -11,18 +11,30 @@ const Layout = () => {
   return (
     <Drawer
       screenOptions={({ route }) => ({
+        drawerInactiveBackgroundColor: "#1C1E1F",
+        drawerActiveBackgroundColor: "#3c3c438a",
+        drawerActiveTintColor: "#ff0000",
+        drawerInactiveTintColor: "#fff",
+        drawerStyle: {
+          backgroundColor: "#1C1E1F",
+        },
         headerStyle: {
           backgroundColor: "#1C1E1F",
           elevation: 0,
           shadowOpacity: 0,
         },
         headerTintColor: "#fff",
+        drawerLabelStyle: {
+          fontSize: 18,
+          fontWeight: "600",
+        },
         headerTitleStyle: {
           fontWeight: "bold",
         },
         headerShown:
           pathname === "/home" ||
           pathname === "/events" ||
+          pathname === "/news" ||
           pathname === "/notifications",
         headerLeft: (props) => <DrawerToggleButton {...props} />,
         title: "Ace Battle Mile",
@@ -61,7 +73,6 @@ const Layout = () => {
       <Drawer.Screen
         name="news"
         options={{
-          headerShown: false,
           drawerLabel: "News",
         }}
       />

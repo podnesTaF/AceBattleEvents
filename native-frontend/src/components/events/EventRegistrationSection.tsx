@@ -14,7 +14,7 @@ import React from "react";
 import { Text } from "react-native";
 
 interface Props {
-  user: IUser | null;
+  user?: IUser | null;
   event: IEvent;
 }
 
@@ -34,13 +34,13 @@ const EventRegistrationSection: React.FC<Props> = ({ user, event }) => {
         </HStack>
         <Box w={"$full"} alignItems="center">
           {isRegistered ? (
-            <Link href={"/(drawer)/(tabs)/(account)/calendar"}>
+            <Link href={"/(drawer)/(tabs)/(account)/calendar"} asChild>
               <Button>
                 <ButtonText>View in calendar</ButtonText>
               </Button>
             </Link>
           ) : (
-            <Link href={"/(drawer)/(tabs)/(account)/calendar"}>
+            <Link href={"/(modals)/(event)/attend-event"} asChild>
               <Button>
                 <ButtonText>Attend the event</ButtonText>
               </Button>

@@ -11,7 +11,7 @@ export const getUsersInfo = (user: IUser): InfoItem[] => {
   const infoArray: InfoItem[] = [];
   infoArray.push({
     label: "Nationality",
-    labelImage: user.country?.image?.flagIconUrl,
+    labelImage: user.country?.flagIconUrl,
     value: user.country?.name || "",
   });
 

@@ -1,3 +1,4 @@
+export * from "./auth/models";
 export * from "./clubs/models";
 export * from "./countries/models";
 export * from "./events/models";

@@ -16,6 +16,7 @@ const Timetable = () => {
           headerStyle: {
             backgroundColor: "#1C1E1F",
           },
+          headerShown: true,
           headerTintColor: "#fff",
           headerTitle: ({ tintColor }) => (
             <VStack

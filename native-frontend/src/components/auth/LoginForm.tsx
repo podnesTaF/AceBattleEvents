@@ -2,19 +2,45 @@ import FormButton from "@Components/common/forms/FormButton";
 import FormField from "@Components/common/forms/FormField";
 import { Text, VStack } from "@gluestack-ui/themed";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAppDispatch } from "@lib/hooks";
+import { LoginUserRequest } from "@lib/models";
+import { useLoginUserMutation } from "@lib/services";
+import { setUser } from "@lib/store";
 import { loginSchema } from "@lib/utils";
+import { useRouter } from "expo-router";
 import { Lock, MailIcon } from "lucide-react-native";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 const LoginForm = () => {
-  const form = useForm({
+  const [loginUser, { isLoading, error }] = useLoginUserMutation();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const form = useForm<LoginUserRequest>({
     mode: "onChange",
     resolver: yupResolver(loginSchema),
   });
 
-  const login = async (data: any) => {
-    console.log(data);
+  const login = async (data: LoginUserRequest) => {
+    try {
+      const res = await loginUser(data).unwrap();
+
+      if (res) {
+        dispatch(setUser(res));
+      }
+
+      router.replace("/(drawer)/(tabs)/home");
+    } catch (err: any) {
+      if (err.status === 401) {
+        form.setError("password", {
+          type: "manual",
+          message: "Invalid email or password",
+        });
+      } else {
+        console.log(err);
+      }
+    }
   };
 
   return (
@@ -42,7 +68,10 @@ const LoginForm = () => {
         <FormButton
           marginTop={"$2"}
           title={"Login"}
-          isLoading={form.formState.isSubmitting}
+          disabled={
+            form.formState.isSubmitting || isLoading || !form.formState.isValid
+          }
+          isLoading={form.formState.isSubmitting || isLoading}
           onPress={form.handleSubmit(login)}
         />
         <Text size={"md"}>

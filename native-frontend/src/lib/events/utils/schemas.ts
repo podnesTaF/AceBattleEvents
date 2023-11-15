@@ -6,7 +6,6 @@ export const addEventSchema = yup.object().shape({
     .string()
     .required("Please provide event start date and time"),
   endDate: yup.string().required("Please provide event end date"),
-  discipline: yup.string().required("Please provide event discipline"),
   category: yup.string().required("Please provide event category"),
   country: yup.string().required("Please provide event country"),
   city: yup.string().required("Please provide event city"),
@@ -18,4 +17,9 @@ export const addEventSchema = yup.object().shape({
       amount: yup.number().required("Please provide amount"),
     })
   ),
+});
+
+export const registerTeamSchema = yup.object().shape({
+  team: yup.string().required("Please provide team"),
+  coach: yup.string().required("Please provide coach"),
 });

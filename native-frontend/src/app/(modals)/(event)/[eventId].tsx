@@ -3,7 +3,7 @@ import Container from "@Components/common/Container";
 import Tabs from "@Components/common/Tabs";
 import EventLocations from "@Components/events/EventLocations";
 import EventRegistrationSection from "@Components/events/EventRegistrationSection";
-import { events, testUserSpectator } from "@Constants/dummy-data";
+import { events } from "@Constants/dummy-data";
 import {
   Box,
   HStack,
@@ -13,10 +13,12 @@ import {
   Text,
   VStack,
 } from "@gluestack-ui/themed";
+import { useAppSelector } from "@lib/hooks";
+import { selectUser } from "@lib/store";
 import { formatDate } from "@lib/utils";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { Calendar } from "lucide-react-native";
-import React, { useState } from "react";
+import React from "react";
 import { ScrollView } from "react-native-gesture-handler";
 
 const tabs = ["Participants", "Schedule", "Results"];
@@ -25,7 +27,7 @@ const EventScreen = () => {
   const { eventId } = useLocalSearchParams();
   const event = events[0];
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState(0);
+  const user = useAppSelector(selectUser);
 
   const onChangeTab = (tabIndex: number) => {
     if (tabs[tabIndex] === "Participants") {
@@ -44,6 +46,7 @@ const EventScreen = () => {
           headerStyle: {
             backgroundColor: "#1C1E1F",
           },
+          headerShown: true,
           headerTintColor: "#fff",
           headerTitle: ({ tintColor }) => {
             return (
@@ -155,10 +158,7 @@ const EventScreen = () => {
           </Container>
         </VStack>
         <VStack my={"$6"}>
-          <EventRegistrationSection
-            user={testUserSpectator as any}
-            event={event as any}
-          />
+          <EventRegistrationSection user={user} event={event as any} />
         </VStack>
         <VStack my={"$6"} space="lg">
           <Heading mx={"$4"} size={"lg"}>

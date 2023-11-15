@@ -19,7 +19,7 @@
     "@gluestack-ui/config": "^1.0.3",
     "@gluestack-ui/themed": "^1.0.9",
     "@hookform/resolvers": "^3.3.2",
-    "@react-native-async-storage/async-storage": "^1.18.2",
+    "@react-native-async-storage/async-storage": "^1.19.5",
     "@react-navigation/drawer": "^6.6.6",
     "@react-navigation/native": "^6.0.2",
     "@reduxjs/toolkit": "^1.9.7",
@@ -29,6 +29,7 @@
     "expo-font": "~11.4.0",
     "expo-image-picker": "~14.3.2",
     "expo-linking": "~5.0.2",
+    "expo-location": "~16.1.0",
     "expo-router": "^2.0.0",
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
@@ -48,8 +49,7 @@
     "react-native-svg": "13.9.0",
     "react-native-web": "~0.19.6",
     "react-redux": "^8.1.3",
-    "yup": "^1.3.2",
-    "expo-location": "~16.1.0"
+    "yup": "^1.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

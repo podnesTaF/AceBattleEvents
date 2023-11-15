@@ -60,6 +60,7 @@ const participants = () => {
           headerStyle: {
             backgroundColor: "#1C1E1F",
           },
+          headerShown: true,
           headerTintColor: "#fff",
           headerTitle: ({ tintColor }) => (
             <VStack space={"md"} alignItems="center" w={"$full"} left={"-$16"}>

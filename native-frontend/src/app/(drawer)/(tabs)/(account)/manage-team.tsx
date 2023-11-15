@@ -6,45 +6,57 @@ import PickField from "@Components/common/forms/PickField";
 import { coaches, runners, teams } from "@Constants/dummy-data";
 import { Box, Button, ButtonText, VStack } from "@gluestack-ui/themed";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAppSelector } from "@lib/hooks";
 import {
-  resetTeam,
-  selectManageTeam,
-  setAvailableCoaches,
-  setAvailablePlayers,
-  setDefaultTeam,
-  setInputValue,
-  setLogo,
-  setTeamImage,
-} from "@lib/teams/slices";
+  clearAllItems,
+  clearAllValues,
+  selectItems,
+  selectValues,
+  setDefalutValues,
+  setFormValue,
+  setItems,
+} from "@lib/store";
 import {
   AddTeamSchema,
   cutString,
+  defineItemLabel,
+  getTeamFormValues,
   mapCoachesToPickItems,
   mapRunnersToPickItems,
 } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const ManageTeam = () => {
   const params = useLocalSearchParams<{ teamId?: string }>();
   const dispatch = useDispatch();
-  const { defaultTeam, newValues, avaliableCoaches } =
-    useSelector(selectManageTeam);
+  const { newValues, defaultValues } = useAppSelector(selectValues);
+  const { avaliableCoaches } = useAppSelector(selectItems);
 
   useEffect(() => {
-    dispatch(resetTeam());
+    dispatch(clearAllValues());
     if (params.teamId) {
-      dispatch(setDefaultTeam(teams[0]));
+      dispatch(setDefalutValues(getTeamFormValues(teams[0])));
     }
-    dispatch(setAvailablePlayers(mapRunnersToPickItems(runners)));
-    dispatch(setAvailableCoaches(mapCoachesToPickItems(coaches)));
+    dispatch(
+      setItems({
+        key: "avaliableCoaches",
+        items: mapRunnersToPickItems(runners),
+      })
+    );
+    dispatch(
+      setItems({
+        key: "avaliablePlayers",
+        items: mapCoachesToPickItems(coaches),
+      })
+    );
   }, [params.teamId]);
 
   useEffect(() => {
     setFormDefaultValues();
-  }, [defaultTeam]);
+  }, [defaultValues]);
 
   useEffect(() => {
     form.setValue("coach", newValues.coach);
@@ -57,35 +69,30 @@ const ManageTeam = () => {
   });
 
   const setFormDefaultValues = () => {
-    form.setValue("name", defaultTeam?.name || "");
-    form.setValue("city", defaultTeam?.city || "");
-    form.setValue("gender", defaultTeam?.gender || "");
-    form.setValue("logo", defaultTeam?.logo?.mediaUrl || "");
-    form.setValue("teamImage", defaultTeam?.teamImage?.mediaUrl || "");
-  };
-
-  const defineCoachLabel = (id?: number) => {
-    if (!id) return "No coach selected";
-    const item = avaliableCoaches.find((coach) => coach.id === id);
-    return cutString(item?.title || "", 20);
+    form.setValue("name", defaultValues?.name || "");
+    form.setValue("city", defaultValues?.city || "");
+    form.setValue("gender", defaultValues?.gender || "");
+    form.setValue("logo", defaultValues?.logo?.mediaUrl || "");
+    form.setValue("teamImage", defaultValues?.teamImage?.mediaUrl || "");
   };
 
   const customOnChange = (value: string, name: string) => {
-    dispatch(setInputValue({ name, value }));
+    dispatch(setFormValue({ key: name, value }));
   };
 
   const onImagePicked = (image: string, name: string) => {
     if (name === "logo") {
-      dispatch(setLogo(image));
+      dispatch(setFormValue({ key: "logo", value: image }));
       form.setValue("logo", image);
     } else if (name === "teamImage") {
-      dispatch(setTeamImage(image));
+      dispatch(setFormValue({ key: "teamImage", value: image }));
       form.setValue("teamImage", image);
     }
   };
 
   const onSubmit = async (dto: any) => {
     console.log(dto);
+    dispatch(clearAllItems());
   };
 
   return (
@@ -122,7 +129,11 @@ const ManageTeam = () => {
               <PickField
                 name="coach"
                 label={"Coach"}
-                placeholder={defineCoachLabel(newValues.coach)}
+                placeholder={defineItemLabel({
+                  name: "coach",
+                  id: newValues.coach,
+                  items: avaliableCoaches,
+                })}
                 multiple={false}
               />
               <FormRadioGroup
@@ -155,14 +166,14 @@ const ManageTeam = () => {
               <FormImagePicker
                 placeholder="Select team logo"
                 name="logo"
-                defaultImageName={defaultTeam?.logo?.title}
+                defaultImageName={defaultValues?.logo?.title}
                 onImagePicked={onImagePicked}
                 label="Team Logo"
               />
               <FormImagePicker
                 placeholder="Select team image"
                 name="teamImage"
-                defaultImageName={defaultTeam?.teamImage?.title}
+                defaultImageName={defaultValues?.teamImage?.title}
                 onImagePicked={onImagePicked}
                 label="Team Image"
               />
