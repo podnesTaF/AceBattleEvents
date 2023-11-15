@@ -14,7 +14,7 @@ import React from "react";
 import { Text } from "react-native";
 
 interface Props {
-  user: IUser | null;
+  user?: IUser | null;
   event: IEvent;
 }
 

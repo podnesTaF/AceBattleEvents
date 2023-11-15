@@ -1,7 +1,7 @@
-import React from "react";
-import { Box, HStack, Text, Image, VStack } from "@gluestack-ui/themed";
+import { Box, HStack, Image, Text, VStack } from "@gluestack-ui/themed";
 import { getTimeAgo } from "@lib/utils";
 import { Link } from "expo-router";
+import React from "react";
 
 interface NewsCardProps {
   news: any;
@@ -9,8 +9,14 @@ interface NewsCardProps {
 
 const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
   return (
-    <VStack rounded={"$md"} bg={"$white"} softShadow="4" overflow="hidden">
-      <Box flex={2} height={"$32"} width={"$full"} position="relative" alignItems="stretch">
+    <VStack rounded={"$md"} bg={"$white"} softShadow="1" overflow="hidden">
+      <Box
+        flex={2}
+        height={"$32"}
+        width={"$full"}
+        position="relative"
+        alignItems="stretch"
+      >
         <Image
           role={"img"}
           source={{ uri: news.smallImageUrl }}
@@ -18,19 +24,27 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
           size="full"
         />
       </Box>
-      <Box px={"$3"} py={"$2"} flex={1} >
-        <Text minHeight={40} textTransform="uppercase" fontWeight="600" size={"md"} mb={"$2"}>
-          {news.title.length > 80 ? news.title.slice(0, 77) + '...' : news.title}
+      <Box px={"$3"} py={"$2"} flex={1}>
+        <Text
+          minHeight={40}
+          textTransform="uppercase"
+          fontWeight="600"
+          size={"md"}
+          mb={"$2"}
+        >
+          {news.title.length > 80
+            ? news.title.slice(0, 77) + "..."
+            : news.title}
         </Text>
         <HStack justifyContent="space-between" alignItems="center">
-            <Text color={"$coolGray400"} fontWeight="600">
-                {getTimeAgo(news.createdAt)}
+          <Text color={"$coolGray400"} fontWeight="600">
+            {getTimeAgo(news.createdAt)}
+          </Text>
+          <Link href={"/(drawer)/(tabs)/home"}>
+            <Text color={"$red500"} fontWeight="600">
+              read article
             </Text>
-            <Link href={"/(drawer)/(tabs)/home"}>
-               <Text color={'$red500'} fontWeight="600">
-               read article
-               </Text>
-            </Link>
+          </Link>
         </HStack>
       </Box>
     </VStack>

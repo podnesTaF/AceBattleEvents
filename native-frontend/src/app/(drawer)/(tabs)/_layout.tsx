@@ -1,12 +1,13 @@
 import HomeTabTitle from "@Components/HomeTabTitle";
-import { testUserRunner } from "@Constants/dummy-data";
 import { Ionicons } from "@expo/vector-icons";
+import { useAppSelector } from "@lib/hooks";
+import { selectUser } from "@lib/store";
 import { Tabs } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet } from "react-native";
 
 const Layout = () => {
-  const [user, setUser] = useState<any>(testUserRunner);
+  const user = useAppSelector(selectUser);
   return (
     <Tabs>
       <Tabs.Screen
@@ -23,7 +24,7 @@ const Layout = () => {
           },
           headerTintColor: "#fff",
           title: "Ace Battle Mile",
-          headerTitle: (props) => <HomeTabTitle user={null} />,
+          headerTitle: (props) => <HomeTabTitle user={user} />,
         }}
       />
       <Tabs.Screen

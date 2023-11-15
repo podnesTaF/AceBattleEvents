@@ -66,7 +66,7 @@ const FormField: React.FC<FormFieldProps> = ({
                   </FormControlLabelText>
                 </FormControlLabel>
               )}
-              <Input flex={1} mb={"$1"} variant={variant}>
+              <Input mb={"$1"} variant={variant}>
                 {!vertical && (
                   <InputSlot flex={1} alignItems="flex-start">
                     <FormControlLabel>

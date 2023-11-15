@@ -2,14 +2,16 @@ import SearchTitle from "@Components/common/SearchTitle";
 import EventCard from "@Components/events/EventCard";
 import RegistrationsSection from "@Components/events/RegistrationsSection";
 import UpcomingEventCard from "@Components/events/UpcomingEventCard";
-import { events, testUserSpectator } from "@Constants/dummy-data";
+import { events } from "@Constants/dummy-data";
 import { Box, Heading, VStack } from "@gluestack-ui/themed";
+import { useAppSelector } from "@lib/hooks";
+import { selectUser } from "@lib/store";
 import { Stack } from "expo-router";
 import React from "react";
 import { ScrollView } from "react-native-gesture-handler";
 
 const EventsScreen = () => {
-  const [user, setUser] = React.useState(testUserSpectator);
+  const user = useAppSelector(selectUser);
   return (
     <>
       <Stack.Screen

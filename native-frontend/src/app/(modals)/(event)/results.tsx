@@ -38,6 +38,7 @@ const results = () => {
           headerStyle: {
             backgroundColor: "#1C1E1F",
           },
+          headerShown: true,
           headerTintColor: "#fff",
           headerTitle: ({ tintColor }) => (
             <VStack width={"100%"} left={"-$16"} space="md">

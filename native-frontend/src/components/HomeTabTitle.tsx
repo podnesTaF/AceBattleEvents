@@ -18,7 +18,7 @@ const HomeTabTitle = ({
   user,
   annotation,
 }: {
-  user: IUser | null;
+  user?: IUser | null;
   annotation?: string;
 }) => {
   return (

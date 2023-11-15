@@ -1,16 +1,20 @@
 import AthletePreviewCard from "@Components/athletes/AthletePreviewCard";
 import Container from "@Components/common/Container";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
+import InfoTemplate from "@Components/common/InfoTemplate";
 import TeamPreview from "@Components/teams/TeamPreview";
 import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
 import UserCard from "@Components/user/UserCard";
 import { runners, teams, users } from "@Constants/dummy-data";
 import { HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
+import { useAppSelector } from "@lib/hooks";
+import { selectUser } from "@lib/store";
 import { useGetAthletesQuery } from "@lib/user/services/RunnerService";
 import React from "react";
 
 const Athletes = () => {
   const { data, error } = useGetAthletesQuery("");
+  const user = useAppSelector(selectUser);
 
   return (
     <ScrollView bg={"$fff9ff"}>
@@ -55,13 +59,20 @@ const Athletes = () => {
           </Heading>
         </HStack>
         <Container>
-          {users.map((user, i) => (
-            <UserCard
-              user={user}
-              key={user.id}
-              isLastElement={i === users.length - 1}
+          {user ? (
+            users.map((user, i) => (
+              <UserCard
+                user={user}
+                key={user.id}
+                isLastElement={i === users.length - 1}
+              />
+            ))
+          ) : (
+            <InfoTemplate
+              title={"Please Authorize"}
+              text={"Authorize to see your followings"}
             />
-          ))}
+          )}
         </Container>
       </VStack>
     </ScrollView>

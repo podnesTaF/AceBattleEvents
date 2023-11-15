@@ -2,20 +2,24 @@ import withWatermarkBg from "@Components/HOCs/withWatermark";
 import AthleteScreenContent from "@Components/athletes/screens/AthleteScreenContent";
 import ProfileHeader from "@Components/common/ProfileHeader";
 import Tabs from "@Components/common/Tabs";
+import SpectatorBioTab from "@Components/user/tabs/SpectatorBioTab";
+import TeamsAndRunners from "@Components/user/tabs/TeamsAndRunners";
 import { testUserRunner } from "@Constants/dummy-data";
 import { Box, Heading, VStack } from "@gluestack-ui/themed";
+import { useFetchUserQuery } from "@lib/user/services/UserService";
+import { getProfileTabByUserRole } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
-
-const tabs = ["BIO", "Teams", "Results", "Events"];
 
 const ProfileScreen = () => {
   const params = useLocalSearchParams();
   const [activeTab, setActiveTab] = useState(0);
+  const { data: user, isLoading, error } = useFetchUserQuery(+params.userId);
 
   const onChangeTab = (tabIndex: number) => {
     setActiveTab(tabIndex);
   };
+
   return (
     <>
       <Stack.Screen
@@ -36,7 +40,7 @@ const ProfileScreen = () => {
               <Box flex={1}>
                 <Tabs
                   size="sm"
-                  items={tabs}
+                  items={getProfileTabByUserRole(user?.role)}
                   activeColor="$red500"
                   onChangeTab={onChangeTab}
                   activeIndex={activeTab}
@@ -46,7 +50,16 @@ const ProfileScreen = () => {
           ),
         }}
       />
-      <AthleteScreenContent activeTab={activeTab} />
+      {user?.runner && (
+        <AthleteScreenContent user={user} activeTab={activeTab} />
+      )}
+      {user?.spectator && <SpectatorBioTab user={user} />}
+      {user?.manager && (
+        <>
+          {activeTab === 0 && <SpectatorBioTab user={user} />}
+          {activeTab === 1 && <TeamsAndRunners />}
+        </>
+      )}
     </>
   );
 };

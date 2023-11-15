@@ -7,7 +7,7 @@ const HeaderSubtitledTitle = ({
   tintColor,
 }: {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   tintColor?: string;
 }) => {
   return (
@@ -15,9 +15,11 @@ const HeaderSubtitledTitle = ({
       <Heading size="lg" color={tintColor}>
         {title}
       </Heading>
-      <Heading size="xs" color={tintColor}>
-        {subtitle}
-      </Heading>
+      {subtitle && (
+        <Heading size="xs" color={tintColor}>
+          {subtitle}
+        </Heading>
+      )}
     </VStack>
   );
 };

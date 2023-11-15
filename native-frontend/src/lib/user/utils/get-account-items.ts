@@ -12,6 +12,14 @@ type AccountItem = {
 export const getAccountItems = (user: IUser): AccountItem[] => {
   const items: AccountItem[] = [
     {
+      title: "My Profile",
+      subtitle: "View your profile",
+      icon: "person",
+      color: "$green500",
+      isDark: true,
+      link: `/(modals)/(profile)/${user.id}`,
+    },
+    {
       title: "Settings",
       subtitle: "Manage your settings",
       icon: "settings",
@@ -30,14 +38,6 @@ export const getAccountItems = (user: IUser): AccountItem[] => {
   ];
 
   if (user.runner) {
-    items.unshift({
-      title: "My Profile",
-      subtitle: "View your profile",
-      icon: "person",
-      color: "$green500",
-      isDark: true,
-      link: `/(modals)/(profile)/${user.id}`,
-    });
     items.push({
       title: "My Team",
       subtitle: "View your team",
@@ -55,14 +55,6 @@ export const getAccountItems = (user: IUser): AccountItem[] => {
       link: "/calendar",
     });
   } else if (user.manager) {
-    items.unshift({
-      title: "My Profile",
-      subtitle: "View your profile",
-      icon: "person",
-      color: "$green500",
-      isDark: true,
-      link: `/(modals)/(profile)/${user.id}`,
-    });
     items.push({
       title: "Calendar",
       subtitle: "Your teams' registrations",
@@ -80,14 +72,6 @@ export const getAccountItems = (user: IUser): AccountItem[] => {
       link: "/teams-setting",
     });
   } else if (user.spectator) {
-    items.unshift({
-      title: "My Profile",
-      subtitle: "View your profile",
-      icon: "person",
-      color: "$green500",
-      isDark: true,
-      link: `/(modals)/(profile)/${user.id}`,
-    });
     items.push({
       title: "Calendar",
       subtitle: "Your registrations",

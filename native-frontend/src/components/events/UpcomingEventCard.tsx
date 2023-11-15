@@ -7,7 +7,7 @@ import React from "react";
 const UpcomingEventCard = () => {
   const router = useRouter();
   return (
-    <Link href={`/(drawer)/(events)/${1}`} asChild>
+    <Link href={`/(modals)/(event)/${1}`} asChild>
       <Pressable>
         {({ pressed }: { pressed: boolean }) => (
           <HStack

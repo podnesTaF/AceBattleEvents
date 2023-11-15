@@ -54,7 +54,7 @@ const EventCard: React.FC<Props> = ({ event, children }) => {
         {children}
         <HStack justifyContent="space-between" space="md">
           <Text size={"md"}>Details</Text>
-          <Link href={`/(drawer)/(events)/${event.id}`} asChild>
+          <Link href={`/(modals)/(event)/${event.id}`} asChild>
             <Heading size={"md"} color={"$amber400"}>
               visit event page
             </Heading>

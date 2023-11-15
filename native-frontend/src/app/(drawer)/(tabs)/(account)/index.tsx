@@ -1,15 +1,29 @@
 import HomeTabTitle from "@Components/HomeTabTitle";
+import LogoTitle from "@Components/LogoTitle";
+import NotAuthTemplate from "@Components/common/NotAuthTemplate";
 import ProfileItem from "@Components/profile/ProfileItem";
-import { textUserManager } from "@Constants/dummy-data";
-import { Box, HStack, Pressable } from "@gluestack-ui/themed";
+import {
+  Box,
+  Button,
+  ButtonIcon,
+  ButtonText,
+  Center,
+  HStack,
+  Pressable,
+  VStack,
+} from "@gluestack-ui/themed";
+import { useAppSelector, useLogout } from "@lib/hooks";
+import { selectUser } from "@lib/store";
 import { getAccountItems } from "@lib/user/utils/get-account-items";
 import { Link, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { LogOut } from "lucide-react-native";
+import React from "react";
 
 const AccountPage = () => {
-  const [user, setUser] = useState<any>(textUserManager);
+  const user = useAppSelector(selectUser);
+  const logout = useLogout();
+
   if (user) {
     return (
       <>
@@ -27,27 +41,45 @@ const AccountPage = () => {
             ),
           }}
         />
-        <HStack flexWrap="wrap" m={"$4"} space="lg">
-          {getAccountItems(user).map((item, i) => (
-            <Link key={i} href={item.link} asChild>
-              <Pressable width={"46%"}>
-                <ProfileItem {...item} />
-              </Pressable>
-            </Link>
-          ))}
-        </HStack>
+        <VStack>
+          <HStack flexWrap="wrap" m={"$4"} space="lg">
+            {getAccountItems(user).map((item, i) => (
+              <Link key={i} href={item.link} asChild>
+                <Pressable width={"46%"}>
+                  <ProfileItem {...item} />
+                </Pressable>
+              </Link>
+            ))}
+          </HStack>
+          <Button
+            w={"$full"}
+            onPress={logout}
+            variant="outline"
+            action="negative"
+          >
+            <ButtonIcon mr={"$2"} as={LogOut} />
+            <ButtonText>Logout</ButtonText>
+          </Button>
+        </VStack>
       </>
     );
   } else {
     return (
-      <View>
-        <Link href={"/(drawer)/(tabs)/home"}>
-          <Text>Login</Text>
-        </Link>
-        <Link href={"/(drawer)/(tabs)/home"}>
-          <Text>Join us</Text>
-        </Link>
-      </View>
+      <>
+        <StatusBar style={"light"} />
+        <Stack.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: "#1C1E1F",
+            },
+            headerTintColor: "#fff",
+            headerTitle: (props) => <LogoTitle {...props} />,
+          }}
+        />
+        <Center flex={1}>
+          <NotAuthTemplate />
+        </Center>
+      </>
     );
   }
 };
