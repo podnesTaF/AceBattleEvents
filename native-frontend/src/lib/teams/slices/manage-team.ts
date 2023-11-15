@@ -1,5 +1,4 @@
 import { IMedia, ITeam } from "@lib/models";
-import { PickItem } from "@lib/types";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface ManageTeamState {
@@ -22,11 +21,6 @@ interface ManageTeamState {
     logo?: string;
     teamImage?: string;
   };
-  availablePlayers: PickItem[];
-  avaliableCoaches: {
-    id: number;
-    title: string;
-  }[];
 }
 
 const initialState: ManageTeamState = {
@@ -36,8 +30,6 @@ const initialState: ManageTeamState = {
     gender: "",
     players: [],
   },
-  availablePlayers: [],
-  avaliableCoaches: [],
 };
 
 export const manageTeamSlice = createSlice({
@@ -67,12 +59,6 @@ export const manageTeamSlice = createSlice({
     resetTeam: (state) => {
       state.defaultTeam = undefined;
       state.newValues = JSON.parse(JSON.stringify(initialState.newValues));
-    },
-    setAvailablePlayers: (state, action: PayloadAction<any[]>) => {
-      state.availablePlayers = action.payload;
-    },
-    setAvailableCoaches: (state, action: PayloadAction<any[]>) => {
-      state.avaliableCoaches = action.payload;
     },
     setInputValue: (
       state,
@@ -105,8 +91,6 @@ export const {
   setPlayers,
   setLogo,
   setTeamImage,
-  setAvailableCoaches,
-  setAvailablePlayers,
 } = manageTeamSlice.actions;
 
 export const selectManageTeam = (state: any) =>

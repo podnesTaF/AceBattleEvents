@@ -4,10 +4,12 @@ import { useAppSelector } from "@lib/hooks";
 import { selectUser } from "@lib/store";
 import { Tabs } from "expo-router";
 import React from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { StyleSheet } from "react-native";
 
 const Layout = () => {
   const user = useAppSelector(selectUser);
+  const form = useForm({});
   return (
     <Tabs>
       <Tabs.Screen
@@ -27,16 +29,18 @@ const Layout = () => {
           headerTitle: (props) => <HomeTabTitle user={user} />,
         }}
       />
-      <Tabs.Screen
-        name="(athletes)"
-        options={{
-          headerShown: false,
-          tabBarLabel: "Athletes",
-          tabBarIcon: ({ size, color }) => (
-            <Ionicons name={"body"} size={size} color={color} />
-          ),
-        }}
-      />
+      <FormProvider {...form}>
+        <Tabs.Screen
+          name="(athletes)"
+          options={{
+            headerShown: false,
+            tabBarLabel: "Athletes",
+            tabBarIcon: ({ size, color }) => (
+              <Ionicons name={"body"} size={size} color={color} />
+            ),
+          }}
+        />
+      </FormProvider>
       <Tabs.Screen
         name="(notifications)"
         options={{
