@@ -8,7 +8,7 @@ import {
   VStack,
 } from "@gluestack-ui/themed";
 import { IEvent, IUser } from "@lib/models";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { InfoIcon } from "lucide-react-native";
 import React from "react";
 import { Text } from "react-native";
@@ -20,7 +20,11 @@ interface Props {
 
 const EventRegistrationSection: React.FC<Props> = ({ user, event }) => {
   const [isRegistered, setIsRegistered] = React.useState(false);
-  if (user?.spectator) {
+  const router = useRouter();
+
+  // fetch user status for current competition. Handle by state
+
+  if (user?.role === "spectator") {
     return (
       <VStack space="lg" p={"$3"} bg={"$white"}>
         <Heading size={"lg"}>Attend the Event</Heading>
@@ -47,6 +51,28 @@ const EventRegistrationSection: React.FC<Props> = ({ user, event }) => {
             </Link>
           )}
         </Box>
+      </VStack>
+    );
+  }
+  if (user?.role === "manager") {
+    return (
+      <VStack space="lg" p={"$3"} bg={"$white"}>
+        <Heading size={"lg"}>Register your team</Heading>
+        <HStack space="md" alignItems="center">
+          <Icon as={InfoIcon} color={"$primary400"} />
+          <Text>Registrations are open</Text>
+        </HStack>
+        <Link
+          href={{
+            pathname: "/(modals)/(event)/register-team",
+            params: { eventId: event.id + "" },
+          }}
+          asChild
+        >
+          <Button>
+            <ButtonText>Register Teams</ButtonText>
+          </Button>
+        </Link>
       </VStack>
     );
   }

@@ -1,31 +1,24 @@
 import ControlledRadioGroup from "@Components/common/forms/ControlledRadioGroup";
 import { VStack } from "@gluestack-ui/themed";
-import { useAppSelector } from "@lib/hooks";
+import { useAppDispatch, useAppSelector } from "@lib/hooks";
 import { selectItems, selectValues, setFormValue } from "@lib/store";
 import { useNavigation } from "expo-router";
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
 
-const PickCoachScreenContent = ({
-  save,
-  setSave,
-}: {
-  save: boolean;
-  setSave: Function;
-}) => {
+const PickTeam = ({ save, setSave }: { save: boolean; setSave: Function }) => {
   const { newValues } = useAppSelector(selectValues);
-  const { availableCoaches } = useAppSelector(selectItems);
-  const dispatch = useDispatch();
+  const { availableTeams } = useAppSelector(selectItems);
+  const dispatch = useAppDispatch();
   const [item, setItem] = React.useState<string | undefined>(undefined);
   const navigation = useNavigation();
 
   useEffect(() => {
-    setItem(newValues.coach?.toString());
+    setItem(newValues.teams?.toString());
   }, []);
 
   useEffect(() => {
     if (save) {
-      dispatch(setFormValue({ key: "coach", value: +item! }));
+      dispatch(setFormValue({ key: "team", value: +item! }));
       setSave(false);
       navigation.goBack();
     }
@@ -38,8 +31,8 @@ const PickCoachScreenContent = ({
   return (
     <VStack p={"$4"}>
       <ControlledRadioGroup
-        items={availableCoaches}
-        name={"coach"}
+        items={availableTeams}
+        name={"team"}
         value={item}
         customOnChange={onChangeItem}
       />
@@ -47,4 +40,4 @@ const PickCoachScreenContent = ({
   );
 };
 
-export default PickCoachScreenContent;
+export default PickTeam;

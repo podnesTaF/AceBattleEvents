@@ -3,8 +3,10 @@ import {
   Button,
   ButtonIcon,
   ButtonText,
+  Center,
   HStack,
   Heading,
+  Pressable,
   VStack,
 } from "@gluestack-ui/themed";
 import { IRace, RaceShortForm } from "@lib/models";
@@ -17,25 +19,26 @@ interface Props {
   race: IRace | RaceShortForm;
   isLast?: boolean;
   registrationAvailable?: boolean;
+  eventId?: number;
 }
 
 const RaceCard = ({
   race,
   registrationAvailable,
   isLast,
+  eventId,
 }: Props): JSX.Element => {
   const [infoOpen, setInfoOpen] = useState(false);
 
   return (
     <>
-      <VStack space={"md"}>
-        <HStack
-          py={"$2"}
-          space={"md"}
-          alignItems="center"
-          borderColor="$coolGray400"
-          borderBottomWidth={isLast ? 0 : 1}
-        >
+      <VStack
+        space={"md"}
+        py={"$2"}
+        borderColor="$coolGray400"
+        borderBottomWidth={isLast ? 0 : 1}
+      >
+        <HStack space={"md"} alignItems="center">
           <Heading size={"sm"} color="$coolGray400">
             {formatDate(race.startTime, false, true)}
           </Heading>
@@ -48,20 +51,36 @@ const RaceCard = ({
             </Button>
           </Link>
         </HStack>
-        <HStack space={"md"}>
-          <Button variant={"outline"} action="positive" flex={1}>
-            <ButtonText>Register your team for the race</ButtonText>
-          </Button>
-          <Button
-            onPress={() => setInfoOpen(true)}
-            borderRadius="$full"
-            size="lg"
-            p="$1.5"
-            bg={"$primary500"}
-          >
-            <ButtonIcon as={InfoIcon} color={"$white"} />
-          </Button>
-        </HStack>
+        {registrationAvailable && (
+          <HStack alignItems="center" space={"md"}>
+            <Link
+              href={{
+                pathname: "/(modals)/(event)/race-register",
+                params: {
+                  eventId: eventId + "",
+                  raceId: race.id + "",
+                },
+              }}
+              asChild
+            >
+              <Button variant={"outline"} action="positive" flex={1}>
+                <ButtonText>Register your team for the race</ButtonText>
+              </Button>
+            </Link>
+            <Center p={"$2"}>
+              <Pressable onPress={() => setInfoOpen(true)}>
+                {({ pressed }: { pressed: boolean }) => (
+                  <ButtonIcon
+                    opacity={pressed ? 0.8 : 1}
+                    as={InfoIcon}
+                    color={"$black"}
+                    size={"xl"}
+                  />
+                )}
+              </Pressable>
+            </Center>
+          </HStack>
+        )}
       </VStack>
       <CustomModal
         title={"Race registrations"}

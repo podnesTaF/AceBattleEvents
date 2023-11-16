@@ -52,6 +52,15 @@ const RegisterTeamModal = () => {
     );
   }, [params.eventId]);
 
+  useEffect(() => {
+    form.setValue("coach", newValues.coach);
+    form.setValue("team", newValues.team);
+  }, [newValues.coach, newValues.team]);
+
+  const onRegister = (dto: RegisterTeamForm) => {
+    console.log(dto);
+  };
+
   return (
     <>
       <Stack.Screen
@@ -96,11 +105,13 @@ const RegisterTeamModal = () => {
               />
             </VStack>
             <FormButton
+              my={"$4"}
               title={"Register Team"}
+              onPress={form.handleSubmit(onRegister)}
               isLoading={
                 form.formState.isLoading || form.formState.isSubmitting
               }
-              disabled={form.formState.isSubmitting || form.formState.isValid}
+              disabled={form.formState.isSubmitting}
             />
           </FormProvider>
         </Container>

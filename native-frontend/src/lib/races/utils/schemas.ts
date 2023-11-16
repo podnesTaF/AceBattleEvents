@@ -12,5 +12,5 @@ export const registerForRaceSchema = yup.object().shape({
     .array()
     .of(yup.string().required("Please provide player"))
     .min(3, "Please provide at least 3 player")
-    .required(),
+    .required("Please provide at least 3 player"),
 });
