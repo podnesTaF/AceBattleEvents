@@ -2,7 +2,7 @@ import withWatermarkBg from "@Components/HOCs/withWatermark";
 import Container from "@Components/common/Container";
 import HeaderSubtitledTitle from "@Components/common/HeaderSubtitledTitle";
 import RaceCard from "@Components/race/RaceCard";
-import { races } from "@Constants/dummy-data";
+import { events, races } from "@Constants/dummy-data";
 import { Heading, VStack } from "@gluestack-ui/themed";
 import { getNamedDate } from "@lib/utils";
 import { Stack } from "expo-router";
@@ -48,6 +48,8 @@ const Timetable = () => {
               <RaceCard
                 key={race.id}
                 race={race}
+                registrationAvailable={true}
+                eventId={events[0].id}
                 isLast={i === races.length - 1}
               />
             ))}

@@ -1,5 +1,5 @@
+import { api } from "@lib/common/services/api";
 import { IUser, LoginUserRequest } from "@lib/models";
-import { api } from "@lib/services";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const storeToken = async (token: string) => {

@@ -43,13 +43,13 @@ const ManageTeam = () => {
     dispatch(
       setItems({
         key: "avaliableCoaches",
-        items: mapRunnersToPickItems(runners),
+        items: mapCoachesToPickItems(coaches),
       })
     );
     dispatch(
       setItems({
         key: "avaliablePlayers",
-        items: mapCoachesToPickItems(coaches),
+        items: mapRunnersToPickItems(runners),
       })
     );
   }, [params.teamId]);

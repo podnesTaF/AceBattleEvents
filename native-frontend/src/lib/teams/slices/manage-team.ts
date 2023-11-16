@@ -47,7 +47,6 @@ export const manageTeamSlice = createSlice({
         logo: action.payload.logo,
         teamImage: action.payload.teamImage,
       };
-
       state.newValues = {
         name: action.payload.name,
         city: action.payload.city,

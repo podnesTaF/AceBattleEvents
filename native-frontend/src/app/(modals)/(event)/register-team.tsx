@@ -1,5 +1,6 @@
 import Container from "@Components/common/Container";
 import HeaderSubtitledTitle from "@Components/common/HeaderSubtitledTitle";
+import FormButton from "@Components/common/forms/FormButton";
 import PickField from "@Components/common/forms/PickField";
 import { coaches, teams } from "@Constants/dummy-data";
 import { Box, VStack } from "@gluestack-ui/themed";
@@ -51,6 +52,15 @@ const RegisterTeamModal = () => {
     );
   }, [params.eventId]);
 
+  useEffect(() => {
+    form.setValue("coach", newValues.coach);
+    form.setValue("team", newValues.team);
+  }, [newValues.coach, newValues.team]);
+
+  const onRegister = (dto: RegisterTeamForm) => {
+    console.log(dto);
+  };
+
   return (
     <>
       <Stack.Screen
@@ -94,6 +104,15 @@ const RegisterTeamModal = () => {
                 multiple={false}
               />
             </VStack>
+            <FormButton
+              my={"$4"}
+              title={"Register Team"}
+              onPress={form.handleSubmit(onRegister)}
+              isLoading={
+                form.formState.isLoading || form.formState.isSubmitting
+              }
+              disabled={form.formState.isSubmitting}
+            />
           </FormProvider>
         </Container>
       </Box>

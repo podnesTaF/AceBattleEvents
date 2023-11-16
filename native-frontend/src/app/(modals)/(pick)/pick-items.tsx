@@ -1,5 +1,6 @@
 import PickAthletesList from "@Components/athletes/PickAthletesList";
 import PickCoachScreenContent from "@Components/athletes/screens/PickCoachScreenContent";
+import PickTeam from "@Components/teams/PickTeam";
 import { Button, ButtonText, Heading } from "@gluestack-ui/themed";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { usePathname } from "expo-router/src/hooks";
@@ -9,6 +10,7 @@ const PickItemsModal = () => {
   const pathname = usePathname();
   const params = useLocalSearchParams<{ name?: string; multiple?: string }>();
   const [save, setSave] = useState(false);
+
   const onSave = () => {
     setSave(true);
   };
@@ -33,6 +35,7 @@ const PickItemsModal = () => {
       {params.name === "players" && (
         <PickAthletesList save={save} setSave={setSave} />
       )}
+      {params.name === "team" && <PickTeam save={save} setSave={setSave} />}
       {params.name === "coach" && (
         <PickCoachScreenContent save={save} setSave={setSave} />
       )}

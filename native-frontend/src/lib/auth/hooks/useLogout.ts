@@ -1,4 +1,4 @@
-import { useAppDispatch } from "@lib/hooks";
+import { useAppDispatch } from "@lib/common/hooks/useAppDispatch";
 import { removeUser } from "@lib/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";

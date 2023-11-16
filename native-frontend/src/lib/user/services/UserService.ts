@@ -1,4 +1,4 @@
-import { api } from "@lib/services";
+import { api } from "@lib/common/services/api";
 import { IUser } from "../models";
 
 export const UserApi = api.injectEndpoints({
@@ -6,7 +6,7 @@ export const UserApi = api.injectEndpoints({
     fetchUser: builder.query<IUser, number>({
       query: (userId) => ({
         url: `/users/${userId}`,
-        providesTags: (result: IUser) => [{ type: "User", id: result.id }],
+        providesTags: (result: IUser) => ["User"],
       }),
     }),
   }),

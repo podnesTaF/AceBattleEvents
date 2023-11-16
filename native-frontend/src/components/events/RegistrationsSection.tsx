@@ -1,3 +1,4 @@
+import Container from "@Components/common/Container";
 import NotAuthTemplate from "@Components/common/NotAuthTemplate";
 import TeamRegistrationCard from "@Components/teams/TeamRegistrationCard";
 import SpectatorRegistrationCard from "@Components/user/SpectatorRegistrationCard";
@@ -15,53 +16,78 @@ const RegistrationsSection: React.FC<RegistrationSectionProps> = ({
   user,
   events,
 }) => {
-  if (user.spectator) {
-    return events.length ? (
-      events.map((event) => (
-        <SpectatorRegistrationCard
-          key={event.id}
-          event={events[0] as any}
-          user={user as any}
-        />
-      ))
-    ) : (
-      <HStack py={"$3"} space={"md"}>
-        <Icon as={InfoIcon} size={"lg"} color="$primary400" />
-        <Text size="lg">You haven't registered to attend any events yet</Text>
-      </HStack>
+  // fecth registrations by user, if logged in
+
+  if (!user) {
+    return <NotAuthTemplate />;
+  }
+
+  console.log(user.role === "manager");
+  if (user.role === "spectator") {
+    return (
+      <>
+        {events.length ? (
+          events.map((event) => (
+            <SpectatorRegistrationCard
+              key={event.id}
+              event={events[0] as any}
+              user={user as any}
+            />
+          ))
+        ) : (
+          <HStack py={"$3"} space={"md"}>
+            <Icon as={InfoIcon} size={"lg"} color="$primary400" />
+            <Text size="lg">
+              You haven't registered to attend any events yet
+            </Text>
+          </HStack>
+        )}
+      </>
     );
   }
 
-  if (user.manager) {
-    events.length ? (
-      events.map((event) => (
-        <TeamRegistrationCard event={event} team={teams[0]} />
-      ))
-    ) : (
-      <HStack py={"$3"} space={"md"}>
-        <Icon as={InfoIcon} size={"lg"} color="$primary400" />
-        <Text size="lg">You haven't registered any of your teams</Text>
-      </HStack>
+  if (user.role === "manager") {
+    return (
+      <>
+        {events.length ? (
+          events.map((event) => (
+            <TeamRegistrationCard
+              key={event.id}
+              event={event}
+              team={teams[0]}
+            />
+          ))
+        ) : (
+          <Container>
+            <HStack py={"$3"} space={"md"}>
+              <Icon as={InfoIcon} size={"lg"} color="$primary400" />
+              <Text size="lg">You haven't registered any of your teams</Text>
+            </HStack>
+          </Container>
+        )}
+      </>
     );
   }
 
-  if (user.runner) {
-    events.length ? (
-      events.map((event) => (
-        <TeamRegistrationCard event={event} team={teams[0]} />
-      ))
-    ) : (
-      <HStack py={"$3"} space={"md"}>
-        <Icon as={InfoIcon} size={"lg"} color="$primary400" />
-        <Text size="lg">
-          You haven't been registered as a runner to any events yet. Ask your
-          manager your status
-        </Text>
-      </HStack>
+  if (user.role === "runner") {
+    return (
+      <>
+        {events.length ? (
+          events.map((event) => (
+            <TeamRegistrationCard event={event} team={teams[0]} />
+          ))
+        ) : (
+          <HStack py={"$3"} space={"md"}>
+            <Icon as={InfoIcon} size={"lg"} color="$primary400" />
+            <Text size="lg">
+              You haven't been registered as a runner to any events yet. Ask
+              your manager your status
+            </Text>
+          </HStack>
+        )}
+      </>
     );
   }
-
-  return <NotAuthTemplate />;
 };
 
 export default RegistrationsSection;
