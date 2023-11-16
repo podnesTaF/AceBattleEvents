@@ -21,12 +21,6 @@ const Layout = () => {
           ),
         }}
       />
-      <Stack.Screen
-        name="[userId]"
-        options={{
-          headerTitle: "Athelte page",
-        }}
-      />
     </Stack>
   );
 };

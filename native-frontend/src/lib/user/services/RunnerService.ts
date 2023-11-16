@@ -1,5 +1,5 @@
+import { api } from "@lib/common/services/api";
 import { IRunner } from "@lib/models";
-import { api } from "@lib/services";
 
 export const RunnerApi = api.injectEndpoints({
   endpoints: (builder) => ({

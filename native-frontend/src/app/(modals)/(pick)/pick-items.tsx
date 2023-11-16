@@ -9,6 +9,7 @@ const PickItemsModal = () => {
   const pathname = usePathname();
   const params = useLocalSearchParams<{ name?: string; multiple?: string }>();
   const [save, setSave] = useState(false);
+
   const onSave = () => {
     setSave(true);
   };

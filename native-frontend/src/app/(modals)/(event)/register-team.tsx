@@ -1,5 +1,6 @@
 import Container from "@Components/common/Container";
 import HeaderSubtitledTitle from "@Components/common/HeaderSubtitledTitle";
+import FormButton from "@Components/common/forms/FormButton";
 import PickField from "@Components/common/forms/PickField";
 import { coaches, teams } from "@Constants/dummy-data";
 import { Box, VStack } from "@gluestack-ui/themed";
@@ -94,6 +95,13 @@ const RegisterTeamModal = () => {
                 multiple={false}
               />
             </VStack>
+            <FormButton
+              title={"Register Team"}
+              isLoading={
+                form.formState.isLoading || form.formState.isSubmitting
+              }
+              disabled={form.formState.isSubmitting || form.formState.isValid}
+            />
           </FormProvider>
         </Container>
       </Box>
