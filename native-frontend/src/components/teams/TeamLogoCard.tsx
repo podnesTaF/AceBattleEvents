@@ -1,10 +1,11 @@
 import { Heading, Image, VStack } from "@gluestack-ui/themed";
+import { ITeam } from "@lib/models";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Pressable } from "react-native";
 
 interface Props {
-  team: any;
+  team: ITeam;
   logoHeight?: number;
 }
 
@@ -21,7 +22,10 @@ const TeamLogoCard: React.FC<Props> = ({ team, logoHeight }) => {
         >
           <Image
             role={"img"}
-            source={team.logo.mediaUrl}
+            source={
+              team.logo.mediaUrl ||
+              "https://storage.googleapis.com/abe_cloud_storage/image/large/55c30c67-37aa-4476-bae9-b6f847a707fd.png"
+            }
             alt={"team logo"}
             height={logoHeight || 120}
             width={100}

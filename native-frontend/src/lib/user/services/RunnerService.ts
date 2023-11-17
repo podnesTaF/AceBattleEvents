@@ -1,5 +1,5 @@
 import { api } from "@lib/common/services/api";
-import { IRunner } from "@lib/models";
+import { IRunner, RunnerPreview } from "@lib/models";
 
 export const RunnerApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -24,7 +24,21 @@ export const RunnerApi = api.injectEndpoints({
       }),
       providesTags: (result) => ["Runners"],
     }),
+    getRunnerPreviews: builder.query<
+      { runners: RunnerPreview[]; totalPages: number },
+      { type?: "all" | "search"; query?: string; limit?: number; page?: number }
+    >({
+      query: ({ type, query, limit, page }) => ({
+        url: `/runners/previews?query=${query}&limit=${limit || ""}&page=${
+          page || ""
+        }&type=${type || "all"}`,
+      }),
+    }),
   }),
 });
 
-export const { useGetAthletesQuery, useGetTopAthletesQuery } = RunnerApi;
+export const {
+  useGetAthletesQuery,
+  useGetTopAthletesQuery,
+  useGetRunnerPreviewsQuery,
+} = RunnerApi;

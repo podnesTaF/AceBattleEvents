@@ -1,6 +1,5 @@
 import TeamDescription from "@Components/teams/TeamDescription";
 import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
-import { teams, testUserRunner } from "@Constants/dummy-data";
 import { Box } from "@gluestack-ui/themed";
 import { IUser } from "@lib/models";
 import React from "react";
@@ -18,22 +17,27 @@ const AthleteScreenContent: React.FC<AthleteScreenContentProps> = ({
   activeTab,
   user,
 }) => {
+  if (!user.runner) return null;
+
   return (
     <>
       {activeTab === 0 && (
         <ScrollView>
-          <AthleteBioTab user={testUserRunner} />
+          <AthleteBioTab user={user} />
         </ScrollView>
       )}
       {activeTab === 1 && (
         <ScrollView>
           <Box p={"$3"}>
-            <TeamPreviewCard
-              team={teams[0]}
-              Item={TeamDescription}
-              imageProportion={1}
-              showLink={true}
-            />
+            {user.runner.teamsAsRunner?.map((team) => (
+              <TeamPreviewCard
+                key={team.id}
+                team={team}
+                Item={TeamDescription}
+                imageProportion={1}
+                showLink={true}
+              />
+            ))}
           </Box>
         </ScrollView>
       )}

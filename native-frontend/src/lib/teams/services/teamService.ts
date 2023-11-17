@@ -19,7 +19,16 @@ export const ServiceApi = api.injectEndpoints({
       }),
       providesTags: (result) => ["Team"],
     }),
+    getTopTeams: builder.query<
+      { male: ITeam[]; female: ITeam[] },
+      { count?: number; gender?: "male" | "female" }
+    >({
+      query: () => ({
+        url: `/teams/top`,
+      }),
+      providesTags: (result) => ["Team"],
+    }),
   }),
 });
 
-export const { useGetAllTeamsQuery } = ServiceApi;
+export const { useGetAllTeamsQuery, useGetTopTeamsQuery } = ServiceApi;

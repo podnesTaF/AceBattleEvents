@@ -92,7 +92,7 @@ const Page = () => {
       </Box>
       <Box my="$6" px={"$4"}>
         <Heading size="xl">Latest News</Heading>
-        <WithLoading isLoading={isNewsLoading} loadingHeight="200px">
+        <WithLoading isLoading={isNewsLoading} loadingHeight="$48">
           <ScrollView horizontal={true}>
             <HStack space="xl">
               {newsData?.newsPreviews.map((news) => (

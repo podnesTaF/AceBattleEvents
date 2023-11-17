@@ -6,7 +6,10 @@ export const UserApi = api.injectEndpoints({
     fetchUser: builder.query<IUser, number>({
       query: (userId) => ({
         url: `/users/${userId}`,
-        providesTags: (result: IUser) => ["User"],
+        providesTags: (result: IUser, error: any, userId: number) => {
+          console.log(result, error, userId);
+          return result ? [{ type: "User", id: userId }] : [];
+        },
       }),
     }),
   }),
