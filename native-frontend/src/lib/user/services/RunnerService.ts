@@ -15,7 +15,16 @@ export const RunnerApi = api.injectEndpoints({
       }),
       providesTags: (result) => ["Runners"],
     }),
+    getTopAthletes: builder.query<
+      { male: IRunner[] | null; female: IRunner[] | null },
+      { top: number; gender?: "male" | "female" }
+    >({
+      query: ({ top, gender }) => ({
+        url: `/runners/top?count=${top}&gender=${gender || ""}`,
+      }),
+      providesTags: (result) => ["Runners"],
+    }),
   }),
 });
 
-export const { useGetAthletesQuery } = RunnerApi;
+export const { useGetAthletesQuery, useGetTopAthletesQuery } = RunnerApi;
