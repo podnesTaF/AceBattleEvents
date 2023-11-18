@@ -41,8 +41,8 @@ const AthleteScreenContent: React.FC<AthleteScreenContentProps> = ({
           </Box>
         </ScrollView>
       )}
-      {activeTab === 2 && <ResultsTab />}
-      {activeTab === 3 && <CompetitionsTab />}
+      {activeTab === 2 && <ResultsTab runner={user.runner} />}
+      {activeTab === 3 && <CompetitionsTab runnerId={user.runner.id} />}
     </>
   );
 };

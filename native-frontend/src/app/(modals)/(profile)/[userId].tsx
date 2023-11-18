@@ -16,8 +16,6 @@ const ProfileScreen = () => {
   const [activeTab, setActiveTab] = useState(0);
   const { data: user, isLoading, error } = useFetchUserQuery(+params.userId);
 
-  console.log("user", user);
-
   const onChangeTab = (tabIndex: number) => {
     setActiveTab(tabIndex);
   };

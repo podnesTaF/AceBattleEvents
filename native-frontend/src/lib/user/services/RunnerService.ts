@@ -1,5 +1,5 @@
 import { api } from "@lib/common/services/api";
-import { IRunner, RunnerPreview } from "@lib/models";
+import { IRunner, ITeamEvent, RunnerPreview, UserResult } from "@lib/models";
 
 export const RunnerApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -34,6 +34,38 @@ export const RunnerApi = api.injectEndpoints({
         }&type=${type || "all"}`,
       }),
     }),
+    getRunnerResults: builder.query<
+      {
+        results: UserResult[];
+        totalPages: number;
+      },
+      {
+        page?: number;
+        limit?: number;
+        resultYear?: string;
+        runnerId: number;
+      }
+    >({
+      query: ({ runnerId, limit, page, resultYear }) => ({
+        url: `/runner-results/user/${runnerId}?limit=${limit || ""}&page=${
+          page || ""
+        }&year=${resultYear}`,
+      }),
+    }),
+    getRunnerCompetitions: builder.query<
+      ITeamEvent[],
+      {
+        past?: boolean;
+        runnerId: number;
+        year?: string;
+      }
+    >({
+      query: ({ past, runnerId, year }) => ({
+        url: `/teams/${runnerId}/user-registrations?past=${past || ""}&year=${
+          year || ""
+        }`,
+      }),
+    }),
   }),
 });
 
@@ -41,4 +73,6 @@ export const {
   useGetAthletesQuery,
   useGetTopAthletesQuery,
   useGetRunnerPreviewsQuery,
+  useGetRunnerResultsQuery,
+  useGetRunnerCompetitionsQuery,
 } = RunnerApi;
