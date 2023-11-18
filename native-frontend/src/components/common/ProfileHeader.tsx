@@ -8,10 +8,11 @@ import {
   Heading,
   VStack,
 } from "@gluestack-ui/themed";
+import { IUser } from "@lib/models";
 import React from "react";
 
 interface ProfileHeaderProps {
-  user: any;
+  user: IUser;
 }
 
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {

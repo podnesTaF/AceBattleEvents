@@ -9,15 +9,16 @@ import {
   Pressable,
   VStack,
 } from "@gluestack-ui/themed";
+import { ITeam } from "@lib/models";
 import { Link, useRouter } from "expo-router";
 import React from "react";
 
 interface ItemProps {
-  team: any;
+  team: ITeam;
 }
 
 interface TeamProps {
-  team: any;
+  team: ITeam;
   Item: React.FC<ItemProps>;
   minWidth?: number;
   imageProportion?: number;
@@ -63,7 +64,11 @@ const TeamPreviewCard: React.FC<TeamProps> = ({
             <TitleRect title={team.name} icon={"md-people"} />
             <Image
               role={"img"}
-              source={{ uri: "https://acebattlemile.org/profile-bg-lg.jpg" }}
+              source={{
+                uri:
+                  team.teamImage?.mediaUrl ||
+                  "https://storage.googleapis.com/abe_cloud_storage/image/large/55c30c67-37aa-4476-bae9-b6f847a707fd.png",
+              }}
               alt={"team preview"}
               size="full"
             />

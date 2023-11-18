@@ -1,16 +1,103 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { Box, Heading } from '@gluestack-ui/themed'
-import EventCard from '@Components/events/EventCard'
-import { events, teams } from '@Constants/dummy-data'
+import WithLoading from "@Components/HOCs/withLoading";
+import Badge from "@Components/custom/Badge";
+import EventCard from "@Components/events/EventCard";
+import {
+  Box,
+  Center,
+  HStack,
+  Heading,
+  Text,
+  VStack,
+} from "@gluestack-ui/themed";
+import { useGetRunnerCompetitionsQuery } from "@lib/services";
+import React, { useState } from "react";
 
-const CompetitionsTab = () => {
+const CompetitionsTab = ({ runnerId }: { runnerId: number }) => {
+  const [year, setYear] = useState("2023");
+  const {
+    data: registrations,
+    error,
+    isLoading,
+  } = useGetRunnerCompetitionsQuery({
+    runnerId,
+  });
+
+  const { data: pastCompetitions, isLoading: isLoadingPastCompetitions } =
+    useGetRunnerCompetitionsQuery({
+      runnerId,
+      year,
+      past: true,
+    });
+
   return (
-    <Box my={"$4"} mx={"$3"}>   
-        <Heading size={"lg"} mb={"$4"}>Upcoming competitions</Heading>
-        <EventCard event={(events[0] as any)} team={(teams[0] as any)} />
-    </Box>
-  )
-}
+    <VStack>
+      <Box my={"$4"} mx={"$3"}>
+        <Heading size={"lg"} mb={"$4"}>
+          Upcoming competitions
+        </Heading>
+        <WithLoading isLoading={isLoading || !registrations}>
+          {registrations?.length ? (
+            registrations.map((registration) => (
+              <EventCard
+                key={registration.event.id + " " + registration.team.id}
+                event={registration.event}
+              >
+                <HStack justifyContent="space-between" space="md">
+                  <Text size={"md"}>Team</Text>
+                  <Heading size={"md"}>{registration.team.name}</Heading>
+                </HStack>
+              </EventCard>
+            ))
+          ) : (
+            <Center height={"$32"}>
+              <Heading size={"lg"} color={"$coolGray400"}>
+                No upcoming competitions
+              </Heading>
+            </Center>
+          )}
+        </WithLoading>
+      </Box>
+      <Box my={"$4"} mx={"$3"}>
+        <Heading size={"lg"} mb={"$2"}>
+          Past competitions
+        </Heading>
+        <HStack m={"$2"} space="md">
+          {["2023", "2022"].map((resultYear, i) => (
+            <Badge
+              px={"$3"}
+              py={"$1"}
+              key={i}
+              text={resultYear}
+              isActive={resultYear === year}
+              onPress={() => setYear(resultYear)}
+            />
+          ))}
+        </HStack>
+        <WithLoading isLoading={isLoadingPastCompetitions || !pastCompetitions}>
+          {pastCompetitions?.length ? (
+            pastCompetitions.map((registration) => (
+              <EventCard
+                key={registration.event.id + " " + registration.team.id}
+                event={registration.event}
+                passed={true}
+              >
+                <HStack justifyContent="space-between" space="md">
+                  <Text size={"md"}>Team</Text>
+                  <Heading size={"md"}>{registration.team.name}</Heading>
+                </HStack>
+              </EventCard>
+            ))
+          ) : (
+            <Center height={"$32"}>
+              <Heading size={"lg"} color={"$coolGray400"}>
+                No upcoming competitions
+              </Heading>
+            </Center>
+          )}
+        </WithLoading>
+      </Box>
+    </VStack>
+  );
+};
 
-export default CompetitionsTab
+export default CompetitionsTab;

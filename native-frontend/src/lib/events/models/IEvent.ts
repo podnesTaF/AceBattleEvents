@@ -15,14 +15,6 @@ export type IEvent = {
   teams?: ITeam[];
 };
 
-export type IFutureEvent = {
-  id: number;
-  title: string;
-  season: string;
-  description: string;
-  introImage?: any;
-};
-
 export type EventShortform = {
   id: number;
   title: string;

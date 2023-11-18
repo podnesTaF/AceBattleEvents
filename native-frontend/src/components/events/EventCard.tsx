@@ -13,10 +13,11 @@ import React from "react";
 
 interface Props {
   event: IEvent;
+  passed?: boolean;
   children?: React.ReactNode;
 }
 
-const EventCard: React.FC<Props> = ({ event, children }) => {
+const EventCard: React.FC<Props> = ({ event, children, passed }) => {
   return (
     <Box
       p={"$3"}
@@ -53,12 +54,31 @@ const EventCard: React.FC<Props> = ({ event, children }) => {
         </HStack>
         {children}
         <HStack justifyContent="space-between" space="md">
-          <Text size={"md"}>Details</Text>
-          <Link href={`/(modals)/(event)/${event.id}`} asChild>
-            <Heading size={"md"} color={"$amber400"}>
-              visit event page
-            </Heading>
-          </Link>
+          {passed ? (
+            <>
+              <Text size={"md"}>Results</Text>
+              <Link
+                href={{
+                  pathname: `/(modals)/(event)/results`,
+                  params: { eventId: event.id + "" },
+                }}
+                asChild
+              >
+                <Heading size={"md"} color={"$amber400"}>
+                  event results
+                </Heading>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Text size={"md"}>Details</Text>
+              <Link href={`/(modals)/(event)/${event.id}`} asChild>
+                <Heading size={"md"} color={"$amber400"}>
+                  visit event page
+                </Heading>
+              </Link>
+            </>
+          )}
         </HStack>
       </VStack>
     </Box>

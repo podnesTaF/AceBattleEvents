@@ -17,10 +17,6 @@ export const getUsersInfo = (user: IUser): InfoItem[] => {
 
   if (user.runner) {
     infoArray.push({
-      label: "Date of birth",
-      value: formatDate(user.runner.dateOfBirth, false),
-    });
-    infoArray.push({
       label: "Gender",
       value: user.runner.gender,
     });

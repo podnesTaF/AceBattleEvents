@@ -1,10 +1,10 @@
+import WithLoading from "@Components/HOCs/withLoading";
 import withWatermarkBg from "@Components/HOCs/withWatermark";
 import AthleteScreenContent from "@Components/athletes/screens/AthleteScreenContent";
 import ProfileHeader from "@Components/common/ProfileHeader";
 import Tabs from "@Components/common/Tabs";
 import SpectatorBioTab from "@Components/user/tabs/SpectatorBioTab";
 import TeamsAndRunners from "@Components/user/tabs/TeamsAndRunners";
-import { testUserRunner } from "@Constants/dummy-data";
 import { Box, Heading, VStack } from "@gluestack-ui/themed";
 import { useFetchUserQuery } from "@lib/user/services/UserService";
 import { getProfileTabByUserRole } from "@lib/utils";
@@ -34,9 +34,9 @@ const ProfileScreen = () => {
               <Heading textAlign="center" size={"xs"} color="$coolGray300">
                 Athlete Profile
               </Heading>
-              <Box>
-                <ProfileHeader user={testUserRunner} />
-              </Box>
+              <WithLoading isLoading={isLoading} loadingHeight={"$12"}>
+                {user && <ProfileHeader user={user} />}
+              </WithLoading>
               <Box flex={1}>
                 <Tabs
                   size="sm"
@@ -51,7 +51,9 @@ const ProfileScreen = () => {
         }}
       />
       {user?.runner && (
-        <AthleteScreenContent user={user} activeTab={activeTab} />
+        <WithLoading isLoading={isLoading}>
+          {user && <AthleteScreenContent user={user} activeTab={activeTab} />}
+        </WithLoading>
       )}
       {user?.spectator && <SpectatorBioTab user={user} />}
       {user?.manager && (

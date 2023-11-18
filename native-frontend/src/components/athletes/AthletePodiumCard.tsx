@@ -1,36 +1,46 @@
-import { Box, View, Image, Text,VStack, Heading, Center } from "@gluestack-ui/themed";
+import { Box, Center, Image, Text, VStack } from "@gluestack-ui/themed";
+import { IRunner } from "@lib/models";
 import React from "react";
 
 interface AthletePodiumCardProps {
-  user: any;
+  runner?: IRunner;
 }
 
-const AthletePodiumCard: React.FC<AthletePodiumCardProps> = ({ user }) => {
+const AthletePodiumCard: React.FC<AthletePodiumCardProps> = ({ runner }) => {
+  if (!runner) return null;
   return (
-    <Center alignSelf={user.runner.rank === 2 ? "center" : user.runner.rank === 1 ? "flex-start" : "flex-end"}>
+    <Center
+      alignSelf={
+        runner.rank === 2
+          ? "center"
+          : runner.rank === 1
+          ? "flex-start"
+          : "flex-end"
+      }
+    >
       <Box mb={"$1"} width={"$full"}>
         <Image
-        role={"img"}
+          role={"img"}
           source={{
             uri:
-              user.image?.mediaUrl ||
-              "https://storage.googleapis.com/abe_cloud_storage/image/large/69ab1b84-cb24-43fd-aa8e-2e9ca95d3df9.jpeg",
+              runner.user.image?.mediaUrl ||
+              "https://storage.googleapis.com/abe_cloud_storage/image/large/55c30c67-37aa-4476-bae9-b6f847a707fd.png",
           }}
           alt={"avatar"}
-          height={100}
-          width={100}
+          size={"lg"}
+          height={80}
           objectFit="cover"
           borderTopLeftRadius={20}
           borderBottomRightRadius={20}
         />
       </Box>
       <VStack alignItems="center" maxWidth={"$32"}>
-          <Text fontWeight="600" size="lg" color={'$white'}>
-            Rank {user.runner.rank}
-          </Text>
-          <Text size="md" color="$coolGray300" textAlign="center">
-            {user.name} {user.surname}
-          </Text>
+        <Text fontWeight="600" size="lg" color={"$white"}>
+          Rank {runner.rank}
+        </Text>
+        <Text size="md" color="$coolGray300" textAlign="center">
+          {runner.user.name} {runner.user.surname}
+        </Text>
       </VStack>
     </Center>
   );
