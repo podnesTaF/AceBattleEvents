@@ -35,6 +35,7 @@ export const api = createApi({
     "FutureEvent",
     "Team",
     "NewsPreview",
+    "Registrations",
   ],
   endpoints: () => ({}),
 });

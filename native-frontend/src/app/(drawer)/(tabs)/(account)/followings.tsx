@@ -8,10 +8,14 @@ import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
 import UserCard from "@Components/user/UserCard";
 import { teams, users } from "@Constants/dummy-data";
 import { Box, HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
+import { useAppSelector } from "@lib/hooks";
+import { selectUser } from "@lib/store";
 import { Stack } from "expo-router";
 import React from "react";
 
 const Followings = () => {
+  const user = useAppSelector(selectUser);
+
   return (
     <>
       <Stack.Screen
@@ -69,7 +73,7 @@ const Followings = () => {
           <Container>
             {users.map((user, i) => (
               <UserCard
-                user={user}
+                user={user as any}
                 key={user.id}
                 isLastElement={i === users.length - 1}
               />

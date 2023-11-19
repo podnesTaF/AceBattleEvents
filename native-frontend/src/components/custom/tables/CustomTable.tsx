@@ -19,7 +19,6 @@ interface Props {
 const CustomTable: React.FC<Props> = ({ rows }) => {
   const router = useRouter();
 
-  console.log("rows", rows);
   return (
     <VStack>
       {rows.length ? (

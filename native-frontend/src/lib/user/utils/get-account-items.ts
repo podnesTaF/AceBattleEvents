@@ -37,7 +37,7 @@ export const getAccountItems = (user: IUser): AccountItem[] => {
     },
   ];
 
-  if (user.runner) {
+  if (user.role === "runner") {
     items.push({
       title: "My Team",
       subtitle: "View your team",
@@ -54,7 +54,7 @@ export const getAccountItems = (user: IUser): AccountItem[] => {
       isDark: false,
       link: "/calendar",
     });
-  } else if (user.manager) {
+  } else if (user.role === "manager") {
     items.push({
       title: "Calendar",
       subtitle: "Your teams' registrations",
@@ -71,7 +71,7 @@ export const getAccountItems = (user: IUser): AccountItem[] => {
       isDark: true,
       link: "/teams-setting",
     });
-  } else if (user.spectator) {
+  } else if (user.role === "spectator") {
     items.push({
       title: "Calendar",
       subtitle: "Your registrations",

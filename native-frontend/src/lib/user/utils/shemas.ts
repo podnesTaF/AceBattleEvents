@@ -5,17 +5,18 @@ export const updateUserDataSchema = yup.object().shape({
   surname: yup.string().required("Surname is required"),
   city: yup.string().required("City is required"),
   country: yup.string().required("Country is required"),
+  image: yup.string(),
 });
 
 export const updateImageSchema = yup.object().shape({
-  image: yup.object().required("Image is required")
-})
+  image: yup.object().required("Image is required"),
+});
 
 export const updateRunnerSchema = yup.object().shape({
   dateOfBirth: yup.string().required("Date of birth is required"),
   gender: yup.string().required("Pick your gender"),
   category: yup.string().required("Pick your category"),
-})
+});
 
 export const changePasswordSchema = yup.object().shape({
   oldPassword: yup.string().required("Old password is required"),

@@ -1,5 +1,5 @@
 export const getProfileTabByUserRole = (userRole?: string): string[] => {
-  if (userRole === "admin") {
+  if (userRole === "manager") {
     return ["BIO", "Teams and Runners"];
   }
   if (userRole === "runner") {

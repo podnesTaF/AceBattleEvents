@@ -52,6 +52,12 @@ export const RunnerApi = api.injectEndpoints({
         }&year=${resultYear}`,
       }),
     }),
+    getRunnersByManager: builder.query<IRunner[], number | undefined>({
+      query: (id) => ({
+        url: `/runners/manager/${id}`,
+      }),
+      providesTags: ["Runners"],
+    }),
     getRunnerCompetitions: builder.query<
       ITeamEvent[],
       {
@@ -74,5 +80,6 @@ export const {
   useGetTopAthletesQuery,
   useGetRunnerPreviewsQuery,
   useGetRunnerResultsQuery,
+  useGetRunnersByManagerQuery,
   useGetRunnerCompetitionsQuery,
 } = RunnerApi;

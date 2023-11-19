@@ -28,7 +28,17 @@ export const ServiceApi = api.injectEndpoints({
       }),
       providesTags: (result) => ["Team"],
     }),
+    getTeamsByManager: builder.query<ITeam[], number | undefined>({
+      query: (id) => ({
+        url: `/teams/manager/${id}`,
+      }),
+      providesTags: ["Team"],
+    }),
   }),
 });
 
-export const { useGetAllTeamsQuery, useGetTopTeamsQuery } = ServiceApi;
+export const {
+  useGetAllTeamsQuery,
+  useGetTopTeamsQuery,
+  useGetTeamsByManagerQuery,
+} = ServiceApi;
