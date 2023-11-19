@@ -31,8 +31,13 @@ const ProfileScreen = () => {
           headerTintColor: "#fff",
           headerTitle: () => (
             <VStack width={"$full"} left={"-$16"} pt={"$5"}>
-              <Heading textAlign="center" size={"xs"} color="$coolGray300">
-                Athlete Profile
+              <Heading
+                textTransform="capitalize"
+                textAlign="center"
+                size={"xs"}
+                color="$coolGray300"
+              >
+                Profile
               </Heading>
               <WithLoading isLoading={isLoading} loadingHeight={"$12"}>
                 {user && <ProfileHeader user={user} />}
@@ -59,7 +64,7 @@ const ProfileScreen = () => {
       {user?.manager && (
         <>
           {activeTab === 0 && <SpectatorBioTab user={user} />}
-          {activeTab === 1 && <TeamsAndRunners />}
+          {activeTab === 1 && <TeamsAndRunners user={user} />}
         </>
       )}
     </>

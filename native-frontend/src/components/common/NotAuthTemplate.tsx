@@ -1,28 +1,48 @@
-import React from 'react'
-import Container from './Container'
-import { Button, ButtonGroup, ButtonText, Heading, Text, VStack} from '@gluestack-ui/themed'
+import {
+  Button,
+  ButtonGroup,
+  ButtonText,
+  Heading,
+  Text,
+  VStack,
+} from "@gluestack-ui/themed";
+import { useRouter } from "expo-router";
+import React from "react";
+import Container from "./Container";
 
-const NotAuthTemplate = ({text, title}: {text?: string, title?: string}) => {
+const NotAuthTemplate = ({
+  text,
+  title,
+}: {
+  text?: string;
+  title?: string;
+}) => {
+  const router = useRouter();
   return (
     <Container>
-        <VStack space='lg'>
+      <VStack space="lg">
         <Heading size={"lg"}>
-           {title ? title : "Welcome to Ace Battle Mile!"}
+          {title ? title : "Welcome to Ace Battle Mile!"}
         </Heading>
-        <Text size={'md'}>
-            {text ? text : 'Please authorize to oversee your profile and events!'}
+        <Text size={"md"}>
+          {text ? text : "Please authorize to oversee your profile and events!"}
         </Text>
-        <ButtonGroup mb={"$4"} justifyContent='space-between' space='lg'>
-            <Button variant="solid" action="positive">
-                <ButtonText>Join Us</ButtonText>
-            </Button>
-            <Button variant="outline" action="positive">
-                <ButtonText>Sign In</ButtonText>
-            </Button>
+        <ButtonGroup mb={"$4"} justifyContent="space-between" space="lg">
+          <Button flex={1} variant="solid" action="positive">
+            <ButtonText>Join Us</ButtonText>
+          </Button>
+          <Button
+            onPress={() => router.push(`/(auth)/login`)}
+            flex={1}
+            variant="outline"
+            action="positive"
+          >
+            <ButtonText>Sign In</ButtonText>
+          </Button>
         </ButtonGroup>
-        </VStack>
+      </VStack>
     </Container>
-  )
-}
+  );
+};
 
-export default NotAuthTemplate
+export default NotAuthTemplate;

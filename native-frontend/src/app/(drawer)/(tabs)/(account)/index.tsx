@@ -1,3 +1,4 @@
+import withWatermarkBg from "@Components/HOCs/withWatermark";
 import HomeTabTitle from "@Components/HomeTabTitle";
 import LogoTitle from "@Components/LogoTitle";
 import NotAuthTemplate from "@Components/common/NotAuthTemplate";
@@ -51,15 +52,17 @@ const AccountPage = () => {
               </Link>
             ))}
           </HStack>
-          <Button
-            w={"$full"}
-            onPress={logout}
-            variant="outline"
-            action="negative"
-          >
-            <ButtonIcon mr={"$2"} as={LogOut} />
-            <ButtonText>Logout</ButtonText>
-          </Button>
+          <Box mx={"$4"}>
+            <Button
+              w={"$full"}
+              onPress={logout}
+              variant="outline"
+              action="negative"
+            >
+              <ButtonIcon mr={"$2"} as={LogOut} />
+              <ButtonText>Logout</ButtonText>
+            </Button>
+          </Box>
         </VStack>
       </>
     );
@@ -84,4 +87,4 @@ const AccountPage = () => {
   }
 };
 
-export default AccountPage;
+export default withWatermarkBg(AccountPage);

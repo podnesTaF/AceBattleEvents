@@ -26,7 +26,6 @@ const FormImagePicker: React.FC<FormImagePickerProps> = ({
   defaultImageName,
   onImagePicked,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [selectedImageName, setSelectedImageName] = useState<string | null>();
 
   const pickImageAsync = async () => {

@@ -1,15 +1,14 @@
 import EventCard from "@Components/events/EventCard";
 import { Button, ButtonText, HStack, Text } from "@gluestack-ui/themed";
-import { IEvent, IUser } from "@lib/models";
+import { IViewer } from "@lib/models";
 
 interface Props {
-  event: IEvent;
-  user: IUser;
+  registration: IViewer;
 }
 
-const SpectatorRegistrationCard: React.FC<Props> = ({ event, user }) => {
+const SpectatorRegistrationCard: React.FC<Props> = ({ registration }) => {
   return (
-    <EventCard event={event}>
+    <EventCard event={registration.event}>
       <HStack justifyContent="space-between" space="md">
         <Text size={"md"}>Ticket</Text>
         <Button>

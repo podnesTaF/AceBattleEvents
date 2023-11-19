@@ -154,7 +154,7 @@ const ManageTeam = () => {
                 name="players"
                 label={"Players"}
                 placeholder={
-                  newValues.players.length
+                  newValues.players?.length
                     ? cutString(
                         `${newValues.players.length} players selected`,
                         20

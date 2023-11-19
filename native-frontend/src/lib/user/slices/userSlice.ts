@@ -1,5 +1,5 @@
-import { UserState } from "@lib/models";
-import { createSlice } from "@reduxjs/toolkit";
+import { IUser, UserState } from "@lib/models";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState: UserState = {
   data: null,
@@ -14,6 +14,10 @@ export const userSlice = createSlice({
       state.isAuth = true;
       state.data = action.payload;
     },
+    updateUserData: ({ data }, action: PayloadAction<IUser>) => {
+      if (!data) return;
+      data = action.payload;
+    },
     removeUser: (state) => {
       state.data = null;
       state.isAuth = false;
@@ -21,7 +25,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setUser, removeUser } = userSlice.actions;
+export const { setUser, removeUser, updateUserData } = userSlice.actions;
 export const selectUser = (state: { user: UserState }) => state.user.data;
 export const selectIsAuth = (state: { user: UserState }) => state.user.isAuth;
 
