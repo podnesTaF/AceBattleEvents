@@ -19,10 +19,15 @@ const RegistrationsSection: React.FC<RegistrationSectionProps> = ({
   // fecth registrations by user, if logged in
 
   if (!user) {
-    return <NotAuthTemplate />;
+    return (
+      <NotAuthTemplate
+        title="Please Login"
+        text={"Please authorize to see your registrations"}
+        vertical={true}
+      />
+    );
   }
 
-  console.log(user.role === "manager");
   if (user.role === "spectator") {
     return (
       <>

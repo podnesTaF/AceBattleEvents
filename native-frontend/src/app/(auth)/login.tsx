@@ -2,11 +2,13 @@ import withWatermarkBg from "@Components/HOCs/withWatermark";
 import LoginForm from "@Components/auth/LoginForm";
 import { Box, Heading, Image, VStack } from "@gluestack-ui/themed";
 import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import React from "react";
 
 const Login = () => {
   return (
     <>
+      <StatusBar style={"dark"} />
       <Stack.Screen
         options={{
           headerTintColor: "black",

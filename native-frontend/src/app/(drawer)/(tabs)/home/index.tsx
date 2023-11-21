@@ -11,13 +11,13 @@ import {
   Box,
   HStack,
   Heading,
-  Image,
   ScrollView,
   VStack,
   View,
 } from "@gluestack-ui/themed";
 import { useFetchFutureEventsQuery } from "@lib/events/services/futureEventsService";
 import { useFetchNewsPreviewsQuery, useGetAllTeamsQuery } from "@lib/services";
+import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React from "react";
 
@@ -32,8 +32,8 @@ const Page = () => {
 
   return (
     <ScrollView>
-      <VStack mx={"$3"} mb={"$4"} space="lg">
-        <Heading size={"lg"} textTransform="uppercase" fontWeight="bold">
+      <VStack mx={"$3"} my={"$4"}>
+        <Heading size={"md"} textTransform="uppercase" fontWeight="bold">
           Upcoming Events
         </Heading>
         <HorizontalListLayout
@@ -46,29 +46,34 @@ const Page = () => {
           }}
         />
       </VStack>
-      <Box mt={"$10"} mb={"$6"}>
-        <HStack space={"sm"} alignItems="flex-start">
-          <Box width={"$72"} height={520} position="relative" left={"-$40"}>
+      <Box mt={"$2"} mb={"$6"}>
+        <Heading mb={"$4"} size={"xl"} textAlign="center">
+          Welcome to Ace Battle Mile
+        </Heading>
+        <VStack w={"$full"} overflow="hidden">
+          {infoCards.map((inf, i) => (
+            <StatCard
+              key={i}
+              title={inf.title}
+              subtitle={inf.subtitle}
+              dark={inf.dark}
+              bg={inf.bg}
+              radius={inf.radius}
+            />
+          ))}
+          <Box position="absolute" right={0} bottom={0} w={"$1/3"} h={"$full"}>
             <Image
-              role="img"
-              source={require("@Assets/images/stadium.png")}
+              style={{
+                width: "180%",
+                height: "180%",
+              }}
+              source={require("@Assets/images/abm-stadium.png")}
               alt={"stadium"}
-              width={280}
-              height={500}
-              objectFit="cover"
+              contentFit="cover"
+              contentPosition={"top left"}
             />
           </Box>
-          <VStack left={"-$40"} px={"$3"} width={"$4/6"}>
-            <Heading size={"lg"} mb={"$4"} textAlign="center">
-              Welcome to Ace Battle Mile
-            </Heading>
-            <VStack width={"$full"} space="xl" mb={"$4"}>
-              {infoCards.map((item, i) => {
-                return <StatCard key={i} {...item} />;
-              })}
-            </VStack>
-          </VStack>
-        </HStack>
+        </VStack>
       </Box>
       <TopAthletesPodium />
       <Box m={"$4"}>

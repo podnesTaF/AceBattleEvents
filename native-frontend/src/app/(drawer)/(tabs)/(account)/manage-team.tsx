@@ -33,7 +33,7 @@ const ManageTeam = () => {
   const params = useLocalSearchParams<{ teamId?: string }>();
   const dispatch = useDispatch();
   const { newValues, defaultValues } = useAppSelector(selectValues);
-  const { avaliableCoaches } = useAppSelector(selectItems);
+  const { availableCoaches } = useAppSelector(selectItems);
 
   useEffect(() => {
     dispatch(clearAllValues());
@@ -42,13 +42,13 @@ const ManageTeam = () => {
     }
     dispatch(
       setItems({
-        key: "avaliableCoaches",
+        key: "availableCoaches",
         items: mapCoachesToPickItems(coaches),
       })
     );
     dispatch(
       setItems({
-        key: "avaliablePlayers",
+        key: "availablePlayers",
         items: mapRunnersToPickItems(runners),
       })
     );
@@ -132,7 +132,7 @@ const ManageTeam = () => {
                 placeholder={defineItemLabel({
                   name: "coach",
                   id: newValues.coach,
-                  items: avaliableCoaches,
+                  items: availableCoaches,
                 })}
                 multiple={false}
               />

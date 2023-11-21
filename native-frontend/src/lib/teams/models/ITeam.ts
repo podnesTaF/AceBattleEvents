@@ -4,6 +4,7 @@ import {
   ICoach,
   IEvent,
   IMedia,
+  IRace,
   IRunner,
   ITeamResult,
   IUser,
@@ -26,4 +27,5 @@ export type ITeam = {
   rank: number | null;
   totalPoints: number | null;
   personalBest: ITeamResult | null;
+  races: IRace[];
 };

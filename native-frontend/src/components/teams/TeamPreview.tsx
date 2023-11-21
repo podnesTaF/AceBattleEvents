@@ -1,43 +1,48 @@
-import React from 'react'
-import { Box, HStack, Image,Text, VStack, Heading} from '@gluestack-ui/themed'
-import { Link } from 'expo-router'
+import {
+  Box,
+  HStack,
+  Heading,
+  Image,
+  Text,
+  VStack,
+} from "@gluestack-ui/themed";
+import { ITeam } from "@lib/models";
+import { Link } from "expo-router";
+import React from "react";
 
 interface TeamProps {
-    team: any;
+  team: ITeam;
 }
 
-const TeamPreview: React.FC<TeamProps> = ({team}) => {
+const TeamPreview: React.FC<TeamProps> = ({ team }) => {
   return (
     <Box flex={1} p={"$2"}>
-        <HStack alignItems="center">
+      <HStack alignItems="center">
         <Box flex={1}>
-        <Image
+          <Image
             role={"img"}
             source={{ uri: team.logo.mediaUrl }}
             alt={"team logo"}
             size="xs"
             mr={"$3"}
-        />
+          />
         </Box>
         <VStack space="sm" flex={5}>
-            <Heading size={"md"}>Team {team.name}</Heading>
-            <HStack
-            justifyContent="space-between"
-            alignItems="flex-end"
-            >
+          <Heading size={"md"}>Team {team.name}</Heading>
+          <HStack justifyContent="space-between" alignItems="flex-end">
             <Heading size={"xs"} color="$coolGray300">
-                Rank {team.rank}
+              Rank {team.rank}
             </Heading>
-            <Link href={"/(modals)/(team)/22"} asChild>
-                <Text color="$red500" fontWeight="600">
+            <Link href={`/(modals)/(team)/${team.id}`} asChild>
+              <Text color="$red500" fontWeight="600">
                 visit team page
-                </Text>
+              </Text>
             </Link>
-            </HStack>
+          </HStack>
         </VStack>
-        </HStack>
-  </Box>
-  )
-}
+      </HStack>
+    </Box>
+  );
+};
 
-export default TeamPreview
+export default TeamPreview;
