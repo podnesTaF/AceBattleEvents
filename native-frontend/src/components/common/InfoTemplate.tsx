@@ -12,6 +12,7 @@ type InfoTemplateProps = {
   title?: string;
   text?: string;
   type?: "info" | "error" | "success" | "warning";
+  variant?: "outline" | "solid" | "accent";
 };
 
 const icons = {
@@ -25,8 +26,9 @@ const InfoTemplate = ({
   title,
   type,
   text,
+  variant,
 }: InfoTemplateProps): JSX.Element => (
-  <Alert py={"$6"} mx="$2.5" action="info" variant="accent">
+  <Alert py={"$6"} action={type || "info"} variant={variant || "accent"}>
     <AlertIcon as={type ? icons[type] : icons["info"]} mr="$3" />
     <VStack space="xs">
       <AlertText fontWeight="$bold">{title}</AlertText>

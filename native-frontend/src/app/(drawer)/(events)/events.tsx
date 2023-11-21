@@ -1,5 +1,5 @@
 import WithLoading from "@Components/HOCs/withLoading";
-import withWatermarkBg from "@Components/HOCs/withWatermark";
+import Container from "@Components/common/Container";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
 import SearchTitle from "@Components/common/SearchTitle";
 import EventCard from "@Components/events/EventCard";
@@ -18,7 +18,7 @@ const EventsScreen = () => {
   const user = useAppSelector(selectUser);
   const { data: futureEvents, error, isLoading } = useFetchFutureEventsQuery();
   return (
-    <>
+    <Box bgColor="#fff9ff">
       <Stack.Screen
         options={{
           headerStyle: {
@@ -47,11 +47,15 @@ const EventsScreen = () => {
             />
           </WithLoading>
         </VStack>
-        <Box p={"$3"}>
-          <Heading size={"lg"} mb={"$4"}>
-            Your Registrations
-          </Heading>
-          <RegistrationsSection user={user} events={events} />
+        <Box bg={"$white"}>
+          <Container vertical>
+            <Box px={"$2"} py={"$4"}>
+              <Heading size={"lg"} mb={"$4"}>
+                Your Registrations
+              </Heading>
+              <RegistrationsSection user={user} events={events} />
+            </Box>
+          </Container>
         </Box>
         <VStack space="md" mb={"$1/3"}>
           <Heading mx={"$4"} size="lg">
@@ -62,8 +66,8 @@ const EventsScreen = () => {
           </Box>
         </VStack>
       </ScrollView>
-    </>
+    </Box>
   );
 };
 
-export default withWatermarkBg(EventsScreen);
+export default EventsScreen;
