@@ -1,73 +1,109 @@
 import { StyleSheet } from "react-native";
 
-import { Box, HStack, Heading, Image, Pressable } from "@gluestack-ui/themed";
-import { Link, useRouter } from "expo-router";
+import { Box, HStack, Heading } from "@gluestack-ui/themed";
+import { IFutureEvent } from "@lib/models";
+import { Image } from "expo-image";
 import React from "react";
 
-const UpcomingEventCard = () => {
-  const router = useRouter();
+const UpcomingEventCard = ({ event }: { event: IFutureEvent }) => {
   return (
-    <Link href={`/(modals)/(event)/${1}`} asChild>
-      <Pressable>
-        {({ pressed }: { pressed: boolean }) => (
-          <HStack
-            opacity={pressed ? 0.9 : 1}
-            position="relative"
-            rounded={"$lg"}
+    <HStack rounded={"$lg"}>
+      <Box width={"100%"} height={200}>
+        <Box
+          overflow="hidden"
+          borderTopLeftRadius={100}
+          softShadow="1"
+          position="absolute"
+          width={"100%"}
+          height="100%"
+          left={0}
+          top={0}
+        >
+          <Image
+            source={
+              event.introImage
+                ? { uri: event.introImage?.mediaUrl }
+                : require("@Assets/images/event-template.png")
+            }
+            style={{
+              height: "100%",
+              width: "100%",
+            }}
+            contentFit="cover"
+            alt="event image"
+          />
+          <Image
+            source={require("@Assets/images/abm-logo-black.png")}
+            style={{
+              height: 60,
+              width: 65,
+              position: "absolute",
+              top: 8,
+              right: 8,
+            }}
+            contentFit="contain"
+            alt="abm image"
+          />
+        </Box>
+        <Box
+          width={"$full"}
+          bg="$red500"
+          px={"$5"}
+          pb={"$8"}
+          position="absolute"
+          bottom={0}
+          left={0}
+          borderColor="$white"
+          borderTopLeftRadius={80}
+          borderTopRightRadius={80}
+          borderWidth={2}
+          borderBottomWidth={0}
+        >
+          <Heading
+            px={"$8"}
+            color={"$white"}
+            size={"lg"}
+            textTransform="capitalize"
           >
-            <Box
-              width={"100%"}
-              rounded={"$lg"}
-              height={200}
-              position="relative"
-            >
-              <Image
-                role="img"
-                source={require("@Assets/images/brussels-mile.jpg")}
-                position="absolute"
-                size="full"
-                height={200}
-                left={0}
-                top={0}
-                rounded={"$lg"}
-                alt="event image"
-              />
-              <Box
-                width={"$full"}
-                bg="black"
-                px={"$3"}
-                py={"$2"}
-                position="absolute"
-                bottom={0}
-                left={0}
-                flex={1}
-                borderBottomRightRadius={"$lg"}
-                borderBottomLeftRadius={"$lg"}
-              >
-                <Heading size={"xl"} color="$white" fontWeight="bold">
-                  Mace of Brussels
-                </Heading>
-              </Box>
-            </Box>
-            <Box
-              width={"$full"}
-              position="absolute"
-              zIndex={-1}
-              height={200}
-              right={-6}
-              bottom={-42}
-              bg="$coolGray200"
-              rounded={"$lg"}
-              justifyContent="flex-end"
-            >
-              <Heading size="lg" fontWeight="bold" textAlign="right" p={"$2"}>
-                March 2024
-              </Heading>
-            </Box>
-          </HStack>
-        )}
-      </Pressable>
-    </Link>
+            {event.title}
+          </Heading>
+          <Box
+            bg="#1E1C1F"
+            width={"$full"}
+            px={"$5"}
+            py={"$1"}
+            position="absolute"
+            bottom={"$0"}
+            left={"$5"}
+            borderColor="$white"
+            borderTopLeftRadius={50}
+            borderTopRightRadius={50}
+            borderWidth={2}
+            borderBottomWidth={0}
+          >
+            <Heading textAlign="right" size={"md"} color={"$white"}>
+              {event.season}
+            </Heading>
+          </Box>
+        </Box>
+      </Box>
+      <Box
+        width={"$full"}
+        position="absolute"
+        zIndex={-4}
+        height={200}
+        right={-12}
+        bottom={-42}
+        bg="$white"
+        softShadow="1"
+        borderBottomRightRadius={100}
+        justifyContent="flex-end"
+      >
+        <Heading size="lg" fontWeight="bold" textAlign="left" p={"$2"}>
+          Comming soon...
+        </Heading>
+      </Box>
+    </HStack>
   );
 };
 

@@ -17,7 +17,6 @@ import { useAppSelector, useLogout } from "@lib/hooks";
 import { selectUser } from "@lib/store";
 import { getAccountItems } from "@lib/user/utils/get-account-items";
 import { Link, Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import { LogOut } from "lucide-react-native";
 import React from "react";
 
@@ -28,7 +27,6 @@ const AccountPage = () => {
   if (user) {
     return (
       <>
-        <StatusBar style={"light"} />
         <Stack.Screen
           options={{
             headerStyle: {
@@ -69,7 +67,6 @@ const AccountPage = () => {
   } else {
     return (
       <>
-        <StatusBar style={"light"} />
         <Stack.Screen
           options={{
             headerStyle: {

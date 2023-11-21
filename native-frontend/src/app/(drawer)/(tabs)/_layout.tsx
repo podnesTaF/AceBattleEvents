@@ -9,7 +9,19 @@ import { StyleSheet } from "react-native";
 const Layout = () => {
   const user = useAppSelector(selectUser);
   return (
-    <Tabs>
+    <Tabs
+      screenOptions={{
+        tabBarInactiveTintColor: "#1C1E1F",
+        tabBarActiveTintColor: "#ff0000",
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: "bold",
+        },
+        tabBarStyle: {
+          paddingVertical: 4,
+        },
+      }}
+    >
       <Tabs.Screen
         name="home"
         options={{

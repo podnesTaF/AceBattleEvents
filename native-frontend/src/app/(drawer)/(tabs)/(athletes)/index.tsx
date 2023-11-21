@@ -84,7 +84,7 @@ const Athletes = () => {
             {users.map((userData, i) => (
               <UserCard
                 user={userData as any}
-                key={user.id}
+                key={userData.id}
                 isLastElement={i === users.length - 1}
               />
             ))}

@@ -1,34 +1,36 @@
-import { View, Text } from "react-native";
-import React from "react";
-import { Box, FlatList, Heading, VStack, Image } from "@gluestack-ui/themed";
-import UserCard from "@Components/user/UserCard";
-import { users } from "@Constants/dummy-data";
 import Container from "@Components/common/Container";
+import UserCard from "@Components/user/UserCard";
+import { Heading, ScrollView, VStack } from "@gluestack-ui/themed";
+import { ITeam } from "@lib/models";
+import React from "react";
 
-const RunnersTab = ({ team }: { team: any }) => {
+const RunnersTab = ({ team }: { team: ITeam }) => {
   return (
-    <VStack p={"$3"} space="lg">
-      <VStack>
-        <Heading size="sm" mb={"$2"}>
-          Coaches
-        </Heading>
-        <Container>
-          <UserCard description="Coach of the Kyiv-men" user={team.coach} />
-        </Container>
+    <ScrollView>
+      <VStack p={"$3"} space="lg">
+        <VStack>
+          <Heading size="sm" mb={"$2"}>
+            Coaches
+          </Heading>
+          <Container>
+            <UserCard
+              description="Coach of the Kyiv-men"
+              user={team.coach as any}
+            />
+          </Container>
+        </VStack>
+        <VStack>
+          <Heading size={"sm"} mb={"$2"}>
+            Runners
+          </Heading>
+          <Container>
+            {team.players.map((r) => (
+              <UserCard key={r.id} user={r.user} runnerPreview={r} />
+            ))}
+          </Container>
+        </VStack>
       </VStack>
-      <VStack>
-        <Heading size={"sm"} mb={"$2"}>
-          Runners
-        </Heading>
-        <Container>
-          <FlatList
-            data={users}
-            renderItem={({ item }) => <UserCard user={item} />}
-            keyExtractor={(item: any) => item.id}
-          />
-        </Container>
-      </VStack>
-    </VStack>
+    </ScrollView>
   );
 };
 

@@ -15,5 +15,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         apiKey: process.env.GOOGLE_MAPS_API_KEY,
       },
     },
+    package: "com.acebattlemile.abm",
+  },
+  extra: {
+    eas: {
+      projectId: "bef26d41-b904-4af6-9912-c32537733442",
+    },
   },
 });

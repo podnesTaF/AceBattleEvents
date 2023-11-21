@@ -1,5 +1,5 @@
 import Container from "@Components/common/Container";
-import NotAuthTemplate from "@Components/common/NotAuthTemplate";
+import InfoTemplate from "@Components/common/InfoTemplate";
 import TeamRegistrationCard from "@Components/teams/TeamRegistrationCard";
 import SpectatorRegistrationCard from "@Components/user/SpectatorRegistrationCard";
 import { teams } from "@Constants/dummy-data";
@@ -19,10 +19,16 @@ const RegistrationsSection: React.FC<RegistrationSectionProps> = ({
   // fecth registrations by user, if logged in
 
   if (!user) {
-    return <NotAuthTemplate />;
+    return (
+      <InfoTemplate
+        variant="outline"
+        type="error"
+        title="Please Login"
+        text={"Please authorize to see your registrations"}
+      />
+    );
   }
 
-  console.log(user.role === "manager");
   if (user.role === "spectator") {
     return (
       <>
@@ -35,12 +41,7 @@ const RegistrationsSection: React.FC<RegistrationSectionProps> = ({
             />
           ))
         ) : (
-          <HStack py={"$3"} space={"md"}>
-            <Icon as={InfoIcon} size={"lg"} color="$primary400" />
-            <Text size="lg">
-              You haven't registered to attend any events yet
-            </Text>
-          </HStack>
+          <InfoTemplate text="You haven't registered to attend any events yet" />
         )}
       </>
     );

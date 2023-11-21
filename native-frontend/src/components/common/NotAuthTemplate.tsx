@@ -13,14 +13,16 @@ import Container from "./Container";
 const NotAuthTemplate = ({
   text,
   title,
+  vertical,
 }: {
   text?: string;
   title?: string;
+  vertical?: boolean;
 }) => {
   const router = useRouter();
   return (
-    <Container>
-      <VStack space="lg">
+    <Container vertical={vertical}>
+      <VStack space="lg" py={"$4"}>
         <Heading size={"lg"}>
           {title ? title : "Welcome to Ace Battle Mile!"}
         </Heading>

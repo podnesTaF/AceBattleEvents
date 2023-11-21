@@ -59,17 +59,11 @@ const Layout = () => {
       <Drawer.Screen
         name="rules"
         options={{
-          headerShown: false,
-          drawerLabel: "ABM Rules",
+          headerShown: true,
+          drawerLabel: "Rules",
         }}
       />
-      <Drawer.Screen
-        name="history"
-        options={{
-          headerShown: false,
-          drawerLabel: "ABM History",
-        }}
-      />
+      <Drawer.Screen name="concept" />
       <Drawer.Screen
         name="news"
         options={{
