@@ -12,6 +12,8 @@ export interface IRunner {
   user: IUser;
   teamsAsRunner?: ITeam[];
   club?: IClub;
+
+  followers?: IUser[];
 }
 
 export interface RunnerPreview {

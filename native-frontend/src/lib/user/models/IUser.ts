@@ -1,4 +1,12 @@
-import { IClub, ICountry, IMedia, IRunner, ISpectator } from "@lib/models";
+import {
+  IClub,
+  ICountry,
+  IMedia,
+  INotification,
+  IRunner,
+  ISpectator,
+  ITeam,
+} from "@lib/models";
 import { IManager } from "./IManager";
 
 export interface IUser {
@@ -18,6 +26,13 @@ export interface IUser {
   manager?: IManager;
   runner?: IRunner;
   spectator?: ISpectator;
+
+  sentNotifications?: INotification[];
+  receivedNotifications?: INotification[];
+
+  followingRunners: IRunner[];
+
+  followingTeams: ITeam[];
 
   createdAt: string;
 }

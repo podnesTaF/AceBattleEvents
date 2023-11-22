@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "native-frontend",
-    "slug": "native-frontend",
+    "name": "Ace Battle Mile",
+    "slug": "ABM",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
