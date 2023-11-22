@@ -1,5 +1,3 @@
-import { INotification } from "@lib/models";
-
 export const users = [
   {
     id: 1,
@@ -1317,7 +1315,7 @@ export const coaches = [
   },
 ];
 
-export const notifications: INotification[] = [
+export const notifications: any[] = [
   {
     id: 1,
     sender: managers[0],

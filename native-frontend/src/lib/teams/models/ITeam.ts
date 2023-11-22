@@ -28,4 +28,6 @@ export type ITeam = {
   totalPoints: number | null;
   personalBest: ITeamResult | null;
   races: IRace[];
+
+  followers: IUser[];
 };

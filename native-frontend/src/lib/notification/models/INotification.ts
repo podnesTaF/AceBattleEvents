@@ -1,9 +1,12 @@
-import { IUser } from "@lib/models";
+import { IContent, IUser } from "@lib/models";
 
 export type INotification = {
   id: number;
+  type: string;
   title: string;
-  text: string;
-  createdAt: string;
+  status: string;
+  contents: IContent[];
   sender: IUser;
+  reveivers: IUser[];
+  createdAt: string;
 };

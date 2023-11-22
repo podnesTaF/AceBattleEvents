@@ -1,8 +1,9 @@
-import { IMedia } from "@lib/models";
+import { IMedia, INotification } from "@lib/models";
 
 export type IContent = {
-    id: number;
-    type: string;
-    text?: string;
-    media?: IMedia;
-  };
+  id: number;
+  type: string;
+  text?: string;
+  media?: IMedia;
+  notification?: INotification;
+};
