@@ -6,4 +6,5 @@ export type IContent = {
   text?: string;
   media?: IMedia;
   notification?: INotification;
+  purpose?: string;
 };

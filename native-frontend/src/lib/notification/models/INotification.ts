@@ -6,7 +6,7 @@ export type INotification = {
   title: string;
   status: string;
   contents: IContent[];
-  sender: IUser;
+  sender?: IUser;
   reveivers: IUser[];
   createdAt: string;
 };

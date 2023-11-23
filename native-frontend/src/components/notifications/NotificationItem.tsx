@@ -29,19 +29,25 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
     >
       <Avatar size="md">
         <AvatarImage
-          source={{ uri: notification.sender.image?.mediaUrl }}
+          source={{
+            uri:
+              notification.sender?.image?.mediaUrl ||
+              "https://storage.googleapis.com/abe_cloud_storage/image/large/55c30c67-37aa-4476-bae9-b6f847a707fd.png",
+          }}
           alt="avatar"
           role={"img"}
         />
         <AvatarFallbackText>
-          {notification.sender.name[0]}
-          {notification.sender.surname[0]}
+          {notification?.sender?.name[0]}
+          {notification?.sender?.surname[0]}
         </AvatarFallbackText>
       </Avatar>
       <HStack flex={1} space={"sm"}>
         <VStack flex={1}>
           <Heading size={"sm"}>{notification.title}</Heading>
-          <Text size={"sm"}>{cutString(notification.text, 50)}</Text>
+          <Text size={"sm"}>
+            {cutString(notification.contents[0]?.text || "", 50)}
+          </Text>
         </VStack>
         <Text size={"sm"} color={"$coolGray300"}>
           {getTimeAgo(notification.createdAt)}
