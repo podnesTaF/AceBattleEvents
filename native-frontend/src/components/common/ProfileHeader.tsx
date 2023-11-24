@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import {
   Avatar,
   AvatarFallbackText,
@@ -8,14 +9,34 @@ import {
   Heading,
   VStack,
 } from "@gluestack-ui/themed";
+import { useAppSelector } from "@lib/hooks";
 import { IUser } from "@lib/models";
-import React from "react";
+import { useFollowRunnerMutation } from "@lib/services";
+import { selectUser } from "@lib/store";
+import React, { useState } from "react";
 
 interface ProfileHeaderProps {
   user: IUser;
 }
 
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
+  const authed = useAppSelector(selectUser);
+  const [isFollowing, setIsFollowing] = useState(user.runner?.isFollowing);
+  const [followRunner, { isLoading: isFollowingLoading }] =
+    useFollowRunnerMutation();
+  const [unfollowRunner, { isLoading: isUnfollowingLoading }] =
+    useFollowRunnerMutation();
+
+  const follow = async (id: number) => {
+    await followRunner(id);
+    setIsFollowing(true);
+  };
+
+  const unfollow = async (id: number) => {
+    await unfollowRunner(id);
+    setIsFollowing(false);
+  };
+
   return (
     <HStack
       justifyContent="space-between"
@@ -44,11 +65,31 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
           </Heading>
         </VStack>
       </HStack>
-      {user.runner && (
-        <Button action="positive" variant={"solid"}>
-          <ButtonText>Follow</ButtonText>
-        </Button>
-      )}
+      {authed &&
+        user.runner &&
+        (!isFollowing ? (
+          <Button
+            onPress={() => follow(user.runner!.id)}
+            disabled={isFollowingLoading}
+            size={"sm"}
+            action="primary"
+            variant="outline"
+          >
+            <Ionicons name="person-add-outline" size={16} />
+            <ButtonText ml={"$2"}>Follow</ButtonText>
+          </Button>
+        ) : (
+          <Button
+            onPress={() => unfollow(user.runner!.id)}
+            disabled={isUnfollowingLoading}
+            size={"sm"}
+            action="primary"
+            variant="outline"
+          >
+            <Ionicons name="person-remove-outline" size={16} />
+            <ButtonText ml={"$2"}>Unfoll..</ButtonText>
+          </Button>
+        ))}
     </HStack>
   );
 };

@@ -73,6 +73,7 @@ const Followings = () => {
           <Container>
             {users.map((user, i) => (
               <UserCard
+                isAuthorized={true}
                 user={user as any}
                 key={user.id}
                 isLastElement={i === users.length - 1}

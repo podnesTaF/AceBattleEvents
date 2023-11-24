@@ -83,6 +83,7 @@ const Athletes = () => {
           <Container vertical>
             {users.map((userData, i) => (
               <UserCard
+                isAuthorized={true}
                 user={userData as any}
                 key={userData.id}
                 isLastElement={i === users.length - 1}

@@ -30,4 +30,5 @@ export const NotificationApi = api.injectEndpoints({
 export const {
   useGetReceivedNotificationsQuery,
   usePostUserNotificationMutation,
+  useGetNotificationQuery,
 } = NotificationApi;

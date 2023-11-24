@@ -14,6 +14,7 @@ export interface IRunner {
   club?: IClub;
 
   followers?: IUser[];
+  isFollowing?: boolean;
 }
 
 export interface RunnerPreview {
@@ -22,6 +23,7 @@ export interface RunnerPreview {
   dateOfBirth: string;
   user: IUser;
   teamsAsRunner: ITeam[];
+  isFollowing: boolean;
 }
 
 export type UserResult = {

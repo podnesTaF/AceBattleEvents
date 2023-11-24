@@ -27,7 +27,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
       space={"lg"}
       alignItems="center"
     >
-      <Avatar size="md">
+      <Avatar size="md" bg={"transparent"}>
         <AvatarImage
           source={{
             uri:
