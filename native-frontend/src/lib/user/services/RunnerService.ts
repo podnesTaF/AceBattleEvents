@@ -26,13 +26,20 @@ export const RunnerApi = api.injectEndpoints({
     }),
     getRunnerPreviews: builder.query<
       { runners: RunnerPreview[]; totalPages: number },
-      { type?: "all" | "search"; query?: string; limit?: number; page?: number }
+      {
+        type?: "all" | "search";
+        query?: string;
+        limit?: number;
+        page?: number;
+        authId?: number;
+      }
     >({
-      query: ({ type, query, limit, page }) => ({
+      query: ({ type, query, limit, page, authId }) => ({
         url: `/runners/previews?query=${query}&limit=${limit || ""}&page=${
           page || ""
-        }&type=${type || "all"}`,
+        }&type=${type || "all"}&authId=${authId || ""}`,
       }),
+      providesTags: (result) => ["RunnerPreview"],
     }),
     getRunnerResults: builder.query<
       {
@@ -72,6 +79,37 @@ export const RunnerApi = api.injectEndpoints({
         }`,
       }),
     }),
+    getMyFollowings: builder.query<IRunner[], void>({
+      query: (id) => ({
+        url: `/runners/followings`,
+      }),
+      providesTags: ["User"],
+    }),
+    getMyFollowers: builder.query<IRunner[], void>({
+      query: (id) => ({
+        url: `/users/followers`,
+      }),
+      providesTags: ["User"],
+    }),
+    followRunner: builder.mutation<{ id: number; userId: number }, number>({
+      query: (id) => ({
+        url: `/runners/follow/${id}`,
+        method: "POST",
+      }),
+      invalidatesTags: (result) => {
+        return ["RunnerPreview", "User"];
+      },
+    }),
+    unfollowRunner: builder.mutation<{ id: number; userId: number }, number>({
+      query: (id) => ({
+        url: `/runners/unfollow/${id}`,
+        method: "POST",
+      }),
+      invalidatesTags: (result) => {
+        console.log("follow");
+        return ["RunnerPreview", "User"];
+      },
+    }),
   }),
 });
 
@@ -82,4 +120,8 @@ export const {
   useGetRunnerResultsQuery,
   useGetRunnersByManagerQuery,
   useGetRunnerCompetitionsQuery,
+  useFollowRunnerMutation,
+  useUnfollowRunnerMutation,
+  useGetMyFollowersQuery,
+  useGetMyFollowingsQuery,
 } = RunnerApi;

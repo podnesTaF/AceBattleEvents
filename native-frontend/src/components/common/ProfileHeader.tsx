@@ -1,14 +1,15 @@
+import FollowButton from "@Components/user/FollowButton";
 import {
   Avatar,
   AvatarFallbackText,
   AvatarImage,
-  Button,
-  ButtonText,
   HStack,
   Heading,
   VStack,
 } from "@gluestack-ui/themed";
+import { useAppSelector } from "@lib/hooks";
 import { IUser } from "@lib/models";
+import { selectUser } from "@lib/store";
 import React from "react";
 
 interface ProfileHeaderProps {
@@ -16,6 +17,8 @@ interface ProfileHeaderProps {
 }
 
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
+  const authed = useAppSelector(selectUser);
+
   return (
     <HStack
       justifyContent="space-between"
@@ -44,10 +47,12 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
           </Heading>
         </VStack>
       </HStack>
-      {user.runner && (
-        <Button action="positive" variant={"solid"}>
-          <ButtonText>Follow</ButtonText>
-        </Button>
+      {authed && user.runner && (
+        <FollowButton
+          userId={user.runner.id}
+          isInitiallyFollowing={!!user.runner?.isFollowing}
+          size="md"
+        />
       )}
     </HStack>
   );

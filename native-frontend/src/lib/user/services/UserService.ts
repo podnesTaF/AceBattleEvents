@@ -4,12 +4,10 @@ import { IUser } from "../models";
 
 export const UserApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    fetchUser: builder.query<IUser, number>({
-      query: (userId) => ({
-        url: `/users/${userId}`,
-        providesTags: (result: IUser, error: any, userId: number) => {
-          return result ? [{ type: "User", id: userId }] : [];
-        },
+    fetchUser: builder.query<IUser, { userId: number; authId?: number }>({
+      query: ({ userId, authId }) => ({
+        url: `/users/${userId}?authId=${authId || ""}`,
+        providesTags: ["User"],
       }),
     }),
     updateUserData: builder.mutation<IUser, UpdateUserDto>({

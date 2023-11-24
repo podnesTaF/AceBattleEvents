@@ -1,12 +1,11 @@
 import withWatermarkBg from "@Components/HOCs/withWatermark";
 import LogoTitle from "@Components/LogoTitle";
-import Container from "@Components/common/Container";
+import FollowingAthletesList from "@Components/athletes/FollowingAthletesList";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
 import SearchTitle from "@Components/common/SearchTitle";
 import TeamPreview from "@Components/teams/TeamPreview";
 import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
-import UserCard from "@Components/user/UserCard";
-import { teams, users } from "@Constants/dummy-data";
+import { teams } from "@Constants/dummy-data";
 import { Box, HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
 import { useAppSelector } from "@lib/hooks";
 import { selectUser } from "@lib/store";
@@ -70,15 +69,7 @@ const Followings = () => {
             </Heading>
             <Heading size="lg">Athletes</Heading>
           </HStack>
-          <Container>
-            {users.map((user, i) => (
-              <UserCard
-                user={user as any}
-                key={user.id}
-                isLastElement={i === users.length - 1}
-              />
-            ))}
-          </Container>
+          <FollowingAthletesList />
         </VStack>
       </ScrollView>
     </>

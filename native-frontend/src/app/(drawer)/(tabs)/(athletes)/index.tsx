@@ -1,13 +1,11 @@
 import WithLoading from "@Components/HOCs/withLoading";
 import withWatermarkBg from "@Components/HOCs/withWatermark";
 import AthletePreviewCard from "@Components/athletes/AthletePreviewCard";
-import Container from "@Components/common/Container";
+import FollowingAthletesList from "@Components/athletes/FollowingAthletesList";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
 import InfoTemplate from "@Components/common/InfoTemplate";
 import TeamPreview from "@Components/teams/TeamPreview";
 import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
-import UserCard from "@Components/user/UserCard";
-import { users } from "@Constants/dummy-data";
 import { HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
 import { useAppSelector } from "@lib/hooks";
 import { useGetTopTeamsQuery } from "@lib/services";
@@ -16,6 +14,8 @@ import { useGetTopAthletesQuery } from "@lib/user/services/RunnerService";
 import React from "react";
 
 const Athletes = () => {
+  const user = useAppSelector(selectUser);
+
   const {
     data: athletes,
     error,
@@ -27,8 +27,6 @@ const Athletes = () => {
     error: teamsError,
     isLoading: isTeamsLoading,
   } = useGetTopTeamsQuery({});
-
-  const user = useAppSelector(selectUser);
 
   return (
     <ScrollView bg={"$fff9ff"}>
@@ -80,15 +78,7 @@ const Athletes = () => {
         </HStack>
 
         {user ? (
-          <Container vertical>
-            {users.map((userData, i) => (
-              <UserCard
-                user={userData as any}
-                key={userData.id}
-                isLastElement={i === users.length - 1}
-              />
-            ))}
-          </Container>
+          <FollowingAthletesList />
         ) : (
           <InfoTemplate
             title={"Please Authorize"}

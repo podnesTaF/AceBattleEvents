@@ -6,6 +6,8 @@ import Tabs from "@Components/common/Tabs";
 import SpectatorBioTab from "@Components/user/tabs/SpectatorBioTab";
 import TeamsAndRunners from "@Components/user/tabs/TeamsAndRunners";
 import { Box, Heading, VStack } from "@gluestack-ui/themed";
+import { useAppSelector } from "@lib/hooks";
+import { selectUser } from "@lib/store";
 import { useFetchUserQuery } from "@lib/user/services/UserService";
 import { getProfileTabByUserRole } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
@@ -14,7 +16,12 @@ import React, { useState } from "react";
 const ProfileScreen = () => {
   const params = useLocalSearchParams();
   const [activeTab, setActiveTab] = useState(0);
-  const { data: user, isLoading, error } = useFetchUserQuery(+params.userId);
+  const auth = useAppSelector(selectUser);
+  const {
+    data: user,
+    isLoading,
+    error,
+  } = useFetchUserQuery({ userId: +params.userId, authId: auth?.id });
 
   const onChangeTab = (tabIndex: number) => {
     setActiveTab(tabIndex);

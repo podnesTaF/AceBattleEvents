@@ -1,9 +1,6 @@
-import { Ionicons } from "@expo/vector-icons";
 import {
   Avatar,
   AvatarImage,
-  Button,
-  ButtonText,
   HStack,
   Heading,
   Pressable,
@@ -13,12 +10,14 @@ import { IRunner, IUser, RunnerPreview } from "@lib/models";
 import { getCategoryByDoB } from "@lib/utils";
 import { Link } from "expo-router";
 import React from "react";
+import FollowButton from "./FollowButton";
 
 interface UserCardProps {
   user: IUser;
   runnerPreview?: IRunner | RunnerPreview;
   description?: string;
   isLastElement?: boolean;
+  isAuthorized?: boolean;
 }
 
 const UserCard: React.FC<UserCardProps> = ({
@@ -26,8 +25,10 @@ const UserCard: React.FC<UserCardProps> = ({
   runnerPreview,
   isLastElement,
   description,
+  isAuthorized,
 }) => {
   const runner = user.runner || runnerPreview;
+
   return (
     <Link href={`/(modals)/(profile)/${user.id}`} asChild>
       <Pressable>
@@ -72,11 +73,13 @@ const UserCard: React.FC<UserCardProps> = ({
                 )}
               </VStack>
             </HStack>
-            {runner && (
-              <Button action="primary" variant="outline">
-                <Ionicons name="person-add-outline" size={16} />
-                <ButtonText ml={"$2"}>followi...</ButtonText>
-              </Button>
+            {isAuthorized && runner && (
+              <FollowButton
+                isInitiallyFollowing={!!runner?.isFollowing}
+                size={"sm"}
+                color="primary"
+                userId={runner.id}
+              />
             )}
           </HStack>
         )}
