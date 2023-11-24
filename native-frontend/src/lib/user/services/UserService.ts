@@ -7,9 +7,7 @@ export const UserApi = api.injectEndpoints({
     fetchUser: builder.query<IUser, { userId: number; authId?: number }>({
       query: ({ userId, authId }) => ({
         url: `/users/${userId}?authId=${authId || ""}`,
-        providesTags: (result: IUser, error: any, userId: number) => {
-          return result ? [{ type: "User", id: userId }] : [];
-        },
+        providesTags: ["User"],
       }),
     }),
     updateUserData: builder.mutation<IUser, UpdateUserDto>({

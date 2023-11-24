@@ -1,22 +1,16 @@
-import { Ionicons } from "@expo/vector-icons";
 import {
   Avatar,
   AvatarImage,
-  Button,
-  ButtonText,
   HStack,
   Heading,
   Pressable,
   VStack,
 } from "@gluestack-ui/themed";
 import { IRunner, IUser, RunnerPreview } from "@lib/models";
-import {
-  useFollowRunnerMutation,
-  useUnfollowRunnerMutation,
-} from "@lib/services";
 import { getCategoryByDoB } from "@lib/utils";
 import { Link } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
+import FollowButton from "./FollowButton";
 
 interface UserCardProps {
   user: IUser;
@@ -34,22 +28,6 @@ const UserCard: React.FC<UserCardProps> = ({
   isAuthorized,
 }) => {
   const runner = user.runner || runnerPreview;
-  const [followRunner, { isLoading: isFollowingLoading }] =
-    useFollowRunnerMutation();
-  const [unfollowRunner, { isLoading: isUnfollowingLoading }] =
-    useUnfollowRunnerMutation();
-
-  const [isFollowing, setIsFollowing] = useState(runner?.isFollowing);
-
-  const unfollow = async (id: number) => {
-    await unfollowRunner(id);
-    setIsFollowing(false);
-  };
-
-  const follow = async (id: number) => {
-    await followRunner(id);
-    setIsFollowing(true);
-  };
 
   return (
     <Link href={`/(modals)/(profile)/${user.id}`} asChild>
@@ -95,31 +73,14 @@ const UserCard: React.FC<UserCardProps> = ({
                 )}
               </VStack>
             </HStack>
-            {isAuthorized &&
-              runner &&
-              (!isFollowing ? (
-                <Button
-                  onPress={() => follow(runner.id)}
-                  disabled={isFollowingLoading}
-                  size={"sm"}
-                  action="primary"
-                  variant="outline"
-                >
-                  <Ionicons name="person-add-outline" size={16} />
-                  <ButtonText ml={"$2"}>Follow</ButtonText>
-                </Button>
-              ) : (
-                <Button
-                  onPress={() => unfollow(runner.id)}
-                  disabled={isUnfollowingLoading}
-                  size={"sm"}
-                  action="primary"
-                  variant="outline"
-                >
-                  <Ionicons name="person-remove-outline" size={16} />
-                  <ButtonText ml={"$2"}>Unfoll..</ButtonText>
-                </Button>
-              ))}
+            {isAuthorized && runner && (
+              <FollowButton
+                isInitiallyFollowing={!!runner?.isFollowing}
+                size={"sm"}
+                color="primary"
+                userId={runner.id}
+              />
+            )}
           </HStack>
         )}
       </Pressable>

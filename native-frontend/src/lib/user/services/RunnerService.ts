@@ -79,19 +79,36 @@ export const RunnerApi = api.injectEndpoints({
         }`,
       }),
     }),
+    getMyFollowings: builder.query<IRunner[], void>({
+      query: (id) => ({
+        url: `/runners/followings`,
+      }),
+      providesTags: ["User"],
+    }),
+    getMyFollowers: builder.query<IRunner[], void>({
+      query: (id) => ({
+        url: `/users/followers`,
+      }),
+      providesTags: ["User"],
+    }),
     followRunner: builder.mutation<{ id: number; userId: number }, number>({
       query: (id) => ({
         url: `/runners/follow/${id}`,
         method: "POST",
       }),
-      invalidatesTags: ["RunnerPreview", "Runners"],
+      invalidatesTags: (result) => {
+        return ["RunnerPreview", "User"];
+      },
     }),
     unfollowRunner: builder.mutation<{ id: number; userId: number }, number>({
       query: (id) => ({
         url: `/runners/unfollow/${id}`,
         method: "POST",
       }),
-      invalidatesTags: ["RunnerPreview", "Runners"],
+      invalidatesTags: (result) => {
+        console.log("follow");
+        return ["RunnerPreview", "User"];
+      },
     }),
   }),
 });
@@ -105,4 +122,6 @@ export const {
   useGetRunnerCompetitionsQuery,
   useFollowRunnerMutation,
   useUnfollowRunnerMutation,
+  useGetMyFollowersQuery,
+  useGetMyFollowingsQuery,
 } = RunnerApi;
