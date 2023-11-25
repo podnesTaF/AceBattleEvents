@@ -64,7 +64,13 @@ const ProfileScreen = () => {
       />
       {user?.runner && (
         <WithLoading isLoading={isLoading}>
-          {user && <AthleteScreenContent user={user} activeTab={activeTab} />}
+          {user && (
+            <AthleteScreenContent
+              user={user}
+              setActiveTab={setActiveTab}
+              activeTab={activeTab}
+            />
+          )}
         </WithLoading>
       )}
       {user?.spectator && <SpectatorBioTab user={user} />}

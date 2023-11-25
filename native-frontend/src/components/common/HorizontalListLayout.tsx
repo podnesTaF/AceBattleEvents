@@ -1,11 +1,13 @@
-import { Box, Center, HStack, ScrollView, Spinner } from "@gluestack-ui/themed";
+import { Box, Center, Spinner } from "@gluestack-ui/themed";
 import React from "react";
+import { Dimensions, FlatList } from "react-native";
 
 interface Props {
   items?: any[];
   ItemComponent: React.FC<any>;
   identifier: string;
   isLoading?: boolean;
+  itemWidth?: number;
   additionalProps?: {
     [key: string]: any;
   };
@@ -21,7 +23,11 @@ const HorizontalListLayout: React.FC<Props> = ({
   additionalProps,
   wrapperProps,
   isLoading,
+  itemWidth,
 }) => {
+  const screenWidth = Dimensions.get("window").width;
+  const cardWidth = screenWidth * (itemWidth || 0.85);
+
   // Loading view
   const renderLoading = () => (
     <Center flex={1}>
@@ -33,20 +39,30 @@ const HorizontalListLayout: React.FC<Props> = ({
   const renderItems = () => {
     if (isLoading || !items) return renderLoading();
     return (
-      <HStack px="$6" py={"$2"} w="$full" space={"lg"} {...wrapperProps}>
-        {items.map((item, i) => (
-          <Box key={item?.id || i} maxWidth={340}>
+      <FlatList
+        data={items}
+        horizontal
+        contentContainerStyle={{
+          paddingHorizontal: 16,
+        }}
+        ItemSeparatorComponent={() => <Box w={"$4"} />}
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        snapToAlignment="center"
+        renderItem={({ item }) => (
+          <Box maxWidth={cardWidth}>
             <ItemComponent {...{ [identifier]: item }} {...additionalProps} />
           </Box>
-        ))}
-      </HStack>
+        )}
+        keyExtractor={(item, i) => item?.id + "" || i.toString()}
+      />
     );
   };
 
   return (
-    <ScrollView horizontal={true}>
+    <Box pt={"$4"} w="$full" {...wrapperProps}>
       {isLoading ? renderLoading() : renderItems()}
-    </ScrollView>
+    </Box>
   );
 };
 

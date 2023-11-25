@@ -33,8 +33,10 @@ const EventsScreen = () => {
         }}
       />
       <ScrollView>
-        <VStack mx={"$3"} mt={"$4"}>
-          <Heading size={"lg"}>Upcoming Events</Heading>
+        <VStack mt={"$4"}>
+          <Heading mx={"$3"} size={"lg"}>
+            Upcoming Events
+          </Heading>
           <WithLoading isLoading={isLoading}>
             <HorizontalListLayout
               identifier="event"

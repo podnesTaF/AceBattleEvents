@@ -47,7 +47,6 @@ const Athletes = () => {
               additionalProps={{
                 Item: TeamPreview,
                 imageProportion: 3,
-                minWidth: 340,
               }}
             />
           )}

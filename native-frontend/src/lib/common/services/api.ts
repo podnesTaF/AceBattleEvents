@@ -39,6 +39,7 @@ export const api = createApi({
     "Registrations",
     "Notification",
     "RunnerPreview",
+    "News",
   ],
   endpoints: () => ({}),
 });

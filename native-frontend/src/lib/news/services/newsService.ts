@@ -1,5 +1,5 @@
 import { api } from "@lib/common/services/api";
-import { NewsPreview } from "../models";
+import { INews, NewsPreview } from "../models";
 
 export const newsApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -12,7 +12,13 @@ export const newsApi = api.injectEndpoints({
       }),
       providesTags: (result) => ["NewsPreview"],
     }),
+    getArticle: builder.query<INews, string>({
+      query: (id) => ({
+        url: `/news/${id}`,
+      }),
+      providesTags: (result) => [{ type: "News", id: result?.id }],
+    }),
   }),
 });
 
-export const { useFetchNewsPreviewsQuery } = newsApi;
+export const { useFetchNewsPreviewsQuery, useGetArticleQuery } = newsApi;

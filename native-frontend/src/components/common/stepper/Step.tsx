@@ -18,19 +18,30 @@ interface StepProps {
 
 const Step = ({ isActive, isLast, isFinished, onPress, value }: StepProps) => {
   const lineAnimation = useSharedValue(0);
+  const runOpacity = useSharedValue(0);
 
-  // Trigger color change animation on change of isFinished
   useEffect(() => {
     lineAnimation.value = withTiming(isFinished ? 80 : 0, {
-      duration: 500,
+      duration: 300,
       easing: Easing.linear,
     });
   }, [isFinished, lineAnimation]);
+
+  useEffect(() => {
+    runOpacity.value = withTiming(isActive ? 1 : 0, {
+      duration: 600,
+      easing: Easing.linear,
+    });
+  }, [isActive, runOpacity]);
 
   const animatedBlackLineStyle = useAnimatedStyle(() => ({
     backgroundColor: isFinished ? "$black" : "$white",
     width: 2,
     height: lineAnimation.value,
+  }));
+
+  const animatedRunnerOpacity = useAnimatedStyle(() => ({
+    opacity: runOpacity.value,
   }));
 
   return (
@@ -47,16 +58,18 @@ const Step = ({ isActive, isLast, isFinished, onPress, value }: StepProps) => {
             bg={isFinished ? "#1A1C1F" : "$white"}
           >
             {isActive && (
-              <Image
-                contentFit="contain"
-                contentPosition={"center"}
-                style={{
-                  height: 36,
-                  width: 36,
-                }}
-                source={require("@Assets/images/active-step.png")}
-                alt={"st"}
-              />
+              <Animated.View style={[animatedRunnerOpacity]}>
+                <Image
+                  contentFit="contain"
+                  contentPosition={"center"}
+                  style={{
+                    height: 36,
+                    width: 36,
+                  }}
+                  source={require("@Assets/images/active-step.png")}
+                  alt={"st"}
+                />
+              </Animated.View>
             )}
           </Box>
         )}
