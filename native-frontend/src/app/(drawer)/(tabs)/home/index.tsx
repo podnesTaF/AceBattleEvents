@@ -7,14 +7,7 @@ import UpcomingEventCard from "@Components/events/UpcomingEventCard";
 import NewsCard from "@Components/news/NewsCard";
 import TeamLogoCard from "@Components/teams/TeamLogoCard";
 import { infoCards } from "@Constants/info-contents";
-import {
-  Box,
-  HStack,
-  Heading,
-  ScrollView,
-  VStack,
-  View,
-} from "@gluestack-ui/themed";
+import { Box, Heading, ScrollView, VStack, View } from "@gluestack-ui/themed";
 import { useFetchFutureEventsQuery } from "@lib/events/services/futureEventsService";
 import { useFetchNewsPreviewsQuery, useGetAllTeamsQuery } from "@lib/services";
 import { Image } from "expo-image";
@@ -32,8 +25,13 @@ const Page = () => {
 
   return (
     <ScrollView>
-      <VStack mx={"$3"} my={"$4"}>
-        <Heading size={"md"} textTransform="uppercase" fontWeight="bold">
+      <VStack my={"$4"}>
+        <Heading
+          mx={"$3"}
+          size={"md"}
+          textTransform="uppercase"
+          fontWeight="bold"
+        >
           Upcoming Events
         </Heading>
         <HorizontalListLayout
@@ -41,9 +39,6 @@ const Page = () => {
           items={futureEvents}
           ItemComponent={UpcomingEventCard}
           isLoading={isLoading}
-          wrapperProps={{
-            pb: "$12",
-          }}
         />
       </VStack>
       <Box mt={"$2"} mb={"$6"}>
@@ -95,18 +90,17 @@ const Page = () => {
           </View>
         </WithLoading>
       </Box>
-      <Box my="$6" px={"$4"}>
-        <Heading size="xl">Latest News</Heading>
+      <Box my="$6">
+        <Heading px={"$4"} size="xl">
+          Latest News
+        </Heading>
         <WithLoading isLoading={isNewsLoading} loadingHeight="$48">
-          <ScrollView horizontal={true}>
-            <HStack space="xl">
-              {newsData?.newsPreviews.map((news) => (
-                <Box key={news.id} maxWidth={380}>
-                  <NewsCard news={news} />
-                </Box>
-              ))}
-            </HStack>
-          </ScrollView>
+          <HorizontalListLayout
+            itemWidth={0.9}
+            ItemComponent={NewsCard}
+            identifier={"news"}
+            items={newsData?.newsPreviews}
+          />
         </WithLoading>
       </Box>
     </ScrollView>

@@ -9,7 +9,7 @@ interface NewsCardProps {
 
 const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
   return (
-    <VStack rounded={"$md"} bg={"$white"} softShadow="1" overflow="hidden">
+    <VStack flex={1} rounded={"$md"} bg={"$white"} overflow="hidden">
       <Box
         flex={2}
         height={"$32"}
