@@ -48,10 +48,13 @@ const FormField: React.FC<FormFieldProps> = ({
   const { control, formState } = useFormContext();
 
   return (
-    <FormControl isInvalid={!!formState.errors[name]} size={size}>
+    <FormControl
+      width={"$full"}
+      isInvalid={!!formState.errors[name]}
+      size={size}
+    >
       <VStack
-        minWidth={"$64"}
-        maxWidth={vertical ? "$72" : undefined}
+        width={vertical ? "$full" : undefined}
         height={vertical ? "$16" : undefined}
       >
         <Controller

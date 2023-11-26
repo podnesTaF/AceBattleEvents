@@ -1,11 +1,9 @@
 import WithLoading from "@Components/HOCs/withLoading";
-import MilerCard from "@Components/athletes/MilerCard";
-import PairCard from "@Components/athletes/PairCard";
 import Container from "@Components/common/Container";
 import HeaderSubtitledTitle from "@Components/common/HeaderSubtitledTitle";
 import Tabs from "@Components/common/Tabs";
-import ResultPodium from "@Components/events/ResultPodium";
 import RaceCard from "@Components/race/RaceCard";
+import RaceOverview from "@Components/race/RaceOverview";
 import { eventPodium } from "@Constants/dummy-data";
 import {
   Box,
@@ -17,15 +15,39 @@ import {
   VStack,
 } from "@gluestack-ui/themed";
 import { useFetchEventResultsQuery } from "@lib/events/services";
-import { RaceShortForm } from "@lib/models";
+import { EventResult, RaceShortForm } from "@lib/models";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { InfoIcon } from "lucide-react-native";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Dimensions, FlatList } from "react-native";
 
 const tabs = ["Overview", "By Race"];
 
+const tabsData = (eventResult: EventResult) => {
+  return [
+    <RaceOverview eventResult={eventResult} />,
+    <Box py={"$4"}>
+      <Heading size="lg" mb={"$2"}>
+        Races
+      </Heading>
+      <Container borderSize={2}>
+        {Object.keys(eventResult.racesByType).map((type, i) => (
+          <VStack key={i}>
+            {(eventPodium.racesByType as any)[type].map(
+              (race: RaceShortForm) => (
+                <RaceCard key={race.id} race={race} />
+              )
+            )}
+          </VStack>
+        ))}
+      </Container>
+    </Box>,
+  ];
+};
+
 const results = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const { width } = Dimensions.get("window");
   const { eventId } = useLocalSearchParams();
 
   const {
@@ -33,6 +55,12 @@ const results = () => {
     error: eventResultError,
     isLoading: eventResultLoading,
   } = useFetchEventResultsQuery(+eventId);
+
+  const flatListRef = useRef<FlatList>(null);
+
+  useEffect(() => {
+    flatListRef.current?.scrollToIndex({ animated: true, index: activeTab });
+  }, [activeTab]);
 
   const onChangeTab = (tabIndex: number) => {
     setActiveTab(tabIndex);
@@ -68,76 +96,17 @@ const results = () => {
         {!eventResult?.notFinished ? (
           eventResult && (
             <ScrollView>
-              {activeTab === 0 && (
-                <>
-                  <Box my={"$4"}>
-                    <Heading size={"xl"} mx={"$4"}>
-                      Winners
-                    </Heading>
-                    <VStack
-                      space="md"
-                      bg={"#1E1C1F"}
-                      alignItems="center"
-                      px={"$6"}
-                      py={"$4"}
-                    >
-                      <ResultPodium
-                        podium={eventResult.podium}
-                        gender={"male"}
-                      />
-                      <ResultPodium
-                        podium={eventResult.podium}
-                        gender={"female"}
-                      />
-                    </VStack>
-                  </Box>
-                  <VStack px={"$3"} my="$4" space="md">
-                    <Heading size={"lg"}>Best Mile</Heading>
-                    {Object.keys(eventResult.bestSportsmen).map((item: any) => (
-                      <MilerCard
-                        key={item}
-                        resultInMs={
-                          eventResult.bestSportsmen[item]!.finalResultInMs
-                        }
-                        runner={eventResult.bestSportsmen[item].runner}
-                      />
-                    ))}
-                  </VStack>
-                  <VStack space="lg">
-                    {Object.keys(eventResult.bestJokerPair).map((category) => (
-                      <PairCard
-                        key={category}
-                        runnerResults={
-                          (eventResult.bestJokerPair as any)[category].runners
-                        }
-                        finalResultInMs={
-                          (eventResult.bestJokerPair as any)[category]
-                            .finalResultInMs
-                        }
-                        category={category}
-                      />
-                    ))}
-                  </VStack>
-                </>
-              )}
-              {activeTab === 1 && (
-                <Box py={"$4"}>
-                  <Heading size="lg" mb={"$2"}>
-                    Races
-                  </Heading>
-                  <Container borderSize={2}>
-                    {Object.keys(eventResult.racesByType).map((type, i) => (
-                      <VStack key={i}>
-                        {(eventPodium.racesByType as any)[type].map(
-                          (race: RaceShortForm) => (
-                            <RaceCard key={race.id} race={race} />
-                          )
-                        )}
-                      </VStack>
-                    ))}
-                  </Container>
-                </Box>
-              )}
+              <FlatList
+                ref={flatListRef}
+                data={tabsData(eventResult)}
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                snapToAlignment="center"
+                renderItem={({ item }) => <Box width={width}>{item}</Box>}
+                keyExtractor={(item, i) => i.toString()}
+                scrollEnabled={false}
+              />
             </ScrollView>
           )
         ) : (
