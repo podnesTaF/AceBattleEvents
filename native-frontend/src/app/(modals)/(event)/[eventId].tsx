@@ -35,7 +35,7 @@ const EventScreen = () => {
     } else if (tabs[tabIndex] === "Schedule") {
       router.push("/timetable");
     } else {
-      router.push("/results");
+      router.push({ pathname: "/results", params: { eventId: eventId } });
     }
   };
 

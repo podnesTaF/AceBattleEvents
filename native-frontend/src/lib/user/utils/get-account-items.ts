@@ -35,6 +35,14 @@ export const getAccountItems = (user: IUser): AccountItem[] => {
       isDark: true,
       link: `/followings`,
     },
+    {
+      title: "Membership",
+      subtitle: "View and get new memberships",
+      icon: "card-outline",
+      color: "$yellow500",
+      isDark: true,
+      link: "/join",
+    },
   ];
 
   if (user.role === "runner") {

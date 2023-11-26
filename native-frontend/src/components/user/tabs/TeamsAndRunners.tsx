@@ -3,14 +3,13 @@ import Container from "@Components/common/Container";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
 import TeamPreview from "@Components/teams/TeamPreview";
 import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
-import { HStack, Heading, VStack } from "@gluestack-ui/themed";
+import { HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
 import { IUser } from "@lib/models";
 import {
   useGetRunnersByManagerQuery,
   useGetTeamsByManagerQuery,
 } from "@lib/services";
 import React from "react";
-import { ScrollView } from "react-native-gesture-handler";
 import UserCard from "../UserCard";
 
 const TeamsAndRunners = ({ user }: { user: IUser }): JSX.Element => {
@@ -31,16 +30,17 @@ const TeamsAndRunners = ({ user }: { user: IUser }): JSX.Element => {
           <Heading size="lg">Teams</Heading>
         </HStack>
         <WithLoading isLoading={!teams || isTeamsLoading}>
-          <HorizontalListLayout
-            identifier="team"
-            items={teams}
-            ItemComponent={TeamPreviewCard}
-            additionalProps={{
-              Item: TeamPreview,
-              imageProportion: 3,
-              minWidth: 340,
-            }}
-          />
+          {teams && (
+            <HorizontalListLayout
+              identifier="team"
+              items={teams}
+              ItemComponent={TeamPreviewCard}
+              additionalProps={{
+                Item: TeamPreview,
+                imageProportion: 3,
+              }}
+            />
+          )}
         </WithLoading>
       </VStack>
       <VStack space={"lg"}>

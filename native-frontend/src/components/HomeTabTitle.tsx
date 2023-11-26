@@ -58,7 +58,7 @@ const HomeTabTitle = ({
               <ButtonText>Sign in</ButtonText>
             </Button>
           </Link>
-          <Link href={"/(auth)/login"} asChild>
+          <Link href={"/(auth)/join"} asChild>
             <Button flex={1} variant="solid" action="positive">
               <ButtonText>Join us</ButtonText>
             </Button>

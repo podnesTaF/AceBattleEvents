@@ -10,7 +10,6 @@ import ResultsTab from "../tabs/ResultsTab";
 
 interface AthleteScreenContentProps {
   activeTab: number;
-  setActiveTab: (v: number) => void;
   user: IUser;
 }
 
@@ -41,7 +40,6 @@ const tabsData = (user: IUser) => {
 const AthleteScreenContent: React.FC<AthleteScreenContentProps> = ({
   activeTab,
   user,
-  setActiveTab,
 }) => {
   if (!user.runner) return null;
   const flatListRef = useRef<FlatList>(null);
