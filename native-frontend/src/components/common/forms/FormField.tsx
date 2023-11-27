@@ -19,7 +19,7 @@ import { LucideIcon } from "lucide-react-native";
 
 interface FormFieldProps {
   name: string;
-  label: string;
+  label?: string;
   labelIcon?: LucideIcon;
   placeholder?: string;
   type?: "text" | "password" | undefined;
@@ -61,7 +61,7 @@ const FormField: React.FC<FormFieldProps> = ({
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
             <>
-              {vertical && (
+              {vertical && label && (
                 <FormControlLabel alignSelf="flex-start">
                   {labelIcon && <Icon mr={"$2"} as={labelIcon} size={"md"} />}
                   <FormControlLabelText size={"md"} fontWeight="600">
@@ -70,7 +70,7 @@ const FormField: React.FC<FormFieldProps> = ({
                 </FormControlLabel>
               )}
               <Input mb={"$1"} variant={variant}>
-                {!vertical && (
+                {!vertical && label && (
                   <InputSlot flex={1} alignItems="flex-start">
                     <FormControlLabel>
                       <FormControlLabelText size={"md"} fontWeight="600">

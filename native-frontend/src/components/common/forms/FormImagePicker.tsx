@@ -3,7 +3,6 @@ import {
   Button,
   ButtonIcon,
   ButtonText,
-  HStack,
   Text,
 } from "@gluestack-ui/themed";
 import { cutString } from "@lib/utils";
@@ -17,6 +16,7 @@ interface FormImagePickerProps {
   name: string;
   defaultImageName?: string;
   onImagePicked: (image: string, name: string) => void;
+  vertical?: boolean;
 }
 
 const FormImagePicker: React.FC<FormImagePickerProps> = ({
@@ -25,6 +25,7 @@ const FormImagePicker: React.FC<FormImagePickerProps> = ({
   name,
   defaultImageName,
   onImagePicked,
+  vertical,
 }) => {
   const [selectedImageName, setSelectedImageName] = useState<string | null>();
 
@@ -45,17 +46,23 @@ const FormImagePicker: React.FC<FormImagePickerProps> = ({
   };
 
   return (
-    <HStack
-      space={"md"}
-      alignItems="center"
+    <Box
+      flexDirection={vertical ? "column" : "row"}
+      justifyContent="space-between"
+      alignItems={vertical ? "flex-start" : "center"}
       py={"$1"}
       borderBottomWidth={1}
       borderBottomColor="$coolGray300"
     >
-      <Text size={"md"} flex={1}>
+      <Text
+        mr={vertical ? "$0" : "$2"}
+        mb={vertical ? "$4" : "$0"}
+        size={"md"}
+        flex={1}
+      >
         {label}
       </Text>
-      <Box flex={2}>
+      <Box alignSelf="center" flex={2}>
         <Button
           onPress={pickImageAsync}
           action={"primary"}
@@ -72,7 +79,7 @@ const FormImagePicker: React.FC<FormImagePickerProps> = ({
           <ButtonIcon as={ImagePlus} />
         </Button>
       </Box>
-    </HStack>
+    </Box>
   );
 };
 

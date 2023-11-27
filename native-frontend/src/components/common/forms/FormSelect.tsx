@@ -2,6 +2,7 @@ import {
   Box,
   Heading,
   Icon,
+  ScrollView,
   Select,
   SelectBackdrop,
   SelectContent,
@@ -40,12 +41,12 @@ const FormSelect = ({
   const { control, formState } = useFormContext();
 
   return (
-    <VStack w={"$full"} space={"md"}>
-      <Heading size={"sm"}>{label}</Heading>
+    <VStack w={"$full"} space={label ? "md" : undefined}>
+      {label && <Heading size={"sm"}>{label}</Heading>}
       <Controller
         render={({ field: { onChange, value } }) => (
           <Select defaultValue={defaultValue || ""}>
-            <SelectTrigger variant="underlined" size="sm">
+            <SelectTrigger variant="underlined" size="md">
               <SelectInput
                 placeholder={defaultPlaceholder || "Choose a value"}
               />
@@ -59,16 +60,17 @@ const FormSelect = ({
                 <SelectDragIndicatorWrapper>
                   <SelectDragIndicator />
                 </SelectDragIndicatorWrapper>
-                {defaultPlaceholder && (
-                  <SelectItem label={defaultPlaceholder} value="" />
-                )}
-                {items.map((item, index) => (
-                  <SelectItem
-                    key={index}
-                    label={item.label}
-                    value={item.value}
-                  />
-                ))}
+                <ScrollView>
+                  <Box sx={{ width: "100%" }}>
+                    {items.map((item, index) => (
+                      <SelectItem
+                        key={index}
+                        label={item.label}
+                        value={item.value}
+                      />
+                    ))}
+                  </Box>
+                </ScrollView>
               </SelectContent>
             </SelectPortal>
           </Select>
