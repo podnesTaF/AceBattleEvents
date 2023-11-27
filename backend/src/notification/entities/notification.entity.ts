@@ -19,7 +19,7 @@ export class NotificationEntity {
   @Column()
   title: string;
 
-  @Column({ default: "direct" })
+  @Column({ default: "system" })
   type: string;
 
   @Column({ default: "unread" })
@@ -31,7 +31,7 @@ export class NotificationEntity {
   @JoinTable()
   contents: Content[];
 
-  @ManyToOne(() => User, (user) => user.sentNotifications)
+  @ManyToOne(() => User, (user) => user.sentNotifications, { nullable: true })
   sender: User;
 
   @ManyToMany(() => User, (user) => user.receivedNotifications)

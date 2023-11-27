@@ -1,12 +1,7 @@
-import {
-  Center,
-  Heading,
-  RadioGroup,
-  ScrollView,
-  VStack,
-} from "@gluestack-ui/themed";
+import { Center, Heading, RadioGroup, VStack } from "@gluestack-ui/themed";
 import { PickItem } from "@lib/types";
 import React from "react";
+import { FlatList } from "react-native-gesture-handler";
 import ItemRadio from "./ItemRadio";
 
 interface ControlledRadioGroupProps {
@@ -23,32 +18,34 @@ const ControlledRadioGroup: React.FC<ControlledRadioGroupProps> = ({
   customOnChange,
 }) => {
   return (
-    <ScrollView>
-      <RadioGroup
-        onChange={(value) => {
-          customOnChange && customOnChange(value, name);
-        }}
-        value={value || ""}
-      >
-        <VStack space="md">
-          {items?.length ? (
-            items.map((item, i) => (
+    <RadioGroup
+      onChange={(value) => {
+        customOnChange && customOnChange(value, name);
+      }}
+      value={value || ""}
+    >
+      <VStack space="md">
+        {items?.length ? (
+          <FlatList
+            data={items}
+            ItemSeparatorComponent={() => <Center h={"$1"} />}
+            renderItem={({ item, index }) => (
               <ItemRadio
-                key={item.id}
                 item={item}
-                isLastElement={items.length - 1 === i}
+                isLastElement={items.length - 1 === index}
               />
-            ))
-          ) : (
-            <Center flex={1}>
-              <Heading size={"xl"} color={"$coolGray400"}>
-                There is no {name} to select
-              </Heading>
-            </Center>
-          )}
-        </VStack>
-      </RadioGroup>
-    </ScrollView>
+            )}
+            keyExtractor={(item) => item.id.toString()}
+          />
+        ) : (
+          <Center flex={1}>
+            <Heading size={"xl"} color={"$coolGray400"}>
+              There is no {name} to select
+            </Heading>
+          </Center>
+        )}
+      </VStack>
+    </RadioGroup>
   );
 };
 

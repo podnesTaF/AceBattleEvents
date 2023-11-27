@@ -14,6 +14,6 @@ export class CreateNotificationDto {
   contents: CreateContentDto[];
 
   @IsArray()
-  @IsNotEmpty()
+  @IsOptional()
   receivers: number[];
 }

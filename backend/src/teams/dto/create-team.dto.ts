@@ -4,9 +4,8 @@ import {
   IsObject,
   IsOptional,
   IsString,
-} from 'class-validator';
-import { CreateCoachDto } from 'src/coach/dto/create-coach-dto';
-import { Media } from 'src/media/entities/media.entity';
+} from "class-validator";
+import { Media } from "src/media/entities/media.entity";
 
 export class CreateTeamDto {
   @IsString()
@@ -32,8 +31,8 @@ export class CreateTeamDto {
   @IsOptional()
   teamImage?: Media;
 
-  @IsObject()
-  coach: CreateCoachDto;
+  @IsNumber()
+  coachId: number;
 
   @IsArray()
   players: number[];

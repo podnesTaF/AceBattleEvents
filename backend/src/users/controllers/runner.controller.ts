@@ -1,4 +1,14 @@
-import { Controller, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Request,
+  UseGuards,
+} from "@nestjs/common";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import { RunnerService } from "../services/runner.service";
 
 @Controller("runners")
@@ -25,6 +35,7 @@ export class RunnerController {
       query: string;
       limit?: string;
       page?: string;
+      authId: string;
     },
   ) {
     return this.runnerService.getRunnerPreviews(queries);
@@ -33,6 +44,30 @@ export class RunnerController {
   @Get("/manager/:id")
   getRunnersByManager(@Param("id") id: string) {
     return this.runnerService.getRunnersByManager(+id);
+  }
+
+  @Get("/followings")
+  @UseGuards(JwtAuthGuard)
+  getFollowings(@Request() req: any) {
+    return this.runnerService.getFollowings(+req.user.id);
+  }
+
+  @Post("/follow/:id")
+  @UseGuards(JwtAuthGuard)
+  followRunner(@Request() req: any, @Param("id") id: string) {
+    return this.runnerService.followRunner({
+      runnerId: +id,
+      userId: req.user.id,
+    });
+  }
+
+  @Post("/unfollow/:id")
+  @UseGuards(JwtAuthGuard)
+  unfollowRunner(@Request() req: any, @Param("id") id: string) {
+    return this.runnerService.unfollowRunner({
+      runnerId: +id,
+      userId: req.user.id,
+    });
   }
 
   @Post("/points/calculate")

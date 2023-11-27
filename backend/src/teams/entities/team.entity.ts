@@ -1,10 +1,10 @@
 import { Club } from "src/club/entities/club.entity";
-import { Coach } from "src/coach/entities/coach.entity";
 import { Country } from "src/country/entity/country.entity";
 import { Event } from "src/events/entities/event.entity";
 import { Media } from "src/media/entities/media.entity";
 import { Race } from "src/race/entities/race.entity";
 import { TeamResult } from "src/team-results/entities/team-results.entity";
+import { Coach } from "src/users/entities/coach.entity";
 import { Manager } from "src/users/entities/manager.entity";
 import { Runner } from "src/users/entities/runner.entity";
 import { User } from "src/users/entities/user.entity";

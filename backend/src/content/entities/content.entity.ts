@@ -11,6 +11,9 @@ export class Content {
   @Column()
   type: string;
 
+  @Column({ default: "news" })
+  purpose: string;
+
   @Column({ type: "text", nullable: true })
   text: string;
 

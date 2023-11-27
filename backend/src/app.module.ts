@@ -10,7 +10,6 @@ import { AuthModule } from "./auth/auth.module";
 import { BestsModule } from "./bests/bests.module";
 import { ClubRequestsModule } from "./club-requests/club-requests.module";
 import { ClubModule } from "./club/club.module";
-import { CoachModule } from "./coach/coach.module";
 import typeOrmConfig from "./config/typeorm.config";
 import { ContentModule } from "./content/content.module";
 import { CountryModule } from "./country/country.module";
@@ -24,6 +23,7 @@ import { LocationsModule } from "./locations/locations.module";
 import { MediaModule } from "./media/media.module";
 import { MemberModule } from "./member/member.module";
 import { NewsModule } from "./news/news.module";
+import { NotificationModule } from "./notification/notification.module";
 import { PlayersModule } from "./players/players.module";
 import { PrizesModule } from "./prizes/prizes.module";
 import { RaceModule } from "./race/race.module";
@@ -32,13 +32,13 @@ import { RunnerResultsModule } from "./runner-results/runner-results.module";
 import { SplitsModule } from "./splits/splits.module";
 import { TeamResultsModule } from "./team-results/team-results.module";
 import { TeamsModule } from "./teams/teams.module";
+import { CoachModule } from "./users/modules/coach.module";
 import { ManagerModule } from "./users/modules/manager.module";
 import { RunnerModule } from "./users/modules/runner.module";
 import { SpectatorModule } from "./users/modules/spectator.module";
 import { UserModule } from "./users/modules/user.module";
 import { VerifyMemberModule } from "./verify-member/verify-member.module";
 import { ViewerRegistrationsModule } from "./viewer-registrations/viewer-registrations.module";
-import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -52,7 +52,6 @@ import { NotificationModule } from './notification/notification.module';
     EventsModule,
     LocationsModule,
     TeamsModule,
-    CoachModule,
     PlayersModule,
     BestsModule,
     PrizesModule,
@@ -77,6 +76,7 @@ import { NotificationModule } from './notification/notification.module';
     ManagerModule,
     SpectatorModule,
     RunnerModule,
+    CoachModule,
     FeedbacksModule,
     FutureEventsModule,
     NotificationModule,
