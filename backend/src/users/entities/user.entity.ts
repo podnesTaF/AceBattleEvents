@@ -15,6 +15,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { Coach } from "./coach.entity";
 import { Manager } from "./manager.entity";
 import { Runner } from "./runner.entity";
 import { Spectator } from "./spectator.entity";
@@ -38,7 +39,10 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column({ default: "user" })
+  @Column({ nullable: true })
+  phone: string;
+
+  @Column({ default: "spectator" })
   role: string;
 
   @Column({ nullable: true, type: "text" })
@@ -61,6 +65,12 @@ export class User {
 
   @ManyToOne(() => Media, { nullable: true })
   image: Media;
+
+  @ManyToOne(() => Media, { nullable: true })
+  avatar: Media;
+
+  @Column({ nullable: true })
+  ageRange: string;
 
   @CreateDateColumn({ type: "timestamp" })
   createdAt: Date;
@@ -88,6 +98,11 @@ export class User {
     nullable: true,
   })
   runner: Runner;
+
+  @OneToOne(() => Coach, (coach) => coach.user, {
+    nullable: true,
+  })
+  coach: Coach;
 
   @OneToMany(() => Feedback, (feedback) => feedback.user)
   feedbacks: Feedback[];

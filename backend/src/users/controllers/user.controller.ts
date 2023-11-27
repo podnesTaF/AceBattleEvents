@@ -5,10 +5,13 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Request,
   UseGuards,
 } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { RolesGuard } from "src/auth/guards/roles.guard";
+import { Roles } from "src/auth/roles/roles.guard";
 import { CompleteVerificationDto } from "../dtos/complete-verification.dto";
 import { CreateUserDto } from "../dtos/create-user.dto";
 import { UpdateUserDto } from "../dtos/update-user.dto";
@@ -42,9 +45,16 @@ export class UserController {
     return this.userService.findById(req.user.id);
   }
 
+  @Get("/followers")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("runner")
+  getFollowers(@Request() req: any) {
+    return this.userService.getRunnerFollowers(+req.user.id);
+  }
+
   @Get(":id")
-  getUserProfile(@Param("id") id: number) {
-    return this.userService.findById(+id);
+  getUserProfile(@Param("id") id: number, @Query() query: { authId: string }) {
+    return this.userService.findById(+id, query.authId);
   }
 
   @Patch("/image")

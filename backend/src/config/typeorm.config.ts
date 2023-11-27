@@ -4,7 +4,6 @@ import { Admin } from "src/admin/entities/admin.entity";
 import { Best } from "src/bests/entities/best.entity";
 import { JoinRequest } from "src/club-requests/entities/club-request.entity";
 import { Club } from "src/club/entities/club.entity";
-import { Coach } from "src/coach/entities/coach.entity";
 import { Content } from "src/content/entities/content.entity";
 import { Country } from "src/country/entity/country.entity";
 import { Event } from "src/events/entities/event.entity";
@@ -24,6 +23,7 @@ import { RunnerResult } from "src/runner-results/entities/runner-results.entity"
 import { Split } from "src/splits/entities/splits.entity";
 import { TeamResult } from "src/team-results/entities/team-results.entity";
 import { Team } from "src/teams/entities/team.entity";
+import { Coach } from "src/users/entities/coach.entity";
 import { Manager } from "src/users/entities/manager.entity";
 import { Runner } from "src/users/entities/runner.entity";
 import { Spectator } from "src/users/entities/spectator.entity";

@@ -1,11 +1,10 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ClubService } from "src/club/club.service";
-import { CoachService } from "src/coach/coach.service";
-import { CreateCoachDto } from "src/coach/dto/create-coach-dto";
 import { CountryService } from "src/country/country.service";
 import { Event } from "src/events/entities/event.entity";
 import { PlayersService } from "src/players/players.service";
+import { Coach } from "src/users/entities/coach.entity";
 import { RunnerService } from "src/users/services/runner.service";
 import { Repository } from "typeorm";
 import { CreateTeamDto } from "./dto/create-team.dto";
@@ -18,8 +17,10 @@ export class TeamsService {
     private repository: Repository<Team>,
     @InjectRepository(Event)
     private eventRepository: Repository<Event>,
+    @InjectRepository(Coach)
+    private coachRepository: Repository<Coach>,
     private playersService: PlayersService,
-    private coachService: CoachService,
+
     private runnerService: RunnerService,
     private countryService: CountryService,
     private clubService: ClubService,
@@ -33,7 +34,9 @@ export class TeamsService {
       players.push(player);
     }
 
-    const coach = await this.coachService.create(dto.coach);
+    const coach = await this.coachRepository.findOne({
+      where: { id: dto.coachId },
+    });
 
     const club = await this.clubService.findPure(dto.clubId);
 
@@ -351,7 +354,7 @@ export class TeamsService {
       name: string;
       city: string;
       gender: string;
-      coach: CreateCoachDto;
+      coachId: number;
       players: number[];
     },
   ) {
@@ -368,7 +371,9 @@ export class TeamsService {
       players.push(player);
     }
 
-    const coach = await this.coachService.create(updateTeamDto.coach);
+    const coach = await this.coachRepository.findOne({
+      where: { id: updateTeamDto.coachId },
+    });
 
     team.name = updateTeamDto.name || team.name;
     team.city = updateTeamDto.city || team.city;

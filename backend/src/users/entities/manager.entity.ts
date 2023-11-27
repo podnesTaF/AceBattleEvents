@@ -8,6 +8,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { Coach } from "./coach.entity";
 import { User } from "./user.entity";
 
 @Entity()
@@ -27,6 +28,9 @@ export class Manager {
   })
   @JoinColumn()
   club: Club;
+
+  @OneToMany(() => Coach, (coach) => coach.manager)
+  coaches: Coach[];
 
   @OneToOne(() => User, (user) => user.manager, { eager: true })
   @JoinColumn()

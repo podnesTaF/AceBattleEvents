@@ -17,7 +17,10 @@ export class NotificationService {
     private readonly contentRepository: Repository<Content>,
   ) {}
 
-  async create(createNotificationDto: CreateNotificationDto, senderId: number) {
+  async createUserNotification(
+    createNotificationDto: CreateNotificationDto,
+    senderId: number,
+  ) {
     const sender = await this.userRepository.findOne({
       where: { id: senderId },
     });
@@ -52,10 +55,50 @@ export class NotificationService {
     return this.notificationRepository.save(notification);
   }
 
+  async createSystemNotification(createNotificationDto: CreateNotificationDto) {
+    let receivers: User[] = [];
+
+    if (createNotificationDto.type === "all") {
+      const allUsers = await this.userRepository.find();
+      receivers = allUsers;
+    } else {
+      for (const receiverId of createNotificationDto.receivers) {
+        const receiver = await this.userRepository.findOne({
+          where: { id: receiverId },
+        });
+        receivers.push(receiver);
+      }
+    }
+
+    const notification = await this.notificationRepository.save({
+      ...createNotificationDto,
+      receivers,
+    });
+
+    const contents: Content[] = [];
+
+    for (const content of createNotificationDto.contents) {
+      const created = await this.contentRepository.save({
+        ...content,
+        notificationId: notification.id,
+      });
+      contents.push(created);
+    }
+
+    notification.contents = contents;
+
+    const updated = await this.notificationRepository.save(notification);
+
+    delete updated.receivers;
+
+    return updated;
+  }
+
   getUserReceivedNotifications(userId: number) {
     return this.notificationRepository.find({
       where: { receivers: { id: userId } },
-      relations: ["contents", "sender"],
+      relations: ["contents", "sender", "sender.image"],
+      order: { createdAt: "DESC" },
     });
   }
 
@@ -63,8 +106,29 @@ export class NotificationService {
     return `This action returns all notification`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} notification`;
+  async findOne({
+    notificationId,
+    userId,
+  }: {
+    notificationId: number;
+    userId: number;
+  }) {
+    const notification = await this.notificationRepository.findOne({
+      where: { id: notificationId },
+      relations: ["contents", "sender", "receivers"],
+    });
+
+    if (!notification) {
+      throw new Error("Notification not found");
+    }
+
+    if (!notification.receivers.some((receiver) => receiver.id === userId)) {
+      throw new Error("You are not authorized to view this notification");
+    }
+
+    notification.status = "read";
+
+    return this.notificationRepository.save(notification);
   }
 
   update(id: number, updateNotificationDto: UpdateNotificationDto) {

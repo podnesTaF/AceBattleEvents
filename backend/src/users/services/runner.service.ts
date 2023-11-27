@@ -114,16 +114,16 @@ export class RunnerService {
     query,
     limit,
     page,
+    authId,
   }: {
     type?: "search" | "all";
     query: string;
     limit?: string;
     page?: string;
+    authId?: string;
   }) {
     const limitToUse = Math.max(1, !isNaN(+limit) ? +limit : 10);
     const pageToUse = Math.max(1, !isNaN(+page) ? +page : 1);
-
-    console.log(limitToUse, pageToUse);
 
     const qb = this.repository
       .createQueryBuilder("runner")
@@ -143,6 +143,10 @@ export class RunnerService {
       { query: `%${query}%` },
     );
 
+    if (authId) {
+      qb.leftJoinAndSelect("runner.followers", "followers");
+    }
+
     const totalItems = await qb.getCount();
 
     const totalPages = Math.ceil(totalItems / limitToUse);
@@ -155,12 +159,72 @@ export class RunnerService {
       dateOfBirth: runner.dateOfBirth,
       user: runner.user,
       teamsAsRunner: runner.teamsAsRunner || [],
+      isFollowing: runner.followers?.some(
+        (follower) => follower.id === +authId,
+      ),
     }));
 
     return {
       runners: runnerPreviews,
       totalPages,
     };
+  }
+
+  async getFollowings(userId: number) {
+    const runners = await this.repository.find({
+      where: { followers: { id: userId } },
+      relations: ["user", "user.image", "teamsAsRunner"],
+    });
+
+    return runners.map((r) => ({ ...r, isFollowing: true }));
+  }
+
+  async followRunner({
+    runnerId,
+    userId,
+  }: {
+    runnerId: number;
+    userId: number;
+  }) {
+    const runner = await this.repository.findOne({
+      where: { id: runnerId },
+      relations: ["followers", "user"],
+    });
+    if (!runner) {
+      return null;
+    }
+    const user = runner.followers.find((follower) => follower.id === userId);
+    if (user) {
+      return null;
+    }
+    runner.followers.push({ id: userId } as User);
+    await this.repository.save(runner);
+    return { id: runnerId, userId: runner.user.id };
+  }
+
+  async unfollowRunner({
+    runnerId,
+    userId,
+  }: {
+    runnerId: number;
+    userId: number;
+  }) {
+    const runner = await this.repository.findOne({
+      where: { id: runnerId },
+      relations: ["followers", "user"],
+    });
+    if (!runner) {
+      return null;
+    }
+    const user = runner.followers.find((follower) => follower.id === userId);
+    if (!user) {
+      return null;
+    }
+    runner.followers = runner.followers.filter(
+      (follower) => follower.id !== userId,
+    );
+    await this.repository.save(runner);
+    return { id: runnerId, userId: runner.user.id };
   }
 
   async getTopRunners({

@@ -10,7 +10,6 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
-import { CreateCoachDto } from "src/coach/dto/create-coach-dto";
 import { CreateTeamDto } from "./dto/create-team.dto";
 import { TeamsService } from "./teams.service";
 
@@ -136,7 +135,7 @@ export class TeamsController {
       name: string;
       city: string;
       gender: string;
-      coach: CreateCoachDto;
+      coachId: number;
       players: number[];
     },
   ) {

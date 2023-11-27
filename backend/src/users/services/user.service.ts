@@ -42,6 +42,7 @@ export class UserService {
     user.surname = dto.surname;
     user.email = dto.email;
     user.image = dto.image;
+    user.avatar = dto.avatar;
     user.city = dto.city;
     let country = await this.countryService.returnIfExist({
       name: dto.country,
@@ -130,7 +131,20 @@ export class UserService {
     return this.repository.update(id, { image: { id: imageId } });
   }
 
-  async findById(id: number) {
+  getRunnerFollowers(id: number) {
+    return this.repository
+      .createQueryBuilder("user")
+      .leftJoinAndSelect("user.followingRunners", "followingRunners")
+      .where("followingRunners.id = :id", { id })
+      .leftJoinAndSelect("user.image", "image")
+      .leftJoinAndSelect("user.country", "country")
+      .leftJoinAndSelect("user.runner", "runner")
+      .leftJoinAndSelect("user.manager", "manager")
+      .leftJoinAndSelect("runner.teamsAsRunner", "teamAsRunner")
+      .getMany();
+  }
+
+  async findById(id: number, authId?: string) {
     const user = await this.repository.findOne({
       where: { id },
       relations: [
@@ -146,6 +160,7 @@ export class UserService {
         "runner.teamsAsRunner.country",
         "runner.teamsAsRunner.coach",
         "runner.teamsAsRunner.personalBest",
+        "runner.followers",
         "manager",
         "manager.club",
         "spectator",
@@ -153,7 +168,19 @@ export class UserService {
       ],
     });
 
-    return user;
+    let isFollowing;
+
+    if (authId) {
+      isFollowing = user.runner?.followers?.some(
+        (follower) => follower.id === +authId,
+      );
+    } else {
+      isFollowing = null;
+    }
+
+    return user.runner
+      ? { ...user, runner: { ...user.runner, isFollowing } }
+      : user;
   }
 
   async findByCond(cond: LoginUserDto) {
