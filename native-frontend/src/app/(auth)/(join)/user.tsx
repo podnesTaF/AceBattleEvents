@@ -11,10 +11,13 @@ const JoinUser = () => {
       <Stack.Screen
         options={{
           headerTitle: ({ tintColor }) => (
-            <HeaderSubtitledTitle
-              subtitle="Ace Battle Mile"
-              title="User Registration"
-            />
+            <Box w={"$full"} ml={"-$12"}>
+              <HeaderSubtitledTitle
+                tintColor={tintColor}
+                subtitle="Ace Battle Mile"
+                title="User Registration"
+              />
+            </Box>
           ),
         }}
       />

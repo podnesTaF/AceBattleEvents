@@ -6,7 +6,12 @@ import ConceptWrapper from "./ConceptWrapper";
 const Proven = () => {
   return (
     <ConceptWrapper title={"PROVEN IN UKRAINE"}>
-      <HStack flexWrap="wrap" space="md" justifyContent="space-around">
+      <HStack
+        pl={"$8"}
+        flexWrap="wrap"
+        space="md"
+        justifyContent="space-around"
+      >
         {provenContent.map((p, i) => (
           <VStack key={i} w={"$2/5"}>
             <Heading size={"md"} textAlign="center" color="#ff0000">
