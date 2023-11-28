@@ -53,16 +53,13 @@ const FormField: React.FC<FormFieldProps> = ({
       isInvalid={!!formState.errors[name]}
       size={size}
     >
-      <VStack
-        width={vertical ? "$full" : undefined}
-        height={vertical ? "$16" : undefined}
-      >
+      <VStack width={vertical ? "$full" : undefined}>
         <Controller
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
             <>
               {vertical && label && (
-                <FormControlLabel alignSelf="flex-start">
+                <FormControlLabel mb={"-$1"} alignSelf="flex-start">
                   {labelIcon && <Icon mr={"$2"} as={labelIcon} size={"md"} />}
                   <FormControlLabelText size={"md"} fontWeight="600">
                     {label}

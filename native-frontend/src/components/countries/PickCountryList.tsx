@@ -1,4 +1,4 @@
-import ControlledRadioGroup from "@Components/common/forms/ControlledRadioGroup";
+import CustomRadioGroup from "@Components/custom/CustomRadioGroup";
 import { availableCountries } from "@Constants/country-codes";
 import { VStack } from "@gluestack-ui/themed";
 import { useAppSelector } from "@lib/hooks";
@@ -37,7 +37,7 @@ const PickCountryList = ({
 
   return (
     <VStack p={"$4"}>
-      <ControlledRadioGroup
+      <CustomRadioGroup
         items={availableCountries}
         name={"country"}
         value={item}

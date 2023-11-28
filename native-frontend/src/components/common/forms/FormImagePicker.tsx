@@ -17,6 +17,7 @@ interface FormImagePickerProps {
   defaultImageName?: string;
   onImagePicked: (image: string, name: string) => void;
   vertical?: boolean;
+  withoutUnderline?: boolean;
 }
 
 const FormImagePicker: React.FC<FormImagePickerProps> = ({
@@ -26,6 +27,7 @@ const FormImagePicker: React.FC<FormImagePickerProps> = ({
   defaultImageName,
   onImagePicked,
   vertical,
+  withoutUnderline,
 }) => {
   const [selectedImageName, setSelectedImageName] = useState<string | null>();
 
@@ -51,7 +53,7 @@ const FormImagePicker: React.FC<FormImagePickerProps> = ({
       justifyContent="space-between"
       alignItems={vertical ? "flex-start" : "center"}
       py={"$1"}
-      borderBottomWidth={1}
+      borderBottomWidth={withoutUnderline ? 0 : 1}
       borderBottomColor="$coolGray300"
     >
       <Text

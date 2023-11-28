@@ -1,5 +1,6 @@
 import { api } from "@lib/common/services/api";
 import { IUser, LoginUserRequest } from "@lib/models";
+import { SubmitUserType } from "@lib/utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const storeToken = async (token: string) => {
@@ -24,7 +25,15 @@ export const AuthApi = api.injectEndpoints({
       },
       invalidatesTags: ["Auth"],
     }),
+    registerUser: builder.mutation<IUser, SubmitUserType>({
+      query: (body) => ({
+        url: "/auth/register",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Auth"],
+    }),
   }),
 });
 
-export const { useLoginUserMutation } = AuthApi;
+export const { useLoginUserMutation, useRegisterUserMutation } = AuthApi;
