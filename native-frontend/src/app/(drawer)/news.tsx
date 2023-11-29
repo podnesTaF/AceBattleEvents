@@ -5,7 +5,6 @@ import YoutubeCard from "@Components/common/YoutubeCard";
 import NewsCard from "@Components/news/NewsCard";
 import NewsTag from "@Components/news/NewsTag";
 import SmallNewsCard from "@Components/news/SmallNewsCard";
-import { newsPreviews } from "@Constants/dummy-data";
 import { Box, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
 import { useFetchNewsPreviewsQuery } from "@lib/services";
 import React, { useState } from "react";
@@ -33,7 +32,7 @@ const videoItems = [
 const NewsScreen = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const { data: newsData, isLoading: isNewsLoading } =
-    useFetchNewsPreviewsQuery({ limit: 3 });
+    useFetchNewsPreviewsQuery({ limit: 10 });
 
   const onHandleTag = (name: string) => {
     if (selectedTags.includes(name)) {
@@ -54,7 +53,7 @@ const NewsScreen = () => {
             itemWidth={0.9}
             ItemComponent={NewsCard}
             identifier={"news"}
-            items={newsData?.newsPreviews}
+            items={newsData?.newsPreviews?.slice(0, 3) || []}
           />
         </WithLoading>
       </VStack>
@@ -106,11 +105,11 @@ const NewsScreen = () => {
         <Box px={"$4"}>
           <Container vertical>
             <VStack space="md">
-              {newsPreviews.map((news, i) => (
+              {newsData?.newsPreviews.map((news, i, arr) => (
                 <SmallNewsCard
                   key={news.id}
                   news={news as any}
-                  isLast={i === newsPreviews.length - 1}
+                  isLast={i === arr.length - 1}
                 />
               ))}
             </VStack>

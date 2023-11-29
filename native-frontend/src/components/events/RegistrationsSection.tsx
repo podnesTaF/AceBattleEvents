@@ -18,17 +18,6 @@ const RegistrationsSection: React.FC<RegistrationSectionProps> = ({
 }) => {
   // fecth registrations by user, if logged in
 
-  if (!user) {
-    return (
-      <InfoTemplate
-        variant="outline"
-        type="error"
-        title="Please Login"
-        text={"Please authorize to see your registrations"}
-      />
-    );
-  }
-
   if (user.role === "spectator") {
     return (
       <>

@@ -1,6 +1,7 @@
 import withWatermarkBg from "@Components/HOCs/withWatermark";
 import LoginForm from "@Components/auth/LoginForm";
 import { Box, Heading, Image, VStack } from "@gluestack-ui/themed";
+import { scaleSize } from "@lib/utils";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
@@ -28,7 +29,7 @@ const Login = () => {
           />
         </Box>
         <Heading size="xl">Sign in</Heading>
-        <Box maxWidth={"$72"}>
+        <Box width={scaleSize(330)}>
           <LoginForm />
         </Box>
       </VStack>

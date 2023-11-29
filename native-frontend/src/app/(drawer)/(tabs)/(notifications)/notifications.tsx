@@ -1,6 +1,6 @@
 import WithLoading from "@Components/HOCs/withLoading";
 import withWatermarkBg from "@Components/HOCs/withWatermark";
-import NotAuthTemplate from "@Components/common/NotAuthTemplate";
+import AuthCallToAction from "@Components/auth/AuthCallToAction";
 import NotificationItem from "@Components/notifications/NotificationItem";
 import { Box, Divider, Heading, Pressable, VStack } from "@gluestack-ui/themed";
 import { useAppSelector } from "@lib/hooks";
@@ -44,10 +44,7 @@ const Notifications = () => {
   if (!user) {
     return (
       <VStack my={"$6"} flex={1}>
-        <NotAuthTemplate
-          title="Notifications"
-          text={"Login to see your notifications"}
-        />
+        <AuthCallToAction screen={"notification"} />
       </VStack>
     );
   }

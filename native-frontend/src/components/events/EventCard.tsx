@@ -1,3 +1,4 @@
+import AbmButton from "@Components/common/buttons/AbmButton";
 import {
   Box,
   HStack,
@@ -8,22 +9,24 @@ import {
 } from "@gluestack-ui/themed";
 import { IEvent } from "@lib/models";
 import { convertFlagIntoPng, formatDate } from "@lib/utils";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import React from "react";
 
 interface Props {
   event: IEvent;
   passed?: boolean;
   children?: React.ReactNode;
+  isLast?: boolean;
 }
 
-const EventCard: React.FC<Props> = ({ event, children, passed }) => {
+const EventCard: React.FC<Props> = ({ event, children, passed, isLast }) => {
+  const router = useRouter();
   return (
     <Box
       p={"$3"}
       backgroundColor="$white"
-      borderBottomColor="$red500"
-      borderBottomWidth={4}
+      borderBottomColor="$coolGray300"
+      borderBottomWidth={isLast ? 0 : 2}
     >
       <Heading textAlign="center" size={"lg"} mb={"$4"}>
         {event.title}
@@ -53,31 +56,24 @@ const EventCard: React.FC<Props> = ({ event, children, passed }) => {
           </HStack>
         </HStack>
         {children}
-        <HStack justifyContent="space-between" space="md">
+        <HStack justifyContent="center">
           {passed ? (
-            <>
-              <Text size={"md"}>Results</Text>
-              <Link
-                href={{
-                  pathname: `/(modals)/(event)/results`,
-                  params: { eventId: event.id + "" },
-                }}
-                asChild
-              >
-                <Heading size={"md"} color={"$amber400"}>
-                  event results
-                </Heading>
-              </Link>
-            </>
+            <Link
+              href={{
+                pathname: `/(modals)/(event)/results`,
+                params: { eventId: event.id + "" },
+              }}
+              asChild
+            >
+              <AbmButton onPress={() => {}} title={"Results"} />
+            </Link>
           ) : (
-            <>
-              <Text size={"md"}>Details</Text>
-              <Link href={`/(modals)/(event)/${event.id}`} asChild>
-                <Heading size={"md"} color={"$amber400"}>
-                  visit event page
-                </Heading>
-              </Link>
-            </>
+            <Box my={"$2"}>
+              <AbmButton
+                onPress={() => router.push(`/(modals)/(event)/${event.id}`)}
+                title={"Event Page"}
+              />
+            </Box>
           )}
         </HStack>
       </VStack>

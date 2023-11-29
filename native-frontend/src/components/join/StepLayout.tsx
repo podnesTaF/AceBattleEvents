@@ -17,6 +17,7 @@ type StepLayoutProps = {
   onBack: () => void;
   isSubmit?: boolean;
   isFisrt?: boolean;
+  goHome?: boolean;
 };
 
 const StepLayout = ({
@@ -25,6 +26,7 @@ const StepLayout = ({
   onNext,
   onBack,
   isSubmit,
+  goHome,
   isFisrt,
 }: StepLayoutProps): JSX.Element => {
   const { formState } = useFormContext();
@@ -83,7 +85,9 @@ const StepLayout = ({
                   variant="solid"
                   action="positive"
                 >
-                  <ButtonText>{isSubmit ? "Submit" : "Next"}</ButtonText>
+                  <ButtonText>
+                    {isSubmit ? "Submit" : goHome ? "Home" : "Next"}
+                  </ButtonText>
                 </Button>
               </Box>
             ))}

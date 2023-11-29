@@ -1,11 +1,8 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { Stack } from 'expo-router'
+import { Stack } from "expo-router";
+import React from "react";
 
 const HomeLayout = () => {
-  return (
-    <Stack screenOptions={{headerShown: false}} />
-  )
-}
+  return <Stack />;
+};
 
-export default HomeLayout
+export default HomeLayout;

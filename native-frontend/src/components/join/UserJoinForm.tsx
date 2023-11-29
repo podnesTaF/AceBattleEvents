@@ -10,14 +10,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch, useAppSelector } from "@lib/hooks";
 import { IMedia } from "@lib/models";
 import { useRegisterUserMutation, useUploadImageMutation } from "@lib/services";
-import { selectValues } from "@lib/store";
+import { clearAllValues, selectValues } from "@lib/store";
 import { CreateUserSchema, createUserSchema } from "@lib/utils";
+import axios from "axios";
+import { useRouter } from "expo-router";
 import { MailIcon } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { ScrollView } from "react-native-gesture-handler";
 import StepLayout from "./StepLayout";
-
 const tabs = [
   "Personal Details",
   "Avatar and Image",
@@ -28,10 +29,13 @@ const tabs = [
 const UserJoinForm = () => {
   const [activeStep, setActiveStep] = useState(0);
   const { newValues } = useAppSelector(selectValues);
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const [registerUser, { isLoading, error }] = useRegisterUserMutation();
   const [uploadMedia, { isLoading: isMediaLoading, error: mediaError }] =
     useUploadImageMutation();
+
+  const [email, setEmail] = useState("");
 
   const form = useForm<CreateUserSchema>({
     mode: "onChange",
@@ -53,6 +57,9 @@ const UserJoinForm = () => {
   const onNext = async (isSubmit?: boolean) => {
     if (isSubmit) {
       form.handleSubmit(onSubmit)();
+    } else if (activeStep === 3) {
+      dispatch(clearAllValues());
+      router.push("/(drawer)/(tabs)/home");
     } else {
       setActiveStep(activeStep + 1);
     }
@@ -74,8 +81,14 @@ const UserJoinForm = () => {
         const response = await fetch(data.avatar);
         const blob = await response.blob();
 
-        const newAvatar = await uploadMedia(blob).unwrap();
-        avatar = newAvatar;
+        const formData = new FormData();
+        formData.append("image", blob);
+
+        const { data: newMedia } = await axios.post<IMedia>(
+          "http://192:168.1.13:4000",
+          formData
+        );
+        avatar = newMedia;
       }
       if (data.image) {
         const response = await fetch(data.image);
@@ -108,9 +121,11 @@ const UserJoinForm = () => {
       }).unwrap();
 
       if (user) {
+        setEmail(user.email);
         setActiveStep(activeStep + 1);
       }
     } catch (error) {
+      console.log(error);
       form.setError("root", { message: "error registering user" });
     }
   };
@@ -133,6 +148,7 @@ const UserJoinForm = () => {
         onBack={onBack}
         isFisrt={activeStep === 0}
         isSubmit={activeStep === 2}
+        goHome={activeStep === 3}
       >
         <ScrollView>
           <VStack space="md">
@@ -275,12 +291,13 @@ const UserJoinForm = () => {
                   source={require("@Assets/images/confirm-email.png")}
                   width={140}
                   height={80}
+                  alt="confirm email"
                   resizeMode="contain"
                 />
                 <Heading textAlign="center" size={"sm"}>
                   We have sent an email to{" "}
                   <Heading size="sm" color={"$primary400"}>
-                    apodnes@gmail.com
+                    {email}
                   </Heading>{" "}
                   to confirm the validity of your email address.
                 </Heading>
