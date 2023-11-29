@@ -1,103 +1,120 @@
+import WithLoading from "@Components/HOCs/withLoading";
 import Container from "@Components/common/Container";
+import HorizontalListLayout from "@Components/common/HorizontalListLayout";
 import YoutubeCard from "@Components/common/YoutubeCard";
 import NewsCard from "@Components/news/NewsCard";
+import NewsTag from "@Components/news/NewsTag";
 import SmallNewsCard from "@Components/news/SmallNewsCard";
-import { newsPreviews } from "@Constants/dummy-data";
-import { Box, HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
-import React from "react";
+import { Box, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
+import { useFetchNewsPreviewsQuery } from "@lib/services";
+import React, { useState } from "react";
+import { FlatList } from "react-native";
 
 const tags = ["Competitions", "Interviews", "Events", "Races", "Players"];
 const videoItems = [
   {
+    id: 1,
     videoId: "WSUfPBJf_P4",
     title: "What's Battle Mile Structure and Rules",
   },
   {
+    id: 2,
     videoId: "RRs8Z7GQmdk",
     title: "What's Battle Mile? Structure and Rules.",
   },
   {
+    id: 3,
     videoId: "kehD79rNiyU",
     title: "Signing of the Memorandum between Battle Mile and Sport for All",
   },
 ];
 
 const NewsScreen = () => {
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const { data: newsData, isLoading: isNewsLoading } =
+    useFetchNewsPreviewsQuery({ limit: 10 });
+
+  const onHandleTag = (name: string) => {
+    if (selectedTags.includes(name)) {
+      setSelectedTags(selectedTags.filter((tag) => tag !== name));
+    } else {
+      setSelectedTags([...selectedTags, name]);
+    }
+  };
+
   return (
     <ScrollView>
-      <VStack space={"sm"} my={"$4"} mx={"$3"}>
-        <Heading
-          py={"$1"}
-          size="xl"
-          borderBottomWidth={2}
-          borderColor="#ff0000"
-          w={"auto"}
-        >
-          News
-        </Heading>
-        <ScrollView horizontal>
-          <HStack space="md" alignItems="center">
-            {tags.map((tag, i) => (
-              <Box
-                bg={"$primary200"}
-                borderWidth={1}
-                borderColor="$primary400"
-                key={i}
-                w={"$32"}
-                alignItems="center"
-                justifyContent="center"
-                rounded={"$md"}
-                py={"$2"}
-              >
-                <Heading size={"sm"}>{tag}</Heading>
-              </Box>
-            ))}
-          </HStack>
-        </ScrollView>
-      </VStack>
-      <VStack space={"md"}>
+      <VStack space={"sm"} mt={"$4"}>
         <Heading mx={"$2"} size={"lg"}>
           Latest News
         </Heading>
-        <ScrollView horizontal={true}>
-          <HStack space="xl">
-            {newsPreviews.slice(0, 3).map((news) => (
-              <Box pl={"$4"} key={news.id} maxWidth={380}>
-                <NewsCard news={news} />
-              </Box>
-            ))}
-          </HStack>
-        </ScrollView>
+        <WithLoading isLoading={isNewsLoading} loadingHeight="$48">
+          <HorizontalListLayout
+            itemWidth={0.9}
+            ItemComponent={NewsCard}
+            identifier={"news"}
+            items={newsData?.newsPreviews?.slice(0, 3) || []}
+          />
+        </WithLoading>
       </VStack>
       <VStack my={"$4"} space={"lg"}>
         <Heading mx={"$4"} size={"lg"}>
           Videos
         </Heading>
-        <ScrollView horizontal={true}>
-          <HStack space={"xl"}>
-            {videoItems.map((video) => (
-              <YoutubeCard
-                key={video.videoId}
-                videoId={video.videoId}
-                title={video.title}
-              />
-            ))}
-          </HStack>
-        </ScrollView>
+        <HorizontalListLayout
+          itemWidth={0.9}
+          ItemComponent={YoutubeCard}
+          identifier={"video"}
+          items={videoItems}
+        />
       </VStack>
-      <VStack m={"$4"} space="lg">
-        <Heading size={"lg"}>All Articles</Heading>
-        <Container vertical>
-          <VStack space="md">
-            {newsPreviews.map((news, i) => (
-              <SmallNewsCard
-                key={news.id}
-                news={news as any}
-                isLast={i === newsPreviews.length - 1}
+      <VStack mb={"$8"} space="lg">
+        <VStack space={"sm"} my={"$4"}>
+          <Heading
+            mx={"$4"}
+            py={"$1"}
+            size="lg"
+            borderBottomWidth={2}
+            borderColor="#ff0000"
+            w={"auto"}
+          >
+            All Articles
+          </Heading>
+          <FlatList
+            data={tags}
+            contentContainerStyle={{
+              paddingHorizontal: 16,
+            }}
+            ItemSeparatorComponent={() => <Box w={"$4"} />}
+            renderItem={({ item }) => (
+              <NewsTag
+                title={item}
+                onClick={onHandleTag}
+                action={selectedTags.includes(item) ? "success" : "error"}
+                variant={"outline"}
               />
-            ))}
-          </VStack>
-        </Container>
+            )}
+            keyExtractor={(item) => item}
+            horizontal={true}
+            pagingEnabled={true}
+            showsHorizontalScrollIndicator={false}
+            snapToAlignment="center"
+          />
+        </VStack>
+
+        <Box px={"$4"}>
+          <Container vertical>
+            <VStack space="md">
+              {newsData?.newsPreviews.map((news, i, arr) => (
+                <SmallNewsCard
+                  key={news.id}
+                  news={news as any}
+                  isLast={i === arr.length - 1}
+                />
+              ))}
+            </VStack>
+          </Container>
+        </Box>
       </VStack>
     </ScrollView>
   );

@@ -1,4 +1,6 @@
 import WithLoading from "@Components/HOCs/withLoading";
+import withWatermarkBg from "@Components/HOCs/withWatermark";
+import AuthCallToAction from "@Components/auth/AuthCallToAction";
 import Container from "@Components/common/Container";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
 import SearchTitle from "@Components/common/SearchTitle";
@@ -10,6 +12,7 @@ import { Box, Heading, VStack } from "@gluestack-ui/themed";
 import { useFetchFutureEventsQuery } from "@lib/events/services";
 import { useAppSelector } from "@lib/hooks";
 import { selectUser } from "@lib/store";
+import { scaleSize } from "@lib/utils";
 import { Stack } from "expo-router";
 import React from "react";
 import { ScrollView } from "react-native-gesture-handler";
@@ -33,7 +36,7 @@ const EventsScreen = () => {
         }}
       />
       <ScrollView>
-        <VStack mt={"$4"}>
+        <VStack my={"$4"}>
           <Heading mx={"$3"} size={"lg"}>
             Upcoming Events
           </Heading>
@@ -43,28 +46,51 @@ const EventsScreen = () => {
               items={futureEvents}
               ItemComponent={UpcomingEventCard}
               isLoading={isLoading}
-              wrapperProps={{
-                pb: "$12",
-              }}
             />
           </WithLoading>
         </VStack>
-        <Box bg={"$white"}>
-          <Container vertical>
-            <Box px={"$2"} py={"$4"}>
-              <Heading size={"lg"} mb={"$4"}>
-                Your Registrations
-              </Heading>
-              <RegistrationsSection user={user} events={events} />
-            </Box>
-          </Container>
+        <Box bg={"$white"} my={"$4"}>
+          {user ? (
+            <Container vertical>
+              <Box px={"$2"} py={"$4"}>
+                <Heading size={"lg"} mb={"$4"}>
+                  Your Registrations
+                </Heading>
+                <RegistrationsSection user={user} events={events} />
+              </Box>
+            </Container>
+          ) : (
+            <AuthCallToAction screen="events" />
+          )}
         </Box>
-        <VStack space="md" mb={"$1/3"}>
-          <Heading mx={"$4"} size="lg">
+        <VStack
+          space="md"
+          w={"$full"}
+          mb={"$1/3"}
+          py={"$3"}
+          borderTopRightRadius={200}
+          borderBottomRightRadius={100}
+          bgColor="#ff0000"
+        >
+          <Heading color={"$white"} mx={"$4"} size="lg">
             Past Events
           </Heading>
-          <Box p={"$3"} bg={"$white"}>
+          <Box
+            p={"$3"}
+            bg={"$white"}
+            alignSelf="center"
+            borderTopRightRadius={scaleSize(50)}
+            borderBottomRightRadius={scaleSize(10)}
+            borderTopLeftRadius={scaleSize(80)}
+            borderBottomLeftRadius={scaleSize(90)}
+            borderWidth={2}
+            borderColor="$coolGray200"
+            width={scaleSize(360)}
+            overflow="hidden"
+            pl={scaleSize(32)}
+          >
             <EventCard event={events[0] as any} />
+            <EventCard isLast={true} event={events[0] as any} />
           </Box>
         </VStack>
       </ScrollView>
@@ -72,4 +98,4 @@ const EventsScreen = () => {
   );
 };
 
-export default EventsScreen;
+export default withWatermarkBg(EventsScreen, "#fff9ff");

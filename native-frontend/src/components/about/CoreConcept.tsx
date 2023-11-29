@@ -6,7 +6,7 @@ import ConceptWrapper from "./ConceptWrapper";
 const CoreConcept = () => {
   return (
     <ConceptWrapper title={"Core Concept"}>
-      <HStack flexWrap={"wrap"} justifyContent="center" space={"md"}>
+      <HStack pl={"$10"} flexWrap={"wrap"} mx={"$4"} space={"md"}>
         {infoCards.map((inf, i) => (
           <VStack w={"$24"} key={i}>
             <Heading textAlign="center" color="#ff0000" size={"md"}>

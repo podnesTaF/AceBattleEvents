@@ -1,3 +1,4 @@
+import FormButton from "@Components/common/forms/FormButton";
 import {
   Box,
   Button,
@@ -7,6 +8,7 @@ import {
   VStack,
 } from "@gluestack-ui/themed";
 import React from "react";
+import { useFormContext } from "react-hook-form";
 
 type StepLayoutProps = {
   children: React.ReactNode;
@@ -14,6 +16,8 @@ type StepLayoutProps = {
   onNext: (isSubmit?: boolean) => void;
   onBack: () => void;
   isSubmit?: boolean;
+  isFisrt?: boolean;
+  goHome?: boolean;
 };
 
 const StepLayout = ({
@@ -22,7 +26,10 @@ const StepLayout = ({
   onNext,
   onBack,
   isSubmit,
+  goHome,
+  isFisrt,
 }: StepLayoutProps): JSX.Element => {
+  const { formState } = useFormContext();
   return (
     <VStack
       bg={"$white"}
@@ -33,7 +40,7 @@ const StepLayout = ({
       alignItems="center"
     >
       <VStack
-        maxWidth={350}
+        maxWidth={300}
         w={"$full"}
         mx={"auto"}
         alignItems="center"
@@ -47,23 +54,43 @@ const StepLayout = ({
         </VStack>
         <ButtonGroup justifyContent="space-between" w={"$full"}>
           {onBack && (
-            <Box flex={1} mr={"$2"}>
-              <Button onPress={onBack} variant="outline" action="negative">
+            <Box mr={"$2"}>
+              <Button
+                disabled={isFisrt}
+                onPress={onBack}
+                variant="outline"
+                action="negative"
+              >
                 <ButtonText>Back</ButtonText>
               </Button>
             </Box>
           )}
-          {onNext && (
-            <Box flex={1} ml={"$2"}>
-              <Button
-                onPress={() => onNext(isSubmit)}
-                variant="outline"
-                action="positive"
-              >
-                <ButtonText>{isSubmit ? "Submit" : "Next"}</ButtonText>
-              </Button>
-            </Box>
-          )}
+          {onNext &&
+            (isSubmit ? (
+              <Box flex={1} ml={"$2"}>
+                <FormButton
+                  title={"Submit"}
+                  disabled={formState.isSubmitting || !formState.isValid}
+                  isLoading={formState.isSubmitting}
+                  onPress={() => onNext(isSubmit)}
+                />
+              </Box>
+            ) : (
+              <Box flex={1} ml={"$2"}>
+                <Button
+                  disabled={
+                    isSubmit ? !formState.isValid || formState.isLoading : false
+                  }
+                  onPress={() => onNext(isSubmit)}
+                  variant="solid"
+                  action="positive"
+                >
+                  <ButtonText>
+                    {isSubmit ? "Submit" : goHome ? "Home" : "Next"}
+                  </ButtonText>
+                </Button>
+              </Box>
+            ))}
         </ButtonGroup>
       </VStack>
     </VStack>

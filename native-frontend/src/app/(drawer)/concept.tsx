@@ -72,7 +72,16 @@ const Concept = () => {
         }}
       />
       <HStack flex={1}>
-        <Box bgColor={"#ff0000"} px={"$1"} py={"$3"}>
+        <Box
+          bgColor={active === steps.length - 1 ? "#ff0000" : "transparent"}
+          px={"$1"}
+          py={"$3"}
+          position="absolute"
+          bottom={0}
+          left={0}
+          top={0}
+          zIndex={10}
+        >
           <SideStepper
             active={active}
             onChange={(v) => setActive(v)}

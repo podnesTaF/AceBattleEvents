@@ -1,13 +1,12 @@
-import HomeTabTitle from "@Components/HomeTabTitle";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppSelector } from "@lib/hooks";
 import { selectUser } from "@lib/store";
 import { Tabs } from "expo-router";
 import React from "react";
-import { StyleSheet } from "react-native";
 
 const Layout = () => {
   const user = useAppSelector(selectUser);
+
   return (
     <Tabs
       screenOptions={{
@@ -29,14 +28,7 @@ const Layout = () => {
           tabBarIcon: ({ size, color }) => (
             <Ionicons name={"home"} size={size} color={color} />
           ),
-          headerStyle: {
-            backgroundColor: "#1C1E1F",
-            borderBottomEndRadius: 12,
-            borderBottomStartRadius: 12,
-          },
-          headerTintColor: "#fff",
-          title: "Ace Battle Mile",
-          headerTitle: (props) => <HomeTabTitle user={user} />,
+          headerShown: false,
         }}
       />
       <Tabs.Screen
@@ -74,10 +66,3 @@ const Layout = () => {
 };
 
 export default Layout;
-
-const styles = StyleSheet.create({
-  headerImage: {
-    height: 17,
-    alignSelf: "center",
-  },
-});

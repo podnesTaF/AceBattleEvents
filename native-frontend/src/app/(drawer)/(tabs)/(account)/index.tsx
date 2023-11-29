@@ -1,14 +1,13 @@
 import withWatermarkBg from "@Components/HOCs/withWatermark";
 import HomeTabTitle from "@Components/HomeTabTitle";
 import LogoTitle from "@Components/LogoTitle";
-import NotAuthTemplate from "@Components/common/NotAuthTemplate";
+import AuthCallToAction from "@Components/auth/AuthCallToAction";
 import ProfileItem from "@Components/profile/ProfileItem";
 import {
   Box,
   Button,
   ButtonIcon,
   ButtonText,
-  Center,
   HStack,
   Pressable,
   VStack,
@@ -76,9 +75,9 @@ const AccountPage = () => {
             headerTitle: (props) => <LogoTitle {...props} />,
           }}
         />
-        <Center flex={1}>
-          <NotAuthTemplate />
-        </Center>
+        <VStack flex={1} mt={"$10"}>
+          <AuthCallToAction screen="account" />
+        </VStack>
       </>
     );
   }

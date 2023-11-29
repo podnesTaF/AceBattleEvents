@@ -41,11 +41,15 @@ const FormSelect = ({
   const { control, formState } = useFormContext();
 
   return (
-    <VStack w={"$full"} space={label ? "md" : undefined}>
+    <VStack w={"$full"} space={label ? "xs" : undefined}>
       {label && <Heading size={"sm"}>{label}</Heading>}
       <Controller
         render={({ field: { onChange, value } }) => (
-          <Select defaultValue={defaultValue || ""}>
+          <Select
+            onValueChange={onChange}
+            values={value}
+            defaultValue={defaultValue || ""}
+          >
             <SelectTrigger variant="underlined" size="md">
               <SelectInput
                 placeholder={defaultPlaceholder || "Choose a value"}

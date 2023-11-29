@@ -2,17 +2,13 @@ import {
   Avatar,
   AvatarFallbackText,
   AvatarImage,
-  Button,
-  ButtonGroup,
-  ButtonText,
   HStack,
   Heading,
-  Text,
   VStack,
 } from "@gluestack-ui/themed";
 import { IUser } from "@lib/models";
-import { Link } from "expo-router";
 import React from "react";
+import Badge from "./custom/Badge";
 
 const HomeTabTitle = ({
   user,
@@ -22,27 +18,32 @@ const HomeTabTitle = ({
   annotation?: string;
 }) => {
   return (
-    <HStack
-      justifyContent="space-between"
-      w={"$full"}
-      space="md"
-      alignItems="center"
-    >
-      {user ? (
-        <>
-          <VStack justifyContent="center" space="xs">
-            {annotation && (
-              <Text color="$coolGray200" size="sm">
-                {annotation}
-              </Text>
-            )}
-            <Heading size={"md"} color="$white">
+    user && (
+      <HStack
+        justifyContent="space-between"
+        w={"$full"}
+        space="md"
+        alignItems="center"
+      >
+        <VStack justifyContent="center" space="xs"></VStack>
+        <HStack space={"sm"} alignItems="center">
+          <VStack space={"sm"}>
+            <Heading
+              py={"$0.5"}
+              borderBottomColor="$white"
+              borderBottomWidth={2}
+              size={"md"}
+              color="$white"
+            >
               {user.name} {user.surname}
             </Heading>
+            <HStack justifyContent="flex-end" space="xs">
+              <Badge isActive={true} text={user.role} py={"$1"} px={"$2"} />
+            </HStack>
           </VStack>
-          <Avatar rounded={"$md"} size="md" bgColor="$red500">
+          <Avatar rounded={"$full"} size="lg" bgColor="$red500">
             <AvatarImage
-              rounded={"$md"}
+              rounded={"$full"}
               source={{ uri: user.image?.mediaUrl }}
               alt={"avatar"}
             />
@@ -50,22 +51,9 @@ const HomeTabTitle = ({
               {user.name[0]} {user.surname[0]}
             </AvatarFallbackText>
           </Avatar>
-        </>
-      ) : (
-        <ButtonGroup w={"$full"}>
-          <Link href={"/(auth)/login"} asChild>
-            <Button flex={1} variant="outline" action="positive">
-              <ButtonText>Sign in</ButtonText>
-            </Button>
-          </Link>
-          <Link href={"/(auth)/join"} asChild>
-            <Button flex={1} variant="solid" action="positive">
-              <ButtonText>Join us</ButtonText>
-            </Button>
-          </Link>
-        </ButtonGroup>
-      )}
-    </HStack>
+        </HStack>
+      </HStack>
+    )
   );
 };
 

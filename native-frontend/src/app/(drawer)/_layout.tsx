@@ -63,7 +63,12 @@ const Layout = () => {
           drawerLabel: "Rules",
         }}
       />
-      <Drawer.Screen name="concept" />
+      <Drawer.Screen
+        name="concept"
+        options={{
+          drawerLabel: "About ABM",
+        }}
+      />
       <Drawer.Screen
         name="news"
         options={{

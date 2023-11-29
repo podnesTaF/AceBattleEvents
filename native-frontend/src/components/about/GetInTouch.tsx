@@ -19,7 +19,7 @@ import React from "react";
 
 const GetInTouch = () => {
   return (
-    <VStack justifyContent="space-between" height={"$full"}>
+    <VStack pl={"$10"} justifyContent="space-between" height={"$full"}>
       <Box bg={"#ff0000"} borderBottomRightRadius={100} py={"$6"} px={"$3"}>
         <Heading color={"$white"} size={"xl"} mb={"$2"}>
           GET IN TOUCH

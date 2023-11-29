@@ -15,7 +15,7 @@ const Milestones = () => {
   return (
     <ConceptWrapper title={"MILESTONES"}>
       <ScrollView>
-        <Box flex={1} p={"$4"} pb={"$20"}>
+        <Box pl={"$8"} flex={1} p={"$4"} pb={"$20"}>
           <VStack>
             {milestones.map((m, i) => (
               <HStack key={i} borderBottomWidth={1} borderColor="#1e1c1f">

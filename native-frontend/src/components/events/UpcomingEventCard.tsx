@@ -2,12 +2,13 @@ import { StyleSheet } from "react-native";
 
 import { Box, HStack, Heading } from "@gluestack-ui/themed";
 import { IFutureEvent } from "@lib/models";
+import { scaleSize } from "@lib/utils";
 import { Image } from "expo-image";
 import React from "react";
 
 const UpcomingEventCard = ({ event }: { event: IFutureEvent }) => {
   return (
-    <HStack rounded={"$lg"}>
+    <HStack rounded={"$lg"} mb={scaleSize(46)}>
       <Box width={"100%"} height={200}>
         <Box
           overflow="hidden"
@@ -62,7 +63,7 @@ const UpcomingEventCard = ({ event }: { event: IFutureEvent }) => {
           <Heading
             px={"$8"}
             color={"$white"}
-            size={"lg"}
+            fontSize={scaleSize(18)}
             textTransform="capitalize"
           >
             {event.title}
@@ -93,13 +94,18 @@ const UpcomingEventCard = ({ event }: { event: IFutureEvent }) => {
         zIndex={-4}
         height={200}
         right={-12}
-        bottom={-42}
+        bottom={scaleSize(-40)}
         bg="$white"
         softShadow="1"
         borderBottomRightRadius={100}
         justifyContent="flex-end"
       >
-        <Heading size="lg" fontWeight="bold" textAlign="left" p={"$2"}>
+        <Heading
+          fontSize={scaleSize(16)}
+          fontWeight="bold"
+          textAlign="left"
+          p={"$2"}
+        >
           Comming soon...
         </Heading>
       </Box>

@@ -6,6 +6,7 @@ const ConceptWrapper = ({ title, secondaryBg, children }: any) => {
     <VStack space={"lg"} justifyContent="space-between" flex={1}>
       <VStack space="md">
         <Heading
+          pl={"$10"}
           mx={"$4"}
           maxWidth={"$4/5"}
           fontWeight="bold"
@@ -18,7 +19,13 @@ const ConceptWrapper = ({ title, secondaryBg, children }: any) => {
       </VStack>
       {isValidElement(children[1]) ? (
         <ScrollView>
-          <VStack flex={1} bg={secondaryBg || "#fff9ff"} p={"$6"} space={"md"}>
+          <VStack
+            pl={"$12"}
+            flex={1}
+            bg={secondaryBg || "#fff9ff"}
+            p={"$6"}
+            space={"md"}
+          >
             {children[1]}
           </VStack>
         </ScrollView>
