@@ -1,3 +1,4 @@
+import { Event } from "src/events/entities/event.entity";
 import { Media } from "src/media/entities/media.entity";
 import { News } from "src/news/entities/news.entity";
 import { NotificationEntity } from "src/notification/entities/notification.entity";
@@ -25,6 +26,12 @@ export class Content {
     onDelete: "CASCADE",
   })
   news: News;
+
+  @ManyToOne(() => Event, (event) => event.contents, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
+  event: Event;
 
   @ManyToOne(
     () => NotificationEntity,

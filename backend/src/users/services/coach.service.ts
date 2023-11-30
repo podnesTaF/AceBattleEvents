@@ -18,4 +18,15 @@ export class CoachService {
   findById(id: number) {
     return { id };
   }
+
+  async getCoachesByManager({ userId }: { userId: number }) {
+    return this.repository
+      .createQueryBuilder("coach")
+      .leftJoinAndSelect("coach.user", "user")
+      .leftJoinAndSelect("user.avatar", "avatar")
+      .leftJoinAndSelect("coach.manager", "manager")
+      .leftJoinAndSelect("manager.user", "managerUser")
+      .where("manager.userId = :userId", { userId })
+      .getMany();
+  }
 }

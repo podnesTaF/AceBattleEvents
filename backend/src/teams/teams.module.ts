@@ -4,6 +4,7 @@ import { BestsService } from "src/bests/bests.service";
 import { Best } from "src/bests/entities/best.entity";
 import { ClubService } from "src/club/club.service";
 import { Club } from "src/club/entities/club.entity";
+import { Content } from "src/content/entities/content.entity";
 import { CountryService } from "src/country/country.service";
 import { Country } from "src/country/entity/country.entity";
 import { Event } from "src/events/entities/event.entity";
@@ -21,6 +22,7 @@ import { Coach } from "src/users/entities/coach.entity";
 import { Manager } from "src/users/entities/manager.entity";
 import { Runner } from "src/users/entities/runner.entity";
 import { Spectator } from "src/users/entities/spectator.entity";
+import { User } from "src/users/entities/user.entity";
 import { ManagerService } from "src/users/services/manager.service";
 import { RunnerService } from "src/users/services/runner.service";
 import { SpectatorService } from "src/users/services/spectator.service";
@@ -44,6 +46,8 @@ import { TeamsService } from "./teams.service";
       Manager,
       Spectator,
       Runner,
+      Content,
+      User,
     ]),
   ],
   controllers: [TeamsController],

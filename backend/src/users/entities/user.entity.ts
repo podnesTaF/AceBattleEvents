@@ -3,6 +3,7 @@ import { Feedback } from "src/feedbacks/entities/feedback.entity";
 import { Media } from "src/media/entities/media.entity";
 import { NotificationEntity } from "src/notification/entities/notification.entity";
 import { Team } from "src/teams/entities/team.entity";
+import { ViewerRegistration } from "src/viewer-registrations/entities/viewer-registration.entity";
 import {
   Column,
   CreateDateColumn,
@@ -123,4 +124,11 @@ export class User {
   @ManyToMany(() => Team, (team) => team.followers)
   @JoinTable()
   followingTeams: Team[];
+
+  @OneToMany(
+    () => ViewerRegistration,
+    (viewerRegistration) => viewerRegistration.viewer,
+    { nullable: true },
+  )
+  viewerRegistrations: ViewerRegistration[];
 }

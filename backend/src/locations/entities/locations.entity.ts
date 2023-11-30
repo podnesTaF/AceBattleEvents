@@ -1,5 +1,5 @@
-import { Country } from 'src/country/entity/country.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Country } from "src/country/entity/country.entity";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Location {
@@ -15,8 +15,11 @@ export class Location {
   @Column()
   city: string;
 
+  @Column({ nullable: true })
+  stadium: string;
+
   @ManyToOne(() => Country, (country) => country.locations, {
-    onDelete: 'CASCADE',
+    onDelete: "CASCADE",
   })
   country: Country;
 }

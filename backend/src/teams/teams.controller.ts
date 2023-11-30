@@ -81,8 +81,11 @@ export class TeamsController {
   }
 
   @Get("/manager/:id")
-  findManagerTeams(@Param("id") id: string) {
-    return this.teamsService.findAllManagerTeams(+id);
+  findManagerTeams(
+    @Param("id") id: string,
+    @Query() query: { unregistered?: boolean; eventId?: string },
+  ) {
+    return this.teamsService.findAllManagerTeams(+id, query);
   }
 
   @Get("/registrations")

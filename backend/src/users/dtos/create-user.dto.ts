@@ -2,6 +2,7 @@ import {
   IsEmail,
   IsObject,
   IsOptional,
+  IsPhoneNumber,
   IsString,
   Length,
 } from "class-validator";
@@ -19,6 +20,13 @@ export class CreateUserDto {
 
   @IsEmail(undefined, { message: "Wrong email" })
   email: string;
+
+  @IsString()
+  @IsPhoneNumber()
+  phone: string;
+
+  @IsString()
+  countryCode: string;
 
   @IsObject()
   @IsOptional()
