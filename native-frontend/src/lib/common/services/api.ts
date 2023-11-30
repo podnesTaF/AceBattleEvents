@@ -36,10 +36,12 @@ export const api = createApi({
     "FutureEvent",
     "Team",
     "NewsPreview",
-    "Registrations",
+    "TeamRegistrations",
     "Notification",
     "RunnerPreview",
     "News",
+    "Coach",
+    "Registrations",
   ],
   endpoints: () => ({}),
 });

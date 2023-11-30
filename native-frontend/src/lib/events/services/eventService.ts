@@ -18,7 +18,10 @@ export const EventApi = api.injectEndpoints({
       query: (id) => ({
         url: `/events/info/${id}`,
       }),
-      providesTags: (result, error, id) => [{ type: "Event", id }],
+      providesTags: (result, error, id) => [
+        { type: "Event", id },
+        "TeamRegistrations",
+      ],
     }),
   }),
 });

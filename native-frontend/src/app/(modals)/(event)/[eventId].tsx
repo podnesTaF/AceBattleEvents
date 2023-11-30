@@ -15,7 +15,7 @@ import {
 } from "@gluestack-ui/themed";
 import { useGetEventInfoQuery } from "@lib/events/services";
 import { useAppSelector } from "@lib/hooks";
-import { EventInfo, IEvent } from "@lib/models";
+import { EventInfo } from "@lib/models";
 import { selectUser } from "@lib/store";
 import { formatDate } from "@lib/utils";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
@@ -185,7 +185,7 @@ const EventScreen = () => {
         <SkeletonLoader<EventInfo> data={eventInfo}>
           {(data) => (
             <VStack my={"$6"}>
-              <EventRegistrationSection user={user} event={data as IEvent} />
+              <EventRegistrationSection user={user} event={data} />
             </VStack>
           )}
         </SkeletonLoader>

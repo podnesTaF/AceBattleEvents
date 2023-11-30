@@ -2,11 +2,11 @@ import Container from "@Components/common/Container";
 import HeaderSubtitledTitle from "@Components/common/HeaderSubtitledTitle";
 import FormButton from "@Components/common/forms/FormButton";
 import PickField from "@Components/common/forms/PickField";
-import { coaches, teams } from "@Constants/dummy-data";
 import { Box, VStack } from "@gluestack-ui/themed";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch, useAppSelector } from "@lib/hooks";
 import { RegisterTeamForm } from "@lib/models";
+import { useGetTeamsByManagerQuery } from "@lib/services";
 import {
   clearAllItems,
   selectItems,
@@ -14,6 +14,8 @@ import {
   selectValues,
   setItems,
 } from "@lib/store";
+import { useRegisterTeamMutation } from "@lib/teams/services/teamRegistrationService";
+import { useGetCoachesByManagerQuery } from "@lib/user/services/CoachService";
 import {
   defineItemLabel,
   mapCoachesToPickItems,
@@ -21,14 +23,30 @@ import {
   registerTeamSchema,
 } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
+import { useNavigation } from "expo-router/src/useNavigation";
 import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 const RegisterTeamModal = () => {
+  const navigation = useNavigation();
   const params = useLocalSearchParams<{ eventId?: string }>();
   const user = useAppSelector(selectUser);
   const { newValues } = useAppSelector(selectValues);
   const { availableTeams, availableCoaches } = useAppSelector(selectItems);
+
+  const { data: teams, isLoading: isTeamsLoading } = useGetTeamsByManagerQuery({
+    managerId: user?.id,
+    unregistered: true,
+    eventId: params.eventId,
+  });
+
+  const { data: coaches, isLoading: isCoachesLoading } =
+    useGetCoachesByManagerQuery({
+      userId: user?.id,
+    });
+
+  const [registerTeam] = useRegisterTeamMutation();
+
   const dispatch = useAppDispatch();
 
   const form = useForm<RegisterTeamForm>({
@@ -38,27 +56,50 @@ const RegisterTeamModal = () => {
 
   useEffect(() => {
     dispatch(clearAllItems());
-    dispatch(
-      setItems({
-        key: "availableTeams",
-        items: mapTeamsToPickItems(teams),
-      })
-    );
-    dispatch(
-      setItems({
-        key: "availableCoaches",
-        items: mapCoachesToPickItems(coaches),
-      })
-    );
   }, [params.eventId]);
+
+  useEffect(() => {
+    if (teams) {
+      dispatch(
+        setItems({
+          key: "availableTeams",
+          items: mapTeamsToPickItems(teams),
+        })
+      );
+    }
+  }, [teams]);
+
+  useEffect(() => {
+    if (coaches) {
+      dispatch(
+        setItems({
+          key: "availableCoaches",
+          items: mapCoachesToPickItems(coaches),
+        })
+      );
+    }
+  }, [coaches]);
 
   useEffect(() => {
     form.setValue("coach", newValues.coach);
     form.setValue("team", newValues.team);
   }, [newValues.coach, newValues.team]);
 
-  const onRegister = (dto: RegisterTeamForm) => {
-    console.log(dto);
+  const onRegister = async (dto: RegisterTeamForm) => {
+    try {
+      const registration = await registerTeam({
+        eventId: +params.eventId!,
+        teamId: +dto.team,
+        coachId: +dto.coach,
+      }).unwrap();
+
+      if (registration) {
+        dispatch(clearAllItems());
+        navigation.goBack();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

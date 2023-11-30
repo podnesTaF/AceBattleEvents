@@ -20,6 +20,7 @@ export interface IUser {
   balance: number;
   token: string;
   clubId?: number;
+  avatar?: IMedia;
   image?: IMedia;
   role?: string;
 

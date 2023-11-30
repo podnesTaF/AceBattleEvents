@@ -17,8 +17,9 @@ export const mapCoachesToPickItems = (coaches?: ICoach[]): PickItem[] => {
   return (
     coaches?.map((item: ICoach) => ({
       id: item.id,
-      title: item.name + " " + item.surname,
+      title: item.user.name + " " + item.user.surname,
       additionalInfo: "coach",
+      imageUrl: item.user.avatar?.mediaUrl,
     })) || []
   );
 };

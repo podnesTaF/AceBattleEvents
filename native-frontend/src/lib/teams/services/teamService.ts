@@ -34,9 +34,14 @@ export const ServiceApi = api.injectEndpoints({
       }),
       providesTags: (result) => ["Team"],
     }),
-    getTeamsByManager: builder.query<ITeam[], number | undefined>({
-      query: (id) => ({
-        url: `/teams/manager/${id}`,
+    getTeamsByManager: builder.query<
+      ITeam[],
+      { unregistered?: boolean; eventId?: string; managerId?: number }
+    >({
+      query: ({ managerId, unregistered, eventId }) => ({
+        url: `/teams/manager/${managerId}?unregistered=${
+          unregistered || ""
+        }&eventId=${eventId || ""}`,
       }),
       providesTags: ["Team"],
     }),

@@ -7,7 +7,8 @@ import {
   Icon,
   VStack,
 } from "@gluestack-ui/themed";
-import { IEvent, IUser } from "@lib/models";
+import { EventInfo, IUser } from "@lib/models";
+import { formatDate } from "@lib/utils";
 import { Link, useRouter } from "expo-router";
 import { InfoIcon } from "lucide-react-native";
 import React from "react";
@@ -15,11 +16,10 @@ import { Text } from "react-native";
 
 interface Props {
   user?: IUser | null;
-  event: IEvent;
+  event: EventInfo;
 }
 
 const EventRegistrationSection: React.FC<Props> = ({ user, event }) => {
-  const [isRegistered, setIsRegistered] = React.useState(false);
   const router = useRouter();
 
   // fetch user status for current competition. Handle by state
@@ -31,13 +31,13 @@ const EventRegistrationSection: React.FC<Props> = ({ user, event }) => {
         <HStack space="md" alignItems="center">
           <Icon as={InfoIcon} color={"$primary400"} />
           <Text>
-            {isRegistered
+            {event.isRegisteredToVisit
               ? "You are registered for this event"
               : "Registrations are open"}
           </Text>
         </HStack>
         <Box w={"$full"} alignItems="center">
-          {isRegistered ? (
+          {event.isRegisteredToVisit ? (
             <Link href={"/(drawer)/(tabs)/(account)/calendar"} asChild>
               <Button>
                 <ButtonText>View in calendar</ButtonText>
@@ -73,6 +73,29 @@ const EventRegistrationSection: React.FC<Props> = ({ user, event }) => {
             <ButtonText>Register Teams</ButtonText>
           </Button>
         </Link>
+        {event.managerTeamRegistrations && (
+          <VStack my={"$2"} space="md">
+            <Heading size={"md"}>Registered Teams:</Heading>
+            {!event.managerTeamRegistrations.length ? (
+              <Heading size={"sm"} color={"$coolGray300"}>
+                No teams registered yet
+              </Heading>
+            ) : (
+              event.managerTeamRegistrations.map((registration) => (
+                <HStack
+                  key={registration.id}
+                  space="lg"
+                  justifyContent="space-between"
+                >
+                  <Heading size="sm">{registration.team.name}</Heading>
+                  <Heading size={"sm"} color={"$coolGray300"}>
+                    {formatDate(registration.createdAt)}
+                  </Heading>
+                </HStack>
+              ))
+            )}
+          </VStack>
+        )}
       </VStack>
     );
   }
