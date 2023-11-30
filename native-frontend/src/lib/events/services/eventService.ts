@@ -1,5 +1,5 @@
 import { api } from "@lib/services";
-import { EventResult, IEvent } from "../models";
+import { EventInfo, EventResult, IEvent } from "../models";
 
 export const EventApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -14,7 +14,17 @@ export const EventApi = api.injectEndpoints({
         url: `events/results/${id}`,
       }),
     }),
+    getEventInfo: builder.query<EventInfo, number>({
+      query: (id) => ({
+        url: `/events/info/${id}`,
+      }),
+      providesTags: (result, error, id) => [{ type: "Event", id }],
+    }),
   }),
 });
 
-export const { useGetAllEventsQuery, useFetchEventResultsQuery } = EventApi;
+export const {
+  useGetAllEventsQuery,
+  useFetchEventResultsQuery,
+  useGetEventInfoQuery,
+} = EventApi;

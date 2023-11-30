@@ -16,7 +16,7 @@ import {
   updateUserData,
 } from "@lib/store";
 import { useUpdateUserDataMutation } from "@lib/user/services/UserService";
-import { updateUserDataSchema } from "@lib/utils";
+import { updateUserDataSchema, uploadImage } from "@lib/utils";
 import { Stack, useNavigation } from "expo-router";
 import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -39,12 +39,21 @@ const ChangeUserData = () => {
     if (user?.id) {
       dispatch(
         setDefalutValues({
-          defaultValues: { image: user.image },
+          defaultValues: {
+            image: user.image,
+            ...user,
+          },
           newValues: {},
         })
       );
     }
   }, [user?.id]);
+
+  useEffect(() => {
+    if (defaultValues) {
+      form.reset(defaultValues);
+    }
+  }, [defaultValues]);
 
   const onImagePicked = (image: string, name: string) => {
     if (name === "image") {
@@ -57,10 +66,8 @@ const ChangeUserData = () => {
     // handle image upload
     let image: IMedia | undefined;
     if (dto.image) {
-      const response = await fetch(dto.image);
-      const blob = await response.blob();
       try {
-        const newImage = await addImage(blob).unwrap();
+        const newImage = await uploadImage(dto.image);
         image = newImage;
       } catch (error) {
         form.setError("image", { message: "error uploading new image" });

@@ -4,7 +4,7 @@ export const updateUserDataSchema = yup.object().shape({
   name: yup.string().required("Name is required"),
   surname: yup.string().required("Surname is required"),
   city: yup.string().required("City is required"),
-  country: yup.string().required("Country is required"),
+  country: yup.string(),
   image: yup.string(),
 });
 

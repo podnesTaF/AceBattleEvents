@@ -15,6 +15,11 @@ export type IEvent = {
   teams?: ITeam[];
 };
 
+export type EventInfo = IEvent & {
+  isRegisteredToVisit: boolean;
+  isOpenToRegister: boolean;
+};
+
 export type EventShortform = {
   id: number;
   title: string;

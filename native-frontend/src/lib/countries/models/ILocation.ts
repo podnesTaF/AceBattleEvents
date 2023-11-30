@@ -5,4 +5,5 @@ export type ILocation = {
   address: string;
   country: ICountry;
   city: string;
+  stadium?: string;
 };

@@ -8,3 +8,12 @@ export type IFutureEvent = {
   description?: string;
   introImage?: IMedia;
 };
+
+export type MappedFutureEvent = {
+  id: number;
+  title: string;
+  season?: string;
+  date?: string;
+  introImage?: IMedia;
+  infoAvailable?: boolean;
+};

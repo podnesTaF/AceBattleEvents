@@ -11,8 +11,7 @@ import { useAppDispatch, useAppSelector } from "@lib/hooks";
 import { IMedia } from "@lib/models";
 import { useRegisterUserMutation, useUploadImageMutation } from "@lib/services";
 import { clearAllValues, selectValues } from "@lib/store";
-import { CreateUserSchema, createUserSchema } from "@lib/utils";
-import axios from "axios";
+import { CreateUserSchema, createUserSchema, uploadImage } from "@lib/utils";
 import { useRouter } from "expo-router";
 import { MailIcon } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
@@ -78,26 +77,14 @@ const UserJoinForm = () => {
 
     try {
       if (data.avatar) {
-        const response = await fetch(data.avatar);
-        const blob = await response.blob();
-
-        const formData = new FormData();
-        formData.append("image", blob);
-
-        const { data: newMedia } = await axios.post<IMedia>(
-          "http://192:168.1.13:4000",
-          formData
-        );
-        avatar = newMedia;
+        const newImage = await uploadImage(data.avatar);
+        avatar = newImage;
       }
       if (data.image) {
-        const response = await fetch(data.image);
-        const blob = await response.blob();
-        const newImage = await uploadMedia(blob).unwrap();
+        const newImage = await uploadImage(data.image);
         image = newImage;
       }
     } catch (error) {
-      console.log(error);
       form.setError("root", { message: "Error uploading new image" });
       return;
     }
@@ -108,7 +95,6 @@ const UserJoinForm = () => {
 
     if (!country) {
       form.setError("root", { message: "you did not provide country" });
-      console.log("country");
       return;
     }
 
@@ -129,8 +115,6 @@ const UserJoinForm = () => {
       form.setError("root", { message: "error registering user" });
     }
   };
-
-  console.log(form.formState.isValid);
 
   const onImagePicked = (image: string, name: string) => {
     if (name === "avatar") {
@@ -288,6 +272,7 @@ const UserJoinForm = () => {
                   Confirmation Required
                 </Heading>
                 <Image
+                  role="img"
                   source={require("@Assets/images/confirm-email.png")}
                   width={140}
                   height={80}

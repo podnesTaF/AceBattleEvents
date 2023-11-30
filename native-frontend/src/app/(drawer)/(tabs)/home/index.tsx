@@ -14,7 +14,7 @@ import { useFetchFutureEventsQuery } from "@lib/events/services/futureEventsServ
 import { useAppSelector } from "@lib/hooks";
 import { useFetchNewsPreviewsQuery, useGetAllTeamsQuery } from "@lib/services";
 import { selectUser } from "@lib/store";
-import { scaleSize } from "@lib/utils";
+import { mapFutureEvents, scaleSize } from "@lib/utils";
 import { Image } from "expo-image";
 import { Stack } from "expo-router";
 import React from "react";
@@ -28,7 +28,7 @@ import Animated, {
 
 const Page = () => {
   const user = useAppSelector(selectUser);
-  const { data: futureEvents, error, isLoading } = useFetchFutureEventsQuery();
+  const { data: eventsData, error, isLoading } = useFetchFutureEventsQuery();
   const { data: teamsData, isLoading: isTeamsLoading } = useGetAllTeamsQuery({
     limit: 4,
   });
@@ -104,7 +104,7 @@ const Page = () => {
             </Heading>
             <HorizontalListLayout
               identifier="event"
-              items={futureEvents}
+              items={mapFutureEvents(eventsData)}
               ItemComponent={UpcomingEventCard}
               isLoading={isLoading}
             />
