@@ -43,6 +43,7 @@ export class UserService {
     user.email = dto.email;
     user.image = dto.image;
     user.avatar = dto.avatar;
+    user.phone = dto.countryCode + " " + dto.phone;
     user.city = dto.city;
     let country = await this.countryService.returnIfExist({
       name: dto.country,
@@ -62,8 +63,6 @@ export class UserService {
       } catch (error) {
         throw new ForbiddenException(error.message);
       }
-    } else if (dto.spectator) {
-      await this.spectatorService.create(dto.spectator, newUser);
     }
 
     const randomToken = uuid.v4().toString();

@@ -161,16 +161,29 @@ export class TeamsService {
       .getMany();
   }
 
-  async findAllManagerTeams(userId: number) {
-    const teams = await this.repository
+  async findAllManagerTeams(
+    userId: number,
+    { unregistered, eventId }: { unregistered?: boolean; eventId?: string },
+  ) {
+    const qb = this.repository
       .createQueryBuilder("team")
+      .leftJoinAndSelect("team.country", "country")
       .leftJoinAndSelect("team.logo", "logo")
       .leftJoinAndSelect("team.teamImage", "teamImage")
       .leftJoinAndSelect("team.manager", "manager")
       .leftJoinAndSelect("team.coach", "coach")
       .leftJoinAndSelect("manager.user", "user")
-      .where("user.id = :userId", { userId })
-      .getMany();
+      .where("user.id = :userId", { userId });
+
+    if (unregistered && eventId) {
+      qb.leftJoinAndSelect("team.eventRegistrations", "eventRegistrations")
+        .leftJoinAndSelect("eventRegistrations.event", "event")
+        .andWhere("event.id != :eventId", { eventId: +eventId })
+        .orWhere("eventRegistrations.id is null")
+        .andWhere("user.id = :userId", { userId });
+    }
+
+    const teams = await qb.getMany();
 
     return teams;
   }

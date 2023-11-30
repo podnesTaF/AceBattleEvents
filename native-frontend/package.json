@@ -1,5 +1,5 @@
 {
-  "name": "native-frontend",
+  "name": "ace-battle-mile",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
@@ -41,6 +41,7 @@
     "javascript-time-ago": "^2.5.9",
     "lodash.debounce": "^4.0.8",
     "lucide-react-native": "^0.292.0",
+    "mime": "^4.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.48.2",

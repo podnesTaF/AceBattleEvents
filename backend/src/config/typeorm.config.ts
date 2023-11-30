@@ -21,6 +21,7 @@ import { Race } from "src/race/entities/race.entity";
 import { ResetUser } from "src/reset-user/entities/reset-user.entity";
 import { RunnerResult } from "src/runner-results/entities/runner-results.entity";
 import { Split } from "src/splits/entities/splits.entity";
+import { TeamRegistration } from "src/team-registration/entities/team-registration.entity";
 import { TeamResult } from "src/team-results/entities/team-results.entity";
 import { Team } from "src/teams/entities/team.entity";
 import { Coach } from "src/users/entities/coach.entity";
@@ -69,6 +70,7 @@ const config: TypeOrmModuleOptions = {
     Spectator,
     Feedback,
     FutureEvent,
+    TeamRegistration,
     NotificationEntity,
   ],
   synchronize: true,

@@ -1,10 +1,12 @@
-import { Hashtag } from 'src/hashtag/entities/hashtag.entity';
-import { Location } from 'src/locations/entities/locations.entity';
-import { Media } from 'src/media/entities/media.entity';
-import { PrizeEntity } from 'src/prizes/entities/prize.entity';
-import { Race } from 'src/race/entities/race.entity';
-import { Team } from 'src/teams/entities/team.entity';
-import { ViewerRegistration } from 'src/viewer-registrations/entities/viewer-registration.entity';
+import { Content } from "src/content/entities/content.entity";
+import { Hashtag } from "src/hashtag/entities/hashtag.entity";
+import { Location } from "src/locations/entities/locations.entity";
+import { Media } from "src/media/entities/media.entity";
+import { PrizeEntity } from "src/prizes/entities/prize.entity";
+import { Race } from "src/race/entities/race.entity";
+import { TeamRegistration } from "src/team-registration/entities/team-registration.entity";
+import { Team } from "src/teams/entities/team.entity";
+import { ViewerRegistration } from "src/viewer-registrations/entities/viewer-registration.entity";
 import {
   Column,
   Entity,
@@ -14,7 +16,7 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm';
+} from "typeorm";
 
 @Entity()
 export class Event {
@@ -28,7 +30,7 @@ export class Event {
   description: string;
 
   @Column({
-    default: 'outdoor',
+    default: "outdoor",
   })
   category: string;
 
@@ -46,11 +48,17 @@ export class Event {
   @JoinColumn()
   minorImage: Media;
 
-  @OneToOne(() => Location, { onDelete: 'CASCADE' })
+  @OneToMany(() => Content, (content) => content.event, { nullable: true })
+  contents: Content[];
+
+  @OneToOne(() => Location, { onDelete: "CASCADE" })
   @JoinColumn()
   location: Location;
 
-  @OneToMany(() => PrizeEntity, (prize) => prize.event, { onDelete: 'CASCADE' })
+  @OneToMany(() => PrizeEntity, (prize) => prize.event, {
+    onDelete: "CASCADE",
+    nullable: true,
+  })
   prizes: PrizeEntity[];
 
   @OneToMany(
@@ -59,13 +67,20 @@ export class Event {
   )
   viewerRegistrations: ViewerRegistration[];
 
+  // to remove
   @ManyToMany(() => Team, (team) => team.events, {
-    onDelete: 'CASCADE',
+    onDelete: "CASCADE",
   })
   teams: Team[];
 
+  @OneToMany(
+    () => TeamRegistration,
+    (teamRegistration) => teamRegistration.event,
+  )
+  teamRegistrations: TeamRegistration[];
+
   @ManyToMany(() => Hashtag, (hashtag) => hashtag.events, {
-    onDelete: 'CASCADE',
+    onDelete: "CASCADE",
     nullable: true,
   })
   hashtags: Hashtag[];

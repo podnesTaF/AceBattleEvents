@@ -1,7 +1,7 @@
-import { Event } from 'src/events/entities/event.entity';
-import { Media } from 'src/media/entities/media.entity';
-import { Spectator } from 'src/users/entities/spectator.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Event } from "src/events/entities/event.entity";
+import { Media } from "src/media/entities/media.entity";
+import { User } from "src/users/entities/user.entity";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class ViewerRegistration {
@@ -20,17 +20,17 @@ export class ViewerRegistration {
   @Column({ nullable: true })
   gender: string;
 
-  @ManyToOne(() => Spectator, (spectator) => spectator.viewerRegistrations, {
+  @ManyToOne(() => User, (user) => user.viewerRegistrations, {
     nullable: true,
   })
-  viewer: Spectator;
+  viewer: User;
 
   @ManyToOne(() => Event, (event) => event.viewerRegistrations)
   event: Event;
 
-  @ManyToOne(() => Media, { nullable: true, onDelete: 'SET NULL' })
+  @ManyToOne(() => Media, { nullable: true, onDelete: "SET NULL" })
   qrcode: Media;
 
-  @ManyToOne(() => Media, { nullable: true, onDelete: 'SET NULL' })
+  @ManyToOne(() => Media, { nullable: true, onDelete: "SET NULL" })
   ticket: Media;
 }

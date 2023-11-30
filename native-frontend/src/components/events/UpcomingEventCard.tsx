@@ -1,14 +1,16 @@
-import { StyleSheet } from "react-native";
-
+import AbmButton from "@Components/common/buttons/AbmButton";
 import { Box, HStack, Heading } from "@gluestack-ui/themed";
-import { IFutureEvent } from "@lib/models";
-import { scaleSize } from "@lib/utils";
+import { MappedFutureEvent } from "@lib/models";
+import { formatDate, scaleSize } from "@lib/utils";
 import { Image } from "expo-image";
+import { useRouter } from "expo-router";
 import React from "react";
 
-const UpcomingEventCard = ({ event }: { event: IFutureEvent }) => {
+const UpcomingEventCard = ({ event }: { event: MappedFutureEvent }) => {
+  const router = useRouter();
+
   return (
-    <HStack rounded={"$lg"} mb={scaleSize(46)}>
+    <HStack rounded={"$lg"} mb={scaleSize(50)}>
       <Box width={"100%"} height={200}>
         <Box
           overflow="hidden"
@@ -83,7 +85,7 @@ const UpcomingEventCard = ({ event }: { event: IFutureEvent }) => {
             borderBottomWidth={0}
           >
             <Heading textAlign="right" size={"md"} color={"$white"}>
-              {event.season}
+              {event.season ? event.season : formatDate(event.date, false)}
             </Heading>
           </Box>
         </Box>
@@ -94,66 +96,33 @@ const UpcomingEventCard = ({ event }: { event: IFutureEvent }) => {
         zIndex={-4}
         height={200}
         right={-12}
-        bottom={scaleSize(-40)}
+        bottom={scaleSize(-45)}
         bg="$white"
         softShadow="1"
         borderBottomRightRadius={100}
         justifyContent="flex-end"
       >
-        <Heading
-          fontSize={scaleSize(16)}
-          fontWeight="bold"
-          textAlign="left"
-          p={"$2"}
-        >
-          Comming soon...
-        </Heading>
+        {event.infoAvailable ? (
+          <Box py={"$1"} alignItems="center">
+            <AbmButton
+              title="View details"
+              size="sm"
+              onPress={() => router.push(`/(modals)/(event)/${event.id}`)}
+            />
+          </Box>
+        ) : (
+          <Heading
+            fontSize={scaleSize(16)}
+            fontWeight="bold"
+            textAlign="left"
+            p={"$2"}
+          >
+            Comming Soon...
+          </Heading>
+        )}
       </Box>
     </HStack>
   );
 };
 
 export default UpcomingEventCard;
-
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 16,
-    fontWeight: "600",
-    marginBottom: 16,
-    textTransform: "uppercase",
-  },
-  container: {
-    width: "100%",
-    paddingHorizontal: 16,
-    position: "relative",
-  },
-  mainCard: {
-    borderRadius: 10,
-    width: "100%",
-    height: 250,
-    justifyContent: "flex-end",
-  },
-  cardTitleBox: {
-    backgroundColor: "#000000",
-    padding: 12,
-    borderBottomStartRadius: 10,
-    borderBottomRightRadius: 10,
-  },
-  cardTitle: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: "white",
-  },
-  shadowCard: {
-    position: "absolute",
-    bottom: 0,
-    right: -5,
-    borderRadius: 10,
-    zIndex: -10,
-    backgroundColor: "#f9f9f9",
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
-    width: "100%",
-    height: "100%",
-  },
-});

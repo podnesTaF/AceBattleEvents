@@ -21,7 +21,9 @@ import React from "react";
 
 const TeamsSetting = () => {
   const user = useAppSelector(selectUser);
-  const { data: teams, isLoading } = useGetTeamsByManagerQuery(user?.id);
+  const { data: teams, isLoading } = useGetTeamsByManagerQuery({
+    managerId: user?.id,
+  });
   return (
     <>
       <Stack.Screen

@@ -1,3 +1,4 @@
+import { TeamRegistration } from "src/team-registration/entities/team-registration.entity";
 import { Team } from "src/teams/entities/team.entity";
 import {
   Entity,
@@ -26,4 +27,7 @@ export class Coach {
   @OneToOne(() => User, (user) => user.coach)
   @JoinColumn()
   user: User;
+
+  @OneToMany(() => TeamRegistration, (reg) => reg.coach, { nullable: true })
+  teamRegistrations: TeamRegistration[];
 }

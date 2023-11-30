@@ -1,4 +1,10 @@
-import { ILocation, IMedia, IPrize, ITeam } from "@lib/models";
+import {
+  ILocation,
+  IMedia,
+  IPrize,
+  ITeam,
+  ITeamRegistration,
+} from "@lib/models";
 
 export type IEvent = {
   id?: number;
@@ -13,6 +19,14 @@ export type IEvent = {
   totalPrize?: number;
   prizes: IPrize[];
   teams?: ITeam[];
+};
+
+export type EventInfo = IEvent & {
+  isRegisteredToVisit: boolean;
+  isOpenToRegister: boolean;
+  managerTeamRegistrations?: ITeamRegistration[];
+  runnerTeamRegistrations?: ITeamRegistration[];
+  coachTeamRegistrations?: ITeamRegistration[];
 };
 
 export type EventShortform = {

@@ -8,13 +8,24 @@ export class FutureEventsService {
   constructor(
     @InjectRepository(FutureEvent)
     private readonly repository: Repository<FutureEvent>,
+    @InjectRepository(Event)
+    private readonly eventRepository: Repository<Event>,
   ) {}
 
   async create(event: Partial<FutureEvent>) {
     return await this.repository.save(event);
   }
 
-  getAll() {
-    return this.repository.find({ relations: ["introImage"] });
+  async getAll() {
+    const futureEvents = await this.repository.find({
+      relations: ["introImage"],
+    });
+    const events = await this.eventRepository
+      .createQueryBuilder("event")
+      .leftJoinAndSelect("event.introImage", "introImage")
+      .where("event.startDateTime > :date", { date: new Date() })
+      .getMany();
+
+    return { futureEvents, events };
   }
 }

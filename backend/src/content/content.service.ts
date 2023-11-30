@@ -14,12 +14,17 @@ export class ContentService {
 
   create(
     createContentDto: CreateContentDto,
-    { newsId, notificationId }: { newsId?: number; notificationId?: number },
+    {
+      newsId,
+      notificationId,
+      eventId,
+    }: { newsId?: number; notificationId?: number; eventId?: number },
   ) {
     return this.repository.save({
       ...createContentDto,
       notificationId: notificationId,
       newsId,
+      eventId,
     });
   }
 

@@ -19,7 +19,7 @@ const EventLocations: React.FC<Props> = ({ event }) => {
             <Heading size={"sm"} color={"$coolGray300"}>
               Stadium
             </Heading>
-            <Text>{event.location.address}</Text>
+            <Text>{event.location.stadium || event.location.address}</Text>
           </VStack>
           <VStack>
             <Heading size={"sm"} color={"$coolGray300"}>

@@ -12,14 +12,14 @@ import { Box, Heading, VStack } from "@gluestack-ui/themed";
 import { useFetchFutureEventsQuery } from "@lib/events/services";
 import { useAppSelector } from "@lib/hooks";
 import { selectUser } from "@lib/store";
-import { scaleSize } from "@lib/utils";
+import { mapFutureEvents, scaleSize } from "@lib/utils";
 import { Stack } from "expo-router";
 import React from "react";
 import { ScrollView } from "react-native-gesture-handler";
 
 const EventsScreen = () => {
   const user = useAppSelector(selectUser);
-  const { data: futureEvents, error, isLoading } = useFetchFutureEventsQuery();
+  const { data: eventsData, error, isLoading } = useFetchFutureEventsQuery();
   return (
     <Box bgColor="#fff9ff">
       <Stack.Screen
@@ -43,7 +43,7 @@ const EventsScreen = () => {
           <WithLoading isLoading={isLoading}>
             <HorizontalListLayout
               identifier="event"
-              items={futureEvents}
+              items={mapFutureEvents(eventsData)}
               ItemComponent={UpcomingEventCard}
               isLoading={isLoading}
             />

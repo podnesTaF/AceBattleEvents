@@ -13,9 +13,9 @@ import React from "react";
 import UserCard from "../UserCard";
 
 const TeamsAndRunners = ({ user }: { user: IUser }): JSX.Element => {
-  const { data: teams, isLoading: isTeamsLoading } = useGetTeamsByManagerQuery(
-    user?.id
-  );
+  const { data: teams, isLoading: isTeamsLoading } = useGetTeamsByManagerQuery({
+    managerId: user?.id,
+  });
   const { data: runners, isLoading: isRunnerLoading } =
     useGetRunnersByManagerQuery(user.manager?.id);
 
