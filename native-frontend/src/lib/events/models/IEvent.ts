@@ -17,6 +17,7 @@ export type IEvent = {
   teamsCount?: number;
   location: ILocation;
   totalPrize?: number;
+  attendanceType: "free" | "paid";
   prizes: IPrize[];
   teams?: ITeam[];
 };
@@ -27,6 +28,7 @@ export type EventInfo = IEvent & {
   managerTeamRegistrations?: ITeamRegistration[];
   runnerTeamRegistrations?: ITeamRegistration[];
   coachTeamRegistrations?: ITeamRegistration[];
+  allTeamsRegistered?: boolean;
 };
 
 export type EventShortform = {

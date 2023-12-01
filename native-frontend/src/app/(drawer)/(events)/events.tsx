@@ -4,6 +4,8 @@ import AuthCallToAction from "@Components/auth/AuthCallToAction";
 import Container from "@Components/common/Container";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
 import SearchTitle from "@Components/common/SearchTitle";
+import SkeletonLoader from "@Components/common/states/SkeletonLoader";
+import ListStyledWrapper from "@Components/common/wrappers/ListStyledWrapper";
 import EventCard from "@Components/events/EventCard";
 import RegistrationsSection from "@Components/events/RegistrationsSection";
 import UpcomingEventCard from "@Components/events/UpcomingEventCard";
@@ -11,14 +13,18 @@ import { events } from "@Constants/dummy-data";
 import { Box, Heading, VStack } from "@gluestack-ui/themed";
 import { useFetchFutureEventsQuery } from "@lib/events/services";
 import { useAppSelector } from "@lib/hooks";
+import { IViewer } from "@lib/models";
+import { useFetchSpectatorRegistrationsQuery } from "@lib/services";
 import { selectUser } from "@lib/store";
-import { mapFutureEvents, scaleSize } from "@lib/utils";
+import { mapFutureEvents } from "@lib/utils";
 import { Stack } from "expo-router";
 import React from "react";
 import { ScrollView } from "react-native-gesture-handler";
 
 const EventsScreen = () => {
   const user = useAppSelector(selectUser);
+  const { data: myRegistrations, isLoading: isLoadingRegistrations } =
+    useFetchSpectatorRegistrationsQuery();
   const { data: eventsData, error, isLoading } = useFetchFutureEventsQuery();
   return (
     <Box bgColor="#fff9ff">
@@ -56,43 +62,27 @@ const EventsScreen = () => {
                 <Heading size={"lg"} mb={"$4"}>
                   Your Registrations
                 </Heading>
-                <RegistrationsSection user={user} events={events} />
+                <SkeletonLoader<IViewer[]> data={myRegistrations}>
+                  {(data) =>
+                    data.map((reg) => (
+                      <RegistrationsSection
+                        key={reg.id}
+                        user={user}
+                        events={[]}
+                      />
+                    ))
+                  }
+                </SkeletonLoader>
               </Box>
             </Container>
           ) : (
             <AuthCallToAction screen="events" />
           )}
         </Box>
-        <VStack
-          space="md"
-          w={"$full"}
-          mb={"$1/3"}
-          py={"$3"}
-          borderTopRightRadius={200}
-          borderBottomRightRadius={100}
-          bgColor="#ff0000"
-        >
-          <Heading color={"$white"} mx={"$4"} size="lg">
-            Past Events
-          </Heading>
-          <Box
-            p={"$3"}
-            bg={"$white"}
-            alignSelf="center"
-            borderTopRightRadius={scaleSize(50)}
-            borderBottomRightRadius={scaleSize(10)}
-            borderTopLeftRadius={scaleSize(80)}
-            borderBottomLeftRadius={scaleSize(90)}
-            borderWidth={2}
-            borderColor="$coolGray200"
-            width={scaleSize(360)}
-            overflow="hidden"
-            pl={scaleSize(32)}
-          >
-            <EventCard event={events[0] as any} />
-            <EventCard isLast={true} event={events[0] as any} />
-          </Box>
-        </VStack>
+        <ListStyledWrapper title={"Past Events"}>
+          <EventCard event={events[0] as any} />
+          <EventCard isLast={true} event={events[0] as any} />
+        </ListStyledWrapper>
       </ScrollView>
     </Box>
   );

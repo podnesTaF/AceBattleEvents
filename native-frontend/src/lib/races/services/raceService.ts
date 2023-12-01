@@ -9,7 +9,21 @@ export const raceApi = api.injectEndpoints({
       }),
       providesTags: (result) => ["Race"],
     }),
+    checkInForRace: builder.mutation<
+      { success: boolean },
+      {
+        runnerIds: number[];
+        raceRegistrationId: number;
+      }
+    >({
+      query: (dto) => ({
+        url: `race-registrations/check-in`,
+        method: "PATCH",
+        body: dto,
+      }),
+      invalidatesTags: ["Race"],
+    }),
   }),
 });
 
-export const { useGetFullRaceQuery } = raceApi;
+export const { useGetFullRaceQuery, useCheckInForRaceMutation } = raceApi;

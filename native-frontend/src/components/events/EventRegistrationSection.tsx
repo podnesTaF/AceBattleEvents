@@ -1,3 +1,4 @@
+import InfoTemplate from "@Components/common/InfoTemplate";
 import {
   Box,
   Button,
@@ -24,33 +25,55 @@ const EventRegistrationSection: React.FC<Props> = ({ user, event }) => {
 
   // fetch user status for current competition. Handle by state
 
+  if (!event.isOpenToRegister) {
+    return (
+      <VStack space="lg" p={"$3"} bg={"$white"}>
+        <Heading size={"lg"}>Registrations</Heading>
+        <InfoTemplate
+          title="Registrations are closed"
+          text="You can't register to this event anymore."
+        />
+      </VStack>
+    );
+  }
+
   if (user?.role === "spectator") {
     return (
       <VStack space="lg" p={"$3"} bg={"$white"}>
         <Heading size={"lg"}>Attend the Event</Heading>
-        <HStack space="md" alignItems="center">
-          <Icon as={InfoIcon} color={"$primary400"} />
-          <Text>
-            {event.isRegisteredToVisit
-              ? "You are registered for this event"
-              : "Registrations are open"}
-          </Text>
-        </HStack>
-        <Box w={"$full"} alignItems="center">
-          {event.isRegisteredToVisit ? (
-            <Link href={"/(drawer)/(tabs)/(account)/calendar"} asChild>
-              <Button>
-                <ButtonText>View in calendar</ButtonText>
-              </Button>
-            </Link>
-          ) : (
-            <Link href={"/(modals)/(event)/attend-event"} asChild>
-              <Button>
-                <ButtonText>Attend the event</ButtonText>
-              </Button>
-            </Link>
-          )}
-        </Box>
+        {event.attendanceType === "free" ? (
+          <InfoTemplate
+            type="success"
+            title={"The Event is free to visit"}
+            text={"You can come without any registrations"}
+          />
+        ) : (
+          <>
+            <HStack space="md" alignItems="center">
+              <Icon as={InfoIcon} color={"$primary400"} />
+              <Text>
+                {event.isRegisteredToVisit
+                  ? "You are registered for this event"
+                  : "Registrations are open"}
+              </Text>
+            </HStack>
+            <Box w={"$full"} alignItems="center">
+              {event.isRegisteredToVisit ? (
+                <Link href={"/(drawer)/(tabs)/(account)/calendar"} asChild>
+                  <Button>
+                    <ButtonText>View in calendar</ButtonText>
+                  </Button>
+                </Link>
+              ) : (
+                <Link href={"/(modals)/(event)/attend-event"} asChild>
+                  <Button>
+                    <ButtonText>Visit the event</ButtonText>
+                  </Button>
+                </Link>
+              )}
+            </Box>
+          </>
+        )}
       </VStack>
     );
   }
@@ -62,17 +85,23 @@ const EventRegistrationSection: React.FC<Props> = ({ user, event }) => {
           <Icon as={InfoIcon} color={"$primary400"} />
           <Text>Registrations are open</Text>
         </HStack>
-        <Link
-          href={{
-            pathname: "/(modals)/(event)/register-team",
-            params: { eventId: event.id + "" },
-          }}
-          asChild
-        >
-          <Button>
-            <ButtonText>Register Teams</ButtonText>
-          </Button>
-        </Link>
+        {!event.allTeamsRegistered ? (
+          <Link
+            href={{
+              pathname: "/(modals)/(event)/register-team",
+              params: { eventId: event.id + "" },
+            }}
+            asChild
+          >
+            <Button>
+              <ButtonText>Register Teams</ButtonText>
+            </Button>
+          </Link>
+        ) : (
+          <Heading size={"sm"} textAlign="center" color={"$coolGray400"}>
+            You registered all your teams
+          </Heading>
+        )}
         {event.managerTeamRegistrations && (
           <VStack my={"$2"} space="md">
             <Heading size={"md"}>Registered Teams:</Heading>

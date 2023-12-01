@@ -52,7 +52,9 @@ const EventCard: React.FC<Props> = ({ event, children, passed, isLast }) => {
                 maxHeight={"$7"}
               />
             )}
-            <Heading size={"md"}>{event.location.country.name}</Heading>
+            <Heading size={"md"}>
+              {event.location.city}, {event.location.country.name}
+            </Heading>
           </HStack>
         </HStack>
         {children}
