@@ -1,6 +1,7 @@
-import { Event } from 'src/events/entities/event.entity';
-import { TeamResult } from 'src/team-results/entities/team-results.entity';
-import { Team } from 'src/teams/entities/team.entity';
+import { Event } from "src/events/entities/event.entity";
+import { RaceRegistration } from "src/race-registration/entities/race-registration.entity";
+import { TeamResult } from "src/team-results/entities/team-results.entity";
+import { Team } from "src/teams/entities/team.entity";
 import {
   Column,
   Entity,
@@ -9,7 +10,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-} from 'typeorm';
+} from "typeorm";
 
 @Entity()
 export class Race {
@@ -22,16 +23,28 @@ export class Race {
   @Column()
   name: string;
 
-  @Column({ default: 'male' })
+  @Column({ default: "male" })
   type: string;
 
-  @ManyToMany(() => Team, (team) => team.races)
+  // TO REMOVE
+  @ManyToMany(() => Team, (team) => team.races, {
+    nullable: true,
+  })
   @JoinTable()
   teams: Team[];
 
+  @OneToMany(
+    () => RaceRegistration,
+    (raceRegistration) => raceRegistration.race,
+    {
+      nullable: true,
+    },
+  )
+  teamRegistrations: RaceRegistration[];
+
   @ManyToOne(() => Team, (team) => team.wonRaces, {
     nullable: true,
-    onDelete: 'CASCADE',
+    onDelete: "CASCADE",
   })
   winner: Team;
 

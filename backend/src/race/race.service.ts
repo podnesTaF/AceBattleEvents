@@ -1,10 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Event } from 'src/events/entities/event.entity';
-import { Team } from 'src/teams/entities/team.entity';
-import { Repository } from 'typeorm';
-import { CreateRaceDto } from './dto/create-race.dto';
-import { Race } from './entities/race.entity';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Event } from "src/events/entities/event.entity";
+import { RaceRegistrationService } from "src/race-registration/race-registration.service";
+import { Team } from "src/teams/entities/team.entity";
+import { Repository } from "typeorm";
+import { CreateRaceDto } from "./dto/create-race.dto";
+import { Race } from "./entities/race.entity";
 
 @Injectable()
 export class RaceService {
@@ -15,32 +20,53 @@ export class RaceService {
     private teamRepository: Repository<Team>,
     @InjectRepository(Event)
     private eventRepository: Repository<Event>,
+    private raceRegistrationService: RaceRegistrationService,
   ) {}
 
   async createRace(dto: CreateRaceDto) {
-    const teams = [];
-
-    for (const teamId of dto.teamIds) {
-      const team = await this.teamRepository.findOne({ where: { id: teamId } });
-      if (team) {
-        teams.push(team);
-      }
-    }
-
-    const event = await this.eventRepository.findOne({
+    const event = await this.eventRepository.findOneOrFail({
       where: { id: dto.eventId },
+      relations: ["teamRegistrations.team"],
     });
 
-    if (!event) {
-      throw new Error('You provided wrong event');
+    let unregisteredTeamForEventIds = dto.teamIds.filter(
+      (tId) => !event.teamRegistrations.some((reg) => reg.team.id === tId),
+    );
+    if (unregisteredTeamForEventIds.length > 0) {
+      throw new BadRequestException(
+        `Teams with ids: ${unregisteredTeamForEventIds.reduce(
+          (acc, curr) => acc + curr + ", ",
+          "",
+        )} are not registered for this event`,
+      );
     }
 
-    return this.repository.save({
+    if (event.startDateTime < new Date()) {
+      throw new ForbiddenException(
+        "You are not allowed to register for past events",
+      );
+    }
+
+    const race = await this.repository.save({
       startTime: dto.startTime,
-      teams,
       event,
       name: dto.name,
     });
+
+    const raceRegistrations = [];
+
+    for (const teamId of dto.teamIds) {
+      const raceRegistration = await this.raceRegistrationService.create({
+        teamId: teamId,
+        raceId: race.id,
+      });
+
+      raceRegistrations.push(raceRegistration);
+    }
+
+    race.teamRegistrations = raceRegistrations;
+
+    return this.repository.save(race);
   }
 
   async getAllRaces(queries: {
@@ -57,24 +83,24 @@ export class RaceService {
     const limit = +queries?.limit || 5;
 
     const qb = this.repository
-      .createQueryBuilder('race')
-      .leftJoinAndSelect('race.event', 'event')
-      .leftJoinAndSelect('event.location', 'location')
-      .leftJoinAndSelect('location.country', 'country')
-      .leftJoinAndSelect('race.winner', 'winner')
-      .leftJoinAndSelect('race.teamResults', 'teamResults')
-      .leftJoinAndSelect('teamResults.team', 'team');
+      .createQueryBuilder("race")
+      .leftJoinAndSelect("race.event", "event")
+      .leftJoinAndSelect("event.location", "location")
+      .leftJoinAndSelect("location.country", "country")
+      .leftJoinAndSelect("race.winner", "winner")
+      .leftJoinAndSelect("race.teamResults", "teamResults")
+      .leftJoinAndSelect("teamResults.team", "team");
 
     if (queries.name) {
-      qb.andWhere('event.title LIKE :name', { name: `%${queries.name}%` });
+      qb.andWhere("event.title LIKE :name", { name: `%${queries.name}%` });
     }
 
     if (queries.category) {
-      qb.andWhere('event.category = :category', { category: queries.category });
+      qb.andWhere("event.category = :category", { category: queries.category });
     }
 
     if (queries.country) {
-      qb.andWhere('country.name LIKE :country', {
+      qb.andWhere("country.name LIKE :country", {
         country: `%${queries.country}%`,
       });
     }
@@ -82,12 +108,12 @@ export class RaceService {
     if (queries.year) {
       const year = +queries.year;
       if (!isNaN(year)) {
-        qb.andWhere('YEAR(event.startDateTime) = :year', { year });
+        qb.andWhere("YEAR(event.startDateTime) = :year", { year });
       }
     }
 
     if (queries.isFinished) {
-      qb.andWhere('winner.id IS NOT NULL');
+      qb.andWhere("winner.id IS NOT NULL");
     }
 
     qb.skip((page - 1) * limit).take(limit);
@@ -104,11 +130,11 @@ export class RaceService {
     return this.repository.findOne({
       where: { id },
       relations: [
-        'event',
-        'winner',
-        'teamResults',
-        'teamResults.team',
-        'teams',
+        "event",
+        "winner",
+        "teamResults",
+        "teamResults.team",
+        "teams",
       ],
     });
   }
@@ -119,25 +145,25 @@ export class RaceService {
     managerId?: string;
   }) {
     const qb = this.repository
-      .createQueryBuilder('race')
-      .leftJoinAndSelect('race.event', 'event')
-      .leftJoinAndSelect('event.location', 'location')
-      .leftJoinAndSelect('location.country', 'country')
-      .leftJoinAndSelect('race.winner', 'winner')
-      .leftJoinAndSelect('race.teamResults', 'teamResults')
-      .leftJoinAndSelect('teamResults.team', 'team');
+      .createQueryBuilder("race")
+      .leftJoinAndSelect("race.event", "event")
+      .leftJoinAndSelect("event.location", "location")
+      .leftJoinAndSelect("location.country", "country")
+      .leftJoinAndSelect("race.winner", "winner")
+      .leftJoinAndSelect("race.teamResults", "teamResults")
+      .leftJoinAndSelect("teamResults.team", "team");
 
     if (query.runnerId) {
-      qb.leftJoinAndSelect('teamResults.runnerResults', 'runnerResults')
-        .leftJoinAndSelect('runnerResults.runner', 'runner')
-        .where('runner.id = :runnerId', {
+      qb.leftJoinAndSelect("teamResults.runnerResults", "runnerResults")
+        .leftJoinAndSelect("runnerResults.runner", "runner")
+        .where("runner.id = :runnerId", {
           runnerId: +query.runnerId,
         });
     }
 
     if (query.managerId) {
-      qb.leftJoinAndSelect('team.manager', 'manager').where(
-        'manager.id = :managerId',
+      qb.leftJoinAndSelect("team.manager", "manager").where(
+        "manager.id = :managerId",
         {
           managerId: +query.managerId,
         },
@@ -145,15 +171,15 @@ export class RaceService {
     }
 
     if (query.teamId) {
-      qb.andWhere('team.id = :teamId', {
+      qb.andWhere("team.id = :teamId", {
         teamId: +query.teamId,
       });
     }
 
-    qb.andWhere('race.startTime < :now', {
+    qb.andWhere("race.startTime < :now", {
       now: new Date(), // Current time
     })
-      .orderBy('race.startTime', 'DESC') // Order by startTime in descending order
+      .orderBy("race.startTime", "DESC") // Order by startTime in descending order
       .take(2);
 
     return qb.getMany();
@@ -163,27 +189,27 @@ export class RaceService {
     return this.repository.findOne({
       where: { id },
       relations: [
-        'event',
-        'winner',
-        'teamResults',
-        'teamResults.team',
-        'teams',
-        'teamResults.runnerResults',
-        'teamResults.runnerResults.runner',
-        'teamResults.runnerResults.runner.club',
-        'teamResults.runnerResults.runner.user.country',
-        'teamResults.runnerResults.runner.personalBests',
-        'teamResults.runnerResults.splits',
+        "event",
+        "winner",
+        "teamResults",
+        "teamResults.team",
+        "teams",
+        "teamResults.runnerResults",
+        "teamResults.runnerResults.runner",
+        "teamResults.runnerResults.runner.club",
+        "teamResults.runnerResults.runner.user.country",
+        "teamResults.runnerResults.runner.personalBests",
+        "teamResults.runnerResults.splits",
       ],
     });
   }
 
   getAllRacesByEvent(id: number) {
     return this.repository
-      .createQueryBuilder('race')
-      .leftJoinAndSelect('race.teams', 'teams')
-      .leftJoinAndSelect('race.event', 'event')
-      .where('event.id = :eventId', { eventId: id })
+      .createQueryBuilder("race")
+      .leftJoinAndSelect("race.teams", "teams")
+      .leftJoinAndSelect("race.event", "event")
+      .where("event.id = :eventId", { eventId: id })
       .getMany();
   }
 
@@ -199,7 +225,7 @@ export class RaceService {
   ) {
     const race = await this.repository.findOne({
       where: { id },
-      relations: ['teams', 'event'],
+      relations: ["teams", "event"],
     });
 
     const teams = await Promise.all(

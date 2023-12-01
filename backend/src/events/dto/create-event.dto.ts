@@ -20,6 +20,9 @@ export class CreateEventDto {
   @IsString()
   endDate: string;
 
+  @IsString()
+  attendanceType: "free" | "paid";
+
   @IsObject()
   location: {
     country: string;

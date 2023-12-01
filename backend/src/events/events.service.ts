@@ -198,15 +198,19 @@ export class EventsService {
 
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      relations: ["runner.teamsAsRunner", "manager", "coach"],
+      relations: ["runner.teamsAsRunner", "manager", "manager.teams", "coach"],
     });
 
     let managerTeamRegistrations: TeamRegistration[] = [];
+    let allTeamsRegistered: boolean = false;
 
     if (user.manager) {
       managerTeamRegistrations = event.teamRegistrations.filter(
         (r) => r.team.manager.id === user.manager.id,
       );
+
+      allTeamsRegistered =
+        user.manager.teams.length === managerTeamRegistrations.length;
     }
 
     let runnerTeamRegistrations: TeamRegistration[] = [];
@@ -236,6 +240,7 @@ export class EventsService {
       managerTeamRegistrations,
       runnerTeamRegistrations,
       coachTeamRegistrations,
+      allTeamsRegistered,
     };
   }
 
