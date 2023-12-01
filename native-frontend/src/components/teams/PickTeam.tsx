@@ -13,7 +13,7 @@ const PickTeam = ({ save, setSave }: { save: boolean; setSave: Function }) => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    setItem(newValues.teams?.toString());
+    setItem(newValues.team?.toString());
   }, []);
 
   useEffect(() => {

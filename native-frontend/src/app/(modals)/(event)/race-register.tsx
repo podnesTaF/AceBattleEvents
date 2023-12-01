@@ -2,11 +2,14 @@ import Container from "@Components/common/Container";
 import HeaderSubtitledTitle from "@Components/common/HeaderSubtitledTitle";
 import FormButton from "@Components/common/forms/FormButton";
 import PickField from "@Components/common/forms/PickField";
-import { runners } from "@Constants/dummy-data";
 import { Box, VStack } from "@gluestack-ui/themed";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch, useAppSelector } from "@lib/hooks";
+import { IRunner } from "@lib/models";
+import { useCheckInForRaceMutation } from "@lib/races/services/raceService";
+import { useGetRunnersByTeamQuery } from "@lib/services";
 import {
+  clearAllItems,
   clearAllValues,
   selectItems,
   selectValues,
@@ -14,42 +17,76 @@ import {
 } from "@lib/store";
 import {
   cutString,
+  defineItemLabel,
   mapRunnersToPickItems,
   registerForRaceSchema,
 } from "@lib/utils";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { Stack, useNavigation } from "expo-router";
 import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 const RaceRegister = () => {
-  const { eventId, raceId } = useLocalSearchParams();
   const { newValues } = useAppSelector(selectValues);
-  const { availablePlayers } = useAppSelector(selectItems);
+  const { availableTeams } = useAppSelector(selectItems);
+  const [pickedTeamId, setPickedTeamId] = React.useState<number | null>(null);
+  const { data: teamPlayers, isLoading } =
+    useGetRunnersByTeamQuery(pickedTeamId);
+
+  const navigation = useNavigation();
+
+  const [checkIn, { error, isLoading: isCheckInLoading }] =
+    useCheckInForRaceMutation();
+
   const dispatch = useAppDispatch();
 
   // check if team can take part in the race
 
   useEffect(() => {
-    dispatch(clearAllValues());
-    dispatch(
-      setItems({
-        key: "availablePlayers",
-        items: mapRunnersToPickItems(runners),
-      })
-    );
-  }, [eventId, raceId]);
+    if (!isLoading) {
+      dispatch(
+        setItems({
+          key: "availablePlayers",
+          items: teamPlayers
+            ? mapRunnersToPickItems(teamPlayers as IRunner[])
+            : [],
+        })
+      );
+    }
+  }, [teamPlayers]);
+
+  useEffect(() => {
+    form.setValue("team", newValues.team);
+
+    setPickedTeamId(() => {
+      const teamId: number | undefined = availableTeams.find(
+        (reg) => reg.id === newValues.team
+      )?.addtionalFields?.teamId;
+      if (!teamId) return null;
+      return teamId;
+    });
+  }, [newValues.team]);
 
   useEffect(() => {
     form.setValue("players", newValues.players);
   }, [newValues.players]);
 
-  const form = useForm<{ players: string[] }>({
+  const form = useForm<{ team: string; players: string[] }>({
     mode: "onChange",
     resolver: yupResolver(registerForRaceSchema),
   });
 
-  const registerTeam = (data: { players: string[] }) => {
-    console.log(data);
+  const registerTeam = async (data: { team: string; players: string[] }) => {
+    try {
+      await checkIn({
+        raceRegistrationId: +data.team,
+        runnerIds: data.players.map((p) => +p),
+      });
+      dispatch(clearAllValues());
+      dispatch(clearAllItems());
+      navigation.goBack();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -74,6 +111,16 @@ const RaceRegister = () => {
           <Box py={"$4"}>
             <FormProvider {...form}>
               <VStack space="xs">
+                <PickField
+                  name="team"
+                  label="Choose Race Registration"
+                  placeholder={defineItemLabel({
+                    name: "team",
+                    id: newValues.team,
+                    items: availableTeams,
+                  })}
+                  multiple={false}
+                />
                 <PickField
                   name="players"
                   label="Choose Runners"
