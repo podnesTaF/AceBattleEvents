@@ -34,6 +34,15 @@ export const ServiceApi = api.injectEndpoints({
       }),
       providesTags: (result) => ["Team"],
     }),
+    getTeamsByEvent: builder.query<
+      ITeam[],
+      { eventId?: string; category?: string }
+    >({
+      query: ({ eventId, category }) => ({
+        url: `/teams/event/${eventId}?category=${category || ""}`,
+      }),
+      providesTags: ["Team"],
+    }),
     getTeamsByManager: builder.query<
       ITeam[],
       { unregistered?: boolean; eventId?: string; managerId?: number }
@@ -52,5 +61,6 @@ export const {
   useGetAllTeamsQuery,
   useGetTopTeamsQuery,
   useGetTeamsByManagerQuery,
+  useGetTeamsByEventQuery,
   useGetTeamQuery,
 } = ServiceApi;

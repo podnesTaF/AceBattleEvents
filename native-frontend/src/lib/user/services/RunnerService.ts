@@ -41,6 +41,17 @@ export const RunnerApi = api.injectEndpoints({
       }),
       providesTags: (result) => ["RunnerPreview"],
     }),
+    getRunnersEventParitipants: builder.query<
+      RunnerPreview[],
+      { eventId?: string; teamId?: number; gender?: string }
+    >({
+      query: ({ eventId, teamId, gender }) => ({
+        url: `/runners/event/${eventId}?teamId=${teamId || ""}&gender=${
+          gender || ""
+        }`,
+      }),
+      providesTags: (result) => ["RunnerPreview"],
+    }),
     getRunnerResults: builder.query<
       {
         results: UserResult[];
@@ -130,4 +141,5 @@ export const {
   useUnfollowRunnerMutation,
   useGetMyFollowersQuery,
   useGetMyFollowingsQuery,
+  useGetRunnersEventParitipantsQuery,
 } = RunnerApi;

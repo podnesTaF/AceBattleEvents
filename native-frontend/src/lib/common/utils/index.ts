@@ -2,6 +2,7 @@ export * from "./data-converters";
 export * from "./date-utils";
 export * from "./form-helpers";
 export * from "./google-maps-handlers";
+export * from "./group-data";
 export * from "./mappers";
 export * from "./responsive";
 export * from "./result-converters";

@@ -1,23 +1,30 @@
-import React from 'react'
-import { VStack, Image, Box, Heading} from '@gluestack-ui/themed'
-import { getUsersInfo } from '@lib/utils'
-import UserInfoList from '@Components/common/UserInfoList'
-import UserContactInfo from '@Components/user/UserContactInfo'
+import UserInfoList from "@Components/common/UserInfoList";
+import UserContactInfo from "@Components/user/UserContactInfo";
+import { Box, Image } from "@gluestack-ui/themed";
+import { IUser } from "@lib/models";
+import { getUsersInfo } from "@lib/utils";
+import React from "react";
 
 interface AthleteBioTabProps {
-    user: any
+  user: IUser;
 }
 
-const AthleteBioTab: React.FC<AthleteBioTabProps> = ({user}) => {
+const AthleteBioTab = ({ user }: AthleteBioTabProps): JSX.Element => {
   return (
     <Box flex={1}>
-        <Box mb={"$4"}>
-            <Image role='img' source={{uri: user.image?.mediaUrl}} alt={"athlete large image"} size={"full"} height={210} />
-            <UserInfoList items={getUsersInfo(user)} />
-        </Box>
-       <UserContactInfo user={user} />
+      <Box mb={"$4"}>
+        <Image
+          role="img"
+          source={{ uri: user.image?.mediaUrl }}
+          alt={"athlete large image"}
+          size={"full"}
+          height={210}
+        />
+        <UserInfoList items={getUsersInfo(user)} />
+      </Box>
+      <UserContactInfo user={user} />
     </Box>
-  )
-}
+  );
+};
 
-export default AthleteBioTab
+export default AthleteBioTab;

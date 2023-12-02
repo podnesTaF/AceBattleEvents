@@ -17,7 +17,7 @@ import { useFetchUserQuery } from "@lib/user/services/UserService";
 import { getProfileTabByUserRole } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList } from "react-native";
+import { Dimensions, FlatList, View } from "react-native";
 
 const tabsData = (user: IUser) => {
   if (user.runner) {
@@ -58,6 +58,7 @@ const ProfileScreen = () => {
     isLoading,
     error,
   } = useFetchUserQuery({ userId: +params.userId, authId: auth?.id });
+
   const flatListRef = useRef<FlatList>(null);
   const { width } = Dimensions.get("window");
 
@@ -113,7 +114,7 @@ const ProfileScreen = () => {
             pagingEnabled
             showsHorizontalScrollIndicator={false}
             snapToAlignment="center"
-            renderItem={({ item }) => <Box width={width}>{item}</Box>}
+            renderItem={({ item }) => <View style={{ width }}>{item}</View>}
             keyExtractor={(item, i) => i.toString()}
             scrollEnabled={false}
           />
