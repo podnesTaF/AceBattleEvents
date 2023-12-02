@@ -5,8 +5,10 @@ import {
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Event } from "src/events/entities/event.entity";
+import { RaceRegistration } from "src/race-registration/entities/race-registration.entity";
 import { RaceRegistrationService } from "src/race-registration/race-registration.service";
 import { Team } from "src/teams/entities/team.entity";
+import { User } from "src/users/entities/user.entity";
 import { Repository } from "typeorm";
 import { CreateRaceDto } from "./dto/create-race.dto";
 import { Race } from "./entities/race.entity";
@@ -20,6 +22,8 @@ export class RaceService {
     private teamRepository: Repository<Team>,
     @InjectRepository(Event)
     private eventRepository: Repository<Event>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
     private raceRegistrationService: RaceRegistrationService,
   ) {}
 
@@ -204,13 +208,58 @@ export class RaceService {
     });
   }
 
-  getAllRacesByEvent(id: number) {
-    return this.repository
+  async getAllRacesByEvent(id: number, userId?: number) {
+    const races = await this.repository
       .createQueryBuilder("race")
-      .leftJoinAndSelect("race.teams", "teams")
+      .leftJoinAndSelect("race.teamRegistrations", "teamRegistrations")
+      .leftJoinAndSelect("teamRegistrations.team", "team")
+      .leftJoinAndSelect("team.logo", "logo")
       .leftJoinAndSelect("race.event", "event")
       .where("event.id = :eventId", { eventId: id })
       .getMany();
+
+    let user: User;
+    if (userId) {
+      user = await this.userRepository.findOneOrFail({
+        where: { id: userId },
+        relations: [
+          "coach.teamRegistrations",
+          "manager.teams.raceRegistrations",
+        ],
+      });
+    }
+
+    if (!userId || (!user.coach && !user.manager)) {
+      return races;
+    }
+
+    return races.map((race) => {
+      let raceRegistrationsToCheckIn: RaceRegistration[] = [];
+      race.teamRegistrations.forEach((reg) => {
+        if (reg.checkedIn) {
+          return;
+        }
+        if (user.coach) {
+          user.coach.teamRegistrations.forEach((teamReg) => {
+            if (teamReg.team.id === reg.team.id) {
+              raceRegistrationsToCheckIn.push(reg);
+            }
+          });
+        } else if (user.manager) {
+          user.manager.teams.forEach((team) => {
+            if (team.id === reg.team.id) {
+              raceRegistrationsToCheckIn.push(reg);
+            }
+          });
+        }
+      });
+
+      return {
+        ...race,
+        availableForCheckIn: raceRegistrationsToCheckIn.length > 0,
+        raceRegistrationsToCheckIn,
+      };
+    });
   }
 
   async updateWinner(teamId: number, raceId: number) {

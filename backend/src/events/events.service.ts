@@ -178,6 +178,7 @@ export class EventsService {
     eventId: number;
     userId?: number;
   }) {
+    console.log(eventId, userId);
     const event = await this.repository.findOne({
       where: { id: eventId },
       relations: [
@@ -196,15 +197,24 @@ export class EventsService {
       ],
     });
 
-    const user = await this.userRepository.findOne({
-      where: { id: userId },
-      relations: ["runner.teamsAsRunner", "manager", "manager.teams", "coach"],
-    });
+    let user: User | undefined;
+
+    if (userId) {
+      user = await this.userRepository.findOne({
+        where: { id: userId },
+        relations: [
+          "runner.teamsAsRunner",
+          "manager",
+          "manager.teams",
+          "coach",
+        ],
+      });
+    }
 
     let managerTeamRegistrations: TeamRegistration[] = [];
     let allTeamsRegistered: boolean = false;
 
-    if (user.manager) {
+    if (user?.manager) {
       managerTeamRegistrations = event.teamRegistrations.filter(
         (r) => r.team.manager.id === user.manager.id,
       );
@@ -215,7 +225,7 @@ export class EventsService {
 
     let runnerTeamRegistrations: TeamRegistration[] = [];
 
-    if (user.runner) {
+    if (user?.runner) {
       runnerTeamRegistrations = event.teamRegistrations.filter((r) =>
         r.team.players.some((player) => player.id === user.runner.id),
       );
@@ -223,7 +233,7 @@ export class EventsService {
 
     let coachTeamRegistrations: TeamRegistration[] = [];
 
-    if (user.coach) {
+    if (user?.coach) {
       coachTeamRegistrations = event.teamRegistrations.filter(
         (r) => r.coach.id === user.coach.id,
       );

@@ -7,9 +7,11 @@ import {
   Patch,
   Post,
   Query,
+  Request,
   UseGuards,
 } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { JwtOptionalAuthGuard } from "src/auth/guards/jwt-optional-auth.guard";
 import { RolesGuard } from "src/auth/guards/roles.guard";
 import { Roles } from "src/auth/roles/roles.guard";
 import { CreateRaceDto } from "./dto/create-race.dto";
@@ -32,11 +34,15 @@ export class RaceController {
   }
 
   @Get("/event")
-  getAllRacesForEvent(@Query("eventId") eventId: string) {
-    if (!eventId) {
+  @UseGuards(JwtOptionalAuthGuard)
+  getAllRacesForEvent(
+    @Query("eventId") eventId: string,
+    @Request() req: { user?: { id: number } },
+  ) {
+    if (isNaN(+eventId)) {
       throw new Error("You have not provided eventId");
     }
-    return this.raceService.getAllRacesByEvent(+eventId);
+    return this.raceService.getAllRacesByEvent(+eventId, req.user?.id);
   }
 
   @Get("/last-matches")

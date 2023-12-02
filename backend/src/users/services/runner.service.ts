@@ -109,6 +109,68 @@ export class RunnerService {
     return runners;
   }
 
+  async getRunnersByEvent({
+    eventId,
+    queries,
+  }: {
+    eventId: number;
+    queries: { teamId?: string; gender?: string };
+  }) {
+    const qb = this.repository
+      .createQueryBuilder("runner")
+      .leftJoinAndSelect("runner.user", "user")
+      .leftJoinAndSelect("user.image", "image")
+      .leftJoinAndSelect("runner.teamsAsRunner", "teamsAsRunner")
+      .leftJoinAndSelect(
+        "teamsAsRunner.eventRegistrations",
+        "eventRegistration",
+      )
+      .leftJoinAndSelect("eventRegistration.event", "event")
+      .where("event.id = :eventId", { eventId })
+      .select([
+        "runner.id",
+        "runner.dateOfBirth",
+        "runner.gender",
+        "user.id",
+        "user.name",
+        "user.surname",
+        "image.mediaUrl",
+        "teamsAsRunner",
+      ]);
+
+    if (queries.gender) {
+      qb.andWhere("runner.gender = :gender", { gender: queries.gender });
+    }
+
+    if (queries.teamId) {
+      qb.andWhere("teamsAsRunner.id = :teamId", { teamId: queries.teamId });
+    }
+
+    const runners = await qb.getMany();
+
+    return runners;
+  }
+
+  async getRunnersByTeam(id: number) {
+    const qb = this.repository
+      .createQueryBuilder("runner")
+      .leftJoinAndSelect("runner.user", "user")
+      .leftJoinAndSelect("user.image", "image")
+      .leftJoinAndSelect("runner.teamsAsRunner", "teamsAsRunner")
+      .where("teamsAsRunner.id = :id", { id })
+      .select([
+        "runner.id",
+        "runner.dateOfBirth",
+        "user.name",
+        "user.surname",
+        "image.mediaUrl",
+      ]);
+
+    const runners = await qb.getMany();
+
+    return runners;
+  }
+
   async getRunnerPreviews({
     type,
     query,
@@ -337,8 +399,6 @@ export class RunnerService {
         if (curr.splits[0].resultInMs > 20000) {
           res = split.resultInMs - curr.splits[0].resultInMs;
         }
-
-        console.log(runner.user.surname, split.distance, res);
         return this.calculatePoints(split.distance, res, resultsLen) + acc;
       }, 0);
       return { ...runner, totalPoints };

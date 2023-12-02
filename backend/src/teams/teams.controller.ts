@@ -61,6 +61,16 @@ export class TeamsController {
     return this.teamsService.findTopTeams(queries);
   }
 
+  @Get("/event/:id")
+  findAllByEventId(
+    @Param("id") eventId: string,
+    @Query() query: { category?: string },
+  ) {
+    return this.teamsService.findAllByEventId(+eventId, {
+      category: query.category,
+    });
+  }
+
   @Get("/snippet/:eventId")
   findAllSnippet(@Param("eventId") eventId: string) {
     return this.teamsService.findAllSnippetByEventId(+eventId);

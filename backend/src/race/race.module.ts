@@ -6,6 +6,7 @@ import { RaceRegistrationService } from "src/race-registration/race-registration
 import { TeamRaceRunner } from "src/team-race-runner/entities/team-race-runner.entity";
 import { Team } from "src/teams/entities/team.entity";
 import { Runner } from "src/users/entities/runner.entity";
+import { User } from "src/users/entities/user.entity";
 import { Race } from "./entities/race.entity";
 import { RaceController } from "./race.controller";
 import { RaceService } from "./race.service";
@@ -19,6 +20,7 @@ import { RaceService } from "./race.service";
       RaceRegistration,
       Runner,
       TeamRaceRunner,
+      User,
     ]),
   ],
   controllers: [RaceController],
