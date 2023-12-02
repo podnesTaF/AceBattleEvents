@@ -1,5 +1,6 @@
+import AbmButton from "@Components/common/buttons/AbmButton";
 import EventCard from "@Components/events/EventCard";
-import { Button, ButtonText, HStack, Text } from "@gluestack-ui/themed";
+import { Box } from "@gluestack-ui/themed";
 import { IViewer } from "@lib/models";
 
 interface Props {
@@ -9,12 +10,9 @@ interface Props {
 const SpectatorRegistrationCard: React.FC<Props> = ({ registration }) => {
   return (
     <EventCard event={registration.event}>
-      <HStack justifyContent="space-between" space="md">
-        <Text size={"md"}>Ticket</Text>
-        <Button>
-          <ButtonText>View ticket</ButtonText>
-        </Button>
-      </HStack>
+      <Box alignItems="center">
+        <AbmButton title={"Download ticket"} onPress={() => {}} />
+      </Box>
     </EventCard>
   );
 };

@@ -1,14 +1,9 @@
-import WithLoading from "@Components/HOCs/withLoading";
+import withWatermarkBg from "@Components/HOCs/withWatermark";
 import LogoTitle from "@Components/LogoTitle";
-import CompetitionsTab from "@Components/athletes/tabs/CompetitionsTab";
-import BgWatermark from "@Components/common/BgWatermark";
-import InfoTemplate from "@Components/common/InfoTemplate";
-import TeamRegistrationCard from "@Components/teams/TeamRegistrationCard";
-import SpectatorRegistrationCard from "@Components/user/SpectatorRegistrationCard";
-import { events, teams } from "@Constants/dummy-data";
-import { Heading, VStack } from "@gluestack-ui/themed";
+import SpectatorCalendar from "@Components/user/calendar/SpectatorCalendar";
+import UserTeamsCalendar from "@Components/user/calendar/UserTeamsCalendar";
+import { ScrollView, VStack } from "@gluestack-ui/themed";
 import { useAppSelector } from "@lib/hooks";
-import { useFetchSpectatorRegistrationsQuery } from "@lib/services";
 import { selectUser } from "@lib/store";
 import { Stack } from "expo-router";
 import React from "react";
@@ -16,11 +11,8 @@ import React from "react";
 const CalendarScreen = () => {
   const user = useAppSelector(selectUser);
 
-  const { data: registrations, isLoading } =
-    useFetchSpectatorRegistrationsQuery();
-
   return (
-    <BgWatermark>
+    <>
       <Stack.Screen
         options={{
           title: "Calendar",
@@ -31,32 +23,18 @@ const CalendarScreen = () => {
           headerTitle: (props) => <LogoTitle {...props} />,
         }}
       />
-      <VStack space="md" my={"$4"} mx={"$2"}>
-        <Heading>Upcoming Events</Heading>
-        {user?.role === "spectator" && (
-          <WithLoading isLoading={!registrations || isLoading}>
-            {registrations?.length ? (
-              registrations.map((reg) => (
-                <SpectatorRegistrationCard key={reg.id} registration={reg} />
-              ))
+      <ScrollView>
+        <VStack my={"$8"}>
+          {user &&
+            (user.role === "spectator" ? (
+              <SpectatorCalendar />
             ) : (
-              <InfoTemplate
-                title="No registrations found"
-                text="You don't have any registrations yet"
-              />
-            )}
-          </WithLoading>
-        )}
-        {user?.role === "manager" && (
-          <TeamRegistrationCard
-            event={events[0] as any}
-            team={teams[0] as any}
-          />
-        )}
-        {user?.runner && <CompetitionsTab runnerId={user.runner.id} />}
-      </VStack>
-    </BgWatermark>
+              <UserTeamsCalendar user={user} />
+            ))}
+        </VStack>
+      </ScrollView>
+    </>
   );
 };
 
-export default CalendarScreen;
+export default withWatermarkBg(CalendarScreen);

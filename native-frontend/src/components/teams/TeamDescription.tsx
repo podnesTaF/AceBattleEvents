@@ -39,7 +39,8 @@ const TeamDescription: React.FC<TeamProps> = ({ team }) => {
         <HStack space="4xl" alignItems="center" justifyContent="space-between">
           <Text size={"lg"}>Coach</Text>
           <Heading size={"lg"}>
-            {team.coach.name} {team.coach.surname}
+            {team.eventRegistrations?.[0].coach?.user?.name}{" "}
+            {team.eventRegistrations?.[0].coach?.user?.surname}
           </Heading>
         </HStack>
         <HStack space="4xl" alignItems="center" justifyContent="space-between">

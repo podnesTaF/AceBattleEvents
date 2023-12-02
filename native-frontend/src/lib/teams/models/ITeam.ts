@@ -1,11 +1,11 @@
 import { ICountry } from "@lib/countries/models/ICountry";
 import {
   IClub,
-  ICoach,
   IEvent,
   IMedia,
   IRace,
   IRunner,
+  ITeamRegistration,
   ITeamResult,
   IUser,
 } from "@lib/models";
@@ -19,7 +19,6 @@ export type ITeam = {
   membersCount: number;
   manager: IUser;
   club: IClub;
-  coach: ICoach;
   logo: IMedia;
   teamImage: IMedia;
   players: IRunner[];
@@ -28,6 +27,7 @@ export type ITeam = {
   totalPoints: number | null;
   personalBest: ITeamResult | null;
   races: IRace[];
+  eventRegistrations: ITeamRegistration[];
 
   followers: IUser[];
 };

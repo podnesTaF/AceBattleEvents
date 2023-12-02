@@ -60,6 +60,46 @@ export class TeamRegistrationService {
     return this.repository.save(teamRegistration);
   }
 
+  async findUserRegistrations(userId: number, role: string) {
+    if (role === "manager") {
+      return this.repository.find({
+        where: { team: { manager: { user: { id: userId } } } },
+        relations: ["team", "event.location.country", "coach"],
+      });
+    } else if (role === "coach") {
+      return this.repository.find({
+        where: { coach: { user: { id: userId } } },
+        relations: ["team", "event.location.country", "coach"],
+      });
+    } else if (role === "runner") {
+      return this.repository.find({
+        where: { team: { players: { user: { id: userId } } } },
+        relations: ["team", "event.location.country", "coach"],
+      });
+    }
+  }
+
+  async findRunnerRegistrations(runnerId: number, pastIncluded?: boolean) {
+    if (pastIncluded) {
+      return this.repository.find({
+        where: { team: { players: { user: { id: runnerId } } } },
+        relations: ["team", "event.location.country", "coach"],
+      });
+    } else {
+      return this.repository
+        .createQueryBuilder("teamRegistration")
+        .leftJoinAndSelect("teamRegistration.team", "team")
+        .leftJoinAndSelect("teamRegistration.event", "event")
+        .leftJoinAndSelect("event.location", "location")
+        .leftJoinAndSelect("teamRegistration.coach", "coach")
+        .leftJoinAndSelect("team.players", "players")
+        .leftJoinAndSelect("players.user", "user")
+        .where("user.id = :id", { id: runnerId })
+        .andWhere("event.startDateTime > :now", { now: new Date() })
+        .getMany();
+    }
+  }
+
   findAll() {
     return `This action returns all teamRegistration`;
   }

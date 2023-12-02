@@ -150,6 +150,26 @@ export class TeamsService {
     return returnData;
   }
 
+  async findAllByEventId(eventId: number, { category }: { category?: string }) {
+    const qb = this.repository
+      .createQueryBuilder("team")
+      .leftJoinAndSelect("team.eventRegistrations", "eventRegistration")
+      .leftJoinAndSelect("eventRegistration.event", "event")
+      .where("event.id = :eventId", { eventId })
+      .leftJoinAndSelect("eventRegistration.coach", "coach")
+      .leftJoinAndSelect("coach.user", "user")
+      .leftJoinAndSelect("team.logo", "logo")
+      .leftJoinAndSelect("team.teamImage", "teamImage")
+      .leftJoinAndSelect("team.country", "country")
+      .leftJoinAndSelect("team.personalBest", "personalBest");
+
+    if (category) {
+      qb.andWhere("team.gender = :category", { category });
+    }
+
+    return qb.getMany();
+  }
+
   async getTopTeamsByGender(count: number, gender: "male" | "female") {
     return this.repository
       .createQueryBuilder("team")

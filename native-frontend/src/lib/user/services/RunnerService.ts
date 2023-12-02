@@ -41,6 +41,17 @@ export const RunnerApi = api.injectEndpoints({
       }),
       providesTags: (result) => ["RunnerPreview"],
     }),
+    getRunnersEventParitipants: builder.query<
+      RunnerPreview[],
+      { eventId?: string; teamId?: number; gender?: string }
+    >({
+      query: ({ eventId, teamId, gender }) => ({
+        url: `/runners/event/${eventId}?teamId=${teamId || ""}&gender=${
+          gender || ""
+        }`,
+      }),
+      providesTags: (result) => ["RunnerPreview"],
+    }),
     getRunnerResults: builder.query<
       {
         results: UserResult[];
@@ -62,6 +73,12 @@ export const RunnerApi = api.injectEndpoints({
     getRunnersByManager: builder.query<IRunner[], number | undefined>({
       query: (id) => ({
         url: `/runners/manager/${id}`,
+      }),
+      providesTags: ["Runners"],
+    }),
+    getRunnersByTeam: builder.query<RunnerPreview[] | null, number | null>({
+      query: (id) => ({
+        url: `/runners/team/${id}`,
       }),
       providesTags: ["Runners"],
     }),
@@ -106,7 +123,6 @@ export const RunnerApi = api.injectEndpoints({
         method: "POST",
       }),
       invalidatesTags: (result) => {
-        console.log("follow");
         return ["RunnerPreview", "User"];
       },
     }),
@@ -120,8 +136,10 @@ export const {
   useGetRunnerResultsQuery,
   useGetRunnersByManagerQuery,
   useGetRunnerCompetitionsQuery,
+  useGetRunnersByTeamQuery,
   useFollowRunnerMutation,
   useUnfollowRunnerMutation,
   useGetMyFollowersQuery,
   useGetMyFollowingsQuery,
+  useGetRunnersEventParitipantsQuery,
 } = RunnerApi;

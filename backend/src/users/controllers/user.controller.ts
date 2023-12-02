@@ -42,7 +42,7 @@ export class UserController {
   @Get("/me")
   @UseGuards(JwtAuthGuard)
   getMe(@Request() req) {
-    return this.userService.findById(req.user.id);
+    return this.userService.findByCond({ id: +req.user.id });
   }
 
   @Get("/followers")

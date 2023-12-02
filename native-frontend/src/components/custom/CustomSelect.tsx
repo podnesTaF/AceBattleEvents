@@ -17,7 +17,7 @@ import React from "react";
 interface Props {
   items: {
     label: string;
-    value: string;
+    value?: any;
   }[];
   onChange: (value: string) => void;
   defaultPlaceholder?: string;

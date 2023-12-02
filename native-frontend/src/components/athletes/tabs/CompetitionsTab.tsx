@@ -6,11 +6,12 @@ import {
   Center,
   HStack,
   Heading,
+  ScrollView,
   Text,
-  VStack,
 } from "@gluestack-ui/themed";
 import { useGetRunnerCompetitionsQuery } from "@lib/services";
-import React, { useState } from "react";
+import { useFindRunnerRegistrationsQuery } from "@lib/teams/services/teamRegistrationService";
+import { useState } from "react";
 
 const CompetitionsTab = ({ runnerId }: { runnerId: number }) => {
   const [year, setYear] = useState("2023");
@@ -18,7 +19,7 @@ const CompetitionsTab = ({ runnerId }: { runnerId: number }) => {
     data: registrations,
     error,
     isLoading,
-  } = useGetRunnerCompetitionsQuery({
+  } = useFindRunnerRegistrationsQuery({
     runnerId,
   });
 
@@ -30,7 +31,7 @@ const CompetitionsTab = ({ runnerId }: { runnerId: number }) => {
     });
 
   return (
-    <VStack>
+    <ScrollView>
       <Box my={"$4"} mx={"$3"}>
         <Heading size={"lg"} mb={"$4"}>
           Upcoming competitions
@@ -96,7 +97,7 @@ const CompetitionsTab = ({ runnerId }: { runnerId: number }) => {
           )}
         </WithLoading>
       </Box>
-    </VStack>
+    </ScrollView>
   );
 };
 

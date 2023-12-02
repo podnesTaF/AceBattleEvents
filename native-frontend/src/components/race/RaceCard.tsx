@@ -9,14 +9,20 @@ import {
   Pressable,
   VStack,
 } from "@gluestack-ui/themed";
-import { IRace, RaceShortForm } from "@lib/models";
-import { formatDate, getBattleName } from "@lib/utils";
-import { Link } from "expo-router";
+import { useAppDispatch } from "@lib/hooks";
+import { IRace, RaceWithCheckIn } from "@lib/models";
+import { setItems } from "@lib/store";
+import {
+  formatDate,
+  getBattleName,
+  mapRaceRegistrationsToPickItems,
+} from "@lib/utils";
+import { Link, useRouter } from "expo-router";
 import { InfoIcon } from "lucide-react-native";
 import React, { useState } from "react";
 
 interface Props {
-  race: IRace | RaceShortForm;
+  race: Partial<RaceWithCheckIn>;
   isLast?: boolean;
   registrationAvailable?: boolean;
   eventId?: number;
@@ -29,6 +35,24 @@ const RaceCard = ({
   eventId,
 }: Props): JSX.Element => {
   const [infoOpen, setInfoOpen] = useState(false);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  const onRegister = async () => {
+    if (registrationAvailable) {
+      dispatch(
+        setItems({
+          key: "availableTeams",
+          items: mapRaceRegistrationsToPickItems(
+            race.raceRegistrationsToCheckIn
+          ),
+        })
+      );
+      router.push({
+        pathname: "/(modals)/(event)/race-register",
+      });
+    }
+  };
 
   return (
     <>
@@ -53,20 +77,14 @@ const RaceCard = ({
         </HStack>
         {registrationAvailable && (
           <HStack alignItems="center" space={"md"}>
-            <Link
-              href={{
-                pathname: "/(modals)/(event)/race-register",
-                params: {
-                  eventId: eventId + "",
-                  raceId: race.id + "",
-                },
-              }}
-              asChild
+            <Button
+              onPress={onRegister}
+              variant={"outline"}
+              action="positive"
+              flex={1}
             >
-              <Button variant={"outline"} action="positive" flex={1}>
-                <ButtonText>Register your team for the race</ButtonText>
-              </Button>
-            </Link>
+              <ButtonText>Register your team for the race</ButtonText>
+            </Button>
             <Center p={"$2"}>
               <Pressable onPress={() => setInfoOpen(true)}>
                 {({ pressed }: { pressed: boolean }) => (

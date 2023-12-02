@@ -2,7 +2,9 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
+  Query,
   Request,
   UseGuards,
 } from "@nestjs/common";
@@ -12,7 +14,7 @@ import { Roles } from "src/auth/roles/roles.guard";
 import { CreateTeamRegistrationDto } from "./dto/create-team-registration.dto";
 import { TeamRegistrationService } from "./team-registration.service";
 
-@Controller("team-registration")
+@Controller("team-registrations")
 export class TeamRegistrationController {
   constructor(
     private readonly teamRegistrationService: TeamRegistrationService,
@@ -34,5 +36,29 @@ export class TeamRegistrationController {
   @Get()
   findAll() {
     return this.teamRegistrationService.findAll();
+  }
+
+  @Get("user")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("manager", "runner", "coach", "admin")
+  findUserRegistrations(
+    @Request() req: { user: { id: number } },
+    @Query() queries?: { role: string },
+  ) {
+    return this.teamRegistrationService.findUserRegistrations(
+      req.user.id,
+      queries.role,
+    );
+  }
+
+  @Get("/runner/:id")
+  findRunnerRegistrations(
+    @Param("id") id: string,
+    @Query() queries?: { pastIncluded: boolean },
+  ) {
+    return this.teamRegistrationService.findRunnerRegistrations(
+      +id,
+      queries?.pastIncluded,
+    );
   }
 }

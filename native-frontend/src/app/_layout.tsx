@@ -7,7 +7,9 @@ import {
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { config } from "@gluestack-ui/config";
 import { GluestackUIProvider } from "@gluestack-ui/themed";
-import { store } from "@lib/store";
+import { useAppDispatch } from "@lib/hooks";
+import { useFetchUserInitialDataQuery } from "@lib/services";
+import { setUser, store } from "@lib/store";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
@@ -45,20 +47,34 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <Provider store={store}>
+      <RootLayoutNav />
+    </Provider>
+  );
 }
 
 function RootLayoutNav() {
+  const {
+    data: user,
+    isLoading,
+    error: errorUser,
+  } = useFetchUserInitialDataQuery();
+  const dispatch = useAppDispatch();
   const colorScheme = useColorScheme();
 
+  useEffect(() => {
+    if (user) {
+      dispatch(setUser(user));
+    }
+  }, [user, dispatch]);
+
   return (
-    <Provider store={store}>
-      <GluestackUIProvider config={config}>
-        <StatusBar style="light" />
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" />
-        </Stack>
-      </GluestackUIProvider>
-    </Provider>
+    <GluestackUIProvider config={config}>
+      <StatusBar style="light" />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+      </Stack>
+    </GluestackUIProvider>
   );
 }

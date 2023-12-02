@@ -27,7 +27,7 @@ interface TeamProps {
   editable?: boolean;
 }
 
-const TeamPreviewCard: React.FC<TeamProps> = ({
+const TeamPreviewCard = ({
   team,
   Item,
   imageProportion,
@@ -35,7 +35,7 @@ const TeamPreviewCard: React.FC<TeamProps> = ({
   shadow,
   showLink,
   editable,
-}) => {
+}: TeamProps): JSX.Element => {
   const router = useRouter();
 
   const handlePress = () => {

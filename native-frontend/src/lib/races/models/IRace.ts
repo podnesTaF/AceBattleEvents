@@ -1,4 +1,4 @@
-import { IEvent, ITeam, ITeamResult } from "@lib/models";
+import { IEvent, IRaceRegistration, ITeam, ITeamResult } from "@lib/models";
 
 export type IRace = {
   id: number;
@@ -8,6 +8,11 @@ export type IRace = {
   winner: ITeam | null;
   event: IEvent;
   teamResults?: ITeamResult[];
+};
+
+export type RaceWithCheckIn = IRace & {
+  availableForCheckIn?: boolean;
+  raceRegistrationsToCheckIn?: IRaceRegistration[];
 };
 
 export type RaceShortForm = {

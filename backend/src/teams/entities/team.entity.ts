@@ -2,6 +2,7 @@ import { Club } from "src/club/entities/club.entity";
 import { Country } from "src/country/entity/country.entity";
 import { Event } from "src/events/entities/event.entity";
 import { Media } from "src/media/entities/media.entity";
+import { RaceRegistration } from "src/race-registration/entities/race-registration.entity";
 import { Race } from "src/race/entities/race.entity";
 import { TeamRegistration } from "src/team-registration/entities/team-registration.entity";
 import { TeamResult } from "src/team-results/entities/team-results.entity";
@@ -114,6 +115,13 @@ export class Team {
   @OneToMany(() => TeamResult, (teamResult) => teamResult.team)
   results: TeamResult[];
 
+  @OneToMany(
+    () => RaceRegistration,
+    (raceRegistration) => raceRegistration.team,
+  )
+  raceRegistrations: RaceRegistration[];
+
+  // TO REMOVE
   @ManyToMany(() => Race, (race) => race.teams)
   races: Race[];
 

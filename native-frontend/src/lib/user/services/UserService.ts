@@ -7,8 +7,14 @@ export const UserApi = api.injectEndpoints({
     fetchUser: builder.query<IUser, { userId: number; authId?: number }>({
       query: ({ userId, authId }) => ({
         url: `/users/${userId}?authId=${authId || ""}`,
-        providesTags: ["User"],
       }),
+      providesTags: ["User"],
+    }),
+    fetchUserInitialData: builder.query<IUser, void>({
+      query: () => ({
+        url: `/users/me`,
+      }),
+      providesTags: ["User"],
     }),
     updateUserData: builder.mutation<IUser, UpdateUserDto>({
       query: (dto) => ({
@@ -37,6 +43,7 @@ export const UserApi = api.injectEndpoints({
 
 export const {
   useFetchUserQuery,
+  useFetchUserInitialDataQuery,
   useUpdateUserDataMutation,
   useUpdateUserPasswordMutation,
 } = UserApi;

@@ -1,15 +1,15 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import sgMail from '@sendgrid/mail';
-import * as bcrypt from 'bcrypt';
-import { CountryService } from 'src/country/country.service';
-import * as uuid from 'uuid';
-import { CreateUserDto } from '../users/dtos/create-user.dto';
-import { User } from '../users/entities/user.entity';
-import { UserService } from '../users/services/user.service';
+import { ForbiddenException, Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import sgMail from "@sendgrid/mail";
+import * as bcrypt from "bcrypt";
+import { CountryService } from "src/country/country.service";
+import * as uuid from "uuid";
+import { CreateUserDto } from "../users/dtos/create-user.dto";
+import { User } from "../users/entities/user.entity";
+import { UserService } from "../users/services/user.service";
 
-import { ResetUserService } from 'src/reset-user/reset-user.service';
-import { changePasswordTemplate } from './utils/getChangePassTemplate';
+import { ResetUserService } from "src/reset-user/reset-user.service";
+import { changePasswordTemplate } from "./utils/getChangePassTemplate";
 
 @Injectable()
 export class AuthService {
@@ -41,7 +41,6 @@ export class AuthService {
 
   async login(user: User, userType: string) {
     const { password, ...userData } = user;
-    console.log(userType);
     const roles = [userType];
 
     return {
@@ -57,7 +56,7 @@ export class AuthService {
         ...userData,
       };
     } catch (err) {
-      throw new ForbiddenException('Register error');
+      throw new ForbiddenException("Register error");
     }
   }
 
@@ -67,23 +66,23 @@ export class AuthService {
   ) {
     try {
       if (dto.newPassword !== dto.confirmPassword) {
-        throw new ForbiddenException('Passwords do not match');
+        throw new ForbiddenException("Passwords do not match");
       }
       const resetUser = await this.resetRepository.findByCond({
         token: dto.token,
       });
 
       if (!resetUser) {
-        throw new ForbiddenException('Reset user not found');
+        throw new ForbiddenException("Reset user not found");
       }
 
       await this.resetRepository.remove(resetUser.id);
 
       const hashedPassword = await bcrypt.hash(dto.newPassword, 12);
       await this.userService.updatePassword(id, hashedPassword);
-      return { message: 'Password changed' };
+      return { message: "Password changed" };
     } catch (err) {
-      throw new ForbiddenException('Set password error');
+      throw new ForbiddenException("Set password error");
     }
   }
 
@@ -91,7 +90,7 @@ export class AuthService {
     try {
       const user = await this.userService.findByCond({ email });
       if (!user) {
-        throw new ForbiddenException('User with this email does not exist');
+        throw new ForbiddenException("User with this email does not exist");
       }
 
       const randomToken = uuid.v4().toString();
@@ -102,28 +101,28 @@ export class AuthService {
       });
 
       if (!resetUser) {
-        throw new ForbiddenException('Error creating reset user');
+        throw new ForbiddenException("Error creating reset user");
       }
 
       const msg = {
         to: email,
-        from: 'it.podnes@gmail.com',
-        subject: 'Reset password | Ace Battle Mile',
+        from: "it.podnes@gmail.com",
+        subject: "Reset password | Ace Battle Mile",
         html: changePasswordTemplate({
           token: randomToken,
-          type: 'user',
+          type: "user",
         }),
       };
 
       try {
         await sgMail.send(msg);
       } catch (error) {
-        console.log('error sending email', error.message);
+        console.log("error sending email", error.message);
       }
 
-      return { message: 'Email sent' };
+      return { message: "Email sent" };
     } catch (error) {
-      throw new ForbiddenException('Reset password error');
+      throw new ForbiddenException("Reset password error");
     }
   }
 }

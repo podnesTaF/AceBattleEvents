@@ -1,3 +1,3 @@
-export * from './ICoach'
-export * from './ITeam'
-export * from './IRegistrations'
+export * from "./IRegistrations";
+export * from "./ITeam";
+export * from "./ITeamRaceRunner";

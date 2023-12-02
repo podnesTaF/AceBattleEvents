@@ -4,7 +4,7 @@ import { Text, VStack } from "@gluestack-ui/themed";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch } from "@lib/hooks";
 import { LoginUserRequest } from "@lib/models";
-import { useLoginUserMutation } from "@lib/services";
+import { api, useLoginUserMutation } from "@lib/services";
 import { setUser } from "@lib/store";
 import { loginSchema } from "@lib/utils";
 import { useRouter } from "expo-router";
@@ -25,7 +25,7 @@ const LoginForm = () => {
   const login = async (data: LoginUserRequest) => {
     try {
       const res = await loginUser(data).unwrap();
-
+      dispatch(api.util.resetApiState());
       if (res) {
         dispatch(setUser(res));
       }

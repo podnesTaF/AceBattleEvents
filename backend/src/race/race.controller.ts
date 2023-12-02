@@ -7,21 +7,23 @@ import {
   Patch,
   Post,
   Query,
+  Request,
   UseGuards,
-} from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { Roles } from 'src/auth/roles/roles.guard';
-import { CreateRaceDto } from './dto/create-race.dto';
-import { RaceService } from './race.service';
+} from "@nestjs/common";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { JwtOptionalAuthGuard } from "src/auth/guards/jwt-optional-auth.guard";
+import { RolesGuard } from "src/auth/guards/roles.guard";
+import { Roles } from "src/auth/roles/roles.guard";
+import { CreateRaceDto } from "./dto/create-race.dto";
+import { RaceService } from "./race.service";
 
-@Controller('race')
+@Controller("race")
 export class RaceController {
   constructor(private readonly raceService: RaceService) {}
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
+  @Roles("admin")
   createRace(@Body() dto: CreateRaceDto) {
     return this.raceService.createRace(dto);
   }
@@ -31,53 +33,57 @@ export class RaceController {
     return this.raceService.getAllRaces(queries);
   }
 
-  @Get('/event')
-  getAllRacesForEvent(@Query('eventId') eventId: string) {
-    if (!eventId) {
-      throw new Error('You have not provided eventId');
+  @Get("/event")
+  @UseGuards(JwtOptionalAuthGuard)
+  getAllRacesForEvent(
+    @Query("eventId") eventId: string,
+    @Request() req: { user?: { id: number } },
+  ) {
+    if (isNaN(+eventId)) {
+      throw new Error("You have not provided eventId");
     }
-    return this.raceService.getAllRacesByEvent(+eventId);
+    return this.raceService.getAllRacesByEvent(+eventId, req.user?.id);
   }
 
-  @Get('/last-matches')
+  @Get("/last-matches")
   getLastMatches(
     @Query() query: { runnerId?: string; teamId?: string; managerId?: string },
   ) {
     return this.raceService.getLastMatches(query);
   }
 
-  @Get('/full-race/:id')
-  getFullRace(@Param('id') id: string) {
+  @Get("/full-race/:id")
+  getFullRace(@Param("id") id: string) {
     return this.raceService.getFullRace(+id);
   }
 
-  @Get(':id')
-  getRace(@Param('id') id: string) {
+  @Get(":id")
+  getRace(@Param("id") id: string) {
     return this.raceService.getRace(+id);
   }
 
-  @Patch(':id/winner')
+  @Patch(":id/winner")
   addWinner(
-    @Param('id') id: string,
+    @Param("id") id: string,
     @Body() { winnerId }: { winnerId: number },
   ) {
     return this.raceService.updateWinner(winnerId, +id);
   }
 
-  @Patch(':id/race')
+  @Patch(":id/race")
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
+  @Roles("admin")
   updateRace(
-    @Param('id') id: string,
+    @Param("id") id: string,
     @Body() body: { teamIds: number[]; startTime: string; eventId: number },
   ) {
     return this.raceService.updateRace(+id, body);
   }
 
-  @Delete(':id')
+  @Delete(":id")
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
-  deleteRace(@Param('id') id: string) {
+  @Roles("admin")
+  deleteRace(@Param("id") id: string) {
     return this.raceService.deleteRace(+id);
   }
 }

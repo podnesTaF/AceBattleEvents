@@ -2,6 +2,7 @@ import { Best } from "src/bests/entities/best.entity";
 import { JoinRequest } from "src/club-requests/entities/club-request.entity";
 import { Club } from "src/club/entities/club.entity";
 import { RunnerResult } from "src/runner-results/entities/runner-results.entity";
+import { TeamRaceRunner } from "src/team-race-runner/entities/team-race-runner.entity";
 import { Team } from "src/teams/entities/team.entity";
 import {
   Column,
@@ -43,6 +44,11 @@ export class Runner {
 
   @OneToMany(() => RunnerResult, (res) => res.pbForRunner, { nullable: true })
   personalBests: RunnerResult[];
+
+  @OneToMany(() => TeamRaceRunner, (teamRaceRunner) => teamRaceRunner.runner, {
+    onDelete: "NO ACTION",
+  })
+  runnerForRace: TeamRaceRunner[];
 
   @OneToMany(() => Best, (best) => best.runnerPb, { nullable: true })
   selfDefinedPB: Best[];

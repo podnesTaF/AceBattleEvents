@@ -182,7 +182,7 @@ export class UserService {
       : user;
   }
 
-  async findByCond(cond: LoginUserDto) {
+  async findByCond(cond: LoginUserDto | { id: number }) {
     const query = this.repository
       .createQueryBuilder("user")
       .where({ ...cond })

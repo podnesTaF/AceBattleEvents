@@ -34,6 +34,11 @@ export class Event {
   })
   category: string;
 
+  @Column({
+    default: "free",
+  })
+  attendanceType: string;
+
   @Column()
   startDateTime: Date;
 
