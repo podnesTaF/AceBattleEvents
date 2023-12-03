@@ -3,21 +3,27 @@ import {
   Button,
   ButtonIcon,
   ButtonText,
+  HStack,
   Text,
+  VStack,
 } from "@gluestack-ui/themed";
 import { cutString } from "@lib/utils";
+import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
-import { ImagePlus } from "lucide-react-native";
+import { ImagePlus, Trash2Icon } from "lucide-react-native";
 import React, { useState } from "react";
 
 interface FormImagePickerProps {
   placeholder: string;
   label: string;
   name: string;
+  imageUrl?: string;
   defaultImageName?: string;
   onImagePicked: (image: string, name: string) => void;
   vertical?: boolean;
   withoutUnderline?: boolean;
+  type?: "image" | "avatar";
+  withPreview?: boolean;
 }
 
 const FormImagePicker: React.FC<FormImagePickerProps> = ({
@@ -25,11 +31,19 @@ const FormImagePicker: React.FC<FormImagePickerProps> = ({
   label,
   name,
   defaultImageName,
+  imageUrl,
   onImagePicked,
   vertical,
   withoutUnderline,
+  type,
+  withPreview,
 }) => {
-  const [selectedImageName, setSelectedImageName] = useState<string | null>();
+  const [selectedImageName, setSelectedImageName] = useState<
+    string | undefined
+  >(imageUrl?.split("/").pop() || defaultImageName);
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string | undefined>(
+    imageUrl
+  );
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -39,6 +53,7 @@ const FormImagePicker: React.FC<FormImagePickerProps> = ({
 
     if (!result.canceled) {
       setSelectedImageName(result.assets[0].uri.split("/").pop());
+      setSelectedImageUrl(result.assets[0].uri);
       // const response = await fetch(result.assets[0].uri);
       // const blob = await response.blob();
       onImagePicked(result.assets[0].uri, name);
@@ -64,23 +79,75 @@ const FormImagePicker: React.FC<FormImagePickerProps> = ({
       >
         {label}
       </Text>
-      <Box alignSelf="center" flex={2}>
-        <Button
-          onPress={pickImageAsync}
-          action={"primary"}
-          variant={"solid"}
-          size={"sm"}
-        >
-          <ButtonText>
-            {selectedImageName
-              ? cutString(`${selectedImageName} selected`, 15)
-              : defaultImageName
-              ? cutString(`${defaultImageName} selected`, 15)
-              : placeholder}
-          </ButtonText>
-          <ButtonIcon as={ImagePlus} />
-        </Button>
-      </Box>
+      <VStack
+        space={"md"}
+        alignItems="center"
+        w={vertical ? "$full" : "auto"}
+        flex={vertical ? undefined : 2}
+      >
+        {withPreview && selectedImageUrl && (
+          <Box w={"$24"} h={"$20"}>
+            {type === "image" ? (
+              <Image
+                alt={"Selected Image"}
+                source={{ uri: selectedImageUrl }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: 8,
+                }}
+                contentFit="contain"
+              />
+            ) : (
+              <Image
+                source={{ uri: selectedImageUrl }}
+                role="img"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: 16,
+                }}
+                alt={"Selected Image"}
+                contentFit="contain"
+              />
+            )}
+          </Box>
+        )}
+        <HStack space="sm" alignItems="center">
+          <Button
+            flex={1}
+            onPress={pickImageAsync}
+            action={"primary"}
+            variant={"solid"}
+            size={"sm"}
+          >
+            <ButtonText>
+              {selectedImageName
+                ? cutString(`${selectedImageName} selected`, 15)
+                : defaultImageName
+                ? cutString(`${defaultImageName} selected`, 15)
+                : placeholder}
+            </ButtonText>
+            <ButtonIcon as={ImagePlus} />
+          </Button>
+          {selectedImageName && (
+            <Button
+              borderRadius="$full"
+              size="sm"
+              p="$3.5"
+              onPress={() => {
+                setSelectedImageName(undefined);
+                setSelectedImageUrl(undefined);
+                onImagePicked("", name);
+              }}
+              action={"primary"}
+              variant={"solid"}
+            >
+              <ButtonIcon as={Trash2Icon} />
+            </Button>
+          )}
+        </HStack>
+      </VStack>
     </Box>
   );
 };
