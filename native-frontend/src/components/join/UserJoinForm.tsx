@@ -211,21 +211,27 @@ const UserJoinForm = () => {
                   placeholder={
                     form.getValues("avatar") ? "File Picked" : "Choose a file"
                   }
+                  imageUrl={form.getValues("avatar")}
                   name={"avatar"}
                   label="Upload your avatar (Recommended)"
                   onImagePicked={onImagePicked}
                   vertical={true}
                   withoutUnderline={true}
+                  withPreview={true}
+                  type="avatar"
                 />
                 <FormImagePicker
                   placeholder={
                     form.getValues("image") ? "File Picked" : "Choose a file"
                   }
                   name={"image"}
+                  imageUrl={form.getValues("image")}
                   label="Upload a profile Image (Optional)"
                   onImagePicked={onImagePicked}
                   vertical={true}
                   withoutUnderline={true}
+                  withPreview={true}
+                  type="image"
                 />
               </>
             )}

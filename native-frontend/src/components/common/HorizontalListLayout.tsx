@@ -1,12 +1,15 @@
-import { Box, Center, Spinner } from "@gluestack-ui/themed";
+import { Box } from "@gluestack-ui/themed";
 import React from "react";
-import { Dimensions, FlatList } from "react-native";
+import { ActivityIndicator, Dimensions, FlatList } from "react-native";
+import ErrorBox from "./states/ErrorBox";
+import SkeletonLoader from "./states/SkeletonLoader";
 
 interface Props {
   items?: any[];
   ItemComponent: React.FC<any>;
   identifier: string;
   isLoading?: boolean;
+  error?: any;
   itemWidth?: number;
   additionalProps?: {
     [key: string]: any;
@@ -23,17 +26,30 @@ const HorizontalListLayout: React.FC<Props> = ({
   additionalProps,
   wrapperProps,
   isLoading,
+  error,
   itemWidth,
 }) => {
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = screenWidth * (itemWidth || 0.85);
 
-  // Loading view
+  const renderError = () => {
+    if (!error) return null;
+    return (
+      <Box
+        width={"$full"}
+        height={200}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <ErrorBox error={error} width={cardWidth} />
+      </Box>
+    );
+  };
+
   const renderLoading = () => (
-    <Center flex={1}>
-      {/* Replace with a loading spinner or component if available */}
-      <Spinner size="large" />
-    </Center>
+    <SkeletonLoader height={200} data={items} isLoading={isLoading}>
+      {() => <ActivityIndicator size="large" color="#000" />}
+    </SkeletonLoader>
   );
 
   const renderItems = () => {
@@ -61,7 +77,7 @@ const HorizontalListLayout: React.FC<Props> = ({
 
   return (
     <Box pt={"$4"} w="$full" {...wrapperProps}>
-      {isLoading ? renderLoading() : renderItems()}
+      {isLoading ? renderLoading() : error ? renderError() : renderItems()}
     </Box>
   );
 };

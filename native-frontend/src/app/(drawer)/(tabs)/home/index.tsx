@@ -103,6 +103,7 @@ const Page = () => {
               Upcoming Events
             </Heading>
             <HorizontalListLayout
+              error={error}
               identifier="event"
               items={mapFutureEvents(eventsData)}
               ItemComponent={UpcomingEventCard}
