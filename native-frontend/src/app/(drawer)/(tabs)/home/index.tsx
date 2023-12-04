@@ -1,9 +1,9 @@
-import WithLoading from "@Components/HOCs/withLoading";
 import withWatermarkBg from "@Components/HOCs/withWatermark";
 import HomeTabTitle from "@Components/HomeTabTitle";
 import TopAthletesPodium from "@Components/athletes/TopAthletesPodium";
 import PrimaryAuthCta from "@Components/auth/PrimaryAuthCta";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
+import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import StatCard from "@Components/custom/StatCard";
 import UpcomingEventCard from "@Components/events/UpcomingEventCard";
 import NewsCard from "@Components/news/NewsCard";
@@ -12,6 +12,7 @@ import { infoCards } from "@Constants/info-contents";
 import { Box, Heading, VStack, View } from "@gluestack-ui/themed";
 import { useFetchFutureEventsQuery } from "@lib/events/services/futureEventsService";
 import { useAppSelector } from "@lib/hooks";
+import { ITeam } from "@lib/models";
 import { useFetchNewsPreviewsQuery, useGetAllTeamsQuery } from "@lib/services";
 import { selectUser } from "@lib/store";
 import { mapFutureEvents, scaleSize } from "@lib/utils";
@@ -29,7 +30,11 @@ import Animated, {
 const Page = () => {
   const user = useAppSelector(selectUser);
   const { data: eventsData, error, isLoading } = useFetchFutureEventsQuery();
-  const { data: teamsData, isLoading: isTeamsLoading } = useGetAllTeamsQuery({
+  const {
+    data: teamsData,
+    isLoading: isTeamsLoading,
+    error: teamsError,
+  } = useGetAllTeamsQuery({
     limit: 4,
   });
   const width = Dimensions.get("window").width;
@@ -150,33 +155,38 @@ const Page = () => {
             <Heading size={"xl"} mb={"$3"}>
               ABM TEAMS
             </Heading>
-            <WithLoading isLoading={isTeamsLoading} loadingHeight="200px">
-              <View
-                flexDirection="row"
-                flexWrap="wrap"
-                justifyContent="space-around"
-                gap={"$5"}
-              >
-                {teamsData?.teams?.map((team) => (
-                  <Box key={team.id} width={"$2/5"}>
-                    <TeamLogoCard team={team} />
-                  </Box>
-                ))}
-              </View>
-            </WithLoading>
+            <SkeletonLoader<ITeam[]>
+              height={300}
+              data={teamsData?.teams}
+              isLoading={isTeamsLoading}
+              error={teamsError}
+            >
+              {(data) => (
+                <View
+                  flexDirection="row"
+                  flexWrap="wrap"
+                  justifyContent="space-around"
+                  gap={"$5"}
+                >
+                  {data.map((team) => (
+                    <Box key={team.id} width={"$2/5"}>
+                      <TeamLogoCard team={team} />
+                    </Box>
+                  ))}
+                </View>
+              )}
+            </SkeletonLoader>
           </Box>
           <Box my="$6">
             <Heading px={"$4"} size="xl">
               Latest News
             </Heading>
-            <WithLoading isLoading={isNewsLoading} loadingHeight="$48">
-              <HorizontalListLayout
-                itemWidth={0.9}
-                ItemComponent={NewsCard}
-                identifier={"news"}
-                items={newsData?.newsPreviews}
-              />
-            </WithLoading>
+            <HorizontalListLayout
+              itemWidth={0.9}
+              ItemComponent={NewsCard}
+              identifier={"news"}
+              items={newsData?.newsPreviews}
+            />
           </Box>
         </Box>
       </Animated.ScrollView>
