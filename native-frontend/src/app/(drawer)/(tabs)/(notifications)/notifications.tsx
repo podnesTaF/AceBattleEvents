@@ -1,7 +1,8 @@
-import WithLoading from "@Components/HOCs/withLoading";
 import withWatermarkBg from "@Components/HOCs/withWatermark";
 import AuthCallToAction from "@Components/auth/AuthCallToAction";
+import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import NotificationItem from "@Components/notifications/NotificationItem";
+import UserCardSkeleton from "@Components/user/UserCardSkeleton";
 import { Box, Divider, Heading, Pressable, VStack } from "@gluestack-ui/themed";
 import { useAppSelector } from "@lib/hooks";
 import { INotification } from "@lib/models";
@@ -49,6 +50,14 @@ const Notifications = () => {
     );
   }
 
+  const loadingComponent = () => (
+    <VStack space={"md"}>
+      {[...Array(3)].map((_, i) => (
+        <UserCardSkeleton key={i} height={70} />
+      ))}
+    </VStack>
+  );
+
   return (
     <VStack>
       <Box p={"$4"}>
@@ -58,11 +67,16 @@ const Notifications = () => {
         </Heading>
       </Box>
       <Box bgColor="$white">
-        <WithLoading isLoading={isLoading}>
-          {notifications &&
-            (notifications.length > 0 ? (
+        <SkeletonLoader<INotification[]>
+          data={notifications}
+          error={error}
+          isLoading={isLoading}
+          loadingComponent={loadingComponent()}
+        >
+          {(data) =>
+            data.length > 0 ? (
               <FlatList
-                data={notifications}
+                data={data}
                 ItemSeparatorComponent={() => (
                   <Divider bgColor="$coolGray300" height={"$0.5"} />
                 )}
@@ -87,8 +101,9 @@ const Notifications = () => {
               <Box p={"$4"}>
                 <Heading size={"md"}>No notifications yet</Heading>
               </Box>
-            ))}
-        </WithLoading>
+            )
+          }
+        </SkeletonLoader>
       </Box>
     </VStack>
   );

@@ -1,8 +1,8 @@
 import { Box } from "@gluestack-ui/themed";
 import React from "react";
-import { ActivityIndicator, Dimensions, FlatList } from "react-native";
+import { Dimensions, FlatList } from "react-native";
 import ErrorBox from "./states/ErrorBox";
-import SkeletonLoader from "./states/SkeletonLoader";
+import Skeleton from "./states/Skeleton";
 
 interface Props {
   items?: any[];
@@ -46,11 +46,7 @@ const HorizontalListLayout: React.FC<Props> = ({
     );
   };
 
-  const renderLoading = () => (
-    <SkeletonLoader height={200} data={items} isLoading={isLoading}>
-      {() => <ActivityIndicator size="large" color="#000" />}
-    </SkeletonLoader>
-  );
+  const renderLoading = () => <Skeleton height={200} />;
 
   const renderItems = () => {
     if (isLoading || !items) return renderLoading();

@@ -7,9 +7,11 @@ import { useGetRunnerPreviewsQuery } from "@lib/services";
 import { selectUser } from "@lib/store";
 import { Stack, useNavigation } from "expo-router";
 import React, { useState } from "react";
+import { Dimensions } from "react-native";
 
 const FindAthelteModal = () => {
   const navigation = useNavigation();
+  const width = Dimensions.get("window").width;
   const [query, setQuery] = useState("");
   const [debouncedQuery, isDebouncing] = useDebounce(query, 500);
   const user = useAppSelector(selectUser);
@@ -29,19 +31,8 @@ const FindAthelteModal = () => {
     <>
       <Stack.Screen
         options={{
-          headerStyle: {
-            backgroundColor: "#1C1E1F",
-          },
-          headerTintColor: "#fff",
-          headerShown: true,
           headerTitle: () => (
-            <VStack
-              mt={"$4"}
-              mb={"$2"}
-              width={"100%"}
-              ml={"-$10"}
-              alignItems="center"
-            >
+            <VStack mt={"$4"} mb={"$2"} width={width} alignItems="center">
               <Heading size="sm" color="$coolGray200">
                 Find Athlete
               </Heading>

@@ -1,13 +1,14 @@
-import WithLoading from "@Components/HOCs/withLoading";
 import withWatermarkBg from "@Components/HOCs/withWatermark";
 import AthletePreviewCard from "@Components/athletes/AthletePreviewCard";
 import FollowingAthletesList from "@Components/athletes/FollowingAthletesList";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
 import InfoTemplate from "@Components/common/InfoTemplate";
+import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import TeamPreview from "@Components/teams/TeamPreview";
 import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
 import { HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
 import { useAppSelector } from "@lib/hooks";
+import { IRunner, ITeam } from "@lib/models";
 import { useGetTopTeamsQuery } from "@lib/services";
 import { selectUser } from "@lib/store";
 import { useGetTopAthletesQuery } from "@lib/user/services/RunnerService";
@@ -38,11 +39,16 @@ const Athletes = () => {
           </Heading>
           <Heading size="lg">Teams</Heading>
         </HStack>
-        <WithLoading isLoading={!teams || isTeamsLoading}>
-          {teams && (
+        <SkeletonLoader<{ male: ITeam[]; female: ITeam[] }>
+          data={teams}
+          error={teamsError}
+          isLoading={isTeamsLoading}
+          height={200}
+        >
+          {(data) => (
             <HorizontalListLayout
               identifier="team"
-              items={[...teams?.male, ...teams?.female]}
+              items={[...data.male, ...data.female]}
               ItemComponent={TeamPreviewCard}
               additionalProps={{
                 Item: TeamPreview,
@@ -50,7 +56,7 @@ const Athletes = () => {
               }}
             />
           )}
-        </WithLoading>
+        </SkeletonLoader>
       </VStack>
       <VStack my={"$4"} space="sm">
         <HStack mx={"$4"}>
@@ -60,13 +66,22 @@ const Athletes = () => {
           </Heading>
           <Heading size="lg">Runners</Heading>
         </HStack>
-        <WithLoading isLoading={!athletes || isAthletesLoading}>
-          <HorizontalListLayout
-            identifier="runner"
-            items={[...(athletes?.male || []), ...(athletes?.female || [])]}
-            ItemComponent={AthletePreviewCard}
-          />
-        </WithLoading>
+        <SkeletonLoader<{
+          male: IRunner[] | null;
+          female: IRunner[] | null;
+        }>
+          isLoading={isAthletesLoading}
+          error={error}
+          data={athletes}
+        >
+          {(data) => (
+            <HorizontalListLayout
+              identifier="runner"
+              items={[...(data.male || []), ...(data.female || [])]}
+              ItemComponent={AthletePreviewCard}
+            />
+          )}
+        </SkeletonLoader>
       </VStack>
       <VStack mt={"$4"} mb={"$8"} space="sm">
         <HStack mx={"$4"}>

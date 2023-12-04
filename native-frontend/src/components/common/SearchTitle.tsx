@@ -1,4 +1,5 @@
 import { Center, Pressable } from "@gluestack-ui/themed";
+import { scaleSize } from "@lib/utils";
 import { useRouter } from "expo-router";
 import React from "react";
 import FakeSearchBar from "./FakeSearchBar";
@@ -11,10 +12,10 @@ interface SearchTitleProps {
 const SearchTitle: React.FC<SearchTitleProps> = ({ link, placeholder }) => {
   const router = useRouter();
   return (
-    <Pressable width={"95%"} onPress={() => router.push(link)}>
+    <Pressable width={scaleSize(300)} onPress={() => router.push(link)}>
       {({ pressed }: { pressed: boolean }) => (
         <Center opacity={pressed ? "$90" : "$100"}>
-          <FakeSearchBar placeholder={placeholder} />
+          <FakeSearchBar bg={"transparent"} placeholder={placeholder} />
         </Center>
       )}
     </Pressable>
