@@ -17,7 +17,10 @@ const tabsData = (eventId?: string) => {
 };
 
 const participants = () => {
-  const { eventId } = useLocalSearchParams<{ eventId?: string }>();
+  const { eventId, name } = useLocalSearchParams<{
+    eventId?: string;
+    name?: string;
+  }>();
 
   const [activeTab, setActiveTab] = useState(0);
 
@@ -45,7 +48,7 @@ const participants = () => {
             <VStack space={"md"} alignItems="center" w={"$full"} left={"-$16"}>
               <HeaderSubtitledTitle
                 title={"Participants"}
-                subtitle="Brussels mile"
+                subtitle={name || "Event"}
                 tintColor={tintColor}
               />
               <Tabs

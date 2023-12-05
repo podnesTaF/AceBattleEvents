@@ -2,16 +2,9 @@ import withWatermarkBg from "@Components/HOCs/withWatermark";
 import HomeTabTitle from "@Components/HomeTabTitle";
 import LogoTitle from "@Components/LogoTitle";
 import AuthCallToAction from "@Components/auth/AuthCallToAction";
+import FormButton from "@Components/common/forms/FormButton";
 import ProfileItem from "@Components/profile/ProfileItem";
-import {
-  Box,
-  Button,
-  ButtonIcon,
-  ButtonText,
-  HStack,
-  Pressable,
-  VStack,
-} from "@gluestack-ui/themed";
+import { Box, HStack, Pressable, VStack } from "@gluestack-ui/themed";
 import { useAppSelector, useLogout } from "@lib/hooks";
 import { selectUser } from "@lib/store";
 import { getAccountItems } from "@lib/user/utils/get-account-items";
@@ -21,7 +14,7 @@ import React from "react";
 
 const AccountPage = () => {
   const user = useAppSelector(selectUser);
-  const logout = useLogout();
+  const [logout, isLoading] = useLogout();
 
   if (user) {
     return (
@@ -50,15 +43,15 @@ const AccountPage = () => {
             ))}
           </HStack>
           <Box mx={"$4"}>
-            <Button
-              w={"$full"}
+            <FormButton
+              title={"Logout"}
               onPress={logout}
+              isLoading={isLoading}
+              w={"$full"}
               variant="outline"
               action="negative"
-            >
-              <ButtonIcon mr={"$2"} as={LogOut} />
-              <ButtonText>Logout</ButtonText>
-            </Button>
+              icon={LogOut}
+            />
           </Box>
         </VStack>
       </>

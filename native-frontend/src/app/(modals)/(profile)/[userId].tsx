@@ -1,12 +1,13 @@
-import WithLoading from "@Components/HOCs/withLoading";
 import withWatermarkBg from "@Components/HOCs/withWatermark";
 import AthleteBioTab from "@Components/athletes/tabs/AthleteBioTab";
 import CompetitionsTab from "@Components/athletes/tabs/CompetitionsTab";
 import ResultsTab from "@Components/athletes/tabs/ResultsTab";
 import ProfileHeader from "@Components/common/ProfileHeader";
 import Tabs from "@Components/common/Tabs";
+import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import TeamDescription from "@Components/teams/TeamDescription";
 import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
+import UserCardSkeleton from "@Components/user/UserCardSkeleton";
 import SpectatorBioTab from "@Components/user/tabs/SpectatorBioTab";
 import TeamsAndRunners from "@Components/user/tabs/TeamsAndRunners";
 import { Box, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
@@ -89,9 +90,18 @@ const ProfileScreen = () => {
               >
                 Profile
               </Heading>
-              <WithLoading isLoading={isLoading} loadingHeight={"$12"}>
-                {user && <ProfileHeader user={user} />}
-              </WithLoading>
+              <SkeletonLoader<IUser>
+                data={user}
+                isLoading={isLoading}
+                error={error}
+                loadingComponent={
+                  <Box w={width} ml={"$8"} py={"$1"}>
+                    <UserCardSkeleton height={50} />
+                  </Box>
+                }
+              >
+                {(data) => <ProfileHeader user={data} />}
+              </SkeletonLoader>
               <Box flex={1}>
                 <Tabs
                   size="sm"
@@ -105,11 +115,11 @@ const ProfileScreen = () => {
           ),
         }}
       />
-      <WithLoading isLoading={isLoading}>
-        {user && (
+      <SkeletonLoader<IUser> error={error} data={user} isLoading={isLoading}>
+        {(data) => (
           <FlatList
             ref={flatListRef}
-            data={tabsData(user)}
+            data={tabsData(data)}
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}
@@ -119,7 +129,7 @@ const ProfileScreen = () => {
             scrollEnabled={false}
           />
         )}
-      </WithLoading>
+      </SkeletonLoader>
     </>
   );
 };

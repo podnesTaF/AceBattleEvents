@@ -12,7 +12,11 @@ import { FlatList } from "react-native";
 const TeamsParticipants = ({ eventId }: { eventId?: string }) => {
   const [category, setCategory] = useState<string | undefined>(undefined);
 
-  const { data: teams, isLoading: isTeamsLoading } = useGetTeamsByEventQuery({
+  const {
+    data: teams,
+    isLoading: isTeamsLoading,
+    error,
+  } = useGetTeamsByEventQuery({
     eventId: eventId,
     category,
   });
@@ -39,7 +43,11 @@ const TeamsParticipants = ({ eventId }: { eventId?: string }) => {
           </HStack>
         </Box>
       </HStack>
-      <SkeletonLoader<ITeam[]> data={teams}>
+      <SkeletonLoader<ITeam[]>
+        data={teams}
+        isLoading={isTeamsLoading}
+        error={error}
+      >
         {(data) => (
           <FlatList<ITeam>
             data={data}

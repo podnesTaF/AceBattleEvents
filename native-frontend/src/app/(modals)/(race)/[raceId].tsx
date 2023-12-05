@@ -1,6 +1,6 @@
-import WithLoading from "@Components/HOCs/withLoading";
 import Container from "@Components/common/Container";
 import Tabs from "@Components/common/Tabs";
+import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import ExpandableTable from "@Components/custom/tables/ExpandableTable";
 import {
   Box,
@@ -98,39 +98,49 @@ const RaceScreen = () => {
           ),
         }}
       />
-      <WithLoading isLoading={isLoading || !race}>
-        {race && isPassed(race.startTime) ? (
-          <ScrollView>
-            <Box py={"$5"}>
-              <FlatList
-                ref={flatListRef}
-                data={tabsData(race)}
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                snapToAlignment="center"
-                renderItem={({ item }) => <Box width={width}>{item}</Box>}
-                keyExtractor={(item, i) => i.toString()}
-                scrollEnabled={false}
-              />
-            </Box>
-          </ScrollView>
-        ) : (
-          <Box my={"$4"}>
-            <Container vertical>
-              <VStack py={"$3"} px={"$2"} space="md">
-                <Heading>Results are not ready</Heading>
-                <HStack space="md" alignItems="center">
-                  <Icon as={InfoIcon} size="lg" />
-                  <Text>
-                    The race is in proccess.Wait until the race will be finished
-                  </Text>
-                </HStack>
-              </VStack>
-            </Container>
-          </Box>
+      <SkeletonLoader<IRace>
+        error={error}
+        height={400}
+        isLoading={isLoading}
+        data={race}
+      >
+        {(data) => (
+          <>
+            {isPassed(data.startTime) ? (
+              <ScrollView>
+                <Box py={"$5"}>
+                  <FlatList
+                    ref={flatListRef}
+                    data={tabsData(data)}
+                    horizontal
+                    pagingEnabled
+                    showsHorizontalScrollIndicator={false}
+                    snapToAlignment="center"
+                    renderItem={({ item }) => <Box width={width}>{item}</Box>}
+                    keyExtractor={(item, i) => i.toString()}
+                    scrollEnabled={false}
+                  />
+                </Box>
+              </ScrollView>
+            ) : (
+              <Box my={"$4"}>
+                <Container vertical>
+                  <VStack py={"$3"} px={"$2"} space="md">
+                    <Heading>Results are not ready</Heading>
+                    <HStack space="md" alignItems="center">
+                      <Icon as={InfoIcon} size="lg" />
+                      <Text>
+                        The race is in proccess.Wait until the race will be
+                        finished
+                      </Text>
+                    </HStack>
+                  </VStack>
+                </Container>
+              </Box>
+            )}
+          </>
         )}
-      </WithLoading>
+      </SkeletonLoader>
     </>
   );
 };

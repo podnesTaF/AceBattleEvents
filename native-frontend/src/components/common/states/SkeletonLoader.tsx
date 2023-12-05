@@ -6,7 +6,7 @@ interface SkeletonLoaderProps<T> {
   data?: T;
   color?: string;
   error?: any;
-  children: (data: T) => ReactNode | ReactNode;
+  children: (data: T) => ReactNode | Element;
   height?: number;
   width?: number;
   isLoading?: boolean;
