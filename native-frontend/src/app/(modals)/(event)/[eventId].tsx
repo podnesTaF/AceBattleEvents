@@ -27,13 +27,17 @@ const tabs = ["Participants", "Schedule", "Results"];
 
 const EventScreen = () => {
   const { eventId } = useLocalSearchParams();
-  const { data: eventInfo, isLoading } = useGetEventInfoQuery(+eventId);
+  const { data: eventInfo, isLoading, error } = useGetEventInfoQuery(+eventId);
   const router = useRouter();
   const user = useAppSelector(selectUser);
 
   const onChangeTab = (tabIndex: number) => {
+    if (!eventInfo) return;
     if (tabs[tabIndex] === "Participants") {
-      router.push({ pathname: "/participants", params: { eventId } });
+      router.push({
+        pathname: "/participants",
+        params: { eventId, name: eventInfo.title },
+      });
     } else if (tabs[tabIndex] === "Schedule") {
       router.push({ pathname: "/timetable", params: { eventId: eventId } });
     } else {
@@ -54,10 +58,9 @@ const EventScreen = () => {
             return (
               <SkeletonLoader<EventInfo>
                 data={eventInfo}
-                wrapperStyle={{
-                  height: "$24",
-                  width: "$full",
-                }}
+                isLoading={isLoading}
+                error={error}
+                color="#1f1f1f"
               >
                 {(eventInfo) => (
                   <VStack width={"100%"} left={"-$16"} space="md">
@@ -109,10 +112,8 @@ const EventScreen = () => {
       <ScrollView>
         <SkeletonLoader<EventInfo>
           data={eventInfo}
-          wrapperStyle={{
-            height: 200,
-            width: "$full",
-          }}
+          isLoading={isLoading}
+          error={error}
         >
           {(event) => (
             <VStack mb={"$6"} w={"$full"}>

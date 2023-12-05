@@ -14,7 +14,7 @@ import React from "react";
 const Timetable = () => {
   const { eventId } = useLocalSearchParams<{ eventId?: string }>();
 
-  const { data: races, isLoading } = useGetRacesByEventQuery(eventId);
+  const { data: races, isLoading, error } = useGetRacesByEventQuery(eventId);
   return (
     <>
       <Stack.Screen
@@ -51,7 +51,11 @@ const Timetable = () => {
             Races
           </Heading>
           <Container>
-            <SkeletonLoader<RaceWithCheckIn[]> data={races}>
+            <SkeletonLoader<RaceWithCheckIn[]>
+              data={races}
+              isLoading={isLoading}
+              error={error}
+            >
               {(data) =>
                 data.map((race, i) => (
                   <RaceCard

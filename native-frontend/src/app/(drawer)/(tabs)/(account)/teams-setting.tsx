@@ -1,7 +1,8 @@
-import WithLoading from "@Components/HOCs/withLoading";
 import withWatermarkBg from "@Components/HOCs/withWatermark";
 import LogoTitle from "@Components/LogoTitle";
 import InfoTemplate from "@Components/common/InfoTemplate";
+import SkeletonLoader from "@Components/common/states/SkeletonLoader";
+import TeamCardSkeleton from "@Components/teams/TeamCardSkeleton";
 import TeamDescription from "@Components/teams/TeamDescription";
 import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
 import {
@@ -21,7 +22,11 @@ import React from "react";
 
 const TeamsSetting = () => {
   const user = useAppSelector(selectUser);
-  const { data: teams, isLoading } = useGetTeamsByManagerQuery({
+  const {
+    data: teams,
+    isLoading,
+    error,
+  } = useGetTeamsByManagerQuery({
     managerId: user?.id,
   });
   return (
@@ -50,38 +55,45 @@ const TeamsSetting = () => {
           ),
         }}
       />
-      <WithLoading isLoading={isLoading || !teams}>
-        {teams?.length ? (
-          <FlatList
-            pt={"$4"}
-            px={"$6"}
-            ListFooterComponent={() => <VStack h={"$8"} />}
-            ListHeaderComponent={() => (
-              <Heading size={"xl"} mb={"$4"}>
-                Your Teams
-              </Heading>
-            )}
-            ItemSeparatorComponent={() => <VStack h={"$4"} />}
-            nestedScrollEnabled
-            data={teams}
-            renderItem={({ item }) => (
-              <TeamPreviewCard
-                team={item as ITeam}
-                Item={TeamDescription}
-                imageProportion={1}
-                showLink={true}
-                editable={true}
-              />
-            )}
-            keyExtractor={(item: any) => item.id.toString()}
-          />
-        ) : (
-          <InfoTemplate
-            title={"No teams found"}
-            text={"you have no teams yet"}
-          />
-        )}
-      </WithLoading>
+      <SkeletonLoader<ITeam[]>
+        data={teams}
+        isLoading={isLoading}
+        error={error}
+        loadingComponent={<TeamCardSkeleton count={3} />}
+      >
+        {(data) =>
+          data.length ? (
+            <FlatList
+              pt={"$4"}
+              px={"$6"}
+              ListFooterComponent={() => <VStack h={"$8"} />}
+              ListHeaderComponent={() => (
+                <Heading size={"xl"} mb={"$4"}>
+                  Your Teams
+                </Heading>
+              )}
+              ItemSeparatorComponent={() => <VStack h={"$4"} />}
+              nestedScrollEnabled
+              data={data}
+              renderItem={({ item }) => (
+                <TeamPreviewCard
+                  team={item as ITeam}
+                  Item={TeamDescription}
+                  imageProportion={1}
+                  showLink={true}
+                  editable={true}
+                />
+              )}
+              keyExtractor={(item: any) => item.id.toString()}
+            />
+          ) : (
+            <InfoTemplate
+              title={"No teams found"}
+              text={"you have no teams yet"}
+            />
+          )
+        }
+      </SkeletonLoader>
     </>
   );
 };

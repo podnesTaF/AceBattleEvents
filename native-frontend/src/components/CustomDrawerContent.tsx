@@ -1,4 +1,4 @@
-import { Box, Button, ButtonText, VStack } from "@gluestack-ui/themed";
+import { Box, VStack } from "@gluestack-ui/themed";
 import { useAppSelector, useLogout } from "@lib/hooks";
 import { selectIsAuth } from "@lib/store";
 import {
@@ -7,10 +7,11 @@ import {
 } from "@react-navigation/drawer";
 import React from "react";
 import LogoTitle from "./LogoTitle";
+import FormButton from "./common/forms/FormButton";
 
 const CustomDrawerContent = (props: any) => {
   const isAuth = useAppSelector(selectIsAuth);
-  const logout = useLogout();
+  const [logout, isLoading] = useLogout();
 
   return (
     <DrawerContentScrollView
@@ -26,14 +27,14 @@ const CustomDrawerContent = (props: any) => {
         </VStack>
         {isAuth && (
           <Box p={"$2"} mt={"auto"}>
-            <Button
+            <FormButton
+              title={"Logout"}
               onPress={logout}
+              isLoading={isLoading}
               action={"negative"}
               variant="solid"
               w={"$full"}
-            >
-              <ButtonText>Logout</ButtonText>
-            </Button>
+            />
           </Box>
         )}
       </Box>

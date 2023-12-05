@@ -1,6 +1,8 @@
 import Container from "@Components/common/Container";
+import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import CustomSelect from "@Components/custom/CustomSelect";
 import UserCard from "@Components/user/UserCard";
+import UserCardSkeleton from "@Components/user/UserCardSkeleton";
 import { Box, HStack, Heading, VStack } from "@gluestack-ui/themed";
 import { participantsFilters } from "@lib/common/utils/filters";
 import { ITeam, RunnerPreview } from "@lib/models";
@@ -16,12 +18,15 @@ const RunnerParticipants = ({ eventId }: { eventId?: string }) => {
 
   const [teamsFilter, setTeamsFilter] = useState<number>();
 
-  const { data: runnerPreviews, isLoading } =
-    useGetRunnersEventParitipantsQuery({
-      eventId,
-      gender: category,
-      teamId: teamsFilter,
-    });
+  const {
+    data: runnerPreviews,
+    isLoading,
+    error,
+  } = useGetRunnersEventParitipantsQuery({
+    eventId,
+    gender: category,
+    teamId: teamsFilter,
+  });
 
   useEffect(() => {
     if (runnerPreviews) {
@@ -100,11 +105,28 @@ const RunnerParticipants = ({ eventId }: { eventId?: string }) => {
         </Box>
       </HStack>
       <Box pb={"$4"}>
-        <FlatList
-          data={transformGroupedData(groupedData)}
-          renderItem={renderGroup}
-          keyExtractor={(item) => item.letter}
-        />
+        <SkeletonLoader<RunnerPreview[]>
+          isLoading={isLoading}
+          error={error}
+          data={runnerPreviews}
+          loadingComponent={
+            <>
+              {[...Array(10)].map((_, i) => (
+                <Box key={i} px={"$6"} py={"$2"}>
+                  <UserCardSkeleton />
+                </Box>
+              ))}
+            </>
+          }
+        >
+          {() => (
+            <FlatList
+              data={transformGroupedData(groupedData)}
+              renderItem={renderGroup}
+              keyExtractor={(item) => item.letter}
+            />
+          )}
+        </SkeletonLoader>
       </Box>
     </Box>
   );

@@ -1,32 +1,51 @@
-import WithLoading from "@Components/HOCs/withLoading";
 import withWatermarkBg from "@Components/HOCs/withWatermark";
 import Tabs from "@Components/common/Tabs";
+import BoxSkeleton from "@Components/common/states/BoxSkeleton";
+import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import ContactTab from "@Components/teams/tabs/ContactTab";
 import HomeTeamTab from "@Components/teams/tabs/HomeTeamTab";
 import RunnersTab from "@Components/teams/tabs/RunnersTab";
 import TeamResultsTab from "@Components/teams/tabs/TeamResultsTab";
 import {
+  Box,
   HStack,
   Heading,
   Image,
-  ScrollView,
   VStack,
+  View,
 } from "@gluestack-ui/themed";
+import { ITeam } from "@lib/models";
 import { useGetTeamQuery } from "@lib/services";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Dimensions, FlatList } from "react-native";
 
 const tabs = ["Home", "Runners", "Results", "Contact"];
+
+const tabsData = (team: ITeam) => {
+  return [
+    <HomeTeamTab team={team} />,
+    <RunnersTab team={team} />,
+    <TeamResultsTab team={team} />,
+    <ContactTab />,
+  ];
+};
 
 const TeamScreen = () => {
   const params = useLocalSearchParams<{ teamId: string }>();
   const { data: team, isLoading, error } = useGetTeamQuery(+params.teamId);
   const [activeTab, setActiveTab] = useState(0);
+  const flatListRef = useRef<FlatList>(null);
+  const { width } = Dimensions.get("window");
 
   const onChangeTab = (tabIndex: number) => {
     setActiveTab(tabIndex);
   };
+
+  useEffect(() => {
+    flatListRef.current?.scrollToIndex({ animated: true, index: activeTab });
+  }, [activeTab]);
 
   return (
     <>
@@ -44,8 +63,17 @@ const TeamScreen = () => {
                 alignItems="center"
                 left={"-$4"}
               >
-                <WithLoading isLoading={isLoading}>
-                  {team && (
+                <SkeletonLoader<ITeam>
+                  error={error}
+                  data={team}
+                  isLoading={isLoading}
+                  loadingComponent={
+                    <Box w={"$full"} alignItems="center">
+                      <BoxSkeleton width={150} height={50} />
+                    </Box>
+                  }
+                >
+                  {(team) => (
                     <>
                       <Image
                         role={"img"}
@@ -58,7 +86,7 @@ const TeamScreen = () => {
                       </Heading>
                     </>
                   )}
-                </WithLoading>
+                </SkeletonLoader>
               </HStack>
               <Tabs
                 activeColor={"$red500"}
@@ -70,14 +98,26 @@ const TeamScreen = () => {
           ),
         }}
       />
-      <WithLoading isLoading={isLoading} loadingHeight={200}>
-        {activeTab === 0 && (
-          <ScrollView>{team && <HomeTeamTab team={team} />}</ScrollView>
+      <SkeletonLoader<ITeam>
+        data={team}
+        isLoading={isLoading}
+        error={error}
+        height={300}
+      >
+        {(data) => (
+          <FlatList
+            ref={flatListRef}
+            data={tabsData(data)}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            snapToAlignment="center"
+            renderItem={({ item }) => <View style={{ width }}>{item}</View>}
+            keyExtractor={(item, i) => i.toString()}
+            scrollEnabled={false}
+          />
         )}
-        {activeTab === 1 && team && <RunnersTab team={team} />}
-        {activeTab === 2 && team && <TeamResultsTab team={team} />}
-        {activeTab === 3 && team && <ContactTab />}
-      </WithLoading>
+      </SkeletonLoader>
     </>
   );
 };

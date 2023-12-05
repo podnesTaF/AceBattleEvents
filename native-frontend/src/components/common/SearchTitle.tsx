@@ -12,7 +12,7 @@ interface SearchTitleProps {
 const SearchTitle: React.FC<SearchTitleProps> = ({ link, placeholder }) => {
   const router = useRouter();
   return (
-    <Pressable width={scaleSize(300)} onPress={() => router.push(link)}>
+    <Pressable width={scaleSize(350)} onPress={() => router.push(link)}>
       {({ pressed }: { pressed: boolean }) => (
         <Center opacity={pressed ? "$90" : "$100"}>
           <FakeSearchBar bg={"transparent"} placeholder={placeholder} />

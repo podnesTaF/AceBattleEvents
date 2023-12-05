@@ -48,6 +48,7 @@ const TeamPreviewCard = ({
       minWidth={minWidth || "$full"}
       rounded={"$md"}
       bg={"$white"}
+      height={"auto"}
       softShadow={shadow ? "1" : undefined}
       overflow="hidden"
     >

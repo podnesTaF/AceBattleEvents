@@ -57,7 +57,7 @@ const HomeTabTitle = ({
         </Avatar>
       </HStack>
     </HStack>
-  ) : isAuth !== null ? (
+  ) : isAuth === null ? (
     <Skeleton color={"#1c1e1f"} height={50} />
   ) : null;
 };
