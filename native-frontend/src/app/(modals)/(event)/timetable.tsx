@@ -1,10 +1,11 @@
 import withWatermarkBg from "@Components/HOCs/withWatermark";
 import Container from "@Components/common/Container";
 import HeaderSubtitledTitle from "@Components/common/HeaderSubtitledTitle";
+import InfoTemplate from "@Components/common/InfoTemplate";
 import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import RaceCard from "@Components/race/RaceCard";
 import { events } from "@Constants/dummy-data";
-import { Heading, VStack } from "@gluestack-ui/themed";
+import { Box, Heading, VStack } from "@gluestack-ui/themed";
 import { RaceWithCheckIn } from "@lib/models";
 import { useGetRacesByEventQuery } from "@lib/races/services/raceService";
 import { getNamedDate } from "@lib/utils";
@@ -50,25 +51,35 @@ const Timetable = () => {
           <Heading mx={"$4"} size={"lg"} py={"$1"}>
             Races
           </Heading>
-          <Container>
-            <SkeletonLoader<RaceWithCheckIn[]>
-              data={races}
-              isLoading={isLoading}
-              error={error}
-            >
-              {(data) =>
-                data.map((race, i) => (
-                  <RaceCard
-                    key={race.id}
-                    race={race}
-                    registrationAvailable={race.availableForCheckIn}
-                    eventId={events[0].id}
-                    isLast={i === data.length - 1}
+          <SkeletonLoader<RaceWithCheckIn[]>
+            data={races}
+            isLoading={isLoading}
+            error={error}
+          >
+            {(data) =>
+              data.length ? (
+                <Container>
+                  {data.map((race, i) => (
+                    <RaceCard
+                      key={race.id}
+                      race={race}
+                      registrationAvailable={race.availableForCheckIn}
+                      eventId={events[0].id}
+                      isLast={i === data.length - 1}
+                    />
+                  ))}
+                </Container>
+              ) : (
+                <Box mx={"$4"}>
+                  <InfoTemplate
+                    variant="outline"
+                    title="No Races Yet for this event"
+                    text="The races will be available soon. Stay tuned!"
                   />
-                ))
-              }
-            </SkeletonLoader>
-          </Container>
+                </Box>
+              )
+            }
+          </SkeletonLoader>
         </VStack>
       </VStack>
     </>

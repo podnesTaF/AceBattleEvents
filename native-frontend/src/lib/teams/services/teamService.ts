@@ -54,6 +54,20 @@ export const ServiceApi = api.injectEndpoints({
       }),
       providesTags: ["Team"],
     }),
+    followTeam: builder.mutation<{ followersCount: number | null }, number>({
+      query: (id) => ({
+        url: `/teams/follow/${id}`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Team"],
+    }),
+    unfollowTeam: builder.mutation<{ followersCount: number | null }, number>({
+      query: (id) => ({
+        url: `/teams/unfollow/${id}`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Team"],
+    }),
   }),
 });
 
@@ -63,4 +77,6 @@ export const {
   useGetTeamsByManagerQuery,
   useGetTeamsByEventQuery,
   useGetTeamQuery,
+  useFollowTeamMutation,
+  useUnfollowTeamMutation,
 } = ServiceApi;

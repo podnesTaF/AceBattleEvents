@@ -1,12 +1,15 @@
 import { Box, Center, Image, Text, VStack } from "@gluestack-ui/themed";
 import { IRunner } from "@lib/models";
+import { useRouter } from "expo-router";
 import React from "react";
+import { Pressable } from "react-native";
 
 interface AthletePodiumCardProps {
   runner?: IRunner;
 }
 
 const AthletePodiumCard: React.FC<AthletePodiumCardProps> = ({ runner }) => {
+  const router = useRouter();
   if (!runner) return null;
   return (
     <Center
@@ -18,30 +21,38 @@ const AthletePodiumCard: React.FC<AthletePodiumCardProps> = ({ runner }) => {
           : "flex-end"
       }
     >
-      <Box mb={"$1"} width={"$full"}>
-        <Image
-          role={"img"}
-          source={{
-            uri:
-              runner.user.image?.mediaUrl ||
-              "https://storage.googleapis.com/abe_cloud_storage/image/large/55c30c67-37aa-4476-bae9-b6f847a707fd.png",
-          }}
-          alt={"avatar"}
-          size={"lg"}
-          height={80}
-          objectFit="cover"
-          borderTopLeftRadius={20}
-          borderBottomRightRadius={20}
-        />
-      </Box>
-      <VStack alignItems="center" maxWidth={"$32"}>
-        <Text fontWeight="600" size="lg" color={"$white"}>
-          Rank {runner.rank}
-        </Text>
-        <Text size="md" color="$coolGray300" textAlign="center">
-          {runner.user.name} {runner.user.surname}
-        </Text>
-      </VStack>
+      <Pressable
+        onPress={() => router.push(`/(modals)/(profile)/${runner.user.id}`)}
+      >
+        {({ pressed }) => (
+          <>
+            <Box mb={"$1"} width={"$full"} opacity={pressed ? 0.8 : 1}>
+              <Image
+                role={"img"}
+                source={{
+                  uri:
+                    runner.user.image?.mediaUrl ||
+                    "https://storage.googleapis.com/abe_cloud_storage/image/large/55c30c67-37aa-4476-bae9-b6f847a707fd.png",
+                }}
+                alt={"avatar"}
+                size={"lg"}
+                height={80}
+                objectFit="cover"
+                borderTopLeftRadius={20}
+                borderBottomRightRadius={20}
+              />
+            </Box>
+            <VStack alignItems="center" maxWidth={"$32"}>
+              <Text fontWeight="600" size="lg" color={"$white"}>
+                Rank {runner.rank}
+              </Text>
+              <Text size="md" color="$coolGray300" textAlign="center">
+                {runner.user.name} {runner.user.surname}
+              </Text>
+            </VStack>
+          </>
+        )}
+      </Pressable>
     </Center>
   );
 };

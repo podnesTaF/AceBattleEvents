@@ -9,7 +9,7 @@ import { config } from "@gluestack-ui/config";
 import { GluestackUIProvider } from "@gluestack-ui/themed";
 import { useAppDispatch } from "@lib/hooks";
 import { useFetchUserInitialDataQuery } from "@lib/services";
-import { setUser, store } from "@lib/store";
+import { removeUser, setUser, store } from "@lib/store";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
@@ -66,6 +66,8 @@ function RootLayoutNav() {
   useEffect(() => {
     if (user) {
       dispatch(setUser(user));
+    } else {
+      dispatch(removeUser());
     }
   }, [user, dispatch]);
 

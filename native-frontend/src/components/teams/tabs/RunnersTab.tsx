@@ -12,12 +12,14 @@ const RunnersTab = ({ team }: { team: ITeam }) => {
           <Heading size="sm" mb={"$2"}>
             Coaches
           </Heading>
-          <Container>
-            <UserCard
-              description="Coach of the Kyiv-men"
-              user={team.coach as any}
-            />
-          </Container>
+          {team.coach && (
+            <Container>
+              <UserCard
+                description={`Coach of the ${team.name}`}
+                user={team.coach.user}
+              />
+            </Container>
+          )}
         </VStack>
         <VStack>
           <Heading size={"sm"} mb={"$2"}>

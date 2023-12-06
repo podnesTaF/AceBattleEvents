@@ -1,4 +1,6 @@
+import NoItemsAvailable from "@Components/common/NoItemsAvailable";
 import SkeletonLoader from "@Components/common/states/SkeletonLoader";
+import ListStyledWrapper from "@Components/common/wrappers/ListStyledWrapper";
 import CustomSelect from "@Components/custom/CustomSelect";
 import TeamDescription from "@Components/teams/TeamDescription";
 import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
@@ -48,21 +50,41 @@ const TeamsParticipants = ({ eventId }: { eventId?: string }) => {
         isLoading={isTeamsLoading}
         error={error}
       >
-        {(data) => (
-          <FlatList<ITeam>
-            data={data}
-            keyExtractor={(item) => item.id.toString()}
-            ItemSeparatorComponent={() => <Box h={"$4"} />}
-            ListFooterComponent={() => <Box h={"$24"} />}
-            renderItem={({ item }) => (
-              <TeamPreviewCard
-                Item={TeamDescription}
-                team={item}
-                imageProportion={1}
+        {(data) =>
+          data.length ? (
+            <FlatList<ITeam>
+              data={data}
+              keyExtractor={(item) => item.id.toString()}
+              ItemSeparatorComponent={() => <Box h={"$4"} />}
+              ListFooterComponent={() => <Box h={"$24"} />}
+              renderItem={({ item }) => (
+                <TeamPreviewCard
+                  Item={TeamDescription}
+                  team={item}
+                  imageProportion={1}
+                />
+              )}
+            />
+          ) : !category ? (
+            <ListStyledWrapper
+              title={"Official Teams"}
+              primaryBgColor={"#1e1c1f"}
+            >
+              <NoItemsAvailable
+                title={"No Team Registered yet"}
+                text={
+                  "There is no official participants yet. See preliminary participant on the main page"
+                }
+                link={`/(modals)/(event)/${eventId}`}
+                linkButtonText={"Home"}
               />
-            )}
-          />
-        )}
+            </ListStyledWrapper>
+          ) : (
+            <Heading textAlign="center" size="lg">
+              No teams in this category
+            </Heading>
+          )
+        }
       </SkeletonLoader>
     </>
   );

@@ -2,11 +2,10 @@ import withWatermarkBg from "@Components/HOCs/withWatermark";
 import LogoTitle from "@Components/LogoTitle";
 import FollowingAthletesList from "@Components/athletes/FollowingAthletesList";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
-import SearchTitle from "@Components/common/SearchTitle";
 import TeamPreview from "@Components/teams/TeamPreview";
 import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
 import { teams } from "@Constants/dummy-data";
-import { Box, HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
+import { HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
 import { useAppSelector } from "@lib/hooks";
 import { selectUser } from "@lib/store";
 import { Stack } from "expo-router";
@@ -30,15 +29,12 @@ const Followings = () => {
               space="md"
               top={"$4"}
               pb={"$6"}
-              left={"-$16"}
+              left={"-$20"}
             >
               <LogoTitle {...props} />
-              <Box width={"95%"}>
-                <SearchTitle
-                  link={"/(modals)/(find)/find-athlete"}
-                  placeholder="Search for an athlete..."
-                />
-              </Box>
+              <Heading size="sm" color="$coolGray200">
+                Followings
+              </Heading>
             </VStack>
           ),
         }}

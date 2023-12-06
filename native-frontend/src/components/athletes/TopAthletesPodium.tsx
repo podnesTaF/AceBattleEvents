@@ -59,7 +59,7 @@ const TopAthletesPodium = () => {
         ) : (
           <HStack space="lg" width={"$full"}>
             {[2, 1, 3].map((rank, i) => (
-              <HStack key={rank} height={"$56"} flex={1}>
+              <HStack key={rank} height={"$48"} flex={1}>
                 <AthletePodiumCard
                   runner={topAthletes[activeGender]?.find(
                     (runner: IRunner) => runner.rank === rank

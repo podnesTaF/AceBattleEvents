@@ -27,7 +27,7 @@ const UserCard: React.FC<UserCardProps> = ({
   description,
   isAuthorized,
 }) => {
-  const runner = user.runner || runnerPreview;
+  const runner = user?.runner || runnerPreview;
 
   return (
     <Link href={`/(modals)/(profile)/${user.id}`} asChild>

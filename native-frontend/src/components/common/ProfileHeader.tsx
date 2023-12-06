@@ -32,11 +32,13 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
           <AvatarFallbackText>
             {user.name} {user.surname}
           </AvatarFallbackText>
-          <AvatarImage
-            source={{ uri: user.image?.mediaUrl }}
-            alt={"user avatar"}
-            role={"img"}
-          />
+          {user.image?.mediaUrl && (
+            <AvatarImage
+              source={{ uri: user.image.mediaUrl }}
+              alt={"user avatar"}
+              role={"img"}
+            />
+          )}
         </Avatar>
         <VStack space="sm" justifyContent="center">
           <Heading size={"md"} color={"$white"}>

@@ -3,9 +3,12 @@ import { EventInfo, EventResult, IEvent } from "../models";
 
 export const EventApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getAllEvents: builder.query<IEvent[], void>({
-      query: () => ({
-        url: `/events`,
+    getAllEvents: builder.query<
+      { totalPages: number; events: IEvent[] },
+      string | undefined
+    >({
+      query: (params) => ({
+        url: `/events?${params}`,
       }),
       providesTags: (result) => ["Event"],
     }),

@@ -1,6 +1,7 @@
 import { ICountry } from "@lib/countries/models/ICountry";
 import {
   IClub,
+  ICoach,
   IEvent,
   IMedia,
   IRace,
@@ -29,5 +30,8 @@ export type ITeam = {
   races: IRace[];
   eventRegistrations: ITeamRegistration[];
 
+  coach?: ICoach;
   followers: IUser[];
+  followersCount?: number;
+  isFollowing?: boolean;
 };

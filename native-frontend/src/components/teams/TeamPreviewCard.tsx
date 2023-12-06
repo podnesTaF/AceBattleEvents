@@ -25,6 +25,7 @@ interface TeamProps {
   shadow?: boolean;
   showLink?: boolean;
   editable?: boolean;
+  titlePosition?: string;
 }
 
 const TeamPreviewCard = ({
@@ -35,6 +36,7 @@ const TeamPreviewCard = ({
   shadow,
   showLink,
   editable,
+  titlePosition,
 }: TeamProps): JSX.Element => {
   const router = useRouter();
 
@@ -48,21 +50,24 @@ const TeamPreviewCard = ({
       minWidth={minWidth || "$full"}
       rounded={"$md"}
       bg={"$white"}
-      height={"auto"}
       softShadow={shadow ? "1" : undefined}
       overflow="hidden"
     >
-      <Pressable onPress={handlePress}>
+      <Pressable flex={imageProportion || 2} onPress={handlePress}>
         {({ pressed }: { pressed: boolean }) => (
           <Box
             opacity={pressed ? 0.9 : 1}
             flex={imageProportion || 1}
-            height={"$40"}
+            height={"$48"}
             width={"$full"}
             position="relative"
             alignItems="stretch"
           >
-            <TitleRect title={team.name} icon={"md-people"} />
+            <TitleRect
+              position={titlePosition}
+              title={team.name}
+              icon={"md-people"}
+            />
             <Image
               role={"img"}
               source={{
@@ -94,7 +99,9 @@ const TeamPreviewCard = ({
           </Box>
         )}
       </Pressable>
-      <Item team={team} />
+      <Box flex={1}>
+        <Item team={team} />
+      </Box>
     </VStack>
   );
 };
