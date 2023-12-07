@@ -13,8 +13,6 @@ import { CreateUserDto } from "../dtos/create-user.dto";
 import { LoginUserDto } from "../dtos/login-user.dto";
 import { UpdateUserDto } from "../dtos/update-user.dto";
 import { User } from "../entities/user.entity";
-import { RunnerService } from "./runner.service";
-import { SpectatorService } from "./spectator.service";
 
 @Injectable()
 export class UserService {
@@ -22,8 +20,6 @@ export class UserService {
     @InjectRepository(User)
     private repository: Repository<User>,
     private countryService: CountryService,
-    private runnerService: RunnerService,
-    private spectatorService: SpectatorService,
     private verifyRepository: VerifyMemberService,
   ) {}
 
@@ -56,14 +52,6 @@ export class UserService {
     user.interest = dto.interest;
 
     const newUser = await this.repository.save(user);
-
-    if (dto.runner) {
-      try {
-        await this.runnerService.create(dto.runner, newUser);
-      } catch (error) {
-        throw new ForbiddenException(error.message);
-      }
-    }
 
     const randomToken = uuid.v4().toString();
 

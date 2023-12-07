@@ -10,6 +10,14 @@ export class ManagerService {
     private repository: Repository<Manager>,
   ) {}
 
+  async findAll() {
+    const manager = await this.repository.find({
+      relations: ["user.image", "user.avatar", "user.country", "teams"],
+    });
+
+    return manager;
+  }
+
   findById(id: number) {
     return this.repository.findOne({
       where: { id },

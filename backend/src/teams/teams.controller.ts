@@ -10,6 +10,7 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { JwtOptionalAuthGuard } from "src/auth/guards/jwt-optional-auth.guard";
 import { CreateTeamDto } from "./dto/create-team.dto";
 import { TeamsService } from "./teams.service";
 
@@ -116,8 +117,9 @@ export class TeamsController {
   }
 
   @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.teamsService.findOne(+id);
+  @UseGuards(JwtOptionalAuthGuard)
+  findOne(@Param("id") id: string, @Request() req: any) {
+    return this.teamsService.findOne(+id, req?.user?.id);
   }
 
   @Get("count")
@@ -153,5 +155,23 @@ export class TeamsController {
     },
   ) {
     return this.teamsService.update(+id, dto);
+  }
+
+  @Post("/follow/:id")
+  @UseGuards(JwtAuthGuard)
+  followTeam(@Request() req: any, @Param("id") id: string) {
+    return this.teamsService.followTeam({
+      teamId: +id,
+      userId: req.user.id,
+    });
+  }
+
+  @Post("/unfollow/:id")
+  @UseGuards(JwtAuthGuard)
+  unfollowTeam(@Request() req: any, @Param("id") id: string) {
+    return this.teamsService.unfollowTeam({
+      teamId: +id,
+      userId: req.user.id,
+    });
   }
 }

@@ -5,6 +5,7 @@ import { CountryService } from "src/country/country.service";
 import { Event } from "src/events/entities/event.entity";
 import { PlayersService } from "src/players/players.service";
 import { Coach } from "src/users/entities/coach.entity";
+import { User } from "src/users/entities/user.entity";
 import { RunnerService } from "src/users/services/runner.service";
 import { Repository } from "typeorm";
 import { CreateTeamDto } from "./dto/create-team.dto";
@@ -357,28 +358,44 @@ export class TeamsService {
     return teams;
   }
 
-  findOne(id: number) {
-    return this.repository.findOne({
-      where: { id },
-      relations: [
-        "teamImage",
-        "events",
-        "players",
-        "coach",
-        "club",
-        "logo",
-        "country",
-        "players.user",
-        "players.user.image",
-        "players.user.country",
-        "club.runners",
-        "personalBest",
-        "races",
-        "races.teams",
-        "races.teamResults",
-        "races.teamResults.team",
-      ],
-    });
+  async findOne(id: number, userId?: number) {
+    const { followersCount } = await this.repository
+      .createQueryBuilder("team")
+      .where("team.id = :id", { id })
+      .leftJoin("team.followers", "followers")
+      .select("COUNT(followers.id)", "followersCount")
+      .getRawOne();
+
+    const team = await this.repository
+      .createQueryBuilder("team")
+      .leftJoinAndSelect("team.teamImage", "teamImage")
+      .leftJoinAndSelect("team.events", "events")
+      .leftJoinAndSelect("team.players", "players")
+      .leftJoinAndSelect("players.user", "user")
+      .leftJoinAndSelect("user.image", "image")
+      .leftJoinAndSelect("user.country", "userCountry")
+      .leftJoinAndSelect("team.coach", "coach")
+      .leftJoinAndSelect("coach.user", "coachUser")
+      .leftJoinAndSelect("coachUser.image", "coachImage")
+      .leftJoinAndSelect("team.logo", "logo")
+      .leftJoinAndSelect("team.country", "country")
+      .leftJoinAndSelect("team.personalBest", "personalBest")
+      .leftJoinAndSelect("team.races", "races")
+      .leftJoinAndSelect("races.teams", "raceTeams")
+      .leftJoinAndSelect("races.teamResults", "teamResults")
+      .leftJoinAndSelect("teamResults.team", "resultTeam")
+      .leftJoinAndSelect(
+        "team.followers",
+        "followers",
+        "followers.id = :userId",
+        { userId },
+      )
+      .where("team.id = :id", { id })
+      .getOne();
+
+    const isFollowing = team.followers.length > 0;
+
+    return { ...team, followersCount, isFollowing };
   }
 
   async update(
@@ -419,8 +436,42 @@ export class TeamsService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} team`;
+  async followTeam({ teamId, userId }: { teamId: number; userId: number }) {
+    const team = await this.repository.findOne({
+      where: { id: teamId },
+      relations: ["followers"],
+    });
+    if (!team) {
+      return null;
+    }
+    const user = team.followers.find((follower) => follower.id === userId);
+    if (user) {
+      return { followersCount: team.followers.length };
+    }
+
+    team.followers.push({ id: userId } as User);
+    await this.repository.save(team);
+    return { followersCount: team.followers.length };
+  }
+
+  async unfollowTeam({ teamId, userId }: { teamId: number; userId: number }) {
+    const team = await this.repository.findOne({
+      where: { id: teamId },
+      relations: ["followers"],
+    });
+
+    if (!team) {
+      return null;
+    }
+    const user = team.followers.find((follower) => follower.id === userId);
+    if (!user) {
+      return null;
+    }
+    team.followers = team.followers.filter(
+      (follower) => follower.id !== userId,
+    );
+    await this.repository.save(team);
+    return { followersCount: team.followers.length };
   }
 
   async count() {

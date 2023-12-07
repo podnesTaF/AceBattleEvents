@@ -1,10 +1,10 @@
-import { Injectable } from "@nestjs/common";
+import { ForbiddenException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Best } from "src/bests/entities/best.entity";
 import { RunnerResult } from "src/runner-results/entities/runner-results.entity";
-import { createDateFromDDMMYYYY } from "src/utils/date-formater";
 import { Repository } from "typeorm";
 import { CreateRunnerDto } from "../dtos/create-runner.dto";
+import { Manager } from "../entities/manager.entity";
 import { Runner } from "../entities/runner.entity";
 import { User } from "../entities/user.entity";
 
@@ -15,35 +15,85 @@ export class RunnerService {
     private repository: Repository<Runner>,
     @InjectRepository(Best)
     private bestsRepository: Repository<Best>,
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+    @InjectRepository(Manager)
+    private managersRepository: Repository<Manager>,
   ) {}
 
-  async create(dto: CreateRunnerDto, user: User) {
+  async create(dto: CreateRunnerDto, user: User | number) {
+    if (!dto.runnerAgreement || !dto.informationIsCorrect) {
+      throw new ForbiddenException(
+        "You must agree to the terms and conditions",
+      );
+    }
+
     const runner = new Runner();
 
-    runner.user = user;
+    if (typeof user === "number") {
+      const userRequested = await this.usersRepository.findOne({
+        where: { id: user },
+      });
+
+      if (!userRequested) {
+        throw new ForbiddenException("User not found");
+      }
+
+      if (userRequested.role === "runner") {
+        throw new ForbiddenException("User is already a runner");
+      }
+      runner.user = userRequested;
+    } else {
+      if (user.role === "runner") {
+        throw new ForbiddenException("User is already a runner");
+      }
+      runner.user = user;
+    }
+
     runner.selfDefinedPB = [];
     runner.selfDefinedSB = [];
     runner.gender = dto.gender;
-    const date = createDateFromDDMMYYYY(dto.dateOfBirth);
-    runner.dateOfBirth = date.toDateString();
+    runner.dateOfBirth = dto.dateOfBirth;
     for (let i = 0; i < dto.personalBests.length; i++) {
       const best = await this.bestsRepository.save({
-        distanceInCm: dto.personalBests[i].distanceInCm,
-        timeInMs: dto.personalBests[i].timeInMs,
+        distanceInCm: +dto.personalBests[i].distanceInCm,
+        result: dto.personalBests[i].result,
       });
       runner.selfDefinedPB.push(best);
     }
 
     for (let i = 0; i < dto.seasonBests.length; i++) {
       const best = await this.bestsRepository.save({
-        distanceInCm: dto.seasonBests[i].distanceInCm,
-        timeInMs: dto.seasonBests[i].timeInMs,
+        distanceInCm: +dto.seasonBests[i].distanceInCm,
+        result: dto.seasonBests[i].result,
       });
       runner.selfDefinedSB.push(best);
     }
+
     runner.category = dto.category;
 
-    return this.repository.save(runner);
+    if (dto.worldAthleticsUrl) {
+      runner.worldAthleticsUrl = dto.worldAthleticsUrl;
+    }
+
+    runner.managerOption = dto.managerOption;
+    if (dto.managerOption === "choose-manager") {
+      const manager = await this.managersRepository.findOne({
+        where: { id: dto.manager },
+      });
+      if (manager) {
+        runner.manager = manager;
+      }
+    } else {
+      runner.manager = null;
+    }
+
+    await this.repository.save(runner);
+    await this.usersRepository.update(runner.user.id, {
+      rolePending: "runner",
+    });
+
+    return { success: true };
   }
 
   async findAll(query: any) {
