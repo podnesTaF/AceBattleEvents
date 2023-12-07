@@ -86,7 +86,23 @@ export const getMembershipSteps = (user?: IUser | null) => {
     // Apply role-specific modifications
     const modifySteps = (roleModifications as any)[user.role];
     if (modifySteps) {
-      modifySteps(joinSteps);
+      modifySteps(joinSteps, user.rolePending);
+    }
+  }
+
+  // Handle rolePending attribute
+  if (user?.rolePending) {
+    const pendingIndex =
+      user.rolePending === "runner"
+        ? 1
+        : user.rolePending === "manager"
+        ? 2
+        : -1; // Add other roles here if needed
+
+    if (pendingIndex !== -1) {
+      joinSteps[pendingIndex].description += " (Pending)";
+      joinSteps[pendingIndex].isActive = false;
+      joinSteps[pendingIndex].isFinished = false;
     }
   }
 

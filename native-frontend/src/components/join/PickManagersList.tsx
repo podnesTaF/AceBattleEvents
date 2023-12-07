@@ -5,7 +5,7 @@ import { selectItems, selectValues, setFormValue } from "@lib/store";
 import { useNavigation } from "expo-router";
 import React, { useEffect } from "react";
 
-const PickCoachScreenContent = ({
+const PickManagersList = ({
   save,
   setSave,
 }: {
@@ -13,18 +13,18 @@ const PickCoachScreenContent = ({
   setSave: Function;
 }) => {
   const { newValues } = useAppSelector(selectValues);
-  const { availableCoaches } = useAppSelector(selectItems);
+  const { availableManagers } = useAppSelector(selectItems);
   const dispatch = useAppDispatch();
   const [item, setItem] = React.useState<string | undefined>(undefined);
   const navigation = useNavigation();
 
   useEffect(() => {
-    setItem(newValues.coach?.toString());
+    setItem(newValues.manager?.toString());
   }, []);
 
   useEffect(() => {
     if (save) {
-      dispatch(setFormValue({ key: "coach", value: +item! }));
+      dispatch(setFormValue({ key: "manager", value: +item! }));
       setSave(false);
       navigation.goBack();
     }
@@ -37,8 +37,8 @@ const PickCoachScreenContent = ({
   return (
     <VStack p={"$4"}>
       <ControlledRadioGroup
-        items={availableCoaches}
-        name={"coach"}
+        items={availableManagers}
+        name={"manager"}
         value={item}
         customOnChange={onChangeItem}
       />
@@ -46,4 +46,4 @@ const PickCoachScreenContent = ({
   );
 };
 
-export default PickCoachScreenContent;
+export default PickManagersList;

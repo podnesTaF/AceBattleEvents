@@ -27,6 +27,7 @@ export interface IUser {
   manager?: IManager;
   runner?: IRunner;
   spectator?: ISpectator;
+  rolePending?: string;
 
   sentNotifications?: INotification[];
   receivedNotifications?: INotification[];

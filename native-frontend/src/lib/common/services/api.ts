@@ -41,6 +41,7 @@ export const api = createApi({
     "RunnerPreview",
     "News",
     "Coach",
+    "Manager",
     "Registrations",
   ],
   endpoints: () => ({}),

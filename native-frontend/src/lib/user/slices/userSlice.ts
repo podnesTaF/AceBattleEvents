@@ -18,6 +18,14 @@ export const userSlice = createSlice({
       if (!data) return;
       data = action.payload;
     },
+    updateUserField: (
+      { data },
+      action: PayloadAction<{ field: keyof IUser; value: never }>
+    ) => {
+      if (data?.[action.payload.field]) {
+        data[action.payload.field] = action.payload.value;
+      }
+    },
     removeUser: (state) => {
       state.data = null;
       state.isAuth = false;
@@ -25,7 +33,8 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setUser, removeUser, updateUserData } = userSlice.actions;
+export const { setUser, removeUser, updateUserData, updateUserField } =
+  userSlice.actions;
 export const selectUser = (state: { user: UserState }) => state.user.data;
 export const selectIsAuth = (state: { user: UserState }) => state.user.isAuth;
 

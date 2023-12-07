@@ -1,5 +1,6 @@
 import { api } from "@lib/common/services/api";
 import { IRunner, ITeamEvent, RunnerPreview, UserResult } from "@lib/models";
+import { CreateRunnerSchema } from "../utils";
 
 export const RunnerApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -108,6 +109,13 @@ export const RunnerApi = api.injectEndpoints({
       }),
       providesTags: ["User"],
     }),
+    registerRunner: builder.mutation<{ success: boolean }, CreateRunnerSchema>({
+      query: (body) => ({
+        url: `/runners`,
+        method: "POST",
+        body,
+      }),
+    }),
     followRunner: builder.mutation<{ id: number; userId: number }, number>({
       query: (id) => ({
         url: `/runners/follow/${id}`,
@@ -142,4 +150,5 @@ export const {
   useGetMyFollowersQuery,
   useGetMyFollowingsQuery,
   useGetRunnersEventParitipantsQuery,
+  useRegisterRunnerMutation,
 } = RunnerApi;

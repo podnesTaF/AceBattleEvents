@@ -7,6 +7,7 @@ import {
   VStack,
 } from "@gluestack-ui/themed";
 import { PickItem } from "@lib/types";
+import { scaleSize } from "@lib/utils";
 import React from "react";
 
 interface PickItemLabelProps {
@@ -46,7 +47,7 @@ const PickItemLabel: React.FC<PickItemLabelProps> = ({
         <VStack space="sm">
           <Heading size="sm">{item.title}</Heading>
           {item.additionalInfo && (
-            <Heading size={"xs"} color="$coolGray300">
+            <Heading size={"xs"} maxWidth={scaleSize(250)} color="$coolGray300">
               {item.additionalInfo}
             </Heading>
           )}

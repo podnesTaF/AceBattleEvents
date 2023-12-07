@@ -1,4 +1,10 @@
-import { ICoach, IRaceRegistration, IRunner, ITeam } from "@lib/models";
+import {
+  ICoach,
+  IManager,
+  IRaceRegistration,
+  IRunner,
+  ITeam,
+} from "@lib/models";
 import { PickItem } from "../types";
 import { getCategoryByDoB } from "./date-utils";
 
@@ -20,6 +26,26 @@ export const mapCoachesToPickItems = (coaches?: ICoach[]): PickItem[] => {
       title: item.user.name + " " + item.user.surname,
       additionalInfo: "coach",
       imageUrl: item.user.avatar?.mediaUrl,
+    })) || []
+  );
+};
+
+export const mapManagersToPickItems = (managers?: IManager[]): PickItem[] => {
+  return (
+    managers?.map((item: IManager) => ({
+      id: item.id,
+      title: item.user.name + " " + item.user.surname,
+      additionalInfo:
+        item.user.country.name +
+        ", " +
+        item.user.city +
+        " - " +
+        item.teams?.reduce(
+          (acc, curr, i, arr) =>
+            i !== arr.length - 1 ? acc + curr.name + " | " : acc + curr.name,
+          ""
+        ),
+      imageUrl: item.user.avatar?.mediaUrl || item.user.image?.mediaUrl,
     })) || []
   );
 };
