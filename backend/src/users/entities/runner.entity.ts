@@ -15,6 +15,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { Manager } from "./manager.entity";
 import { User } from "./user.entity";
 
 export enum RunnerCategory {
@@ -39,6 +40,12 @@ export class Runner {
   @Column({ default: "professional" })
   category: RunnerCategory;
 
+  @Column({ nullable: true })
+  managerOption: string;
+
+  @Column({ default: false })
+  approved: boolean;
+
   @OneToMany(() => RunnerResult, (result) => result.runner)
   results: RunnerResult[];
 
@@ -49,6 +56,11 @@ export class Runner {
     onDelete: "NO ACTION",
   })
   runnerForRace: TeamRaceRunner[];
+
+  @ManyToOne(() => Manager, (manager) => manager.runners, {
+    nullable: true,
+  })
+  manager: Manager;
 
   @OneToMany(() => Best, (best) => best.runnerPb, { nullable: true })
   selfDefinedPB: Best[];

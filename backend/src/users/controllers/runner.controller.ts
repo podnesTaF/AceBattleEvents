@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
@@ -9,6 +10,9 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { RolesGuard } from "src/auth/guards/roles.guard";
+import { Roles } from "src/auth/roles/roles.guard";
+import { CreateRunnerDto } from "../dtos/create-runner.dto";
 import { RunnerService } from "../services/runner.service";
 
 @Controller("runners")
@@ -66,6 +70,16 @@ export class RunnerController {
   @UseGuards(JwtAuthGuard)
   getFollowings(@Request() req: any) {
     return this.runnerService.getFollowings(+req.user.id);
+  }
+
+  @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("spectator")
+  createRunner(
+    @Request() req: { user: { id: number } },
+    @Body() body: CreateRunnerDto,
+  ) {
+    return this.runnerService.create(body, req.user.id);
   }
 
   @Post("/follow/:id")

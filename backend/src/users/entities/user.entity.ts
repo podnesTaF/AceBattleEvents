@@ -64,6 +64,9 @@ export class User {
   @Column({ nullable: true })
   password: string;
 
+  @Column({ nullable: true })
+  rolePending: string;
+
   @ManyToOne(() => Media, { nullable: true })
   image: Media;
 

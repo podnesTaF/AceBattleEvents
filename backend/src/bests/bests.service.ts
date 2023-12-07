@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { CreatePersonalBestDto } from './dto/create-personal-best.dto';
-import { UpdatePersonalBestDto } from './dto/update-personal-best.dto';
-import { Best } from './entities/best.entity';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { CreatePersonalBestDto } from "./dto/create-personal-best.dto";
+import { UpdatePersonalBestDto } from "./dto/update-personal-best.dto";
+import { Best } from "./entities/best.entity";
 
 @Injectable()
 export class BestsService {
@@ -11,8 +11,11 @@ export class BestsService {
     @InjectRepository(Best)
     private repository: Repository<Best>,
   ) {}
-  create(createPersonalBestDto: CreatePersonalBestDto) {
-    return this.repository.save(createPersonalBestDto);
+  create(dto: CreatePersonalBestDto) {
+    return this.repository.save({
+      distanceInCm: +dto.distanceInCm,
+      result: dto.result,
+    });
   }
 
   findAll() {

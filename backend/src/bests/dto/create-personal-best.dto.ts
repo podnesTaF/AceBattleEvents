@@ -1,9 +1,9 @@
-import { IsNumber } from 'class-validator';
+import { IsString } from "class-validator";
 
 export class CreatePersonalBestDto {
-  @IsNumber()
-  distanceInCm: number;
+  @IsString()
+  distanceInCm: string;
 
-  @IsNumber()
-  timeInMs: number;
+  @IsString()
+  result: string;
 }

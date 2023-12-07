@@ -1,12 +1,6 @@
-import {
-  Box,
-  HStack,
-  Heading,
-  Image,
-  Text,
-  VStack,
-} from "@gluestack-ui/themed";
+import { Box, HStack, Heading, Text, VStack } from "@gluestack-ui/themed";
 import { IRunner } from "@lib/models";
+import { Image } from "expo-image";
 import { Link } from "expo-router";
 import React from "react";
 
@@ -25,14 +19,15 @@ const AthletePreviewCard: React.FC<AthleteProps> = ({ runner }) => {
         alignItems="stretch"
       >
         <Image
-          role={"img"}
+          style={{ flex: 1 }}
           source={{
             uri:
               runner.user.image?.mediaUrl ||
               "https://storage.googleapis.com/abe_cloud_storage/image/large/55c30c67-37aa-4476-bae9-b6f847a707fd.png",
           }}
           alt={"team preview"}
-          size="full"
+          contentFit="cover"
+          contentPosition={"top"}
         />
       </Box>
       <Box flex={1} p={"$2"}>

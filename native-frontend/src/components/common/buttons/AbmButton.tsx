@@ -1,9 +1,10 @@
-import { Box, Heading, Pressable } from "@gluestack-ui/themed";
+import { Box, HStack, Heading, Pressable, Spinner } from "@gluestack-ui/themed";
 import React from "react";
 
 interface AbmButtonProps {
   variant?: "redFirst" | "blackFirst";
   title: string;
+  isLoading?: boolean;
   size?: "sm" | "md" | "lg";
   onPress: () => void;
 }
@@ -11,6 +12,7 @@ interface AbmButtonProps {
 const AbmButton = ({
   variant = "blackFirst",
   title,
+  isLoading,
   size = "md",
   onPress,
 }: AbmButtonProps): JSX.Element => {
@@ -30,9 +32,12 @@ const AbmButton = ({
             px={size === "sm" ? "$2" : size === "lg" ? "$8" : "$4"}
             py={size === "sm" ? "$1" : size === "lg" ? "$4" : "$2"}
           >
-            <Heading size={size} color={"$black"}>
-              {title}
-            </Heading>
+            <HStack space={"sm"} alignItems="center">
+              {isLoading && <Spinner size={"small"} />}
+              <Heading size={size} color={"$black"}>
+                {title}
+              </Heading>
+            </HStack>
           </Box>
           <Box
             zIndex={0}

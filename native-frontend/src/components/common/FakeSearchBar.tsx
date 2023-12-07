@@ -5,9 +5,11 @@ import React from "react";
 const FakeSearchBar = ({
   placeholder,
   bg,
+  showIcon = true,
 }: {
   placeholder: string;
   bg?: any;
+  showIcon?: boolean;
 }) => {
   return (
     <HStack
@@ -18,9 +20,11 @@ const FakeSearchBar = ({
       px={"$3"}
       py={"$1.5"}
     >
-      <Box mr={"$2"}>
-        <Ionicons name={"search"} size={24} color={"gray"} />
-      </Box>
+      {showIcon && (
+        <Box mr={"$2"}>
+          <Ionicons name={"search"} size={24} color={"gray"} />
+        </Box>
+      )}
       <Text size={"lg"} color="$coolGray400">
         {placeholder}
       </Text>

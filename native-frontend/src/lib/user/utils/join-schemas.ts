@@ -36,3 +36,35 @@ export type SubmitUserType = {
   acceptTerms?: boolean;
   acceptNews?: boolean;
 };
+
+export const createRunnerSchema = yup.object().shape({
+  category: yup.string().required("Category is required"),
+  gender: yup.string().required("Gender is required"),
+  dateOfBirth: yup.string().required("Date of birth is required"),
+  personalBests: yup.array().of(
+    yup.object().shape({
+      distanceInCm: yup.string().required("Distance is required"),
+      result: yup.string().required("Write your result"),
+    })
+  ),
+  seasonBests: yup.array().of(
+    yup.object().shape({
+      distanceInCm: yup.string().required("Distance is required"),
+      result: yup.string().required("Write your result"),
+    })
+  ),
+  managerOption: yup.string().required("Manager option is required"),
+  manager: yup
+    .number()
+    .when("managerOption", (managerOption: any, schema: any) => {
+      if (managerOption === "choose-manager")
+        return schema.required("Please, choose manager");
+      return schema;
+    }),
+  runnerAgreement: yup
+    .boolean()
+    .oneOf([true], "Please accept terms and conditions"),
+  informationIsCorrect: yup.boolean().oneOf([true], "Please accept the field"),
+});
+
+export type CreateRunnerSchema = yup.InferType<typeof createRunnerSchema>;

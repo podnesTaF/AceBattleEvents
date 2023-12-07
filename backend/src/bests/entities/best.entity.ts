@@ -1,5 +1,5 @@
-import { Runner } from 'src/users/entities/runner.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Runner } from "src/users/entities/runner.entity";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Best {
@@ -9,16 +9,23 @@ export class Best {
   @Column()
   distanceInCm: number;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   timeInMs: number;
 
+  @Column({
+    nullable: true,
+  })
+  result: string;
+
   @ManyToOne(() => Runner, (runner) => runner.selfDefinedSB, {
-    onDelete: 'CASCADE',
+    onDelete: "CASCADE",
   })
   runnerSb: Runner;
 
   @ManyToOne(() => Runner, (runner) => runner.selfDefinedPB, {
-    onDelete: 'CASCADE',
+    onDelete: "CASCADE",
   })
   runnerPb: Runner;
 }

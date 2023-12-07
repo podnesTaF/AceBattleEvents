@@ -1,3 +1,4 @@
+import NoItemsAvailable from "@Components/common/NoItemsAvailable";
 import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import ListStyledWrapper from "@Components/common/wrappers/ListStyledWrapper";
 import TeamRegistrationCard from "@Components/teams/TeamRegistrationCard";
@@ -20,13 +21,24 @@ const UserTeamsCalendar = ({ user }: Props): JSX.Element => {
     >
       <SkeletonLoader<ITeamRegistration[]> data={teamRegistrations}>
         {(data) =>
-          data.map((reg) => (
-            <TeamRegistrationCard
-              key={reg.id}
-              event={reg.event}
-              team={reg.team}
+          data.length ? (
+            data.map((reg) => (
+              <TeamRegistrationCard
+                key={reg.id}
+                event={reg.event}
+                team={reg.team}
+              />
+            ))
+          ) : (
+            <NoItemsAvailable
+              title={"No registrations found"}
+              text={
+                "You can expore future events by clicking on the button below"
+              }
+              link={`/(drawer)/events`}
+              linkButtonText={"Explore Events"}
             />
-          ))
+          )
         }
       </SkeletonLoader>
     </ListStyledWrapper>

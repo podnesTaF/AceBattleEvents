@@ -90,7 +90,6 @@ const Athletes = () => {
             Followings
           </Heading>
         </HStack>
-
         {user ? (
           <FollowingAthletesList />
         ) : (

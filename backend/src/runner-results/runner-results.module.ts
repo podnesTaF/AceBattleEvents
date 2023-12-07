@@ -1,16 +1,18 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Best } from 'src/bests/entities/best.entity';
-import { CountryService } from 'src/country/country.service';
-import { Country } from 'src/country/entity/country.entity';
-import { Split } from 'src/splits/entities/splits.entity';
-import { SplitsService } from 'src/splits/splits.service';
-import { TeamResult } from 'src/team-results/entities/team-results.entity';
-import { Runner } from 'src/users/entities/runner.entity';
-import { RunnerService } from 'src/users/services/runner.service';
-import { RunnerResult } from './entities/runner-results.entity';
-import { RunnerResultsController } from './runner-results.controller';
-import { RunnerResultsService } from './runner-results.service';
+import { Module } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { Best } from "src/bests/entities/best.entity";
+import { CountryService } from "src/country/country.service";
+import { Country } from "src/country/entity/country.entity";
+import { Split } from "src/splits/entities/splits.entity";
+import { SplitsService } from "src/splits/splits.service";
+import { TeamResult } from "src/team-results/entities/team-results.entity";
+import { Manager } from "src/users/entities/manager.entity";
+import { Runner } from "src/users/entities/runner.entity";
+import { User } from "src/users/entities/user.entity";
+import { RunnerService } from "src/users/services/runner.service";
+import { RunnerResult } from "./entities/runner-results.entity";
+import { RunnerResultsController } from "./runner-results.controller";
+import { RunnerResultsService } from "./runner-results.service";
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { RunnerResultsService } from './runner-results.service';
       Split,
       Country,
       Best,
+      Manager,
+      User,
     ]),
   ],
   controllers: [RunnerResultsController],

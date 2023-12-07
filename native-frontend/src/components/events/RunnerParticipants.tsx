@@ -1,5 +1,7 @@
 import Container from "@Components/common/Container";
+import NoItemsAvailable from "@Components/common/NoItemsAvailable";
 import SkeletonLoader from "@Components/common/states/SkeletonLoader";
+import ListStyledWrapper from "@Components/common/wrappers/ListStyledWrapper";
 import CustomSelect from "@Components/custom/CustomSelect";
 import UserCard from "@Components/user/UserCard";
 import UserCardSkeleton from "@Components/user/UserCardSkeleton";
@@ -109,23 +111,31 @@ const RunnerParticipants = ({ eventId }: { eventId?: string }) => {
           isLoading={isLoading}
           error={error}
           data={runnerPreviews}
-          loadingComponent={
-            <>
-              {[...Array(10)].map((_, i) => (
-                <Box key={i} px={"$6"} py={"$2"}>
-                  <UserCardSkeleton />
-                </Box>
-              ))}
-            </>
-          }
+          loadingComponent={<UserCardSkeleton count={5} />}
         >
-          {() => (
-            <FlatList
-              data={transformGroupedData(groupedData)}
-              renderItem={renderGroup}
-              keyExtractor={(item) => item.letter}
-            />
-          )}
+          {() =>
+            groupedData.length ? (
+              <FlatList
+                data={transformGroupedData(groupedData)}
+                renderItem={renderGroup}
+                keyExtractor={(item) => item.letter}
+              />
+            ) : !category ? (
+              <ListStyledWrapper
+                title={"Official Runners"}
+                primaryBgColor={"#1e1c1f"}
+              >
+                <NoItemsAvailable
+                  title={"No Official Runners yet"}
+                  text={"There are no runners in this event"}
+                />
+              </ListStyledWrapper>
+            ) : (
+              <Heading textAlign="center" size="lg">
+                No runners in this category
+              </Heading>
+            )
+          }
         </SkeletonLoader>
       </Box>
     </Box>

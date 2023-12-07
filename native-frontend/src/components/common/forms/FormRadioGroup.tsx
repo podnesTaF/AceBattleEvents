@@ -2,12 +2,12 @@ import {
   Box,
   CircleIcon,
   HStack,
+  Heading,
   Radio,
   RadioGroup,
   RadioIcon,
   RadioIndicator,
   RadioLabel,
-  Text,
   VStack,
 } from "@gluestack-ui/themed";
 import React from "react";
@@ -19,7 +19,7 @@ interface FormRadioGroupProps {
     value: string;
   }[];
   name: string;
-  parentLabel: string;
+  parentLabel?: string;
   customOnChange?: (value: string, name: string) => void;
   defaultValue?: string;
 }
@@ -40,9 +40,11 @@ const FormRadioGroup: React.FC<FormRadioGroupProps> = ({
       borderBottomWidth={1}
       borderBottomColor="$coolGray300"
     >
-      <Box flex={1}>
-        <Text size="md">{parentLabel}</Text>
-      </Box>
+      {parentLabel && (
+        <Box flex={1}>
+          <Heading size="sm">{parentLabel}</Heading>
+        </Box>
+      )}
       <Box flex={2}>
         <Controller
           control={control}

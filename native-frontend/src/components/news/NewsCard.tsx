@@ -1,10 +1,18 @@
-import { Box, HStack, Image, Text, VStack } from "@gluestack-ui/themed";
+import {
+  Box,
+  HStack,
+  Image,
+  Pressable,
+  Text,
+  VStack,
+} from "@gluestack-ui/themed";
+import { NewsPreview } from "@lib/models";
 import { getTimeAgo } from "@lib/utils";
-import { Link } from "expo-router";
+import { router } from "expo-router";
 import React from "react";
 
 interface NewsCardProps {
-  news: any;
+  news: NewsPreview;
 }
 
 const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
@@ -24,29 +32,28 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
           size="full"
         />
       </Box>
-      <Box px={"$3"} py={"$2"} flex={1}>
-        <Text
-          minHeight={40}
-          textTransform="uppercase"
-          fontWeight="600"
-          size={"md"}
-          mb={"$2"}
-        >
-          {news.title.length > 80
-            ? news.title.slice(0, 77) + "..."
-            : news.title}
-        </Text>
-        <HStack justifyContent="space-between" alignItems="center">
-          <Text color={"$coolGray400"} fontWeight="600">
-            {getTimeAgo(news.createdAt)}
-          </Text>
-          <Link href={"/(drawer)/(tabs)/home"}>
-            <Text color={"$red500"} fontWeight="600">
-              read article
+      <Pressable onPress={() => router.push(`/(modals)/(news)/${news.id}`)}>
+        {({ pressed }: { pressed: boolean }) => (
+          <Box px={"$3"} py={"$2"} flex={1} opacity={pressed ? 0.8 : 1}>
+            <Text
+              minHeight={40}
+              textTransform="uppercase"
+              fontWeight="600"
+              size={"md"}
+              mb={"$2"}
+            >
+              {news.title.length > 80
+                ? news.title.slice(0, 77) + "..."
+                : news.title}
             </Text>
-          </Link>
-        </HStack>
-      </Box>
+            <HStack justifyContent="space-between" alignItems="center">
+              <Text color={"$coolGray400"} fontWeight="600">
+                {getTimeAgo(news.createdAt)}
+              </Text>
+            </HStack>
+          </Box>
+        )}
+      </Pressable>
     </VStack>
   );
 };
