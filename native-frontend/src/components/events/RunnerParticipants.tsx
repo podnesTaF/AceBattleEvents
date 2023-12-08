@@ -114,7 +114,7 @@ const RunnerParticipants = ({ eventId }: { eventId?: string }) => {
           loadingComponent={<UserCardSkeleton count={5} />}
         >
           {() =>
-            groupedData.length ? (
+            Object.keys(groupedData).length ? (
               <FlatList
                 data={transformGroupedData(groupedData)}
                 renderItem={renderGroup}

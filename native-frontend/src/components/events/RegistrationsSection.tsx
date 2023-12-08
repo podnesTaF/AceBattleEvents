@@ -1,15 +1,15 @@
 import Container from "@Components/common/Container";
 import InfoTemplate from "@Components/common/InfoTemplate";
 import TeamRegistrationCard from "@Components/teams/TeamRegistrationCard";
-import SpectatorRegistrationCard from "@Components/user/SpectatorRegistrationCard";
 import { teams } from "@Constants/dummy-data";
-import { HStack, Icon, Text } from "@gluestack-ui/themed";
+import { Box, HStack, Icon, Text } from "@gluestack-ui/themed";
+import { IEvent } from "@lib/models";
 import { InfoIcon } from "lucide-react-native";
 import React from "react";
 
 interface RegistrationSectionProps {
   user: any;
-  events: any[];
+  events: IEvent[];
 }
 
 const RegistrationsSection: React.FC<RegistrationSectionProps> = ({
@@ -17,25 +17,6 @@ const RegistrationsSection: React.FC<RegistrationSectionProps> = ({
   events,
 }) => {
   // fecth registrations by user, if logged in
-
-  if (user.role === "spectator") {
-    return (
-      <>
-        {events.length ? (
-          events.map((event) => (
-            <SpectatorRegistrationCard
-              key={event.id}
-              event={events[0] as any}
-              user={user as any}
-            />
-          ))
-        ) : (
-          <InfoTemplate text="You haven't registered to attend any events yet" />
-        )}
-      </>
-    );
-  }
-
   if (user.role === "manager") {
     return (
       <>
@@ -78,6 +59,14 @@ const RegistrationsSection: React.FC<RegistrationSectionProps> = ({
       </>
     );
   }
+
+  return (
+    <>
+      <Box h={"$24"}>
+        <InfoTemplate text="You haven't registered to attend any events yet" />
+      </Box>
+    </>
+  );
 };
 
 export default RegistrationsSection;

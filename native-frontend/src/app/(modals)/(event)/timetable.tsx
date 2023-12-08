@@ -44,7 +44,7 @@ const Timetable = () => {
       />
       <VStack>
         <Heading size={"sm"} textAlign="center" my={"$2"}>
-          {races?.[0].event.startDateTime &&
+          {races?.[0]?.event.startDateTime &&
             getNamedDate(races[0].event.startDateTime)}
         </Heading>
         <VStack>
