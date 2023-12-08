@@ -32,7 +32,13 @@ const FindAthelteModal = () => {
       <Stack.Screen
         options={{
           headerTitle: () => (
-            <VStack mt={"$4"} mb={"$2"} width={width} alignItems="center">
+            <VStack
+              mt={"$4"}
+              mb={"$2"}
+              left={"-$16"}
+              width={width}
+              alignItems="center"
+            >
               <Heading size="sm" color="$coolGray200">
                 Find Athlete
               </Heading>

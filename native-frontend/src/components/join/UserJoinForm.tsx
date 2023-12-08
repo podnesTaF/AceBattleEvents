@@ -5,7 +5,7 @@ import FormSelect from "@Components/common/forms/FormSelect";
 import PhoneField from "@Components/common/forms/PhoneField";
 import PickField from "@Components/common/forms/PickField";
 import { availableCountries } from "@Constants/country-codes";
-import { Box, Heading, Image, VStack } from "@gluestack-ui/themed";
+import { Box, Heading, Image, Text, VStack } from "@gluestack-ui/themed";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch, useAppSelector } from "@lib/hooks";
 import { IMedia } from "@lib/models";
@@ -94,7 +94,7 @@ const UserJoinForm = () => {
     )?.title;
 
     if (!country) {
-      form.setError("root", { message: "you did not provide country" });
+      form.setError("root", { message: "You did not provide country" });
       return;
     }
 
@@ -110,9 +110,17 @@ const UserJoinForm = () => {
         setEmail(user.email);
         setActiveStep(activeStep + 1);
       }
-    } catch (error) {
-      console.log(error);
-      form.setError("root", { message: "error registering user" });
+    } catch (error: any) {
+      if (error.status === 403) {
+        form.setError("email", {
+          type: "manual",
+          message: "The email is already taken",
+        });
+      } else if (error.status === 401) {
+        form.setError("root", {
+          message: error.data?.message?.join(", ") || "Error registering user",
+        });
+      }
     }
   };
 
@@ -262,9 +270,11 @@ const UserJoinForm = () => {
                   name={"agreeNews"}
                   label={"I want to stay updated with upcoming events and news"}
                 />
-                <Heading textAlign="center" size={"sm"} color={"$red400"}>
-                  {form.formState.errors.root?.message}
-                </Heading>
+                <Box w={"$full"} mt={"$4"}>
+                  <Text textAlign="center" size={"sm"} color={"$red400"}>
+                    {form.formState.errors.root?.message}
+                  </Text>
+                </Box>
               </>
             )}
             {activeStep === 3 && (

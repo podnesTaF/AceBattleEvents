@@ -42,6 +42,7 @@ export const api = createApi({
     "News",
     "Coach",
     "Manager",
+    "Tags",
     "Registrations",
   ],
   endpoints: () => ({}),
