@@ -1,7 +1,9 @@
 import UserInfoList from "@Components/common/UserInfoList";
 import UserContactInfo from "@Components/user/UserContactInfo";
 import { Box } from "@gluestack-ui/themed";
+import { useAppSelector } from "@lib/hooks";
 import { IUser } from "@lib/models";
+import { selectUser } from "@lib/store";
 import { getUsersInfo } from "@lib/utils";
 import { Image } from "expo-image";
 import React from "react";
@@ -11,6 +13,7 @@ interface AthleteBioTabProps {
 }
 
 const AthleteBioTab = ({ user }: AthleteBioTabProps): JSX.Element => {
+  const authedUser = useAppSelector(selectUser);
   return (
     <Box>
       <Box mb={"$4"} overflow="hidden">
@@ -31,7 +34,8 @@ const AthleteBioTab = ({ user }: AthleteBioTabProps): JSX.Element => {
           <UserInfoList items={getUsersInfo(user)} />
         </Box>
       </Box>
-      <UserContactInfo user={user} />
+      {authedUser?.id === user.id ||
+        (authedUser?.role === "manager" && <UserContactInfo user={user} />)}
     </Box>
   );
 };

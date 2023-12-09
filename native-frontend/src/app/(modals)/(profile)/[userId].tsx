@@ -27,7 +27,7 @@ const tabsData = (user: IUser) => {
         <AthleteBioTab user={user} />
       </ScrollView>,
       <ScrollView>
-        <Box p={"$3"}>
+        <VStack p={"$3"} space="lg">
           {user.runner.teamsAsRunner?.map((team) => (
             <TeamPreviewCard
               key={team.id}
@@ -37,7 +37,7 @@ const tabsData = (user: IUser) => {
               showLink={true}
             />
           ))}
-        </Box>
+        </VStack>
       </ScrollView>,
       <ResultsTab runner={user.runner} />,
       <CompetitionsTab runnerId={user.runner.id} />,

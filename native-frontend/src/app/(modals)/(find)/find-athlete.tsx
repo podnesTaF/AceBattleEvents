@@ -1,10 +1,20 @@
-import WithLoading from "@Components/HOCs/withLoading";
 import SearchBar from "@Components/common/SearchBar";
+import ImageLoader from "@Components/common/states/ImageLoader";
+import NoResourceFound from "@Components/common/states/NoResourceFound";
 import UserCard from "@Components/user/UserCard";
-import { Box, Heading, ScrollView, Text, VStack } from "@gluestack-ui/themed";
+import {
+  Box,
+  Center,
+  Heading,
+  Image,
+  ScrollView,
+  Text,
+  VStack,
+} from "@gluestack-ui/themed";
 import { useAppSelector, useDebounce } from "@lib/hooks";
 import { useGetRunnerPreviewsQuery } from "@lib/services";
 import { selectUser } from "@lib/store";
+import { scaleSize } from "@lib/utils";
 import { Stack, useNavigation } from "expo-router";
 import React, { useState } from "react";
 import { Dimensions } from "react-native";
@@ -54,32 +64,52 @@ const FindAthelteModal = () => {
       />
       <Box flex={1} bg={"$coolGray100"}>
         {query.length ? (
-          <ScrollView p={"$4"}>
-            <Box mb={"$4"}>
-              <Heading>Runners</Heading>
-              <WithLoading
-                isLoading={isRunnersLoading || isFetching || isDebouncing}
-              >
+          <ImageLoader
+            isLoading={isRunnersLoading || isFetching || isDebouncing}
+            error={error}
+          >
+            <ScrollView p={"$4"} height={"$full"}>
+              <Box mb={"$4"}>
+                <Heading>Runners</Heading>
                 <VStack>
-                  {runnersData?.runners?.map((runner, i) => (
-                    <UserCard
-                      key={runner.id}
-                      user={runner.user}
-                      runnerPreview={runner}
-                      isAuthorized={!!user}
+                  {runnersData?.runners?.length ? (
+                    runnersData?.runners?.map((runner, i) => (
+                      <UserCard
+                        key={runner.id}
+                        user={runner.user}
+                        runnerPreview={runner}
+                        isAuthorized={!!user}
+                      />
+                    ))
+                  ) : (
+                    <NoResourceFound
+                      title={"No Runners Found"}
+                      text={"Please edit filters"}
                     />
-                  ))}
+                  )}
                 </VStack>
-              </WithLoading>
-            </Box>
-          </ScrollView>
+              </Box>
+            </ScrollView>
+          </ImageLoader>
         ) : (
-          <Box flex={1} justifyContent="center" alignItems="center">
-            <Heading size={"xl"} color={"$coolGray800"}>
+          <Center flex={1}>
+            <Image
+              source={require("@Assets/images/runners.png")}
+              style={{
+                width: 80,
+                height: 100,
+                objectFit: "contain",
+              }}
+              role={"img"}
+              alt={"loading..."}
+            />
+            <Heading size="lg" color="$coolGray500">
               Look for an athlete or team
             </Heading>
-            <Text>Fun Fact</Text>
-          </Box>
+            <Text maxWidth={scaleSize(300)} textAlign="center">
+              Search for an athlete or team by first name, last name, or team
+            </Text>
+          </Center>
         )}
       </Box>
     </>

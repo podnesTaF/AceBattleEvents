@@ -32,7 +32,9 @@ export const teamRegistrationApi = api.injectEndpoints({
       { runnerId: number; pastIncluded?: boolean }
     >({
       query: ({ runnerId, pastIncluded }) => ({
-        url: `/team-registrations/runner/${runnerId}?pastIncluded=${pastIncluded}`,
+        url: `/team-registrations/runner/${runnerId}?pastIncluded=${
+          pastIncluded || ""
+        }`,
       }),
       providesTags: (result) => [{ type: "TeamRegistrations", id: "LIST" }],
     }),

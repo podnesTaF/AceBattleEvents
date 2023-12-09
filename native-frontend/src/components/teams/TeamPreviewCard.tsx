@@ -42,7 +42,7 @@ const TeamPreviewCard = ({
 
   const handlePress = () => {
     if (showLink) {
-      router.push(`/teams/${team.id}`);
+      router.push(`/(modals)/(team)/${team.id}`);
     }
   };
   return (

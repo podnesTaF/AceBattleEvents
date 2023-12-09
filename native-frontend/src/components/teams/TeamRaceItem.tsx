@@ -1,6 +1,7 @@
 import { Button, ButtonText, HStack, Heading } from "@gluestack-ui/themed";
 import { IRace } from "@lib/models";
 import { getBattleName, msToMinutesAndSeconds } from "@lib/utils";
+import { useRouter } from "expo-router";
 import React from "react";
 
 interface TeamRaceItemProps {
@@ -14,6 +15,7 @@ const TeamRaceItem: React.FC<TeamRaceItemProps> = ({
   isLast,
   teamId,
 }) => {
+  const router = useRouter();
   const result = () => {
     return race?.teamResults?.find((tr) => tr.team?.id === teamId)
       ? msToMinutesAndSeconds(
@@ -35,7 +37,12 @@ const TeamRaceItem: React.FC<TeamRaceItemProps> = ({
       </Heading>
       <HStack flex={1} justifyContent="flex-end" space="md" alignItems="center">
         <Heading size={"md"}>{result()}</Heading>
-        <Button size={"sm"} action="positive" variant="solid">
+        <Button
+          onPress={() => router.push(`/(modals)/(race)/${race.id}`)}
+          size={"sm"}
+          action="positive"
+          variant="solid"
+        >
           <ButtonText>details</ButtonText>
         </Button>
       </HStack>
