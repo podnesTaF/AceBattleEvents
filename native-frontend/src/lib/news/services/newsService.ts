@@ -1,16 +1,17 @@
 import { api } from "@lib/common/services/api";
-import { INews, NewsPreview } from "../models";
+import { IHashtag, INews, NewsPreview } from "../models";
 
 export const newsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     fetchNewsPreviews: builder.query<
       { newsPreviews: NewsPreview[]; totalPages: number },
-      { limit?: number; textLength?: number; page?: number }
+      { limit?: number; textLength?: number; page?: number; tags?: string[] }
     >({
-      query: ({ limit, textLength, page }) => ({
-        url: `/news/previews?limit=${limit}&textLength=${textLength}&page=${page}`,
+      query: ({ limit, textLength, page, tags }) => ({
+        url: `/news/previews?limit=${limit || ""}&textLength=${
+          textLength || ""
+        }&page=${page || 1}&tags=${tags?.join(",") || ""}`,
       }),
-      providesTags: (result) => ["NewsPreview"],
     }),
     getArticle: builder.query<INews, string>({
       query: (id) => ({
@@ -18,7 +19,17 @@ export const newsApi = api.injectEndpoints({
       }),
       providesTags: (result) => [{ type: "News", id: result?.id }],
     }),
+    fetchTags: builder.query<IHashtag[], void>({
+      query: () => ({
+        url: "/hashtags",
+      }),
+      providesTags: (result) => ["Tags"],
+    }),
   }),
 });
 
-export const { useFetchNewsPreviewsQuery, useGetArticleQuery } = newsApi;
+export const {
+  useFetchNewsPreviewsQuery,
+  useGetArticleQuery,
+  useFetchTagsQuery,
+} = newsApi;

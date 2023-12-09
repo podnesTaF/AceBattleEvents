@@ -36,13 +36,19 @@ const TeamDescription: React.FC<TeamProps> = ({ team }) => {
           <Text size={"lg"}>Rank</Text>
           <Heading size={"lg"}># {team.rank}</Heading>
         </HStack>
-        <HStack space="4xl" alignItems="center" justifyContent="space-between">
-          <Text size={"lg"}>Coach</Text>
-          <Heading size={"lg"}>
-            {team.eventRegistrations?.[0].coach?.user?.name}{" "}
-            {team.eventRegistrations?.[0].coach?.user?.surname}
-          </Heading>
-        </HStack>
+        {team.eventRegistrations?.[0].coach && (
+          <HStack
+            space="4xl"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Text size={"lg"}>Coach</Text>
+            <Heading size={"lg"}>
+              {team.eventRegistrations[0].coach?.user?.name}{" "}
+              {team.eventRegistrations[0].coach?.user?.surname}
+            </Heading>
+          </HStack>
+        )}
         <HStack space="4xl" alignItems="center" justifyContent="space-between">
           <Text size={"lg"}>Finished Races</Text>
           <Heading size={"lg"}>2</Heading>

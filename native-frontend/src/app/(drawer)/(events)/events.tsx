@@ -3,17 +3,20 @@ import withWatermarkBg from "@Components/HOCs/withWatermark";
 import AuthCallToAction from "@Components/auth/AuthCallToAction";
 import Container from "@Components/common/Container";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
+import InfoTemplate from "@Components/common/InfoTemplate";
 import SearchTitle from "@Components/common/SearchTitle";
 import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import ListStyledWrapper from "@Components/common/wrappers/ListStyledWrapper";
 import EventCard from "@Components/events/EventCard";
 import RegistrationsSection from "@Components/events/RegistrationsSection";
 import UpcomingEventCard from "@Components/events/UpcomingEventCard";
-import { events } from "@Constants/dummy-data";
 import { Box, Heading, VStack } from "@gluestack-ui/themed";
-import { useFetchFutureEventsQuery } from "@lib/events/services";
+import {
+  useFetchFutureEventsQuery,
+  useGetAllEventsQuery,
+} from "@lib/events/services";
 import { useAppSelector } from "@lib/hooks";
-import { IViewer } from "@lib/models";
+import { IEvent, IViewer } from "@lib/models";
 import { useFetchSpectatorRegistrationsQuery } from "@lib/services";
 import { selectUser } from "@lib/store";
 import { mapFutureEvents } from "@lib/utils";
@@ -25,7 +28,16 @@ const EventsScreen = () => {
   const user = useAppSelector(selectUser);
   const { data: myRegistrations, isLoading: isLoadingRegistrations } =
     useFetchSpectatorRegistrationsQuery();
-  const { data: eventsData, error, isLoading } = useFetchFutureEventsQuery();
+  const {
+    data: fututeEventsData,
+    error,
+    isLoading,
+  } = useFetchFutureEventsQuery();
+  const {
+    data: eventsData,
+    isLoading: isLoadingEvents,
+    error: eventError,
+  } = useGetAllEventsQuery("finished=true");
   return (
     <Box bgColor="#fff9ff">
       <Stack.Screen
@@ -49,7 +61,7 @@ const EventsScreen = () => {
           <WithLoading isLoading={isLoading}>
             <HorizontalListLayout
               identifier="event"
-              items={mapFutureEvents(eventsData)}
+              items={mapFutureEvents(fututeEventsData)}
               ItemComponent={UpcomingEventCard}
               isLoading={isLoading}
             />
@@ -64,13 +76,22 @@ const EventsScreen = () => {
                 </Heading>
                 <SkeletonLoader<IViewer[]> data={myRegistrations}>
                   {(data) =>
-                    data.map((reg) => (
-                      <RegistrationsSection
-                        key={reg.id}
-                        user={user}
-                        events={[]}
-                      />
-                    ))
+                    data.length ? (
+                      data.map((reg) => (
+                        <RegistrationsSection
+                          key={reg.id}
+                          user={user}
+                          events={[]}
+                        />
+                      ))
+                    ) : (
+                      <Box w={"auto"}>
+                        <InfoTemplate
+                          title="Empty"
+                          text="You haven't registered to attend any events yet"
+                        />
+                      </Box>
+                    )
                   }
                 </SkeletonLoader>
               </Box>
@@ -80,8 +101,15 @@ const EventsScreen = () => {
           )}
         </Box>
         <ListStyledWrapper title={"Past Events"}>
-          <EventCard event={events[0] as any} />
-          <EventCard isLast={true} event={events[0] as any} />
+          <SkeletonLoader<IEvent[]>
+            data={eventsData?.events}
+            isLoading={isLoadingEvents}
+            error={eventError}
+          >
+            {(data) =>
+              data.map((event, i) => <EventCard key={event.id} event={event} />)
+            }
+          </SkeletonLoader>
         </ListStyledWrapper>
       </ScrollView>
     </Box>

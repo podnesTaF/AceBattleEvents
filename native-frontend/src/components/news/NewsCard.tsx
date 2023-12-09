@@ -25,12 +25,14 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
         position="relative"
         alignItems="stretch"
       >
-        <Image
-          role={"img"}
-          source={{ uri: news.smallImageUrl }}
-          alt={"news preview"}
-          size="full"
-        />
+        {news.smallImageUrl && (
+          <Image
+            role={"img"}
+            source={{ uri: news.smallImageUrl }}
+            alt={"news preview"}
+            size="full"
+          />
+        )}
       </Box>
       <Pressable onPress={() => router.push(`/(modals)/(news)/${news.id}`)}>
         {({ pressed }: { pressed: boolean }) => (

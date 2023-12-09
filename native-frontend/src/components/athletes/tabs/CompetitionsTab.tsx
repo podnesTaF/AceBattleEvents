@@ -1,17 +1,11 @@
 import WithLoading from "@Components/HOCs/withLoading";
 import Badge from "@Components/custom/Badge";
 import EventCard from "@Components/events/EventCard";
-import {
-  Box,
-  Center,
-  HStack,
-  Heading,
-  ScrollView,
-  Text,
-} from "@gluestack-ui/themed";
+import { Box, Center, HStack, Heading, Text } from "@gluestack-ui/themed";
 import { useGetRunnerCompetitionsQuery } from "@lib/services";
 import { useFindRunnerRegistrationsQuery } from "@lib/teams/services/teamRegistrationService";
 import { useState } from "react";
+import { ScrollView } from "react-native";
 
 const CompetitionsTab = ({ runnerId }: { runnerId: number }) => {
   const [year, setYear] = useState("2023");

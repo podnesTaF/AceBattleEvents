@@ -9,7 +9,7 @@ import {
 } from "@gluestack-ui/themed";
 import { IEvent } from "@lib/models";
 import { convertFlagIntoPng, formatDate } from "@lib/utils";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import React from "react";
 
 interface Props {
@@ -60,15 +60,15 @@ const EventCard: React.FC<Props> = ({ event, children, passed, isLast }) => {
         {children}
         <HStack justifyContent="center">
           {passed ? (
-            <Link
-              href={{
-                pathname: `/(modals)/(event)/results`,
-                params: { eventId: event.id + "" },
-              }}
-              asChild
-            >
-              <AbmButton onPress={() => {}} title={"Results"} />
-            </Link>
+            <AbmButton
+              onPress={() =>
+                router.push({
+                  pathname: "/(modals)/(event)/results",
+                  params: { eventId: event.id + "" },
+                })
+              }
+              title={"Results"}
+            />
           ) : (
             <Box my={"$2"}>
               <AbmButton

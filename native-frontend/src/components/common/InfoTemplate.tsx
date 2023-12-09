@@ -5,6 +5,7 @@ import {
   InfoIcon,
   VStack,
 } from "@gluestack-ui/themed";
+import { scaleSize } from "@lib/utils";
 import { AlertCircle, Ban, CheckCircle2 } from "lucide-react-native";
 import React from "react";
 
@@ -37,7 +38,7 @@ const InfoTemplate = ({
     variant={variant || "accent"}
   >
     <AlertIcon as={type ? icons[type] : icons["info"]} mr="$3" />
-    <VStack space="xs">
+    <VStack space="xs" maxWidth={scaleSize(300)}>
       <AlertText fontWeight="$bold">{title}</AlertText>
       <AlertText>{text}</AlertText>
     </VStack>

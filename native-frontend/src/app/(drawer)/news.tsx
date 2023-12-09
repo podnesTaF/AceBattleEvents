@@ -1,16 +1,15 @@
-import WithLoading from "@Components/HOCs/withLoading";
-import Container from "@Components/common/Container";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
 import YoutubeCard from "@Components/common/YoutubeCard";
+import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import NewsCard from "@Components/news/NewsCard";
 import NewsTag from "@Components/news/NewsTag";
 import SmallNewsCard from "@Components/news/SmallNewsCard";
 import { Box, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
-import { useFetchNewsPreviewsQuery } from "@lib/services";
+import { IHashtag, NewsPreview } from "@lib/models";
+import { useFetchNewsPreviewsQuery, useFetchTagsQuery } from "@lib/services";
 import React, { useState } from "react";
 import { FlatList } from "react-native";
 
-const tags = ["Competitions", "Interviews", "Events", "Races", "Players"];
 const videoItems = [
   {
     id: 1,
@@ -31,8 +30,17 @@ const videoItems = [
 
 const NewsScreen = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const { data: newsData, isLoading: isNewsLoading } =
-    useFetchNewsPreviewsQuery({ limit: 10 });
+  const {
+    data: newsData,
+    isLoading: isNewsLoading,
+    error,
+  } = useFetchNewsPreviewsQuery({
+    tags: selectedTags.length ? selectedTags : undefined,
+  });
+  const { data: latestNews, isLoading: isAnouncementsLoading } =
+    useFetchNewsPreviewsQuery({ limit: 4 });
+
+  const { data: tags, isLoading: isTagsLoading } = useFetchTagsQuery();
 
   const onHandleTag = (name: string) => {
     if (selectedTags.includes(name)) {
@@ -48,14 +56,20 @@ const NewsScreen = () => {
         <Heading mx={"$2"} size={"lg"}>
           Latest News
         </Heading>
-        <WithLoading isLoading={isNewsLoading} loadingHeight="$48">
-          <HorizontalListLayout
-            itemWidth={0.9}
-            ItemComponent={NewsCard}
-            identifier={"news"}
-            items={newsData?.newsPreviews?.slice(0, 3) || []}
-          />
-        </WithLoading>
+        <SkeletonLoader<NewsPreview[]>
+          data={latestNews?.newsPreviews}
+          isLoading={isNewsLoading}
+          height={200}
+        >
+          {(data) => (
+            <HorizontalListLayout
+              itemWidth={0.9}
+              ItemComponent={NewsCard}
+              identifier={"news"}
+              items={data}
+            />
+          )}
+        </SkeletonLoader>
       </VStack>
       <VStack my={"$4"} space={"lg"}>
         <Heading mx={"$4"} size={"lg"}>
@@ -68,7 +82,7 @@ const NewsScreen = () => {
           items={videoItems}
         />
       </VStack>
-      <VStack mb={"$8"} space="lg">
+      <VStack mb={"$4"} space="lg">
         <VStack space={"sm"} my={"$4"}>
           <Heading
             mx={"$4"}
@@ -80,40 +94,55 @@ const NewsScreen = () => {
           >
             All Articles
           </Heading>
-          <FlatList
+          <SkeletonLoader<IHashtag[]>
             data={tags}
-            contentContainerStyle={{
-              paddingHorizontal: 16,
-            }}
-            ItemSeparatorComponent={() => <Box w={"$4"} />}
-            renderItem={({ item }) => (
-              <NewsTag
-                title={item}
-                onClick={onHandleTag}
-                action={selectedTags.includes(item) ? "success" : "error"}
-                variant={"outline"}
+            isLoading={isTagsLoading}
+            height={50}
+          >
+            {(data) => (
+              <FlatList
+                data={data}
+                contentContainerStyle={{
+                  paddingHorizontal: 16,
+                }}
+                ItemSeparatorComponent={() => <Box w={"$4"} />}
+                renderItem={({ item }) => (
+                  <NewsTag
+                    title={item.name}
+                    onClick={onHandleTag}
+                    action={
+                      selectedTags.includes(item.name) ? "success" : "error"
+                    }
+                    variant={"outline"}
+                  />
+                )}
+                keyExtractor={(item) => item.id + ""}
+                horizontal={true}
+                pagingEnabled={true}
+                showsHorizontalScrollIndicator={false}
+                snapToAlignment="center"
               />
             )}
-            keyExtractor={(item) => item}
-            horizontal={true}
-            pagingEnabled={true}
-            showsHorizontalScrollIndicator={false}
-            snapToAlignment="center"
-          />
+          </SkeletonLoader>
         </VStack>
-
         <Box px={"$4"}>
-          <Container vertical>
-            <VStack space="md">
-              {newsData?.newsPreviews.map((news, i, arr) => (
-                <SmallNewsCard
-                  key={news.id}
-                  news={news as any}
-                  isLast={i === arr.length - 1}
-                />
-              ))}
-            </VStack>
-          </Container>
+          <SkeletonLoader<NewsPreview[]>
+            data={newsData?.newsPreviews}
+            isLoading={isNewsLoading}
+            error={error}
+          >
+            {(data) => (
+              <VStack space="md">
+                {data.map((news, i, arr) => (
+                  <SmallNewsCard
+                    key={news.id}
+                    news={news}
+                    isLast={i === arr.length - 1}
+                  />
+                ))}
+              </VStack>
+            )}
+          </SkeletonLoader>
         </Box>
       </VStack>
     </ScrollView>
