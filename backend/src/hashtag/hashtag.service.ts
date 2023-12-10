@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { CreateHashtagDto } from './dto/create-hashtag.dto';
-import { UpdateHashtagDto } from './dto/update-hashtag.dto';
-import { Hashtag } from './entities/hashtag.entity';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { CreateHashtagDto } from "./dto/create-hashtag.dto";
+import { UpdateHashtagDto } from "./dto/update-hashtag.dto";
+import { Hashtag } from "./entities/hashtag.entity";
 
 @Injectable()
 export class HashtagService {
@@ -34,7 +34,7 @@ export class HashtagService {
   }
 
   findAll() {
-    return `This action returns all hashtag`;
+    return this.repository.find();
   }
 
   findOne(id: number) {

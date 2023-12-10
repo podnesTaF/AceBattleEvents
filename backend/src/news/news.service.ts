@@ -16,10 +16,15 @@ export class NewsService {
     private hashtagService: HashtagService,
   ) {}
 
-  getNews(limit?: number, page?: number) {
+  getNews(limit?: number, page?: number, hashtags?: string[]) {
     return this.repository.find({
       relations: ["contents", "hashtags", "contents.media", "mainImage"],
       take: limit,
+      where: hashtags
+        ? {
+            hashtags: hashtags.map((hashtag) => ({ name: hashtag })),
+          }
+        : {},
       skip: page ? (page - 1) * limit : 0,
       order: { createdAt: "DESC" },
     });
@@ -30,16 +35,21 @@ export class NewsService {
     page,
     limit,
     textLength,
+    tags,
   }: {
     page?: number;
     relatedNews?: News[];
     limit?: number;
     textLength?: number;
+    tags?: string;
   }) {
+    const hashtags: string[] | null =
+      (tags?.split(",")[0] !== "" && tags?.split(",")) || null;
+
     const newsCount = await this.repository.count();
     const newsList = relatedNews
       ? relatedNews
-      : await this.getNews(limit, page);
+      : await this.getNews(limit, page, hashtags);
 
     const totalPages = Math.ceil(newsCount / (limit || newsCount));
 
@@ -79,7 +89,6 @@ export class NewsService {
         "hashtags.news",
         "hashtags.news.contents",
         "hashtags.news.contents.media",
-        // 'hashtags.events',
       ],
     });
 
