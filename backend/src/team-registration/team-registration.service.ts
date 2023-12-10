@@ -91,6 +91,7 @@ export class TeamRegistrationService {
         .leftJoinAndSelect("teamRegistration.team", "team")
         .leftJoinAndSelect("teamRegistration.event", "event")
         .leftJoinAndSelect("event.location", "location")
+        .leftJoinAndSelect("location.country", "country")
         .leftJoinAndSelect("teamRegistration.coach", "coach")
         .leftJoinAndSelect("team.players", "players")
         .leftJoinAndSelect("players.user", "user")

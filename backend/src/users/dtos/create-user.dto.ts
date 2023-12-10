@@ -2,7 +2,6 @@ import {
   IsEmail,
   IsObject,
   IsOptional,
-  IsPhoneNumber,
   IsString,
   Length,
 } from "class-validator";
@@ -22,7 +21,6 @@ export class CreateUserDto {
   email: string;
 
   @IsString()
-  @IsPhoneNumber()
   phone: string;
 
   @IsString()
@@ -47,6 +45,7 @@ export class CreateUserDto {
   country: string;
 
   @IsString()
+  @IsOptional()
   role: UserRole;
 
   @IsString()

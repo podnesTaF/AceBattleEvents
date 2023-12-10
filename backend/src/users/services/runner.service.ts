@@ -241,7 +241,8 @@ export class RunnerService {
       .createQueryBuilder("runner")
       .leftJoinAndSelect("runner.user", "user")
       .leftJoinAndSelect("user.image", "image")
-      .leftJoinAndSelect("runner.teamsAsRunner", "teamsAsRunner");
+      .leftJoinAndSelect("runner.teamsAsRunner", "teamsAsRunner")
+      .where("runner.approved = true");
 
     if (type === "search" && !query) {
       return {
@@ -250,10 +251,9 @@ export class RunnerService {
       };
     }
 
-    qb.where("user.name LIKE :query", { query: `%${query}%` }).orWhere(
-      "user.surname LIKE :query",
-      { query: `%${query}%` },
-    );
+    qb.andWhere("user.name LIKE :query OR user.surname LIKE :query", {
+      query: `%${query}%`,
+    });
 
     if (authId) {
       qb.leftJoinAndSelect("runner.followers", "followers");
