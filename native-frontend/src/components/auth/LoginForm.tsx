@@ -1,13 +1,13 @@
 import FormButton from "@Components/common/forms/FormButton";
 import FormField from "@Components/common/forms/FormField";
-import { Text, VStack } from "@gluestack-ui/themed";
+import { HStack, Text, VStack } from "@gluestack-ui/themed";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch } from "@lib/hooks";
 import { LoginUserRequest } from "@lib/models";
 import { api, useLoginUserMutation } from "@lib/services";
 import { setUser } from "@lib/store";
 import { loginSchema } from "@lib/utils";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { Lock, MailIcon } from "lucide-react-native";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -74,12 +74,20 @@ const LoginForm = () => {
           isLoading={form.formState.isSubmitting || isLoading}
           onPress={form.handleSubmit(login)}
         />
-        <Text size={"md"}>
-          You don't have an account? <Text color={"$primary500"}>Join us</Text>
-        </Text>
-        <Text size={"md"}>
-          Forgot your password? <Text color={"$error500"}>Reset it</Text>
-        </Text>
+        <HStack space={"md"} alignItems="center">
+          <Text size="md">You don't have an account?</Text>
+          <Link href={"/join"}>
+            <Text color={"$primary500"}>Join Us</Text>
+          </Link>
+        </HStack>
+        <HStack space={"md"} alignItems="center">
+          <Text size="md"> Forgot your password? </Text>
+          <Link href={"/(auth)/reset"} asChild>
+            <Text size="md" color={"$error500"}>
+              Reset it
+            </Text>
+          </Link>
+        </HStack>
       </VStack>
     </FormProvider>
   );

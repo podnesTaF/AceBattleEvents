@@ -33,7 +33,18 @@ export const AuthApi = api.injectEndpoints({
       }),
       invalidatesTags: ["Auth"],
     }),
+    resetPasswordRequest: builder.mutation<{ message: string }, string>({
+      query: (email) => ({
+        url: "/auth/reset-password",
+        method: "POST",
+        body: { email },
+      }),
+    }),
   }),
 });
 
-export const { useLoginUserMutation, useRegisterUserMutation } = AuthApi;
+export const {
+  useResetPasswordRequestMutation,
+  useLoginUserMutation,
+  useRegisterUserMutation,
+} = AuthApi;
