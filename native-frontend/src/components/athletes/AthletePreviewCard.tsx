@@ -1,5 +1,6 @@
 import { Box, HStack, Heading, Text, VStack } from "@gluestack-ui/themed";
 import { IRunner } from "@lib/models";
+import { scaleSize } from "@lib/utils";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
 import React from "react";
@@ -10,11 +11,10 @@ interface AthleteProps {
 
 const AthletePreviewCard: React.FC<AthleteProps> = ({ runner }) => {
   return (
-    <VStack minWidth={340} rounded={"$md"} bg={"$white"} overflow="hidden">
+    <VStack w={scaleSize(320)} rounded={"$md"} bg={"$white"} overflow="hidden">
       <Box
-        flex={3}
-        height={"$40"}
         width={"$full"}
+        height={"$40"}
         position="relative"
         alignItems="stretch"
       >
@@ -32,7 +32,7 @@ const AthletePreviewCard: React.FC<AthleteProps> = ({ runner }) => {
       </Box>
       <Box flex={1} p={"$2"}>
         <HStack alignItems="center">
-          <VStack space="sm" flex={1}>
+          <VStack flex={1}>
             <Heading size={"md"}>
               {runner.user.name} {runner.user.surname}
             </Heading>

@@ -11,17 +11,18 @@ import {
   Text,
   VStack,
 } from "@gluestack-ui/themed";
-import { useAppSelector, useDebounce } from "@lib/hooks";
+import { useAppSelector, useDebounce, useScreenSize } from "@lib/hooks";
 import { useGetRunnerPreviewsQuery } from "@lib/services";
 import { selectUser } from "@lib/store";
 import { scaleSize } from "@lib/utils";
 import { Stack, useNavigation } from "expo-router";
 import React, { useState } from "react";
-import { Dimensions } from "react-native";
+import { Dimensions, Platform } from "react-native";
 
 const FindAthelteModal = () => {
   const navigation = useNavigation();
   const width = Dimensions.get("window").width;
+  const { isSmallScreen } = useScreenSize();
   const [query, setQuery] = useState("");
   const [debouncedQuery, isDebouncing] = useDebounce(query, 500);
   const user = useAppSelector(selectUser);
@@ -45,19 +46,21 @@ const FindAthelteModal = () => {
             <VStack
               mt={"$4"}
               mb={"$2"}
-              left={"-$16"}
+              left={Platform.OS === "ios" ? "-$1" : "-$16"}
               width={width}
               alignItems="center"
             >
               <Heading size="sm" color="$coolGray200">
                 Find Athlete
               </Heading>
-              <SearchBar
-                variant="dark"
-                placeholder="Search by name..."
-                value={query}
-                onChange={(text) => setQuery(text)}
-              />
+              <Box w={"$full"}>
+                <SearchBar
+                  variant="dark"
+                  placeholder="Search by name..."
+                  value={query}
+                  onChange={(text) => setQuery(text)}
+                />
+              </Box>
             </VStack>
           ),
         }}
@@ -68,7 +71,11 @@ const FindAthelteModal = () => {
             isLoading={isRunnersLoading || isFetching || isDebouncing}
             error={error}
           >
-            <ScrollView p={"$4"} height={"$full"}>
+            <ScrollView
+              p={"$4"}
+              mt={isSmallScreen ? "$6" : "$2"}
+              height={"$full"}
+            >
               <Box mb={"$4"}>
                 <Heading>Runners</Heading>
                 <VStack>

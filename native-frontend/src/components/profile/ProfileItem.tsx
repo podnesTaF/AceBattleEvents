@@ -1,8 +1,9 @@
-import React from "react";
-import { Box, Heading, VStack, Text } from "@gluestack-ui/themed";
 import { Ionicons } from "@expo/vector-icons";
-import { Pressable } from "react-native";
-import { Link, useRouter } from "expo-router";
+import { Box, Heading, Text, VStack } from "@gluestack-ui/themed";
+import { useScreenSize } from "@lib/hooks";
+import { scaleSize } from "@lib/utils";
+import { useRouter } from "expo-router";
+import React from "react";
 
 interface ProfileItemProps {
   title: string;
@@ -21,27 +22,36 @@ const ProfileItem: React.FC<ProfileItemProps> = ({
   isDark,
   link,
 }) => {
-    const router = useRouter()
+  const router = useRouter();
+  const { isSmallScreen } = useScreenSize();
   return (
-        <Box rounded={"$lg"} height={145} bgColor={color || "$white"} py={"$3"} px={"$4"}>
-          <Box minHeight={40} alignItems="flex-end" mb={"$2"}>
-            {icon && (  
-              <Ionicons
-                name={icon}
-                size={40}
-                color={isDark ? "white" : "black"}
-              />
-            )}
-          </Box>
-          <VStack>
-            <Heading size={"lg"} color={isDark ? "$white" : "$black"}>
-              {title}
-            </Heading>
-            <Text size={"md"} color={isDark ? "$coolGray200" : "$coolGray400"}>
-              {subtitle}
-            </Text>
-          </VStack>
-        </Box>
+    <Box
+      rounded={"$lg"}
+      height={scaleSize(150)}
+      bgColor={color || "$white"}
+      py={isSmallScreen ? "$2" : "$3"}
+      px={isSmallScreen ? "$2" : "$4"}
+    >
+      <Box minHeight={40} alignItems="flex-end" mb={"$2"}>
+        {icon && (
+          <Ionicons name={icon} size={40} color={isDark ? "white" : "black"} />
+        )}
+      </Box>
+      <VStack>
+        <Heading
+          size={isSmallScreen ? "md" : "lg"}
+          color={isDark ? "$white" : "$black"}
+        >
+          {title}
+        </Heading>
+        <Text
+          size={isSmallScreen ? "sm" : "md"}
+          color={isDark ? "$coolGray200" : "$coolGray400"}
+        >
+          {subtitle}
+        </Text>
+      </VStack>
+    </Box>
   );
 };
 

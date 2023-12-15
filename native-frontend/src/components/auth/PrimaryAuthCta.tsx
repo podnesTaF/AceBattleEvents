@@ -2,6 +2,7 @@ import withWatermarkBg from "@Components/HOCs/withWatermark";
 import AbmButton from "@Components/common/buttons/AbmButton";
 import { Box, HStack, Heading, Icon, VStack } from "@gluestack-ui/themed";
 import { loginPrivileges } from "@lib/common/data";
+import { useScreenSize } from "@lib/hooks";
 import { scaleSize } from "@lib/utils";
 import { useRouter } from "expo-router";
 import { CheckCircle2 } from "lucide-react-native";
@@ -48,8 +49,14 @@ export default PrimaryAuthCta;
 
 const AuthCtaBox = ({ screen }: any): JSX.Element => {
   const router = useRouter();
+  const { isSmallScreen } = useScreenSize();
   return (
-    <HStack pl={scaleSize(24)} pr={scaleSize(8)} space="lg">
+    <Box
+      flexDirection={isSmallScreen ? "column" : "row"}
+      pl={scaleSize(24)}
+      pr={scaleSize(8)}
+      gap={"$4"}
+    >
       <VStack flex={1}>
         {loginPrivileges(screen).privileges.map((p: string, i: number) => (
           <HStack key={i} space="xs" alignItems="center">
@@ -77,7 +84,7 @@ const AuthCtaBox = ({ screen }: any): JSX.Element => {
           onPress={() => router.push("/(auth)/login")}
         />
       </VStack>
-    </HStack>
+    </Box>
   );
 };
 

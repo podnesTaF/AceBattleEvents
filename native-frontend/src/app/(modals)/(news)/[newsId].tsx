@@ -56,7 +56,9 @@ const ArticlePage = () => {
               </VStack>
             </Container>
             <Box mb={"$1/4"} mt={"$2"}>
-              <Heading mb={"$4"}>Related News</Heading>
+              <Heading mb={"$4"} size={"lg"}>
+                Related News
+              </Heading>
               <VStack space="sm">
                 {news?.relatedNews.newsPreviews.map((news, i, arr) => (
                   <SmallNewsCard

@@ -10,7 +10,8 @@ import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
 import UserCardSkeleton from "@Components/user/UserCardSkeleton";
 import SpectatorBioTab from "@Components/user/tabs/SpectatorBioTab";
 import TeamsAndRunners from "@Components/user/tabs/TeamsAndRunners";
-import { Box, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
+import { Ionicons } from "@expo/vector-icons";
+import { Box, HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
 import { useAppSelector } from "@lib/hooks";
 import { IUser } from "@lib/models";
 import { selectUser } from "@lib/store";
@@ -18,7 +19,7 @@ import { useFetchUserQuery } from "@lib/user/services/UserService";
 import { getProfileTabByUserRole } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList, View } from "react-native";
+import { Dimensions, FlatList, SafeAreaView, View } from "react-native";
 
 const tabsData = (user: IUser) => {
   if (user.runner) {
@@ -75,34 +76,40 @@ const ProfileScreen = () => {
     <>
       <Stack.Screen
         options={{
-          headerStyle: {
-            backgroundColor: "#1C1E1F",
-          },
           headerShown: true,
-          headerTintColor: "#fff",
-          headerTitle: () => (
-            <VStack width={"$full"} left={"-$16"} pt={"$5"}>
-              <Heading
-                textTransform="capitalize"
-                textAlign="center"
-                size={"xs"}
-                color="$coolGray300"
-              >
-                Profile
-              </Heading>
-              <SkeletonLoader<IUser>
-                data={user}
-                isLoading={isLoading}
-                error={error}
-                loadingComponent={
-                  <Box w={width} ml={"$8"} py={"$1"}>
-                    <UserCardSkeleton height={50} />
-                  </Box>
-                }
-              >
-                {(data) => <ProfileHeader user={data} />}
-              </SkeletonLoader>
-              <Box flex={1}>
+          header: ({ navigation }) => (
+            <SafeAreaView style={{ backgroundColor: "#1c1e1f" }}>
+              <VStack width={"$full"}>
+                <HStack space="lg" alignItems="center" px={"$2"}>
+                  <Ionicons
+                    name="arrow-back"
+                    size={32}
+                    color="#fff"
+                    onPress={() => navigation.goBack()}
+                  />
+                  <Heading
+                    w={"$full"}
+                    textTransform="capitalize"
+                    position="absolute"
+                    textAlign="center"
+                    size={"xs"}
+                    color="$coolGray300"
+                  >
+                    Profile
+                  </Heading>
+                </HStack>
+                <SkeletonLoader<IUser>
+                  data={user}
+                  isLoading={isLoading}
+                  error={error}
+                  loadingComponent={
+                    <Box w={width} ml={"$8"} py={"$1"}>
+                      <UserCardSkeleton height={50} />
+                    </Box>
+                  }
+                >
+                  {(data) => <ProfileHeader user={data} />}
+                </SkeletonLoader>
                 <Tabs
                   size="sm"
                   items={getProfileTabByUserRole(user?.role)}
@@ -110,8 +117,8 @@ const ProfileScreen = () => {
                   onChangeTab={onChangeTab}
                   activeIndex={activeTab}
                 />
-              </Box>
-            </VStack>
+              </VStack>
+            </SafeAreaView>
           ),
         }}
       />

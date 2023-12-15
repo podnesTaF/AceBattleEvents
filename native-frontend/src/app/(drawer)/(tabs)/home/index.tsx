@@ -91,7 +91,7 @@ const Page = () => {
           ),
         }}
       />
-      <Animated.ScrollView onScroll={scrollHandler} scrollEventThrottle={16}>
+      <Animated.ScrollView onScroll={scrollHandler} scrollEventThrottle={12}>
         <Box pt={user ? scaleSize(75) : scaleSize(20)}>
           {!user && (
             <Box my={"$4"}>
