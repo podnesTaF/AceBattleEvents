@@ -46,7 +46,7 @@ const GetInTouch = () => {
           </Link>
           <HStack mt={"$10"} alignItems="center" space={"md"}>
             <Icon as={YoutubeIcon} color="$white" size={"lg"} />
-            <Link href="https://acebattlemile.org" isExternal>
+            <Link href="https://www.youtube.com/@battlemile6327" isExternal>
               <HStack alignItems="center">
                 <LinkText color="$white" size="lg">
                   @battlemile6327
@@ -67,7 +67,10 @@ const GetInTouch = () => {
           </HStack>
           <HStack alignItems="center" space={"md"}>
             <Icon as={FacebookIcon} color="$white" size={"lg"} />
-            <Link href="https://acebattlemile.org" isExternal>
+            <Link
+              href="https://www.facebook.com/people/Ace-Battle-Mile/100043279343057/"
+              isExternal
+            >
               <HStack alignItems="center">
                 <LinkText color="$white" size="lg">
                   BATTLE MILE
@@ -88,7 +91,7 @@ const GetInTouch = () => {
           </HStack>
           <HStack alignItems="center" space={"md"}>
             <Icon as={InstagramIcon} color="$white" size={"lg"} />
-            <Link href="https://acebattlemile.org" isExternal>
+            <Link href="https://www.instagram.com/ace_battle_mile/" isExternal>
               <HStack alignItems="center">
                 <LinkText color="$white" size="lg">
                   @ACE_BATTLE_MILE

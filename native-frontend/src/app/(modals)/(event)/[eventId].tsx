@@ -21,6 +21,7 @@ import { formatDate } from "@lib/utils";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { Calendar } from "lucide-react-native";
 import React from "react";
+import { SafeAreaView } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 const tabs = ["Participants", "Schedule", "Results"];
@@ -49,13 +50,10 @@ const EventScreen = () => {
     <>
       <Stack.Screen
         options={{
-          headerStyle: {
-            backgroundColor: "#1C1E1F",
-          },
           headerShown: true,
           headerTintColor: "#fff",
-          headerTitle: ({ tintColor }) => {
-            return (
+          header: ({ navigation }) => (
+            <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
               <SkeletonLoader<EventInfo>
                 data={eventInfo}
                 isLoading={isLoading}
@@ -63,11 +61,11 @@ const EventScreen = () => {
                 color="#1f1f1f"
               >
                 {(eventInfo) => (
-                  <VStack width={"100%"} left={"-$16"} space="md">
+                  <VStack width={"100%"} space="sm">
                     <Heading
                       size="xl"
                       textAlign="center"
-                      color={tintColor}
+                      color={"#fff"}
                       top={"$2"}
                     >
                       {eventInfo.title}
@@ -84,14 +82,14 @@ const EventScreen = () => {
                             size="xs"
                           />
                         )}
-                        <Heading size="sm" color={tintColor}>
+                        <Heading size="sm" color={"$white"}>
                           {eventInfo?.location?.city},{" "}
                           {eventInfo?.location?.country.name}
                         </Heading>
                       </HStack>
                       <HStack left={"$12"} alignItems="center" space={"sm"}>
-                        <Icon as={Calendar} color={tintColor} />
-                        <Heading size="sm" color={tintColor}>
+                        <Icon as={Calendar} color={"$white"} />
+                        <Heading size="sm" color={"$white"}>
                           {formatDate(eventInfo?.startDateTime)}
                         </Heading>
                       </HStack>
@@ -105,8 +103,8 @@ const EventScreen = () => {
                   </VStack>
                 )}
               </SkeletonLoader>
-            );
-          },
+            </SafeAreaView>
+          ),
         }}
       />
       <ScrollView>

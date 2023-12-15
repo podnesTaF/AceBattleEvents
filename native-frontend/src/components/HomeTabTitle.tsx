@@ -6,7 +6,7 @@ import {
   Heading,
   VStack,
 } from "@gluestack-ui/themed";
-import { useAppSelector } from "@lib/hooks";
+import { useAppSelector, useScreenSize } from "@lib/hooks";
 import { IUser } from "@lib/models";
 import { selectIsAuth } from "@lib/store";
 import React from "react";
@@ -21,6 +21,7 @@ const HomeTabTitle = ({
   annotation?: string;
 }) => {
   const isAuth = useAppSelector(selectIsAuth);
+  const { isSmallScreen } = useScreenSize();
 
   return user ? (
     <HStack
@@ -36,16 +37,25 @@ const HomeTabTitle = ({
             py={"$0.5"}
             borderBottomColor="$white"
             borderBottomWidth={2}
-            size={"md"}
+            size={isSmallScreen ? "sm" : "md"}
             color="$white"
           >
             {user.name} {user.surname}
           </Heading>
           <HStack justifyContent="flex-end" space="xs">
-            <Badge isActive={true} text={user.role} py={"$1"} px={"$2"} />
+            <Badge
+              isActive={true}
+              text={user.role}
+              py={isSmallScreen ? "$0.5" : "$1"}
+              px={isSmallScreen ? "$1" : "$2"}
+            />
           </HStack>
         </VStack>
-        <Avatar rounded={"$full"} size="lg" bgColor="$red500">
+        <Avatar
+          rounded={"$full"}
+          size={isSmallScreen ? "md" : "lg"}
+          bgColor="$red500"
+        >
           <AvatarImage
             rounded={"$full"}
             source={{ uri: user.image?.mediaUrl }}

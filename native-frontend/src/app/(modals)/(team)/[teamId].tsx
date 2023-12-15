@@ -6,6 +6,7 @@ import ContactTab from "@Components/teams/tabs/ContactTab";
 import HomeTeamTab from "@Components/teams/tabs/HomeTeamTab";
 import RunnersTab from "@Components/teams/tabs/RunnersTab";
 import TeamResultsTab from "@Components/teams/tabs/TeamResultsTab";
+import { Ionicons } from "@expo/vector-icons";
 import {
   Box,
   HStack,
@@ -19,7 +20,7 @@ import { useGetTeamQuery } from "@lib/services";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList } from "react-native";
+import { Dimensions, FlatList, SafeAreaView } from "react-native";
 
 const tabs = ["Home", "Runners", "Results", "Contact"];
 
@@ -53,48 +54,54 @@ const TeamScreen = () => {
       <Stack.Screen
         options={{
           headerShown: true,
-          headerTitle: ({ tintColor }) => (
-            <VStack alignItems="center" width={"100%"} space="md" left={"-$16"}>
-              <HStack
-                py={"$2"}
-                space="sm"
-                w={"$full"}
-                justifyContent="center"
-                alignItems="center"
-                left={"-$4"}
-              >
-                <SkeletonLoader<ITeam>
-                  error={error}
-                  data={team}
-                  isLoading={isLoading}
-                  loadingComponent={
-                    <Box w={"$full"} alignItems="center">
-                      <BoxSkeleton width={150} height={50} />
-                    </Box>
-                  }
+          header: (props) => (
+            <SafeAreaView>
+              <VStack alignItems="center" width={width} space="md" zIndex={10}>
+                <HStack
+                  py={"$2"}
+                  px={"$4"}
+                  space="sm"
+                  w={"$full"}
+                  alignItems="center"
                 >
-                  {(team) => (
-                    <>
-                      <Image
-                        role={"img"}
-                        alt={"team logo"}
-                        source={{ uri: team.logo.mediaUrl }}
-                        size={"sm"}
-                      />
-                      <Heading size="xl" color={tintColor}>
-                        {team.name}
-                      </Heading>
-                    </>
-                  )}
-                </SkeletonLoader>
-              </HStack>
-              <Tabs
-                activeColor={"$red500"}
-                items={tabs}
-                onChangeTab={onChangeTab}
-                activeIndex={activeTab}
-              />
-            </VStack>
+                  <Ionicons
+                    name="arrow-back"
+                    size={24}
+                    onPress={() => props.navigation.goBack()}
+                  />
+                  <HStack flex={1} alignItems="center" px="5%">
+                    <SkeletonLoader<ITeam>
+                      error={error}
+                      data={team}
+                      isLoading={isLoading}
+                      loadingComponent={
+                        <Box w={"$full"} alignItems="center">
+                          <BoxSkeleton width={150} height={50} />
+                        </Box>
+                      }
+                    >
+                      {(team) => (
+                        <>
+                          <Image
+                            role={"img"}
+                            alt={"team logo"}
+                            source={{ uri: team.logo.mediaUrl }}
+                            size={"sm"}
+                          />
+                          <Heading size="xl">{team.name}</Heading>
+                        </>
+                      )}
+                    </SkeletonLoader>
+                  </HStack>
+                </HStack>
+                <Tabs
+                  activeColor={"$red500"}
+                  items={tabs}
+                  onChangeTab={onChangeTab}
+                  activeIndex={activeTab}
+                />
+              </VStack>
+            </SafeAreaView>
           ),
         }}
       />

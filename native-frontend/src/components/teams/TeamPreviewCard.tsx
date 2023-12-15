@@ -10,6 +10,7 @@ import {
   VStack,
 } from "@gluestack-ui/themed";
 import { ITeam } from "@lib/models";
+import { scaleSize } from "@lib/utils";
 import { Link, useRouter } from "expo-router";
 import React from "react";
 
@@ -58,7 +59,7 @@ const TeamPreviewCard = ({
           <Box
             opacity={pressed ? 0.9 : 1}
             flex={imageProportion || 1}
-            height={"$48"}
+            height={scaleSize(200)}
             width={"$full"}
             position="relative"
             alignItems="stretch"

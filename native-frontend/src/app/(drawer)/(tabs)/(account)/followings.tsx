@@ -10,6 +10,7 @@ import { useAppSelector } from "@lib/hooks";
 import { selectUser } from "@lib/store";
 import { Stack } from "expo-router";
 import React from "react";
+import { SafeAreaView } from "react-native";
 
 const Followings = () => {
   const user = useAppSelector(selectUser);
@@ -18,24 +19,16 @@ const Followings = () => {
     <>
       <Stack.Screen
         options={{
-          headerStyle: {
-            backgroundColor: "#1C1E1F",
-          },
           headerTintColor: "#fff",
-          headerTitle: (props) => (
-            <VStack
-              alignItems="center"
-              width={"100%"}
-              space="md"
-              top={"$4"}
-              pb={"$6"}
-              left={"-$20"}
-            >
-              <LogoTitle {...props} />
-              <Heading size="sm" color="$coolGray200">
-                Followings
-              </Heading>
-            </VStack>
+          header: (props) => (
+            <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+              <VStack alignItems="center" width={"100%"} py={"$1"} space="md">
+                <LogoTitle {...props} />
+                <Heading size="sm" color="$coolGray200">
+                  Followings
+                </Heading>
+              </VStack>
+            </SafeAreaView>
           ),
         }}
       />
@@ -53,8 +46,8 @@ const Followings = () => {
             ItemComponent={TeamPreviewCard}
             additionalProps={{
               Item: TeamPreview,
-              imageProportion: 3,
-              minWidth: 340,
+              imageProportion: 2,
+              minWidth: 320,
             }}
           />
         </VStack>

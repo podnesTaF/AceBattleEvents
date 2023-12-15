@@ -1,4 +1,5 @@
 import WithLoading from "@Components/HOCs/withLoading";
+import withWatermarkBg from "@Components/HOCs/withWatermark";
 import Container from "@Components/common/Container";
 import HeaderSubtitledTitle from "@Components/common/HeaderSubtitledTitle";
 import SmallNewsCard from "@Components/news/SmallNewsCard";
@@ -55,14 +56,18 @@ const ArticlePage = () => {
               </VStack>
             </Container>
             <Box mb={"$1/4"} mt={"$2"}>
-              <Heading mb={"$4"}>Related News</Heading>
-              {news?.relatedNews.newsPreviews.map((news, i, arr) => (
-                <SmallNewsCard
-                  news={news}
-                  key={news.id}
-                  isLast={arr.length - 1 === i}
-                />
-              ))}
+              <Heading mb={"$4"} size={"lg"}>
+                Related News
+              </Heading>
+              <VStack space="sm">
+                {news?.relatedNews.newsPreviews.map((news, i, arr) => (
+                  <SmallNewsCard
+                    news={news}
+                    key={news.id}
+                    isLast={arr.length - 1 === i}
+                  />
+                ))}
+              </VStack>
             </Box>
           </Box>
         </WithLoading>
@@ -71,4 +76,4 @@ const ArticlePage = () => {
   );
 };
 
-export default ArticlePage;
+export default withWatermarkBg(ArticlePage, "#fff9ff");

@@ -23,10 +23,9 @@ const TabItem: React.FC<TabItemProps> = ({
   size,
 }) => {
   return (
-    <Pressable flex={1} onPress={() => onPress(index)}>
+    <Pressable flex={1} onPress={() => onPress(index)} hitSlop={20}>
       {({ pressed }: { pressed: boolean }) => (
         <HStack
-          flex={1}
           justifyContent="center"
           py={"$1.5"}
           px={"$3"}
@@ -36,7 +35,6 @@ const TabItem: React.FC<TabItemProps> = ({
           key={index}
         >
           <Text
-            size={size || "lg"}
             fontWeight="600"
             color={
               index === activeIndex

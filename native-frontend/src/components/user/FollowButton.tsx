@@ -10,7 +10,7 @@ import React, { useState } from "react";
 interface FollowButtonProps {
   userId: number;
   isInitiallyFollowing: boolean;
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
   color?: any;
 }
 

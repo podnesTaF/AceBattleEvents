@@ -1,7 +1,7 @@
 import WithLoading from "@Components/HOCs/withLoading";
 import Badge from "@Components/custom/Badge";
 import CustomTable from "@Components/custom/tables/CustomTable";
-import { HStack, Heading, VStack } from "@gluestack-ui/themed";
+import { HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
 import { IRunner, UserResult } from "@lib/models";
 import { useGetRunnerResultsQuery } from "@lib/services";
 import { getRunnerResulsTableData } from "@lib/utils";
@@ -71,36 +71,40 @@ const ResultsTab = ({ runner }: ResultsTabProps): JSX.Element => {
   }, [resultsData]);
 
   return (
-    <VStack mt={"$4"} space="lg">
-      <VStack space="md">
-        <Heading mx={"$4"} size={"lg"}>
-          Personal Best
-        </Heading>
-        <WithLoading isLoading={isLoading}>
-          <CustomTable rows={getRunnerResulsTableData(pbs)} />
-        </WithLoading>
-      </VStack>
-      <VStack space="sm" mx={"$0"}>
-        <Heading mx={"$4"} size={"lg"}>
-          All Results
-        </Heading>
-        <HStack mx={"$2"} space="md">
-          {["2023", "2022"].map((resultYear, i) => (
-            <Badge
-              px={"$3"}
-              py={"$1"}
-              key={i}
-              text={resultYear}
-              isActive={resultYear === year}
-              onPress={() => setYear(resultYear)}
+    <ScrollView>
+      <VStack mt={"$4"} space="lg">
+        <VStack space="md">
+          <Heading mx={"$4"} size={"lg"}>
+            Personal Best
+          </Heading>
+          <WithLoading isLoading={isLoading}>
+            <CustomTable rows={getRunnerResulsTableData(pbs)} />
+          </WithLoading>
+        </VStack>
+        <VStack space="sm" mx={"$0"}>
+          <Heading mx={"$4"} size={"lg"}>
+            All Results
+          </Heading>
+          <HStack mx={"$2"} space="md">
+            {["2023", "2022"].map((resultYear, i) => (
+              <Badge
+                px={"$3"}
+                py={"$1"}
+                key={i}
+                text={resultYear}
+                isActive={resultYear === year}
+                onPress={() => setYear(resultYear)}
+              />
+            ))}
+          </HStack>
+          <WithLoading isLoading={isLoading}>
+            <CustomTable
+              rows={getRunnerResulsTableData(resultsData?.results)}
             />
-          ))}
-        </HStack>
-        <WithLoading isLoading={isLoading}>
-          <CustomTable rows={getRunnerResulsTableData(resultsData?.results)} />
-        </WithLoading>
+          </WithLoading>
+        </VStack>
       </VStack>
-    </VStack>
+    </ScrollView>
   );
 };
 

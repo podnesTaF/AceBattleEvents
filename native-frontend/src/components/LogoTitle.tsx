@@ -1,4 +1,5 @@
 import { Box, Image } from "@gluestack-ui/themed";
+import { scaleSize } from "@lib/utils";
 import React from "react";
 
 const getWidth = (height: number) => {
@@ -6,13 +7,13 @@ const getWidth = (height: number) => {
 };
 
 const LogoTitle = ({ height }: any) => {
+  const adaptedHeight = scaleSize(height || 20);
   return (
     <Box
-      left={"$4"}
-      width={getWidth(height || 20)}
+      width={getWidth(adaptedHeight)}
       justifyContent="center"
       alignItems="center"
-      height={height || 20}
+      height={adaptedHeight}
     >
       <Image
         role={"img"}
