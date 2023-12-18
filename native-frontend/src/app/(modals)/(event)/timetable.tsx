@@ -11,6 +11,7 @@ import { useGetRacesByEventQuery } from "@lib/races/services/raceService";
 import { getNamedDate } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
+import { SafeAreaView } from "react-native";
 
 const Timetable = () => {
   const { eventId } = useLocalSearchParams<{ eventId?: string }>();
@@ -25,20 +26,20 @@ const Timetable = () => {
           },
           headerShown: true,
           headerTintColor: "#fff",
-          headerTitle: ({ tintColor }) => (
-            <VStack
-              space={"md"}
-              alignItems="center"
-              w={"$full"}
-              left={"-$16"}
-              pb={"$3"}
+          header: (props) => (
+            <SafeAreaView
+              style={{
+                backgroundColor: "#1C1E1F",
+              }}
             >
-              <HeaderSubtitledTitle
-                title={"Timetable"}
-                subtitle="Brussels mile"
-                tintColor={tintColor}
-              />
-            </VStack>
+              <VStack space={"md"} alignItems="center" w={"$full"} pb={"$3"}>
+                <HeaderSubtitledTitle
+                  title={"Timetable"}
+                  subtitle="Brussels mile"
+                  tintColor={"#fff"}
+                />
+              </VStack>
+            </SafeAreaView>
           ),
         }}
       />

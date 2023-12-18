@@ -20,6 +20,7 @@ import { updateUserDataSchema, uploadImage } from "@lib/utils";
 import { Stack, useNavigation } from "expo-router";
 import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { Dimensions, SafeAreaView } from "react-native";
 
 const ChangeUserData = () => {
   const dispatch = useAppDispatch();
@@ -28,6 +29,7 @@ const ChangeUserData = () => {
   const [updateUser, { isLoading, data }] = useUpdateUserDataMutation();
   const [addImage, { error: uploadingError }] = useUploadImageMutation();
   const navigation = useNavigation();
+  const width = Dimensions.get("window").width;
 
   const form = useForm({
     mode: "onChange",
@@ -94,15 +96,22 @@ const ChangeUserData = () => {
     <>
       <Stack.Screen
         options={{
-          headerTitle: (props) => (
-            <VStack py="$1">
-              <Text color={props.tintColor} size="md">
-                Settings
-              </Text>
-              <Heading size="lg" color={props.tintColor}>
-                Change Profile Data
-              </Heading>
-            </VStack>
+          header: () => (
+            <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+              <VStack
+                width={width}
+                justifyContent="center"
+                alignItems="center"
+                py="$1"
+              >
+                <Text color={"#fff"} size="md">
+                  Settings
+                </Text>
+                <Heading size="lg" color={"#fff"}>
+                  Change Profile Data
+                </Heading>
+              </VStack>
+            </SafeAreaView>
           ),
         }}
       />

@@ -5,6 +5,7 @@ import NoResourceFound from "@Components/common/states/NoResourceFound";
 import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import EventCard from "@Components/events/EventCard";
 import {
+  Box,
   Center,
   Heading,
   Image,
@@ -17,6 +18,7 @@ import { IEvent } from "@lib/models";
 import { scaleSize } from "@lib/utils";
 import { Stack } from "expo-router";
 import React, { useState } from "react";
+import { Dimensions, Platform } from "react-native";
 
 const FindEventModal = () => {
   const [query, setQuery] = useState("");
@@ -33,6 +35,8 @@ const FindEventModal = () => {
     error: errorFutureEvents,
   } = useGetAllEventsQuery(`name=${query}`);
 
+  const width = Dimensions.get("window").width;
+
   return (
     <>
       <Stack.Screen
@@ -46,19 +50,21 @@ const FindEventModal = () => {
             <VStack
               mt={"$4"}
               mb={"$2"}
-              width={"100%"}
-              ml={"-$10"}
+              left={Platform.OS === "ios" ? "-$1" : "-$16"}
+              width={width}
               alignItems="center"
             >
               <Heading size="sm" color="$coolGray200">
                 Find Event
               </Heading>
-              <SearchBar
-                variant="dark"
-                placeholder="Search by name..."
-                value={query}
-                onChange={(text) => setQuery(text)}
-              />
+              <Box w={"$full"}>
+                <SearchBar
+                  variant="dark"
+                  placeholder="Search by name..."
+                  value={query}
+                  onChange={(text) => setQuery(text)}
+                />
+              </Box>
             </VStack>
           ),
         }}

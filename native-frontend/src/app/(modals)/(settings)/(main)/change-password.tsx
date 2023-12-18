@@ -9,10 +9,12 @@ import { Stack } from "expo-router";
 import { useNavigation } from "expo-router/src/useNavigation";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { Dimensions, SafeAreaView } from "react-native";
 
 const ChangeUserPassword = () => {
   const [updatePassword, { isLoading }] = useUpdateUserPasswordMutation();
   const navigation = useNavigation();
+  const width = Dimensions.get("window").width;
 
   const form = useForm({
     mode: "onChange",
@@ -33,15 +35,22 @@ const ChangeUserPassword = () => {
     <>
       <Stack.Screen
         options={{
-          headerTitle: (props) => (
-            <VStack py="$1">
-              <Text color={props.tintColor} size="md">
-                Settings
-              </Text>
-              <Heading size="lg" color={props.tintColor}>
-                Set New Password
-              </Heading>
-            </VStack>
+          header: () => (
+            <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+              <VStack
+                width={width}
+                justifyContent="center"
+                alignItems="center"
+                py="$1"
+              >
+                <Text color={"#fff"} size="md">
+                  Settings
+                </Text>
+                <Heading size="lg" color={"#fff"}>
+                  Set New Password
+                </Heading>
+              </VStack>
+            </SafeAreaView>
           ),
         }}
       />

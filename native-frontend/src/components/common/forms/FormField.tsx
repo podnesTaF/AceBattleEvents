@@ -15,6 +15,7 @@ import {
   InputSlot,
   VStack,
 } from "@gluestack-ui/themed";
+import { useScreenSize } from "@lib/hooks";
 import { LucideIcon } from "lucide-react-native";
 
 interface FormFieldProps {
@@ -46,6 +47,7 @@ const FormField: React.FC<FormFieldProps> = ({
   vertical,
 }) => {
   const { control, formState } = useFormContext();
+  const { isSmallScreen } = useScreenSize();
 
   return (
     <FormControl
@@ -60,23 +62,36 @@ const FormField: React.FC<FormFieldProps> = ({
             <>
               {vertical && label && (
                 <FormControlLabel mb={"-$1"} alignSelf="flex-start">
-                  {labelIcon && <Icon mr={"$2"} as={labelIcon} size={"md"} />}
-                  <FormControlLabelText size={"md"} fontWeight="600">
+                  {labelIcon && (
+                    <Icon
+                      mr={"$2"}
+                      as={labelIcon}
+                      size={isSmallScreen ? "sm" : "md"}
+                    />
+                  )}
+                  <FormControlLabelText
+                    size={isSmallScreen ? "sm" : "md"}
+                    fontWeight="600"
+                  >
                     {label}
                   </FormControlLabelText>
                 </FormControlLabel>
               )}
               <Input mb={"$1"} variant={variant}>
                 {!vertical && label && (
-                  <InputSlot flex={1} alignItems="flex-start">
+                  <InputSlot mr={"$2"} flex={1} alignItems="flex-start">
                     <FormControlLabel>
-                      <FormControlLabelText size={"md"} fontWeight="600">
+                      <FormControlLabelText
+                        size={isSmallScreen ? "sm" : "md"}
+                        fontWeight="600"
+                      >
                         {label}
                       </FormControlLabelText>
                     </FormControlLabel>
                   </InputSlot>
                 )}
                 <InputField
+                  size={isSmallScreen ? "sm" : "md"}
                   type={type || "text"}
                   flex={inputProportion || 2}
                   placeholder={placeholder}

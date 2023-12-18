@@ -25,7 +25,7 @@ import {
 import { Stack, useLocalSearchParams } from "expo-router";
 import { InfoIcon } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList } from "react-native";
+import { Dimensions, FlatList, Platform, SafeAreaView } from "react-native";
 
 const tabs = ["Overview", "Mile Runners", "Pacer-Joker"];
 
@@ -76,25 +76,32 @@ const RaceScreen = () => {
           },
           headerShown: true,
           headerTintColor: "#fff",
-          headerTitle: ({ tintColor }) => (
-            <VStack space={"md"} alignItems="center" w={"$full"} left={"-$16"}>
-              <VStack alignItems="center" space="md" mb={"$4"}>
-                <Heading size="xs" color={tintColor}>
-                  {race?.event.title || "loading"}
-                </Heading>
-                <Heading size="lg" color={tintColor}>
-                  {race ? getBattleName(race) : "Loading"}
-                </Heading>
-                <Text color={tintColor}>{formatDate(race?.startTime)}</Text>
+          header: () => (
+            <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+              <VStack
+                space={"md"}
+                alignItems="center"
+                w={"$full"}
+                left={Platform.OS === "ios" ? "$0" : "-$16"}
+              >
+                <VStack alignItems="center" space="md" mb={"$4"}>
+                  <Heading size="xs" color={"#fff"}>
+                    {race?.event.title || "loading"}
+                  </Heading>
+                  <Heading size="lg" color={"#fff"}>
+                    {race ? getBattleName(race) : "Loading"}
+                  </Heading>
+                  <Text color={"#fff"}>{formatDate(race?.startTime)}</Text>
+                </VStack>
+                <Tabs
+                  items={tabs}
+                  activeColor={"$white"}
+                  activeIndex={activeTab}
+                  onChangeTab={onChangeTab}
+                  passiveColor={"$coolGray100"}
+                />
               </VStack>
-              <Tabs
-                items={tabs}
-                activeColor={"$white"}
-                activeIndex={activeTab}
-                onChangeTab={onChangeTab}
-                passiveColor={"$coolGray100"}
-              />
-            </VStack>
+            </SafeAreaView>
           ),
         }}
       />
