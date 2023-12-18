@@ -3,20 +3,23 @@ import RunnerJoinForm from "@Components/join/RunnerJoinForm";
 import { Box, Text, VStack } from "@gluestack-ui/themed";
 import { Stack } from "expo-router";
 import React from "react";
+import { SafeAreaView } from "react-native";
 
 const RunnerJoin = () => {
   return (
     <>
       <Stack.Screen
         options={{
-          headerTitle: ({ tintColor }) => (
-            <Box w={"$full"} ml={"-$12"}>
-              <HeaderSubtitledTitle
-                tintColor={tintColor}
-                subtitle="Ace Battle Mile"
-                title="Runner Registration"
-              />
-            </Box>
+          header: () => (
+            <SafeAreaView>
+              <Box w={"$full"}>
+                <HeaderSubtitledTitle
+                  tintColor={"#000"}
+                  subtitle="Ace Battle Mile"
+                  title="Runner Registration"
+                />
+              </Box>
+            </SafeAreaView>
           ),
         }}
       />

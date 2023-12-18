@@ -1,5 +1,5 @@
 import { HStack, Heading, VStack } from "@gluestack-ui/themed";
-import { useRouter } from "expo-router";
+import { useScreenSize } from "@lib/hooks";
 import React from "react";
 import TableRowItem from "./TableRowItem";
 
@@ -17,8 +17,7 @@ interface Props {
 }
 
 const CustomTable: React.FC<Props> = ({ rows }) => {
-  const router = useRouter();
-
+  const { isSmallScreen } = useScreenSize();
   return (
     <VStack>
       {rows.length ? (
@@ -31,7 +30,7 @@ const CustomTable: React.FC<Props> = ({ rows }) => {
                   key={i}
                   textAlign={i === arr.length - 1 ? "right" : "left"}
                   flex={i === arr.length - 1 ? 2 : 1}
-                  size={"md"}
+                  size={isSmallScreen ? "sm" : "md"}
                 >
                   {key}
                 </Heading>
@@ -50,6 +49,7 @@ const CustomTable: React.FC<Props> = ({ rows }) => {
                 Object.values(row).map((value, j, arr) => (
                   <TableRowItem
                     key={j}
+                    size={isSmallScreen ? "sm" : "md"}
                     item={value}
                     isLast={arr.length - 1 === j}
                   />

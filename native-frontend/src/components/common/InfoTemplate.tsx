@@ -40,7 +40,7 @@ const InfoTemplate = ({
     <AlertIcon as={type ? icons[type] : icons["info"]} mr="$3" />
     <VStack space="xs" maxWidth={scaleSize(300)}>
       <AlertText fontWeight="$bold">{title}</AlertText>
-      <AlertText>{text}</AlertText>
+      <AlertText numberOfLines={2}>{text}</AlertText>
     </VStack>
   </Alert>
 );

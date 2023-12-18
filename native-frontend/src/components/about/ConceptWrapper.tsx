@@ -1,7 +1,9 @@
 import { Heading, ScrollView, VStack } from "@gluestack-ui/themed";
+import { useScreenSize } from "@lib/hooks";
 import React, { isValidElement } from "react";
 
 const ConceptWrapper = ({ title, secondaryBg, children }: any) => {
+  const { isSmallScreen } = useScreenSize();
   return (
     <VStack space={"lg"} justifyContent="space-between" flex={1}>
       <VStack space="md">
@@ -10,7 +12,7 @@ const ConceptWrapper = ({ title, secondaryBg, children }: any) => {
           mx={"$4"}
           maxWidth={"$4/5"}
           fontWeight="bold"
-          size="3xl"
+          size={isSmallScreen ? "xl" : "3xl"}
           textTransform="uppercase"
         >
           {title}

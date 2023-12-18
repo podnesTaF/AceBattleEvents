@@ -19,7 +19,7 @@ import { EventResult, RaceShortForm } from "@lib/models";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { InfoIcon } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList } from "react-native";
+import { Dimensions, FlatList, Platform, SafeAreaView } from "react-native";
 
 const tabs = ["Overview", "By Race"];
 
@@ -75,20 +75,27 @@ const results = () => {
           },
           headerShown: true,
           headerTintColor: "#fff",
-          headerTitle: ({ tintColor }) => (
-            <VStack width={"100%"} left={"-$16"} space="md">
-              <HeaderSubtitledTitle
-                subtitle={eventResult?.eventTitle || ""}
-                title={"Results"}
-                tintColor={tintColor}
-              />
-              <Tabs
-                items={tabs}
-                activeColor={"#ff0000"}
-                onChangeTab={onChangeTab}
-                activeIndex={activeTab}
-              />
-            </VStack>
+          header: () => (
+            <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+              <VStack
+                space={"md"}
+                alignItems="center"
+                w={"$full"}
+                left={Platform.OS === "ios" ? "$0" : "-$16"}
+              >
+                <HeaderSubtitledTitle
+                  subtitle={eventResult?.eventTitle || ""}
+                  title={"Results"}
+                  tintColor={"#fff"}
+                />
+                <Tabs
+                  items={tabs}
+                  activeColor={"#ff0000"}
+                  onChangeTab={onChangeTab}
+                  activeIndex={activeTab}
+                />
+              </VStack>
+            </SafeAreaView>
           ),
         }}
       />

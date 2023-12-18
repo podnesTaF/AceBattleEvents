@@ -8,10 +8,12 @@ import {
   Text,
   VStack,
 } from "@gluestack-ui/themed";
+import { useScreenSize } from "@lib/hooks";
 import React from "react";
 import ConceptWrapper from "./ConceptWrapper";
 
 const Milestones = () => {
+  const { isSmallScreen } = useScreenSize();
   return (
     <ConceptWrapper title={"MILESTONES"}>
       <ScrollView>
@@ -26,10 +28,12 @@ const Milestones = () => {
                   borderRightWidth={"$4"}
                   borderColor="#1e1c1f"
                 >
-                  <Heading size={"xl"}>{m.title}</Heading>
+                  <Heading size={isSmallScreen ? "md" : "xl"}>
+                    {m.title}
+                  </Heading>
                 </Center>
                 <Center minHeight={"$20"} p={"$4"} flex={3}>
-                  <Text size={"lg"}>{m.text}</Text>
+                  <Text size={isSmallScreen ? "md" : "lg"}>{m.text}</Text>
                 </Center>
               </HStack>
             ))}

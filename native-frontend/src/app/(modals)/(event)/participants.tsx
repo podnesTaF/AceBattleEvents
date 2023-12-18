@@ -5,7 +5,7 @@ import TeamsParticipants from "@Components/events/TeamsParticipants";
 import { Box, ScrollView, VStack } from "@gluestack-ui/themed";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList } from "react-native";
+import { Dimensions, FlatList, Platform, SafeAreaView } from "react-native";
 
 const tabs = ["Teams", "Runners"];
 
@@ -39,25 +39,29 @@ const participants = () => {
     <>
       <Stack.Screen
         options={{
-          headerStyle: {
-            backgroundColor: "#1C1E1F",
-          },
           headerShown: true,
           headerTintColor: "#fff",
-          headerTitle: ({ tintColor }) => (
-            <VStack space={"md"} alignItems="center" w={"$full"} left={"-$16"}>
-              <HeaderSubtitledTitle
-                title={"Participants"}
-                subtitle={name || "Event"}
-                tintColor={tintColor}
-              />
-              <Tabs
-                activeColor={"#ff0000"}
-                activeIndex={activeTab}
-                items={tabs}
-                onChangeTab={onChangeTab}
-              />
-            </VStack>
+          header: () => (
+            <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+              <VStack
+                space={"md"}
+                alignItems="center"
+                w={"$full"}
+                left={Platform.OS === "ios" ? "$0" : "-$16"}
+              >
+                <HeaderSubtitledTitle
+                  title={"Participants"}
+                  subtitle={name || "Event"}
+                  tintColor={"#fff"}
+                />
+                <Tabs
+                  activeColor={"#ff0000"}
+                  activeIndex={activeTab}
+                  items={tabs}
+                  onChangeTab={onChangeTab}
+                />
+              </VStack>
+            </SafeAreaView>
           ),
         }}
       />

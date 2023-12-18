@@ -1,10 +1,12 @@
 import YoutubeCard from "@Components/common/YoutubeCard";
 import { provenContent } from "@Constants/info-contents";
 import { Center, HStack, Heading, VStack } from "@gluestack-ui/themed";
+import { useScreenSize } from "@lib/hooks";
 import React from "react";
 import ConceptWrapper from "./ConceptWrapper";
 
 const Proven = () => {
+  const { isSmallScreen } = useScreenSize();
   return (
     <ConceptWrapper title={"PROVEN IN UKRAINE"}>
       <HStack
@@ -15,20 +17,24 @@ const Proven = () => {
       >
         {provenContent.map((p, i) => (
           <VStack key={i} w={"$2/5"}>
-            <Heading size={"md"} textAlign="center" color="#ff0000">
+            <Heading
+              size={isSmallScreen ? "sm" : "md"}
+              textAlign="center"
+              color="#ff0000"
+            >
               {p.title}
             </Heading>
-            <Heading size={"sm"} textAlign="center">
+            <Heading size={isSmallScreen ? "xs" : "sm"} textAlign="center">
               {p.subtitle}
             </Heading>
           </VStack>
         ))}
       </HStack>
       <>
-        <Heading color="#ff0000" size={"xl"}>
+        <Heading color="#ff0000" size={isSmallScreen ? "md" : "xl"}>
           BRINGING TEAM BATTLES TO INDIVIDUAL SPORT
         </Heading>
-        <Center w={"$full"} height={260}>
+        <Center w={"$full"} height={200}>
           <YoutubeCard
             video={{
               videoId: "WSUfPBJf_P4",
