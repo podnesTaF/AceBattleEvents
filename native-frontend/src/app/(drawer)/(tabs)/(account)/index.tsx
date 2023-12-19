@@ -17,7 +17,7 @@ import { getAccountItems } from "@lib/user/utils/get-account-items";
 import { Link, Stack } from "expo-router";
 import { LogOut } from "lucide-react-native";
 import React from "react";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const AccountPage = () => {
   const user = useAppSelector(selectUser);
@@ -28,7 +28,6 @@ const AccountPage = () => {
       <>
         <Stack.Screen
           options={{
-            headerTintColor: "#fff",
             header: () => (
               <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
                 <Box p={"$2"}>

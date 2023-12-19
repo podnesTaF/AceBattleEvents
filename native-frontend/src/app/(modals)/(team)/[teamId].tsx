@@ -20,7 +20,8 @@ import { useGetTeamQuery } from "@lib/services";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList, SafeAreaView } from "react-native";
+import { Dimensions, FlatList } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const tabs = ["Home", "Runners", "Results", "Contact"];
 

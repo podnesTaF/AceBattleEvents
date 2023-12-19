@@ -21,8 +21,8 @@ import { formatDate } from "@lib/utils";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { Calendar } from "lucide-react-native";
 import React from "react";
-import { SafeAreaView } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const tabs = ["Participants", "Schedule", "Results"];
 
@@ -51,7 +51,6 @@ const EventScreen = () => {
       <Stack.Screen
         options={{
           headerShown: true,
-          headerTintColor: "#fff",
           header: ({ navigation }) => (
             <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
               <SkeletonLoader<EventInfo>
@@ -62,12 +61,7 @@ const EventScreen = () => {
               >
                 {(eventInfo) => (
                   <VStack width={"100%"} space="sm">
-                    <Heading
-                      size="xl"
-                      textAlign="center"
-                      color={"#fff"}
-                      top={"$2"}
-                    >
+                    <Heading size="2xl" textAlign="center" color={"#fff"}>
                       {eventInfo.title}
                     </Heading>
                     <VStack>

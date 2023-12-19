@@ -25,7 +25,8 @@ import {
 import { Stack, useLocalSearchParams } from "expo-router";
 import { InfoIcon } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList, Platform, SafeAreaView } from "react-native";
+import { Dimensions, FlatList, Platform } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const tabs = ["Overview", "Mile Runners", "Pacer-Joker"];
 

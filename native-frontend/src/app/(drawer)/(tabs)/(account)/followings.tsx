@@ -10,7 +10,7 @@ import { useAppSelector } from "@lib/hooks";
 import { selectUser } from "@lib/store";
 import { Stack } from "expo-router";
 import React from "react";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Followings = () => {
   const user = useAppSelector(selectUser);

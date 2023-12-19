@@ -19,7 +19,8 @@ import { useFetchUserQuery } from "@lib/user/services/UserService";
 import { getProfileTabByUserRole } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList, SafeAreaView, View } from "react-native";
+import { Dimensions, FlatList, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const tabsData = (user: IUser) => {
   if (user.runner) {

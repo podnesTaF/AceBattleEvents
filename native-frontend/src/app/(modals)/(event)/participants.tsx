@@ -5,7 +5,8 @@ import TeamsParticipants from "@Components/events/TeamsParticipants";
 import { Box, ScrollView, VStack } from "@gluestack-ui/themed";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList, Platform, SafeAreaView } from "react-native";
+import { Dimensions, FlatList } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const tabs = ["Teams", "Runners"];
 
@@ -43,12 +44,7 @@ const participants = () => {
           headerTintColor: "#fff",
           header: () => (
             <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
-              <VStack
-                space={"md"}
-                alignItems="center"
-                w={"$full"}
-                left={Platform.OS === "ios" ? "$0" : "-$16"}
-              >
+              <VStack space={"md"} alignItems="center" w={"$full"}>
                 <HeaderSubtitledTitle
                   title={"Participants"}
                   subtitle={name || "Event"}
