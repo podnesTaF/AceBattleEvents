@@ -19,7 +19,8 @@ import { EventResult, RaceShortForm } from "@lib/models";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { InfoIcon } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList, Platform, SafeAreaView } from "react-native";
+import { Dimensions, FlatList } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const tabs = ["Overview", "By Race"];
 
@@ -77,12 +78,7 @@ const results = () => {
           headerTintColor: "#fff",
           header: () => (
             <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
-              <VStack
-                space={"md"}
-                alignItems="center"
-                w={"$full"}
-                left={Platform.OS === "ios" ? "$0" : "-$16"}
-              >
+              <VStack space={"md"} alignItems="center" w={"$full"}>
                 <HeaderSubtitledTitle
                   subtitle={eventResult?.eventTitle || ""}
                   title={"Results"}

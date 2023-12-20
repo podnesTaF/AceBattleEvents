@@ -40,6 +40,22 @@ const staticSteps: Step[] = [
   },
   {
     id: 3,
+    title: "Become a Coach",
+    link: "/coach",
+    description: "Register as a coach and be able to coach a team",
+    icon: (
+      <Image
+        contentFit="contain"
+        contentPosition={"center"}
+        style={{ height: 36, width: 36 }}
+        source={require("@Assets/images/coach-icon.png")}
+        alt={"coach"}
+      />
+    ),
+    isActive: false,
+  },
+  {
+    id: 4,
     title: "Become a Team Manager",
     link: "/manager",
     description: "Manage and create your own Ace Battle Teams",
@@ -52,6 +68,7 @@ const staticSteps: Step[] = [
         alt={"st"}
       />
     ),
+    isActive: false,
   },
 ];
 
@@ -62,9 +79,9 @@ const roleModifications = {
     steps[1].isActive = false;
   },
   manager: (steps: Step[]) => {
-    steps[2].description = "You are a team manager";
-    steps[2].isFinished = true;
-    steps[2].isActive = false;
+    steps[3].description = "You are a team manager";
+    steps[3].isFinished = true;
+    steps[3].isActive = false;
   },
 };
 
@@ -81,7 +98,7 @@ export const getMembershipSteps = (user?: IUser | null) => {
     joinSteps[0].isFinished = true;
     joinSteps[0].isActive = false;
     joinSteps[1].isActive = true;
-    joinSteps[2].isActive = true;
+    joinSteps[3].isActive = false;
 
     // Apply role-specific modifications
     const modifySteps = (roleModifications as any)[user.role];
@@ -96,6 +113,8 @@ export const getMembershipSteps = (user?: IUser | null) => {
       user.rolePending === "runner"
         ? 1
         : user.rolePending === "manager"
+        ? 3
+        : user.rolePending === "coach"
         ? 2
         : -1; // Add other roles here if needed
 

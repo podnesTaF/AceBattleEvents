@@ -4,7 +4,7 @@ import FormTextarea from "@Components/common/forms/FormTextarea";
 import { notifications } from "@Constants/dummy-data";
 import { Box, Button, ButtonText, Heading, VStack } from "@gluestack-ui/themed";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { createNotificationSchema } from "@lib/utils";
+import { CreateNotification, createNotificationSchema } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -15,7 +15,7 @@ const ReplyModal = () => {
     (n) => n.id === Number(notificationId)
   );
 
-  const form = useForm({
+  const form = useForm<CreateNotification>({
     mode: "onChange",
     resolver: yupResolver(createNotificationSchema),
   });

@@ -9,7 +9,8 @@ import { Stack } from "expo-router";
 import { useNavigation } from "expo-router/src/useNavigation";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Dimensions, SafeAreaView } from "react-native";
+import { Dimensions } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ChangeUserPassword = () => {
   const [updatePassword, { isLoading }] = useUpdateUserPasswordMutation();

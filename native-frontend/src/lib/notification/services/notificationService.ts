@@ -4,7 +4,10 @@ import { INotification } from "../models";
 
 export const NotificationApi = api.injectEndpoints({
   endpoints: (build) => ({
-    postUserNotification: build.mutation<INotification, CreateNotificationDto>({
+    postUserNotification: build.mutation<
+      { success: boolean },
+      CreateNotificationDto
+    >({
       query: (body) => ({
         url: "/notifications/user",
         method: "POST",

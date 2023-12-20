@@ -1,21 +1,19 @@
 import WithLoading from "@Components/HOCs/withLoading";
 import withWatermarkBg from "@Components/HOCs/withWatermark";
 import Container from "@Components/common/Container";
+import { logoWhite } from "@Constants/cloud-images";
 import {
   Avatar,
   AvatarImage,
   Box,
   HStack,
   Heading,
-  Icon,
-  Pressable,
   Text,
   VStack,
 } from "@gluestack-ui/themed";
 import { useGetNotificationQuery } from "@lib/services";
 import { getTimeAgo } from "@lib/utils";
-import { Link, Stack, useLocalSearchParams } from "expo-router";
-import { ReplyIcon } from "lucide-react-native";
+import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
 
 const NotificationScreen = () => {
@@ -51,8 +49,7 @@ const NotificationScreen = () => {
                       <AvatarImage
                         source={{
                           uri:
-                            notification?.sender?.image?.mediaUrl ||
-                            "https://storage.googleapis.com/abe_cloud_storage/image/large/55c30c67-37aa-4476-bae9-b6f847a707fd.png",
+                            notification?.sender?.image?.mediaUrl || logoWhite,
                         }}
                         alt="avatar"
                         role={"img"}
@@ -84,17 +81,6 @@ const NotificationScreen = () => {
                   <Text size={"sm"} color={"$coolGray300"}>
                     {getTimeAgo(notification.createdAt)}
                   </Text>
-                  <Link href={`/(modals)/(reply)/${notification.id}`} asChild>
-                    <Pressable>
-                      {({ pressed }: { pressed: boolean }) => (
-                        <Icon
-                          opacity={pressed ? 0.8 : 1}
-                          as={ReplyIcon}
-                          size="xl"
-                        />
-                      )}
-                    </Pressable>
-                  </Link>
                 </HStack>
               </>
             )}

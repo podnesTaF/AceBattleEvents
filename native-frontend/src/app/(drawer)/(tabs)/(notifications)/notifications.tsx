@@ -1,46 +1,38 @@
 import withWatermarkBg from "@Components/HOCs/withWatermark";
 import AuthCallToAction from "@Components/auth/AuthCallToAction";
-import SkeletonLoader from "@Components/common/states/SkeletonLoader";
-import NotificationItem from "@Components/notifications/NotificationItem";
-import UserCardSkeleton from "@Components/user/UserCardSkeleton";
-import { Box, Divider, Heading, Pressable, VStack } from "@gluestack-ui/themed";
+import Tabs from "@Components/common/Tabs";
+import NotificationsScreen from "@Components/notifications/NotificationsScreen";
+import SendMessageForm from "@Components/notifications/SendMessageForm";
+import { Box, ScrollView, VStack } from "@gluestack-ui/themed";
 import { useAppSelector } from "@lib/hooks";
-import { INotification } from "@lib/models";
-import { useGetReceivedNotificationsQuery } from "@lib/services";
 import { selectUser } from "@lib/store";
-import { Link } from "expo-router";
-import React, { useEffect } from "react";
-import { FlatList } from "react-native";
+import { Stack } from "expo-router";
+import React, { useEffect, useRef } from "react";
+import { Dimensions, FlatList } from "react-native";
 
 const Notifications = () => {
   const user = useAppSelector(selectUser);
-  const {
-    data: notificationsData,
-    isLoading,
-    error,
-  } = useGetReceivedNotificationsQuery();
+  const [tabs, setTabs] = React.useState<string[]>(["Your Notifications"]);
+  const [data, setData] = React.useState<any[]>([<NotificationsScreen />]);
+  const [activeTab, setActiveTab] = React.useState(0);
 
-  const [notifications, setNotifications] = React.useState<INotification[]>();
+  const flatListRef = useRef<FlatList>(null);
+  const width = Dimensions.get("window").width;
 
-  const readNotification = (id: number) => {
-    setNotifications((prev) =>
-      prev?.map((n) => {
-        if (n.id === id) {
-          return {
-            ...n,
-            status: "read",
-          };
-        }
-        return n;
-      })
-    );
+  useEffect(() => {
+    if (user?.role === "manager") {
+      setTabs((prev) => prev.concat("Send Message"));
+      setData((prev) => prev.concat([<SendMessageForm />]));
+    }
+  }, [user]);
+
+  const onChangeTab = (tabIndex: number) => {
+    setActiveTab(tabIndex);
   };
 
   useEffect(() => {
-    if (notificationsData?.length) {
-      setNotifications(notificationsData);
-    }
-  }, [notificationsData]);
+    flatListRef.current?.scrollToIndex({ animated: true, index: activeTab });
+  }, [activeTab]);
 
   if (!user) {
     return (
@@ -50,62 +42,39 @@ const Notifications = () => {
     );
   }
 
-  const loadingComponent = () => (
-    <VStack space={"md"}>
-      {[...Array(3)].map((_, i) => (
-        <UserCardSkeleton key={i} height={70} />
-      ))}
-    </VStack>
-  );
-
   return (
-    <VStack>
-      <Box p={"$4"}>
-        <Heading size={"lg"}>
-          Notifications (
-          {notifications?.filter((n) => n.status === "unread")?.length} unread)
-        </Heading>
-      </Box>
-      <Box bgColor="$white">
-        <SkeletonLoader<INotification[]>
-          data={notifications}
-          error={error}
-          isLoading={isLoading}
-          loadingComponent={loadingComponent()}
-        >
-          {(data) =>
-            data.length > 0 ? (
-              <FlatList
-                data={data}
-                ItemSeparatorComponent={() => (
-                  <Divider bgColor="$coolGray300" height={"$0.5"} />
-                )}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }: { item: INotification }) => (
-                  <Link
-                    href={`/(drawer)/(tabs)/(notifications)/${item.id}`}
-                    asChild
-                  >
-                    <Pressable onPress={() => readNotification(item.id)}>
-                      {({ pressed }: { pressed: boolean }) => (
-                        <NotificationItem
-                          notification={item}
-                          pressed={pressed}
-                        />
-                      )}
-                    </Pressable>
-                  </Link>
-                )}
+    <>
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          header: () => (
+            <Box pt={"$2"} w={width} bg={"#1C1E1F"}>
+              <Tabs
+                activeColor={"#ff0000"}
+                activeIndex={activeTab}
+                items={tabs}
+                onChangeTab={onChangeTab}
               />
-            ) : (
-              <Box p={"$4"}>
-                <Heading size={"md"}>No notifications yet</Heading>
-              </Box>
-            )
-          }
-        </SkeletonLoader>
-      </Box>
-    </VStack>
+            </Box>
+          ),
+        }}
+      />
+      <FlatList
+        ref={flatListRef}
+        data={data}
+        keyExtractor={(item, index) => index.toString()}
+        horizontal
+        pagingEnabled
+        scrollEnabled={false}
+        showsHorizontalScrollIndicator={false}
+        snapToAlignment="center"
+        renderItem={({ item }) => (
+          <Box w={width}>
+            <ScrollView>{item}</ScrollView>
+          </Box>
+        )}
+      />
+    </>
   );
 };
 

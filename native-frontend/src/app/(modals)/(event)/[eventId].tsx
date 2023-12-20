@@ -4,6 +4,7 @@ import Tabs from "@Components/common/Tabs";
 import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import EventLocations from "@Components/events/EventLocations";
 import EventRegistrationSection from "@Components/events/EventRegistrationSection";
+import TextContent from "@Components/news/TextContent";
 import {
   Box,
   HStack,
@@ -21,8 +22,8 @@ import { formatDate } from "@lib/utils";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { Calendar } from "lucide-react-native";
 import React from "react";
-import { SafeAreaView } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const tabs = ["Participants", "Schedule", "Results"];
 
@@ -51,7 +52,6 @@ const EventScreen = () => {
       <Stack.Screen
         options={{
           headerShown: true,
-          headerTintColor: "#fff",
           header: ({ navigation }) => (
             <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
               <SkeletonLoader<EventInfo>
@@ -62,12 +62,7 @@ const EventScreen = () => {
               >
                 {(eventInfo) => (
                   <VStack width={"100%"} space="sm">
-                    <Heading
-                      size="xl"
-                      textAlign="center"
-                      color={"#fff"}
-                      top={"$2"}
-                    >
+                    <Heading size="2xl" textAlign="center" color={"#fff"}>
                       {eventInfo.title}
                     </Heading>
                     <VStack>
@@ -140,13 +135,9 @@ const EventScreen = () => {
           </Heading>
           <Container vertical>
             <Box py={"$4"}>
-              <Text size={"md"}>
-                Just a few years ago the Ace Battle Mile organizers set their
-                sights on going international, and this autumn, they are taking
-                confident steps to realize that goal. The European debut will
-                take place on September 23rd in Brussels, where the first races
-                of the ACE Battle Mile teams will unfold.
-              </Text>
+              {eventInfo?.contents.map((content) => (
+                <TextContent text={content.text} key={content.id} />
+              ))}
               <Heading size={"md"} my={"$2"}>
                 Preliminary teams:
               </Heading>

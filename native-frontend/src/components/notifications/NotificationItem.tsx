@@ -1,3 +1,4 @@
+import { logoBlack } from "@Constants/cloud-images";
 import {
   Avatar,
   AvatarFallbackText,
@@ -22,7 +23,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   pressed,
 }) => {
   return (
-    <HStack opacity={pressed ? 0.8 : 1} space={"lg"} alignItems="center">
+    <HStack opacity={pressed ? 0.8 : 1} space={"sm"} alignItems="center">
       <Box
         width={"$4"}
         height={"$full"}
@@ -30,21 +31,19 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         borderBottomRightRadius={50}
         bg={notification.status === "unread" ? "$blue200" : "$coolGray200"}
       ></Box>
-      {notification.sender?.image && (
-        <Avatar size="lg" borderBottomRightRadius={50} bg={"transparent"}>
-          <AvatarImage
-            source={{
-              uri: notification.sender?.image?.mediaUrl,
-            }}
-            alt="avatar"
-            role={"img"}
-          />
-          <AvatarFallbackText>
-            {notification?.sender?.name[0]}
-            {notification?.sender?.surname[0]}
-          </AvatarFallbackText>
-        </Avatar>
-      )}
+      <Avatar size="lg" borderBottomRightRadius={50} bg={"transparent"}>
+        <AvatarImage
+          source={{
+            uri: notification.sender?.image?.mediaUrl || logoBlack,
+          }}
+          alt="avatar"
+          role={"img"}
+        />
+        <AvatarFallbackText>
+          {notification?.sender?.name[0]}
+          {notification?.sender?.surname[0]}
+        </AvatarFallbackText>
+      </Avatar>
       <HStack p={"$2"} flex={1} space={"sm"}>
         <VStack flex={1}>
           <Heading size={"sm"} numberOfLines={1}>

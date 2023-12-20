@@ -2,6 +2,7 @@ import PickAthletesList from "@Components/athletes/PickAthletesList";
 import PickCoachScreenContent from "@Components/athletes/screens/PickCoachScreenContent";
 import PickCountryList from "@Components/countries/PickCountryList";
 import PickManagersList from "@Components/join/PickManagersList";
+import PickReceiversList from "@Components/notifications/PickReceiversList";
 import PickTeam from "@Components/teams/PickTeam";
 import { Button, ButtonText, Heading } from "@gluestack-ui/themed";
 import { Stack, useLocalSearchParams } from "expo-router";
@@ -46,6 +47,9 @@ const PickItemsModal = () => {
       )}
       {params.name === "manager" && (
         <PickManagersList save={save} setSave={setSave} />
+      )}
+      {params.name === "receivers" && (
+        <PickReceiversList save={save} setSave={setSave} />
       )}
     </>
   );
