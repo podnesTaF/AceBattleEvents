@@ -2,18 +2,22 @@ import withWatermarkBg from "@Components/HOCs/withWatermark";
 import LogoTitle from "@Components/LogoTitle";
 import FollowingAthletesList from "@Components/athletes/FollowingAthletesList";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
+import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import TeamPreview from "@Components/teams/TeamPreview";
 import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
-import { teams } from "@Constants/dummy-data";
 import { HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
 import { useAppSelector } from "@lib/hooks";
+import { ITeam } from "@lib/models";
+import { useGetFollowingTeamsQuery } from "@lib/services";
 import { selectUser } from "@lib/store";
+import { scaleSize } from "@lib/utils";
 import { Stack } from "expo-router";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Followings = () => {
   const user = useAppSelector(selectUser);
+  const { data: teams, isLoading, error } = useGetFollowingTeamsQuery();
 
   return (
     <>
@@ -40,16 +44,24 @@ const Followings = () => {
               Teams
             </Heading>
           </HStack>
-          <HorizontalListLayout
-            identifier="team"
-            items={teams}
-            ItemComponent={TeamPreviewCard}
-            additionalProps={{
-              Item: TeamPreview,
-              imageProportion: 2,
-              minWidth: 320,
-            }}
-          />
+          <SkeletonLoader<ITeam[]>
+            data={teams}
+            isLoading={isLoading}
+            error={error}
+          >
+            {(data) => (
+              <HorizontalListLayout
+                identifier="team"
+                items={data}
+                ItemComponent={TeamPreviewCard}
+                additionalProps={{
+                  Item: TeamPreview,
+                  imageProportion: 2,
+                  minWidth: scaleSize(320),
+                }}
+              />
+            )}
+          </SkeletonLoader>
         </VStack>
         <VStack mt={"$4"} mb={"$8"} space="sm">
           <HStack mx={"$4"}>

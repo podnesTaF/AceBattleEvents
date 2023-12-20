@@ -23,11 +23,11 @@ const SmallNewsCard = ({
           borderBottomWidth={isLast ? 0 : 2}
           borderColor={"$coolGray300"}
         >
-          {news.mainImage && (
+          {(news.mainImage || news.smallImageUrl) && (
             <Image
               role="img"
               alt={"news image"}
-              source={{ uri: news.mainImage?.mediaUrl }}
+              source={{ uri: news.mainImage?.mediaUrl || news.smallImageUrl }}
               size={"md"}
               rounded={"$md"}
             />

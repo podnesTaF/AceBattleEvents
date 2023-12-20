@@ -4,6 +4,7 @@ import Tabs from "@Components/common/Tabs";
 import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import EventLocations from "@Components/events/EventLocations";
 import EventRegistrationSection from "@Components/events/EventRegistrationSection";
+import TextContent from "@Components/news/TextContent";
 import {
   Box,
   HStack,
@@ -134,13 +135,9 @@ const EventScreen = () => {
           </Heading>
           <Container vertical>
             <Box py={"$4"}>
-              <Text size={"md"}>
-                Just a few years ago the Ace Battle Mile organizers set their
-                sights on going international, and this autumn, they are taking
-                confident steps to realize that goal. The European debut will
-                take place on September 23rd in Brussels, where the first races
-                of the ACE Battle Mile teams will unfold.
-              </Text>
+              {eventInfo?.contents.map((content) => (
+                <TextContent text={content.text} key={content.id} />
+              ))}
               <Heading size={"md"} my={"$2"}>
                 Preliminary teams:
               </Heading>

@@ -1,4 +1,5 @@
 import {
+  IContent,
   ILocation,
   IMedia,
   IPrize,
@@ -18,6 +19,7 @@ export type IEvent = {
   location: ILocation;
   totalPrize?: number;
   attendanceType: "free" | "paid";
+  contents: IContent[];
   prizes: IPrize[];
   teams?: ITeam[];
 };

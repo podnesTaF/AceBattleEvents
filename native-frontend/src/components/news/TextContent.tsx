@@ -1,7 +1,9 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Text } from "@gluestack-ui/themed";
+import { StyleSheet, View } from "react-native";
 
 const parseHTML = (htmlString: string) => {
-  const regex = /<cite>(.*?)<\/cite>|<b>(.*?)<\/b>|<bt>(.*?)<\/bt>|<br \/>/g;
+  const regex =
+    /<cite>(.*?)<\/cite>|<b>(.*?)<\/b>|<bt>(.*?)<\/bt>|<br\/>|<br \/>/g;
   let match;
   let lastIndex = 0;
   const elements = [];
@@ -20,7 +22,7 @@ const parseHTML = (htmlString: string) => {
       elements.push({ type: "b", content: match[2] });
     } else if (match[0].startsWith("<bt>")) {
       elements.push({ type: "bt", content: match[3] });
-    } else if (match[0].startsWith("<br/>")) {
+    } else if (match[0].startsWith("<br/>") || match[0].startsWith("<br />")) {
       elements.push({ type: "br" });
     }
 
@@ -34,7 +36,10 @@ const parseHTML = (htmlString: string) => {
   return elements;
 };
 
-const TextContent = ({ text }: { text: string }) => {
+const TextContent = ({ text }: { text?: string }) => {
+  if (!text) {
+    return null;
+  }
   const elements = parseHTML(text);
 
   return (
@@ -62,11 +67,7 @@ const TextContent = ({ text }: { text: string }) => {
               </Text>
             );
           case "br":
-            return (
-              <Text key={index} style={styles.breakLine}>
-                {"\n"}
-              </Text>
-            );
+            return <Text key={index} lineHeight={8}></Text>;
           default:
             return null;
         }
@@ -78,8 +79,8 @@ const TextContent = ({ text }: { text: string }) => {
 const styles = StyleSheet.create({
   cite: {
     fontStyle: "italic",
-    paddingLeft: 16,
-    marginBottom: 8,
+    paddingLeft: 8,
+    marginBottom: 4,
   },
   bold: {
     fontWeight: "bold",
@@ -87,9 +88,6 @@ const styles = StyleSheet.create({
   boldMargin: {
     fontWeight: "bold",
     marginBottom: 2,
-  },
-  breakLine: {
-    height: 20, // Adjust the height as needed for line breaks
   },
 });
 

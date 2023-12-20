@@ -7,7 +7,7 @@ const NotificationLayout = () => {
       <Stack.Screen
         name={"notifications"}
         options={{
-          headerShown: false,
+          headerShown: true,
         }}
       />
       <Stack.Screen name={"[id]"} />

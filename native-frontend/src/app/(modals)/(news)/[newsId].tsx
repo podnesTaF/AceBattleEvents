@@ -36,14 +36,17 @@ const ArticlePage = () => {
           </Box>
           <Box px={"$3"}>
             <Container vertical>
-              <VStack py={"$4"} space="md">
+              <VStack py={"$4"}>
                 {news?.contents.map((content, index) =>
                   content.text ? (
-                    <Box key={content.id}>
-                      <TextContent text={content.text} />
-                    </Box>
+                    <TextContent key={content.id} text={content.text} />
                   ) : (
-                    <Box maxHeight={250} key={content.id} height={"auto"}>
+                    <Box
+                      my={"$4"}
+                      maxHeight={250}
+                      key={content.id}
+                      height={"auto"}
+                    >
                       <Image
                         role="img"
                         size={"full"}
@@ -55,20 +58,22 @@ const ArticlePage = () => {
                 )}
               </VStack>
             </Container>
-            <Box mb={"$1/4"} mt={"$2"}>
-              <Heading mb={"$4"} size={"lg"}>
-                Related News
-              </Heading>
-              <VStack space="sm">
-                {news?.relatedNews.newsPreviews.map((news, i, arr) => (
-                  <SmallNewsCard
-                    news={news}
-                    key={news.id}
-                    isLast={arr.length - 1 === i}
-                  />
-                ))}
-              </VStack>
-            </Box>
+            {news?.relatedNews.newsPreviews.length ? (
+              <Box mb={"$1/4"} mt={"$2"}>
+                <Heading mb={"$4"} size={"lg"}>
+                  Related News
+                </Heading>
+                <VStack space="sm">
+                  {news?.relatedNews.newsPreviews.map((news, i, arr) => (
+                    <SmallNewsCard
+                      news={news}
+                      key={news.id}
+                      isLast={arr.length - 1 === i}
+                    />
+                  ))}
+                </VStack>
+              </Box>
+            ) : null}
           </Box>
         </WithLoading>
       </ScrollView>

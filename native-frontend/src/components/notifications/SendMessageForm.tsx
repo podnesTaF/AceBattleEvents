@@ -1,20 +1,19 @@
-import Container from "@Components/common/Container";
 import FormField from "@Components/common/forms/FormField";
 import FormTextarea from "@Components/common/forms/FormTextarea";
-import { notifications } from "@Constants/dummy-data";
-import { Box, Button, ButtonText, Heading, VStack } from "@gluestack-ui/themed";
+import {
+  Box,
+  Button,
+  ButtonText,
+  Heading,
+  KeyboardAvoidingView,
+  VStack,
+} from "@gluestack-ui/themed";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CreateNotification, createNotificationSchema } from "@lib/utils";
-import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-const ReplyModal = () => {
-  const { notificationId } = useLocalSearchParams();
-  const notification = notifications.find(
-    (n) => n.id === Number(notificationId)
-  );
-
+const SendMessageForm = () => {
   const form = useForm<CreateNotification>({
     mode: "onChange",
     resolver: yupResolver(createNotificationSchema),
@@ -25,25 +24,9 @@ const ReplyModal = () => {
   };
 
   return (
-    <>
-      <Stack.Screen
-        options={{
-          headerStyle: {
-            backgroundColor: "#1C1E1F",
-          },
-          headerShown: true,
-          headerTintColor: "#fff",
-          headerTitle: (props) => (
-            <Box py={"$2"}>
-              <Heading size="md" color={props.tintColor}>
-                Reply to {notification?.sender.name}{" "}
-                {notification?.sender.surname}
-              </Heading>
-            </Box>
-          ),
-        }}
-      />
-      <Container vertical={true}>
+    <Box px={"$3"} py={"$4"}>
+      <Heading size="lg">Send Notification</Heading>
+      <KeyboardAvoidingView>
         <FormProvider {...form}>
           <VStack py={"$4"} space="md">
             <Box>
@@ -64,16 +47,13 @@ const ReplyModal = () => {
               />
             </Box>
             <Button my={"$3"} onPress={form.handleSubmit(onSend)}>
-              <ButtonText>
-                Reply to {notification?.sender.name}{" "}
-                {notification?.sender.surname}
-              </ButtonText>
+              <ButtonText>Send</ButtonText>
             </Button>
           </VStack>
         </FormProvider>
-      </Container>
-    </>
+      </KeyboardAvoidingView>
+    </Box>
   );
 };
 
-export default ReplyModal;
+export default SendMessageForm;
