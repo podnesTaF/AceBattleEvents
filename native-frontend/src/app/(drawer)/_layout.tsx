@@ -35,7 +35,8 @@ const Layout = () => {
           pathname === "/home" ||
           pathname === "/events" ||
           pathname === "/news" ||
-          pathname === "/notifications",
+          pathname === "/notifications" ||
+          pathname === "/send-notification",
         headerLeft: (props) => <DrawerToggleButton {...props} />,
         title: "Ace Battle Mile",
         headerTitle: (props: any) => <LogoTitle {...props} />,

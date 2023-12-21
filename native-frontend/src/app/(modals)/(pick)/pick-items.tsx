@@ -23,8 +23,13 @@ const PickItemsModal = () => {
       <Stack.Screen
         options={{
           headerShown: true,
+          headerStyle: {
+            backgroundColor: "#1C1E1F",
+          },
+          headerTintColor: "#fff",
+          headerShadowVisible: false,
           headerTitle: (props) => (
-            <Heading size="xl" {...props}>
+            <Heading size="xl" color={props.tintColor}>
               Pick {params.name}
             </Heading>
           ),

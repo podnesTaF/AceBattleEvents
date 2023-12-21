@@ -2,29 +2,31 @@ import withWatermarkBg from "@Components/HOCs/withWatermark";
 import AuthCallToAction from "@Components/auth/AuthCallToAction";
 import Tabs from "@Components/common/Tabs";
 import NotificationsScreen from "@Components/notifications/NotificationsScreen";
-import SendMessageForm from "@Components/notifications/SendMessageForm";
+import SentNotifications from "@Components/notifications/SentNotifications";
 import { Box, ScrollView, VStack } from "@gluestack-ui/themed";
 import { useAppSelector } from "@lib/hooks";
 import { selectUser } from "@lib/store";
+import { getNotificationTabs } from "@lib/utils";
 import { Stack } from "expo-router";
 import React, { useEffect, useRef } from "react";
 import { Dimensions, FlatList } from "react-native";
 
+const getNotificationsScreens = (role?: string): JSX.Element[] => {
+  const elements = [<NotificationsScreen />];
+
+  if (role === "manager") {
+    elements.push(<SentNotifications />);
+  }
+
+  return elements;
+};
+
 const Notifications = () => {
   const user = useAppSelector(selectUser);
-  const [tabs, setTabs] = React.useState<string[]>(["Your Notifications"]);
-  const [data, setData] = React.useState<any[]>([<NotificationsScreen />]);
   const [activeTab, setActiveTab] = React.useState(0);
 
   const flatListRef = useRef<FlatList>(null);
   const width = Dimensions.get("window").width;
-
-  useEffect(() => {
-    if (user?.role === "manager") {
-      setTabs((prev) => prev.concat("Send Message"));
-      setData((prev) => prev.concat([<SendMessageForm />]));
-    }
-  }, [user]);
 
   const onChangeTab = (tabIndex: number) => {
     setActiveTab(tabIndex);
@@ -36,9 +38,16 @@ const Notifications = () => {
 
   if (!user) {
     return (
-      <VStack my={"$6"} flex={1}>
-        <AuthCallToAction screen={"notification"} />
-      </VStack>
+      <>
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+        />
+        <VStack my={"$6"} flex={1}>
+          <AuthCallToAction screen={"notification"} />
+        </VStack>
+      </>
     );
   }
 
@@ -52,7 +61,7 @@ const Notifications = () => {
               <Tabs
                 activeColor={"#ff0000"}
                 activeIndex={activeTab}
-                items={tabs}
+                items={getNotificationTabs(user?.role)}
                 onChangeTab={onChangeTab}
               />
             </Box>
@@ -61,7 +70,7 @@ const Notifications = () => {
       />
       <FlatList
         ref={flatListRef}
-        data={data}
+        data={getNotificationsScreens(user?.role)}
         keyExtractor={(item, index) => index.toString()}
         horizontal
         pagingEnabled
