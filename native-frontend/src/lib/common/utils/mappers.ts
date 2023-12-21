@@ -71,6 +71,7 @@ export const mapTeamsToPickItems = (teams?: ITeam[]): PickItem[] => {
     teams?.map((item: ITeam) => ({
       id: item.id,
       title: item.name,
+      imageUrl: item.logo?.mediaUrl,
       additionalInfo: item.city + ", " + item.country.name,
     })) || []
   );

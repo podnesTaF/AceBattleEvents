@@ -3,14 +3,14 @@ import React from "react";
 import InfoTemplate from "../InfoTemplate";
 
 type ErrorBoxProps = {
-  error: any;
+  errorMessage: string;
   type?: string;
   height?: any;
   width?: any;
 };
 
 const ErrorBox = ({
-  error,
+  errorMessage,
   type = "fetch",
   height = "auto",
   width = "$full",
@@ -24,7 +24,7 @@ const ErrorBox = ({
     >
       <InfoTemplate
         title={type === "fetch" ? "Error Fetching" : "Error occured"}
-        text="There is an error occured while fething"
+        text={errorMessage || "There is an error occured while fething"}
         type={"error"}
       />
     </Box>
