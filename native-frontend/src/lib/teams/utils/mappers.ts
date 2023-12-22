@@ -12,7 +12,7 @@ export const getTeamFormValues = (
       name: team.name,
       city: team.city,
       gender: team.gender,
-      coach: team.coach.id,
+      coach: team.coach?.id,
       players: team.players.map((player) => player.id),
       logo: team.logo,
       teamImage: team.teamImage,
@@ -21,7 +21,7 @@ export const getTeamFormValues = (
       name: team.name,
       city: team.city,
       gender: team.gender,
-      coach: team.coach.id,
+      coach: team.coach?.id,
       players: team.players.map((player) => player.id),
     },
   };

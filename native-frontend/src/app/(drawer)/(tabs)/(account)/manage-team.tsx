@@ -3,19 +3,24 @@ import FormField from "@Components/common/forms/FormField";
 import FormImagePicker from "@Components/common/forms/FormImagePicker";
 import FormRadioGroup from "@Components/common/forms/FormRadioGroup";
 import PickField from "@Components/common/forms/PickField";
-import { coaches, runners, teams } from "@Constants/dummy-data";
 import { Box, Button, ButtonText, VStack } from "@gluestack-ui/themed";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppSelector } from "@lib/hooks";
 import {
+  useGetRunnersByManagerQuery,
+  useGetTeamInfoQuery,
+} from "@lib/services";
+import {
   clearAllItems,
   clearAllValues,
   selectItems,
+  selectUser,
   selectValues,
   setDefalutValues,
   setFormValue,
   setItems,
 } from "@lib/store";
+import { useGetCoachesByManagerQuery } from "@lib/user/services/CoachService";
 import {
   AddTeamSchema,
   cutString,
@@ -30,32 +35,56 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
 const ManageTeam = () => {
-  const params = useLocalSearchParams<{ teamId?: string }>();
+  const { teamId } = useLocalSearchParams<{ teamId?: string }>();
   const dispatch = useDispatch();
   const { newValues, defaultValues } = useAppSelector(selectValues);
   const { availableCoaches } = useAppSelector(selectItems);
+  const user = useAppSelector(selectUser);
+  const { data: team, isLoading } = useGetTeamInfoQuery(
+    teamId ? +teamId : undefined
+  );
+  const { data: coaches, isLoading: isCoachesLoading } =
+    useGetCoachesByManagerQuery({ userId: user?.id });
+  const { data: runners, isLoading: isRunnersLoading } =
+    useGetRunnersByManagerQuery(user?.id);
 
   useEffect(() => {
     dispatch(clearAllValues());
-    if (params.teamId) {
-      dispatch(setDefalutValues(getTeamFormValues(teams[0])));
-    }
-    dispatch(
-      setItems({
-        key: "availableCoaches",
-        items: mapCoachesToPickItems(coaches),
-      })
-    );
-    dispatch(
-      setItems({
-        key: "availablePlayers",
-        items: mapRunnersToPickItems(runners),
-      })
-    );
-  }, [params.teamId]);
+    form.reset();
+  }, [teamId]);
 
   useEffect(() => {
-    setFormDefaultValues();
+    if (team) {
+      dispatch(setDefalutValues(getTeamFormValues(team)));
+    }
+  }, [team]);
+
+  useEffect(() => {
+    if (coaches) {
+      dispatch(
+        setItems({
+          key: "availableCoaches",
+          items: mapCoachesToPickItems(coaches),
+        })
+      );
+    }
+  }, [coaches]);
+
+  useEffect(() => {
+    if (runners) {
+      dispatch(
+        setItems({
+          key: "availablePlayers",
+          items: mapRunnersToPickItems(runners),
+        })
+      );
+    }
+  }, [runners]);
+
+  useEffect(() => {
+    if (teamId) {
+      setFormDefaultValues();
+    }
   }, [defaultValues]);
 
   useEffect(() => {
