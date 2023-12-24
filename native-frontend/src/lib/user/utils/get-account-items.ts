@@ -47,14 +47,6 @@ export const getAccountItems = (user: IUser): AccountItem[] => {
 
   if (user.role === "runner") {
     items.push({
-      title: "My Team",
-      subtitle: "View your team",
-      icon: "people",
-      color: "$orange500",
-      isDark: true,
-      link: "/teams-setting",
-    });
-    items.push({
       title: "Calendar",
       subtitle: "Your registrations",
       icon: "calendar",
@@ -75,7 +67,7 @@ export const getAccountItems = (user: IUser): AccountItem[] => {
       title: "Teams",
       subtitle: "Teams settings",
       icon: "people",
-      color: "$blue500",
+      color: "$orange500",
       isDark: true,
       link: "/teams-setting",
     });

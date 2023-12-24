@@ -6,6 +6,7 @@ import {
   Text,
   VStack,
 } from "@gluestack-ui/themed";
+import { useScreenSize } from "@lib/hooks";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Pressable } from "react-native";
@@ -30,6 +31,7 @@ const JoinStep = ({
   isLast,
 }: JoinStepProps): JSX.Element => {
   const router = useRouter();
+  const { isSmallScreen } = useScreenSize();
 
   const bgColor = isFinished
     ? "#42E33480"
@@ -71,8 +73,10 @@ const JoinStep = ({
             {isLast ? null : <Box w={"$1"} h={"$16"} bg={bgColor} mb={"$2"} />}
           </VStack>
           <VStack flex={1}>
-            <Heading size={"xl"}>{title}</Heading>
-            <Text color={"$coolGray400"}>{description}</Text>
+            <Heading size={isSmallScreen ? "lg" : "xl"}>{title}</Heading>
+            <Text size={isSmallScreen ? "sm" : "md"} color={"$coolGray400"}>
+              {description}
+            </Text>
           </VStack>
         </HStack>
       )}

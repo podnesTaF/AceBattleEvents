@@ -60,8 +60,10 @@ const ResetPass = () => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
       >
-        <VStack flex={1} alignItems="center" justifyContent="center">
-          <Heading size="xl">Reset Password</Heading>
+        <Center flex={1} alignItems="center" justifyContent="center">
+          <Box py={"$4"}>
+            <Heading size="xl">Reset Password</Heading>
+          </Box>
           <Box width={scaleSize(330)}>
             <FormProvider {...form}>
               <StepLayout
@@ -73,7 +75,7 @@ const ResetPass = () => {
                 goHome={activeTab === 1}
               >
                 {activeTab === 0 && (
-                  <Center flex={1}>
+                  <Center>
                     <FormField name={"email"} />
                   </Center>
                 )}
@@ -107,7 +109,7 @@ const ResetPass = () => {
               </StepLayout>
             </FormProvider>
           </Box>
-        </VStack>
+        </Center>
       </KeyboardAvoidingView>
     </>
   );

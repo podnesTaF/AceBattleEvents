@@ -10,7 +10,7 @@ const UpcomingEventCard = ({ event }: { event: MappedFutureEvent }) => {
   const router = useRouter();
 
   return (
-    <HStack rounded={"$lg"} mb={scaleSize(50)}>
+    <HStack rounded={"$lg"} mb={scaleSize(60)}>
       <Box width={"100%"} height={200}>
         <Box
           overflow="hidden"
@@ -96,7 +96,7 @@ const UpcomingEventCard = ({ event }: { event: MappedFutureEvent }) => {
         zIndex={-4}
         height={200}
         right={-12}
-        bottom={scaleSize(-45)}
+        bottom={-50}
         bg="$white"
         softShadow="1"
         borderBottomRightRadius={100}
@@ -111,12 +111,7 @@ const UpcomingEventCard = ({ event }: { event: MappedFutureEvent }) => {
             />
           </Box>
         ) : (
-          <Heading
-            fontSize={scaleSize(16)}
-            fontWeight="bold"
-            textAlign="left"
-            p={"$2"}
-          >
+          <Heading fontSize={18} fontWeight="bold" textAlign="left" p={"$2"}>
             Comming Soon...
           </Heading>
         )}

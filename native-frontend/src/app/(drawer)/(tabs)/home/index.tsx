@@ -3,6 +3,7 @@ import HomeTabTitle from "@Components/HomeTabTitle";
 import TopAthletesPodium from "@Components/athletes/TopAthletesPodium";
 import PrimaryAuthCta from "@Components/auth/PrimaryAuthCta";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
+import AbmButton from "@Components/common/buttons/AbmButton";
 import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import StatCard from "@Components/custom/StatCard";
 import UpcomingEventCard from "@Components/events/UpcomingEventCard";
@@ -17,15 +18,10 @@ import { useFetchNewsPreviewsQuery, useGetAllTeamsQuery } from "@lib/services";
 import { selectUser } from "@lib/store";
 import { mapFutureEvents, scaleSize } from "@lib/utils";
 import { Image } from "expo-image";
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 import React from "react";
 import { Dimensions } from "react-native";
-import Animated, {
-  useAnimatedScrollHandler,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
+import { ScrollView } from "react-native-gesture-handler";
 
 const Page = () => {
   const user = useAppSelector(selectUser);
@@ -41,30 +37,6 @@ const Page = () => {
   const { data: newsData, isLoading: isNewsLoading } =
     useFetchNewsPreviewsQuery({ limit: 4 });
 
-  const scrollY = useSharedValue(0);
-
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (event: any) => {
-      scrollY.value = event.contentOffset.y;
-    },
-  });
-
-  const animatedHeaderStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateY: withTiming(
-            scrollY.value > 0 ? -80 : -scrollY.value,
-            { duration: 300 } // Adjust duration as needed
-          ),
-        },
-      ],
-      opacity: withTiming(scrollY.value > 0 ? 0 : 1, {
-        duration: 300,
-      }),
-    };
-  });
-
   return (
     <>
       <Stack.Screen
@@ -73,27 +45,40 @@ const Page = () => {
             backgroundColor: "transparent",
           },
           headerTransparent: true,
-          headerShown: true,
-          header: (props) => (
-            <Animated.View style={animatedHeaderStyle}>
+          headerShown: false,
+        }}
+      />
+      <ScrollView>
+        <Box my={"$4"}>
+          {user ? (
+            <Box
+              borderTopLeftRadius={100}
+              borderBottomLeftRadius={200}
+              w={"$full"}
+              bg={"#ff0000"}
+              pl={scaleSize(40)}
+              pb={scaleSize(24)}
+            >
+              <Heading
+                py={scaleSize(6)}
+                color={"$white"}
+                textAlign="center"
+                size={"lg"}
+              >
+                Welcome to ABM
+              </Heading>
               <Box
                 overflow="hidden"
-                bgColor="#1E1C1F"
-                borderBottomRightRadius={12}
-                borderBottomLeftRadius={12}
-                w={width}
-                px={"$4"}
-                py={"$2"}
+                borderTopLeftRadius={100}
+                borderBottomLeftRadius={200}
+                bg={"$white"}
+                justifyContent="center"
+                flex={1}
               >
                 <HomeTabTitle user={user} />
               </Box>
-            </Animated.View>
-          ),
-        }}
-      />
-      <Animated.ScrollView onScroll={scrollHandler} scrollEventThrottle={12}>
-        <Box pt={user ? scaleSize(75) : scaleSize(20)}>
-          {!user && (
+            </Box>
+          ) : (
             <Box my={"$4"}>
               <PrimaryAuthCta screen="home" />
             </Box>
@@ -117,7 +102,7 @@ const Page = () => {
           </VStack>
           <Box mt={"$2"} mb={"$6"}>
             <Heading mb={"$4"} size={"xl"} textAlign="center">
-              Welcome to Ace Battle Mile
+              Explore concepts
             </Heading>
             <VStack w={"$full"} overflow="hidden">
               {infoCards.map((inf, i) => (
@@ -149,6 +134,12 @@ const Page = () => {
                 />
               </Box>
             </VStack>
+            <Box alignItems="center" mt={"$4"}>
+              <AbmButton
+                onPress={() => router.push("/concept")}
+                title="ABM Concept"
+              />
+            </Box>
           </Box>
           <TopAthletesPodium />
           <Box m={"$4"}>
@@ -189,7 +180,7 @@ const Page = () => {
             />
           </Box>
         </Box>
-      </Animated.ScrollView>
+      </ScrollView>
     </>
   );
 };

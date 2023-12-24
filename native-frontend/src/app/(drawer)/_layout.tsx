@@ -1,6 +1,5 @@
 import CustomDrawerContent from "@Components/CustomDrawerContent";
 import LogoTitle from "@Components/LogoTitle";
-import { DrawerToggleButton } from "@react-navigation/drawer";
 import { usePathname } from "expo-router";
 import Drawer from "expo-router/drawer";
 import React from "react";
@@ -37,7 +36,6 @@ const Layout = () => {
           pathname === "/news" ||
           pathname === "/notifications" ||
           pathname === "/send-notification",
-        headerLeft: (props) => <DrawerToggleButton {...props} />,
         title: "Ace Battle Mile",
         headerTitle: (props: any) => <LogoTitle {...props} />,
       })}

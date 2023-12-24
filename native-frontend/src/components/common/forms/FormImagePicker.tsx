@@ -11,7 +11,7 @@ import { cutString } from "@lib/utils";
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { ImagePlus, Trash2Icon } from "lucide-react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface FormImagePickerProps {
   placeholder: string;
@@ -40,10 +40,14 @@ const FormImagePicker: React.FC<FormImagePickerProps> = ({
 }) => {
   const [selectedImageName, setSelectedImageName] = useState<
     string | undefined
-  >(imageUrl?.split("/").pop() || defaultImageName);
+  >();
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | undefined>(
     imageUrl
   );
+
+  useEffect(() => {
+    setSelectedImageName(imageUrl?.split("/").pop() || defaultImageName);
+  }, [defaultImageName, imageUrl]);
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({

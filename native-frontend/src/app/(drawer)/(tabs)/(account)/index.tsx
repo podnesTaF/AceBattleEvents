@@ -1,6 +1,6 @@
 import withWatermarkBg from "@Components/HOCs/withWatermark";
-import HomeTabTitle from "@Components/HomeTabTitle";
 import LogoTitle from "@Components/LogoTitle";
+import UserPreview from "@Components/UserPreview";
 import AuthCallToAction from "@Components/auth/AuthCallToAction";
 import FormButton from "@Components/common/forms/FormButton";
 import ProfileItem from "@Components/profile/ProfileItem";
@@ -31,7 +31,7 @@ const AccountPage = () => {
             header: () => (
               <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
                 <Box p={"$2"}>
-                  <HomeTabTitle annotation="personal account" user={user} />
+                  <UserPreview annotation="personal account" user={user} />
                 </Box>
               </SafeAreaView>
             ),

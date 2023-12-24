@@ -19,6 +19,11 @@ export const ServiceApi = api.injectEndpoints({
       }),
       providesTags: (result) => ["Team"],
     }),
+    getTeamInfo: builder.query<ITeam, number | undefined>({
+      query: (id) => ({
+        url: `/teams/info/${id}`,
+      }),
+    }),
     getTeam: builder.query<ITeam, number>({
       query: (id) => ({
         url: `/teams/${id}`,
@@ -85,4 +90,5 @@ export const {
   useFollowTeamMutation,
   useUnfollowTeamMutation,
   useGetFollowingTeamsQuery,
+  useGetTeamInfoQuery,
 } = ServiceApi;
