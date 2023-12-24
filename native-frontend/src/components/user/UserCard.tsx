@@ -31,6 +31,10 @@ const UserCard: React.FC<UserCardProps> = ({
   const runner = user?.runner || runnerPreview;
   const { isSmallScreen } = useScreenSize();
 
+  if (!user && !runner) {
+    return null;
+  }
+
   return (
     <Link href={`/(modals)/(profile)/${user.id}`} asChild>
       <Pressable>

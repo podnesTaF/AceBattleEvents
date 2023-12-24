@@ -14,12 +14,12 @@ export const useLogout = () => {
     setIsLoading(true);
     try {
       await AsyncStorage.removeItem("userToken");
+      dispatch(removeUser());
 
       dispatch(api.util.resetApiState());
     } catch (e: any) {
       console.log(e);
     }
-    dispatch(removeUser());
     setIsLoading(false);
     router.replace("/(drawer)/(tabs)/home");
   };
