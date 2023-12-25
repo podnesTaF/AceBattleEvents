@@ -30,7 +30,7 @@ const tabsData = (team: ITeam) => {
     <HomeTeamTab team={team} />,
     <RunnersTab team={team} />,
     <TeamResultsTab team={team} />,
-    <ContactTab />,
+    <ContactTab teamId={team.id} />,
   ];
 };
 

@@ -9,7 +9,7 @@ interface SkeletonLoaderProps<T> {
   children: (data: T) => ReactNode | Element;
   height?: number;
   width?: number;
-  isLoading?: boolean;
+  isLoading?: boolean | null;
   loadingComponent?: JSX.Element;
 }
 

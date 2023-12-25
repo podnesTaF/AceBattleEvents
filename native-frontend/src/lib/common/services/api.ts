@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 
-// http://192.168.1.13:4000/api/v1
+//http://192.168.1.17:4000/api/v1
 export const BASE_URL = "https://abe-server.up.railway.app/api/v1";
 
 const retrieveToken = async () => {
@@ -13,17 +13,20 @@ const retrieveToken = async () => {
   }
 };
 
-const baseQuery = fetchBaseQuery({
-  baseUrl: BASE_URL,
-  prepareHeaders: async (headers) => {
-    const token = await retrieveToken();
-    if (token) {
-      headers.set("Authorization", `Bearer ${token}`);
-    }
-    headers.set("Content-Type", "application/json");
-    return headers;
-  },
-});
+const baseQuery = retry(
+  fetchBaseQuery({
+    baseUrl: BASE_URL,
+    prepareHeaders: async (headers) => {
+      const token = await retrieveToken();
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      headers.set("Content-Type", "application/json");
+      return headers;
+    },
+  }),
+  { maxRetries: 5 }
+);
 
 export const api = createApi({
   baseQuery,

@@ -34,7 +34,6 @@ const StepLayout = ({
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ height: "100%" }}
     >
       <VStack
         bg={"$white"}

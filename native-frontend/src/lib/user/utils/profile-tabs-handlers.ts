@@ -10,5 +10,9 @@ export const getProfileTabByUserRole = (userRole?: string): string[] => {
     return ["BIO"];
   }
 
+  if (userRole === "coach") {
+    return ["BIO", "Teams"];
+  }
+
   return [];
 };

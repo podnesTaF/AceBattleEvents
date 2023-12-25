@@ -4,6 +4,8 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 const initialState: UserState = {
   data: null,
   isAuth: null,
+  loading: false,
+  error: null,
 };
 
 export const userSlice = createSlice({
@@ -13,6 +15,8 @@ export const userSlice = createSlice({
     setUser: (state, action) => {
       state.isAuth = true;
       state.data = action.payload;
+      state.loading = false;
+      state.error = null;
     },
     updateUserData: ({ data }, action: PayloadAction<IUser>) => {
       if (!data) return;
@@ -29,12 +33,27 @@ export const userSlice = createSlice({
     removeUser: (state) => {
       state.data = null;
       state.isAuth = false;
+      state.loading = false;
+      state.error = null;
+    },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
+    setError: (state, action) => {
+      state.error = action.payload;
     },
   },
 });
 
-export const { setUser, removeUser, updateUserData, updateUserField } =
-  userSlice.actions;
+export const {
+  setUser,
+  removeUser,
+  updateUserData,
+  updateUserField,
+  setError,
+  setLoading,
+} = userSlice.actions;
+export const selectUserState = (state: { user: UserState }) => state.user;
 export const selectUser = (state: { user: UserState }) => state.user.data;
 export const selectIsAuth = (state: { user: UserState }) => state.user.isAuth;
 

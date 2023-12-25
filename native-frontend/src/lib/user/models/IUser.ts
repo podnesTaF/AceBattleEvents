@@ -1,5 +1,6 @@
 import {
   IClub,
+  ICoach,
   ICountry,
   IMedia,
   INotification,
@@ -22,10 +23,12 @@ export interface IUser {
   clubId?: number;
   avatar?: IMedia;
   image?: IMedia;
+  phone?: string;
   role?: string;
 
   manager?: IManager;
   runner?: IRunner;
+  coach?: ICoach;
   spectator?: ISpectator;
   rolePending?: string;
 
@@ -42,4 +45,6 @@ export interface IUser {
 export interface UserState {
   data?: IUser | null;
   isAuth: boolean | null;
+  loading: boolean | null;
+  error: string | null;
 }

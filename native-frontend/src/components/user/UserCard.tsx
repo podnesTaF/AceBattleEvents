@@ -59,7 +59,7 @@ const UserCard: React.FC<UserCardProps> = ({
                 />
               </Avatar>
               <VStack space="sm">
-                <Heading size="sm">
+                <Heading size="sm" textTransform="capitalize">
                   {user.name} {user.surname}
                 </Heading>
                 {runner && (

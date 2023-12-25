@@ -1,18 +1,27 @@
+import withWatermarkBg from "@Components/HOCs/withWatermark";
 import FormField from "@Components/common/forms/FormField";
 import StepLayout from "@Components/join/StepLayout";
-import { Box, Center, Heading, Image, VStack } from "@gluestack-ui/themed";
+import {
+  Box,
+  Center,
+  Heading,
+  Image,
+  KeyboardAvoidingView,
+  VStack,
+} from "@gluestack-ui/themed";
 import { useResetPasswordRequestMutation } from "@lib/services";
 import { scaleSize } from "@lib/utils";
 import { Stack, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { KeyboardAvoidingView, Platform } from "react-native";
+import { Dimensions, Platform } from "react-native";
 
 const tabs = ["Enter your email", "Check your mailbox"];
 
 const ResetPass = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [email, setEmail] = useState("");
+  const height = Dimensions.get("window").height;
 
   const [resetRequest, { isLoading, error }] =
     useResetPasswordRequestMutation();
@@ -60,10 +69,10 @@ const ResetPass = () => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
       >
-        <Center flex={1} alignItems="center" justifyContent="center">
-          <Box py={"$4"}>
-            <Heading size="xl">Reset Password</Heading>
-          </Box>
+        <VStack flex={1} justifyContent="center" alignItems="center">
+          <Heading py={"$4"} size="xl">
+            Reset Password
+          </Heading>
           <Box width={scaleSize(330)}>
             <FormProvider {...form}>
               <StepLayout
@@ -109,10 +118,10 @@ const ResetPass = () => {
               </StepLayout>
             </FormProvider>
           </Box>
-        </Center>
+        </VStack>
       </KeyboardAvoidingView>
     </>
   );
 };
 
-export default ResetPass;
+export default withWatermarkBg(ResetPass);

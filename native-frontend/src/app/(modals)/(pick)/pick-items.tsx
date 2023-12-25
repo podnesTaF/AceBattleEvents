@@ -1,13 +1,16 @@
+import withWatermarkBg from "@Components/HOCs/withWatermark";
 import PickAthletesList from "@Components/athletes/PickAthletesList";
 import PickCoachScreenContent from "@Components/athletes/screens/PickCoachScreenContent";
 import PickCountryList from "@Components/countries/PickCountryList";
 import PickManagersList from "@Components/join/PickManagersList";
 import PickReceiversList from "@Components/notifications/PickReceiversList";
 import PickTeam from "@Components/teams/PickTeam";
-import { Button, ButtonText, Heading } from "@gluestack-ui/themed";
+import { Ionicons } from "@expo/vector-icons";
+import { Heading } from "@gluestack-ui/themed";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { usePathname } from "expo-router/src/hooks";
 import React, { useState } from "react";
+import { TouchableOpacity } from "react-native";
 
 const PickItemsModal = () => {
   const pathname = usePathname();
@@ -34,9 +37,20 @@ const PickItemsModal = () => {
             </Heading>
           ),
           headerRight: () => (
-            <Button onPress={onSave}>
-              <ButtonText>Save</ButtonText>
-            </Button>
+            <TouchableOpacity
+              style={{
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+              }}
+              hitSlop={40}
+              onPress={onSave}
+            >
+              <Ionicons
+                name="checkmark-circle-outline"
+                size={32}
+                color={"#fff"}
+              />
+            </TouchableOpacity>
           ),
         }}
       />
@@ -60,4 +74,4 @@ const PickItemsModal = () => {
   );
 };
 
-export default PickItemsModal;
+export default withWatermarkBg(PickItemsModal, "#FFF9FF");

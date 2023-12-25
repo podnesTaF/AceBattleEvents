@@ -1,12 +1,5 @@
 import FollowButton from "@Components/user/FollowButton";
-import {
-  Avatar,
-  AvatarFallbackText,
-  AvatarImage,
-  HStack,
-  Heading,
-  VStack,
-} from "@gluestack-ui/themed";
+import { HStack, Heading, Image, VStack } from "@gluestack-ui/themed";
 import { useAppSelector } from "@lib/hooks";
 import { IUser } from "@lib/models";
 import { selectUser } from "@lib/store";
@@ -28,18 +21,15 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
       alignItems="center"
     >
       <HStack space="xl">
-        <Avatar size={"md"} bgColor="$red500">
-          <AvatarFallbackText>
-            {user.name} {user.surname}
-          </AvatarFallbackText>
-          {user.image?.mediaUrl && (
-            <AvatarImage
-              source={{ uri: user.image.mediaUrl }}
-              alt={"user avatar"}
-              role={"img"}
-            />
-          )}
-        </Avatar>
+        {user.image?.mediaUrl && (
+          <Image
+            source={{ uri: user.image.mediaUrl }}
+            alt={"user avatar"}
+            role={"img"}
+            size={"sm"}
+            rounded={"$full"}
+          />
+        )}
         <VStack space="sm" justifyContent="center">
           <Heading size={"md"} color={"$white"}>
             {user.name} {user.surname}

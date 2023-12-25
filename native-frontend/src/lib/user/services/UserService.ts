@@ -15,6 +15,9 @@ export const UserApi = api.injectEndpoints({
         url: `/users/me`,
       }),
       providesTags: ["User"],
+      extraOptions: {
+        maxRetries: 0,
+      },
     }),
     updateUserData: builder.mutation<IUser, UpdateUserDto>({
       query: (dto) => ({
