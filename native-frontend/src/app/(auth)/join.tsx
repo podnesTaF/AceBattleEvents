@@ -1,3 +1,4 @@
+import withWatermarkBg from "@Components/HOCs/withWatermark";
 import JoinStep from "@Components/join/JoinStep";
 import { Box, Heading, Text, VStack } from "@gluestack-ui/themed";
 import { useAppSelector } from "@lib/hooks";
@@ -53,4 +54,4 @@ const join = () => {
   );
 };
 
-export default join;
+export default withWatermarkBg(join);

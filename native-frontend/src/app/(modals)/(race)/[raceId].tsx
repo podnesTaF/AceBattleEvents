@@ -1,6 +1,7 @@
 import Container from "@Components/common/Container";
 import Tabs from "@Components/common/Tabs";
 import SkeletonLoader from "@Components/common/states/SkeletonLoader";
+import CustomBackButton from "@Components/custom/CustomBackButton";
 import ExpandableTable from "@Components/custom/tables/ExpandableTable";
 import {
   Box,
@@ -25,7 +26,7 @@ import {
 import { Stack, useLocalSearchParams } from "expo-router";
 import { InfoIcon } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList, Platform } from "react-native";
+import { Dimensions, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const tabs = ["Overview", "Mile Runners", "Pacer-Joker"];
@@ -77,14 +78,12 @@ const RaceScreen = () => {
           },
           headerShown: true,
           headerTintColor: "#fff",
-          header: () => (
+          header: ({ navigation }) => (
             <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
-              <VStack
-                space={"md"}
-                alignItems="center"
-                w={"$full"}
-                left={Platform.OS === "ios" ? "$0" : "-$16"}
-              >
+              <VStack space={"md"} alignItems="center" w={"$full"}>
+                <Box position="absolute" left={16} top={16}>
+                  <CustomBackButton navigation={navigation} />
+                </Box>
                 <VStack alignItems="center" space="md" mb={"$4"}>
                   <Heading size="xs" color={"#fff"}>
                     {race?.event.title || "loading"}

@@ -27,6 +27,13 @@ export const NotificationApi = api.injectEndpoints({
         method: "GET",
       }),
     }),
+    getUserSentNotifications: build.query<INotification[], void>({
+      query: () => ({
+        url: "/notifications/sent",
+        method: "GET",
+      }),
+      providesTags: ["Notification"],
+    }),
   }),
 });
 
@@ -34,4 +41,5 @@ export const {
   useGetReceivedNotificationsQuery,
   usePostUserNotificationMutation,
   useGetNotificationQuery,
+  useGetUserSentNotificationsQuery,
 } = NotificationApi;

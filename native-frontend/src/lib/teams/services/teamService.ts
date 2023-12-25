@@ -1,4 +1,5 @@
 import { api } from "@lib/common/services/api";
+import { ICoach, IManager } from "@lib/models";
 import { ITeam } from "../models";
 
 export const ServiceApi = api.injectEndpoints({
@@ -59,6 +60,14 @@ export const ServiceApi = api.injectEndpoints({
       }),
       providesTags: ["Team"],
     }),
+    getTeamManagerAndCoach: builder.query<
+      { coach: ICoach; manager: IManager },
+      { teamId: number }
+    >({
+      query: ({ teamId }) => ({
+        url: `/teams/contacts/${teamId}`,
+      }),
+    }),
     getFollowingTeams: builder.query<ITeam[], void>({
       query: () => ({
         url: "/users/following-teams",
@@ -91,4 +100,5 @@ export const {
   useUnfollowTeamMutation,
   useGetFollowingTeamsQuery,
   useGetTeamInfoQuery,
+  useGetTeamManagerAndCoachQuery,
 } = ServiceApi;

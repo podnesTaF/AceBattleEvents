@@ -56,13 +56,6 @@ const Layout = () => {
         }}
       />
       <Drawer.Screen
-        name="rules"
-        options={{
-          headerShown: true,
-          drawerLabel: "Rules",
-        }}
-      />
-      <Drawer.Screen
         name="concept"
         options={{
           drawerLabel: "About ABM",

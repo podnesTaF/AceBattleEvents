@@ -15,7 +15,7 @@ import { useFetchFutureEventsQuery } from "@lib/events/services/futureEventsServ
 import { useAppSelector } from "@lib/hooks";
 import { ITeam } from "@lib/models";
 import { useFetchNewsPreviewsQuery, useGetAllTeamsQuery } from "@lib/services";
-import { selectUser } from "@lib/store";
+import { selectIsAuth, selectUserState } from "@lib/store";
 import { mapFutureEvents, scaleSize } from "@lib/utils";
 import { Image } from "expo-image";
 import { Stack, router } from "expo-router";
@@ -24,7 +24,8 @@ import { Dimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 const Page = () => {
-  const user = useAppSelector(selectUser);
+  const userState = useAppSelector(selectUserState);
+  const isAuthed = useAppSelector(selectIsAuth);
   const { data: eventsData, error, isLoading } = useFetchFutureEventsQuery();
   const {
     data: teamsData,
@@ -50,39 +51,47 @@ const Page = () => {
       />
       <ScrollView>
         <Box my={"$4"}>
-          {user ? (
-            <Box
-              borderTopLeftRadius={100}
-              borderBottomLeftRadius={200}
-              w={"$full"}
-              bg={"#ff0000"}
-              pl={scaleSize(40)}
-              pb={scaleSize(24)}
-            >
-              <Heading
-                py={scaleSize(6)}
-                color={"$white"}
-                textAlign="center"
-                size={"lg"}
-              >
-                Welcome to ABM
-              </Heading>
-              <Box
-                overflow="hidden"
-                borderTopLeftRadius={100}
-                borderBottomLeftRadius={200}
-                bg={"$white"}
-                justifyContent="center"
-                flex={1}
-              >
-                <HomeTabTitle user={user} />
-              </Box>
-            </Box>
-          ) : (
-            <Box my={"$4"}>
-              <PrimaryAuthCta screen="home" />
-            </Box>
-          )}
+          <SkeletonLoader<any>
+            data={userState}
+            isLoading={userState.loading}
+            error={userState.error}
+          >
+            {(data) =>
+              userState.data ? (
+                <Box
+                  borderTopLeftRadius={100}
+                  borderBottomLeftRadius={200}
+                  w={"$full"}
+                  bg={"#ff0000"}
+                  pl={scaleSize(40)}
+                  pb={scaleSize(24)}
+                >
+                  <Heading
+                    py={scaleSize(6)}
+                    color={"$white"}
+                    textAlign="center"
+                    size={"lg"}
+                  >
+                    Welcome to ABM
+                  </Heading>
+                  <Box
+                    overflow="hidden"
+                    borderTopLeftRadius={100}
+                    borderBottomLeftRadius={200}
+                    bg={"$white"}
+                    justifyContent="center"
+                    flex={1}
+                  >
+                    <HomeTabTitle user={userState.data} />
+                  </Box>
+                </Box>
+              ) : (
+                <Box my={"$4"}>
+                  <PrimaryAuthCta screen="home" />
+                </Box>
+              )
+            }
+          </SkeletonLoader>
           <VStack my={"$4"}>
             <Heading
               mx={"$3"}

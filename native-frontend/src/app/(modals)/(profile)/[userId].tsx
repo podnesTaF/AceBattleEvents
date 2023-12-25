@@ -8,6 +8,7 @@ import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import TeamDescription from "@Components/teams/TeamDescription";
 import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
 import UserCardSkeleton from "@Components/user/UserCardSkeleton";
+import CoachTeamsTab from "@Components/user/tabs/CoachTeamsTab";
 import SpectatorBioTab from "@Components/user/tabs/SpectatorBioTab";
 import TeamsAndRunners from "@Components/user/tabs/TeamsAndRunners";
 import { Ionicons } from "@expo/vector-icons";
@@ -48,6 +49,8 @@ const tabsData = (user: IUser) => {
     return [<SpectatorBioTab user={user} />, <TeamsAndRunners user={user} />];
   } else if (user.spectator) {
     return [<SpectatorBioTab user={user} />];
+  } else if (user.coach) {
+    return [<SpectatorBioTab user={user} />, <CoachTeamsTab user={user} />];
   }
   return [];
 };

@@ -28,7 +28,7 @@ const tabsData = (eventResult: EventResult) => {
   return [
     <RaceOverview eventResult={eventResult} />,
     <Box py={"$4"}>
-      <Heading size="lg" mb={"$2"}>
+      <Heading mx={"$4"} size="lg" mb={"$2"}>
         Races
       </Heading>
       <Container borderSize={2}>

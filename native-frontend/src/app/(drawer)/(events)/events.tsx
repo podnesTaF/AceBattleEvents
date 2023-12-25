@@ -107,7 +107,13 @@ const EventsScreen = () => {
             error={eventError}
           >
             {(data) =>
-              data.map((event, i) => <EventCard key={event.id} event={event} />)
+              data.map((event, i, arr) => (
+                <EventCard
+                  key={event.id}
+                  event={event}
+                  isLast={i === arr.length - 1}
+                />
+              ))
             }
           </SkeletonLoader>
         </ListStyledWrapper>

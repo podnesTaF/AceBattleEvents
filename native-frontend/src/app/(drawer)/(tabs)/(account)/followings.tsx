@@ -2,10 +2,11 @@ import withWatermarkBg from "@Components/HOCs/withWatermark";
 import LogoTitle from "@Components/LogoTitle";
 import FollowingAthletesList from "@Components/athletes/FollowingAthletesList";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
+import InfoTemplate from "@Components/common/InfoTemplate";
 import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import TeamPreview from "@Components/teams/TeamPreview";
 import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
-import { HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
+import { Box, HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
 import { useAppSelector } from "@lib/hooks";
 import { ITeam } from "@lib/models";
 import { useGetFollowingTeamsQuery } from "@lib/services";
@@ -49,18 +50,28 @@ const Followings = () => {
             isLoading={isLoading}
             error={error}
           >
-            {(data) => (
-              <HorizontalListLayout
-                identifier="team"
-                items={data}
-                ItemComponent={TeamPreviewCard}
-                additionalProps={{
-                  Item: TeamPreview,
-                  imageProportion: 2,
-                  minWidth: scaleSize(320),
-                }}
-              />
-            )}
+            {(data) =>
+              data.length > 0 ? (
+                <HorizontalListLayout
+                  identifier="team"
+                  items={data}
+                  ItemComponent={TeamPreviewCard}
+                  additionalProps={{
+                    Item: TeamPreview,
+                    imageProportion: 2,
+                    minWidth: scaleSize(320),
+                  }}
+                />
+              ) : (
+                <Box px={"$4"}>
+                  <InfoTemplate
+                    variant="outline"
+                    title="You have no Followings"
+                    text="Follow athletes to see them here"
+                  />
+                </Box>
+              )
+            }
           </SkeletonLoader>
         </VStack>
         <VStack mt={"$4"} mb={"$8"} space="sm">

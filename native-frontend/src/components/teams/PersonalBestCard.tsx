@@ -1,7 +1,5 @@
 import {
   Box,
-  Button,
-  ButtonText,
   Center,
   HStack,
   Heading,
@@ -42,11 +40,6 @@ const PersonalBestCard: React.FC<Props> = ({ result }) => {
           <Text size={"md"}>Date</Text>
           <Heading size={"sm"}>23.09.2023</Heading>
         </HStack>
-        <Box mx="$4" mb={"$4"}>
-          <Button action={"primary"} size={"sm"} variant={"solid"}>
-            <ButtonText>View Race</ButtonText>
-          </Button>
-        </Box>
       </VStack>
       <Center flex={3}>
         <Heading size={"4xl"}>
