@@ -1,7 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 
-//http://192.168.1.17:4000/api/v1
+// https://abe-server.up.railway.app/api/v1
+// http://192.168.1.19:4000/api/v1
 export const BASE_URL = "https://abe-server.up.railway.app/api/v1";
 
 const retrieveToken = async () => {

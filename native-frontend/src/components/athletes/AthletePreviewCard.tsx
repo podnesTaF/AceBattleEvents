@@ -1,3 +1,4 @@
+import { logoWhite } from "@Constants/cloud-images";
 import { Box, HStack, Heading, Text, VStack } from "@gluestack-ui/themed";
 import { IRunner } from "@lib/models";
 import { scaleSize } from "@lib/utils";
@@ -21,9 +22,7 @@ const AthletePreviewCard: React.FC<AthleteProps> = ({ runner }) => {
         <Image
           style={{ flex: 1 }}
           source={{
-            uri:
-              runner.user.image?.mediaUrl ||
-              "https://storage.googleapis.com/abe_cloud_storage/image/large/55c30c67-37aa-4476-bae9-b6f847a707fd.png",
+            uri: runner.user.image?.mediaUrl || logoWhite,
           }}
           alt={"team preview"}
           contentFit="cover"

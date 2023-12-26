@@ -1,3 +1,4 @@
+import { logoBlack } from "@Constants/cloud-images";
 import {
   ICoach,
   IManager,
@@ -14,7 +15,7 @@ export const mapRunnersToPickItems = (runners?: IRunner[]): PickItem[] => {
       id: item.id,
       title: item.user.name + " " + item.user.surname,
       additionalInfo: getCategoryByDoB(item.dateOfBirth),
-      imageUrl: item.user.image?.mediaUrl,
+      imageUrl: item.user.image?.mediaUrl || logoBlack,
     })) || []
   );
 };

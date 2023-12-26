@@ -26,8 +26,8 @@ const AbmButton = ({
             borderWidth={2}
             alignItems="center"
             bgColor={"$white"}
-            top={pressed ? "-$1" : 0}
-            left={pressed ? "-$1" : 0}
+            top={pressed ? "-$0.5" : 0}
+            left={pressed ? "-$0.5" : 0}
             borderColor={variant === "redFirst" ? "$black" : "#ff0000"}
             px={size === "sm" ? "$2" : size === "lg" ? "$8" : "$4"}
             py={size === "sm" ? "$1" : size === "lg" ? "$4" : "$2"}
@@ -46,8 +46,8 @@ const AbmButton = ({
             w={"$full"}
             height={"$full"}
             position="absolute"
-            top={"-$1"}
-            left={"-$1"}
+            top={"-$0.5"}
+            left={"-$0.5"}
             bgColor={variant === "redFirst" ? "#ff0000" : "$black"}
             px={size === "sm" ? "$2" : size === "lg" ? "$8" : "$4"}
             py={size === "sm" ? "$1" : size === "lg" ? "$4" : "$2"}

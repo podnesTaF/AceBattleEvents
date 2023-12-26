@@ -31,15 +31,23 @@ const tabsData = (user: IUser) => {
       </ScrollView>,
       <ScrollView>
         <VStack p={"$3"} space="lg">
-          {user.runner.teamsAsRunner?.map((team) => (
-            <TeamPreviewCard
-              key={team.id}
-              team={team}
-              Item={TeamDescription}
-              imageProportion={1}
-              showLink={true}
-            />
-          ))}
+          {user.runner.teamsAsRunner?.length ? (
+            user.runner.teamsAsRunner.map((team) => (
+              <TeamPreviewCard
+                key={team.id}
+                team={team}
+                Item={TeamDescription}
+                imageProportion={1}
+                showLink={true}
+              />
+            ))
+          ) : (
+            <Box>
+              <Heading size="md" color="$coolGray300">
+                This athlete is not a member of any team
+              </Heading>
+            </Box>
+          )}
         </VStack>
       </ScrollView>,
       <ResultsTab runner={user.runner} />,

@@ -1,13 +1,14 @@
 import {
   Avatar,
-  AvatarFallbackText,
   AvatarImage,
   HStack,
   Heading,
+  Icon,
   VStack,
 } from "@gluestack-ui/themed";
 import { useScreenSize } from "@lib/hooks";
 import { IUser } from "@lib/models";
+import { User } from "lucide-react-native";
 import React from "react";
 import Badge from "./custom/Badge";
 
@@ -50,16 +51,17 @@ const UserPreview = ({
         <Avatar
           rounded={"$full"}
           size={isSmallScreen ? "md" : "lg"}
-          bgColor="$red500"
+          bgColor="$black"
         >
-          <AvatarImage
-            rounded={"$full"}
-            source={{ uri: user.image?.mediaUrl }}
-            alt={"avatar"}
-          />
-          <AvatarFallbackText>
-            {user.name[0]} {user.surname[0]}
-          </AvatarFallbackText>
+          {user.image?.mediaUrl ? (
+            <AvatarImage
+              rounded={"$full"}
+              source={{ uri: user.image?.mediaUrl }}
+              alt={"avatar"}
+            />
+          ) : (
+            <Icon as={User} color="white" size="xl" />
+          )}
         </Avatar>
       </HStack>
     </HStack>

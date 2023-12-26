@@ -24,6 +24,9 @@ export const AuthApi = api.injectEndpoints({
         return response;
       },
       invalidatesTags: ["Auth"],
+      extraOptions: {
+        maxRetries: 0,
+      },
     }),
     registerUser: builder.mutation<IUser, SubmitUserType>({
       query: (body) => ({
@@ -32,6 +35,9 @@ export const AuthApi = api.injectEndpoints({
         body,
       }),
       invalidatesTags: ["Auth"],
+      extraOptions: {
+        maxRetries: 0,
+      },
     }),
     resetPasswordRequest: builder.mutation<{ message: string }, string>({
       query: (email) => ({
@@ -39,6 +45,9 @@ export const AuthApi = api.injectEndpoints({
         method: "POST",
         body: { email },
       }),
+      extraOptions: {
+        maxRetries: 0,
+      },
     }),
   }),
 });

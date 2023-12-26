@@ -1,31 +1,33 @@
 import {
   Avatar,
-  AvatarFallbackText,
   AvatarImage,
   Box,
   HStack,
   Heading,
+  Icon,
   VStack,
 } from "@gluestack-ui/themed";
 import { useAppSelector, useScreenSize } from "@lib/hooks";
 import { IUser } from "@lib/models";
 import { selectIsAuth } from "@lib/store";
 import { scaleSize } from "@lib/utils";
+import { User } from "lucide-react-native";
 import React from "react";
 import withWatermarkBg from "./HOCs/withWatermark";
 import Skeleton from "./common/states/Skeleton";
 import Badge from "./custom/Badge";
 
-const HomeTabTitle = ({
-  user,
-  annotation,
-}: {
-  user: IUser;
+interface HomeTabTitleProps {
+  user?: IUser;
   annotation?: string;
-}): JSX.Element => {
+}
+
+const HomeTabTitle = ({
+  user = {},
+  annotation = "",
+}: HomeTabTitleProps): JSX.Element => {
   const isAuth = useAppSelector(selectIsAuth);
   const { isSmallScreen } = useScreenSize();
-
   return (
     <Box
       alignItems="flex-end"
@@ -66,16 +68,17 @@ const HomeTabTitle = ({
             <Avatar
               rounded={"$full"}
               size={isSmallScreen ? "md" : "lg"}
-              bgColor="$red500"
+              bgColor="$black"
             >
-              <AvatarImage
-                rounded={"$full"}
-                source={{ uri: user.image?.mediaUrl }}
-                alt={"avatar"}
-              />
-              <AvatarFallbackText>
-                {user.name[0]} {user.surname[0]}
-              </AvatarFallbackText>
+              {user.image?.mediaUrl ? (
+                <AvatarImage
+                  rounded={"$full"}
+                  source={{ uri: user.image?.mediaUrl }}
+                  alt={"avatar"}
+                />
+              ) : (
+                <Icon as={User} color="white" size="xl" />
+              )}
             </Avatar>
           </HStack>
         </HStack>
