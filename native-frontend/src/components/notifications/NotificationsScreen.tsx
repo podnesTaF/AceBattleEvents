@@ -39,7 +39,7 @@ const NotificationsScreen = () => {
   };
 
   useEffect(() => {
-    if (notificationsData?.length) {
+    if (notificationsData) {
       setNotifications(notificationsData);
     }
   }, [notificationsData]);
@@ -65,7 +65,6 @@ const NotificationsScreen = () => {
       ))}
     </VStack>
   );
-
   return (
     <VStack>
       <HStack
@@ -78,7 +77,7 @@ const NotificationsScreen = () => {
         <Box>
           <Heading size={"md"}>
             Notifications (
-            {notifications?.filter((n) => n.status === "unread")?.length}{" "}
+            {notifications?.filter((n) => n.status === "unread")?.length || 0}{" "}
             unread)
           </Heading>
           <HStack mt={"$2"} space="md">

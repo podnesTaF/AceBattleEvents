@@ -1,3 +1,4 @@
+import { logoBlack } from "@Constants/cloud-images";
 import { Box, HStack, Heading, Image, VStack } from "@gluestack-ui/themed";
 import { useScreenSize } from "@lib/hooks";
 import { IRunner } from "@lib/models";
@@ -18,7 +19,7 @@ const MilerCard = ({
         <Image
           role={"img"}
           alt="sportsman image"
-          source={{ uri: runner.user.image?.mediaUrl }}
+          source={{ uri: runner.user.image?.mediaUrl || logoBlack }}
           objectFit="cover"
           height={140}
           size={"full"}

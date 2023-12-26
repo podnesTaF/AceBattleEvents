@@ -1,3 +1,4 @@
+import withWatermarkBg from "@Components/HOCs/withWatermark";
 import HeaderSubtitledTitle from "@Components/common/HeaderSubtitledTitle";
 import RunnerJoinForm from "@Components/join/RunnerJoinForm";
 import { Box, Text, VStack } from "@gluestack-ui/themed";
@@ -43,4 +44,4 @@ const RunnerJoin = () => {
   );
 };
 
-export default RunnerJoin;
+export default withWatermarkBg(RunnerJoin);

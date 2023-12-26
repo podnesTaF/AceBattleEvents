@@ -1,3 +1,4 @@
+import { logoWhite } from "@Constants/cloud-images";
 import { Box, Center, Image, Text, VStack } from "@gluestack-ui/themed";
 import { IRunner } from "@lib/models";
 import { useRouter } from "expo-router";
@@ -30,9 +31,7 @@ const AthletePodiumCard: React.FC<AthletePodiumCardProps> = ({ runner }) => {
               <Image
                 role={"img"}
                 source={{
-                  uri:
-                    runner.user.image?.mediaUrl ||
-                    "https://storage.googleapis.com/abe_cloud_storage/image/large/55c30c67-37aa-4476-bae9-b6f847a707fd.png",
+                  uri: runner.user.image?.mediaUrl || logoWhite,
                 }}
                 alt={"avatar"}
                 size={"lg"}

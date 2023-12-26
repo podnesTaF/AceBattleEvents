@@ -43,7 +43,6 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
         <FollowButton
           userId={user.runner.id}
           isInitiallyFollowing={!!user.runner?.isFollowing}
-          size="md"
         />
       )}
     </HStack>

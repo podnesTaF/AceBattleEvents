@@ -85,7 +85,7 @@ const CompetitionsTab = ({ runnerId }: { runnerId: number }) => {
           ) : (
             <Center height={"$32"}>
               <Heading size={"lg"} color={"$coolGray400"}>
-                No upcoming competitions
+                No past competitions
               </Heading>
             </Center>
           )}

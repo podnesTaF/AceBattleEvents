@@ -1,3 +1,4 @@
+import { logoBlack } from "@Constants/cloud-images";
 import {
   Avatar,
   AvatarImage,
@@ -48,12 +49,10 @@ const UserCard: React.FC<UserCardProps> = ({
             borderColor="$coolGray300"
           >
             <HStack space={"md"} alignItems="center">
-              <Avatar bgColor="$blue400" size="md" borderRadius="$full">
+              <Avatar bgColor="$white" size="md" borderRadius="$full">
                 <AvatarImage
                   source={{
-                    uri:
-                      user.image?.mediaUrl ||
-                      "https://storage.googleapis.com/abe_cloud_storage/image/large/c4bccba0-3f80-4eb5-b50f-63e5cd4f0100.jpg",
+                    uri: user.image?.mediaUrl || logoBlack,
                   }}
                   alt={"avatar"}
                 />

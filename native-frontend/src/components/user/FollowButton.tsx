@@ -41,14 +41,19 @@ const FollowButton: React.FC<FollowButtonProps> = ({
       onPress={isFollowing ? handleUnfollow : handleFollow}
       disabled={isFollowing ? isUnfollowingLoading : isFollowingLoading}
       size={size}
-      action={color}
-      variant="outline"
+      action={"positive"}
+      variant={isFollowing ? "outline" : "solid"}
     >
-      <Ionicons
-        name={isFollowing ? "person-remove-outline" : "person-add-outline"}
-        size={16}
-      />
-      <ButtonText>{isFollowing ? "Unfollow" : "Follow"}</ButtonText>
+      {!isFollowing && (
+        <Ionicons
+          name={"person-add-outline"}
+          size={size === "xs" ? 12 : 16}
+          color={"#fff"}
+        />
+      )}
+      <ButtonText ml={isFollowing ? "$0" : "$2"}>
+        {isFollowing ? "Unfollow" : "Follow"}
+      </ButtonText>
     </Button>
   );
 };

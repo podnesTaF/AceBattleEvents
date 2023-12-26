@@ -15,9 +15,9 @@ export const useLogout = () => {
     dispatch(setLoading(true));
     try {
       await AsyncStorage.removeItem("userToken");
-      dispatch(removeUser());
 
       dispatch(api.util.resetApiState());
+      dispatch(removeUser());
     } catch (e: any) {
       dispatch(setLoading("Error loggining out user "));
       console.log(e);
