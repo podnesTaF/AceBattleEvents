@@ -41,6 +41,15 @@ export const UserApi = api.injectEndpoints({
         body: dto,
       }),
     }),
+    updateUserPushToken: builder.mutation<string, string | undefined>({
+      query: (token) => ({
+        url: "/users/update-token",
+        method: "POST",
+        body: {
+          expoPushToken: token,
+        },
+      }),
+    }),
   }),
 });
 
@@ -49,4 +58,5 @@ export const {
   useFetchUserInitialDataQuery,
   useUpdateUserDataMutation,
   useUpdateUserPasswordMutation,
+  useUpdateUserPushTokenMutation,
 } = UserApi;

@@ -20,6 +20,7 @@ export interface IUser {
   country: ICountry;
   balance: number;
   token: string;
+  expoPushToken?: string;
   clubId?: number;
   avatar?: IMedia;
   image?: IMedia;

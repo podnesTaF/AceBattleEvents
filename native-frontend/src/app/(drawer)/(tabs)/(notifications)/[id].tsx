@@ -1,6 +1,7 @@
 import WithLoading from "@Components/HOCs/withLoading";
 import withWatermarkBg from "@Components/HOCs/withWatermark";
 import Container from "@Components/common/Container";
+import CustomBackButton from "@Components/custom/CustomBackButton";
 import { logoWhite } from "@Constants/cloud-images";
 import {
   Avatar,
@@ -15,6 +16,7 @@ import { useGetNotificationQuery } from "@lib/services";
 import { getTimeAgo } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const NotificationScreen = () => {
   const { id } = useLocalSearchParams();
@@ -25,45 +27,50 @@ const NotificationScreen = () => {
     <>
       <Stack.Screen
         options={{
-          headerStyle: {
-            backgroundColor: "#1C1E1F",
-          },
-          headerTintColor: "#fff",
-          presentation: "modal",
-          headerTitle: (props) => (
-            <VStack
-              alignItems="center"
-              width={"100%"}
-              space="md"
-              top={"$4"}
-              pb={"$6"}
-              left={"-$16"}
-            >
-              <Heading size="sm" color={"$coolGray400"}>
-                Notification
-              </Heading>
-              <WithLoading isLoading={isLoading}>
-                {notification && (
-                  <HStack space="md" width={"95%"} alignItems="center">
-                    <Avatar size="md" bg={"transparent"}>
-                      <AvatarImage
-                        source={{
-                          uri:
-                            notification?.sender?.image?.mediaUrl || logoWhite,
-                        }}
-                        alt="avatar"
-                        role={"img"}
-                      />
-                    </Avatar>
-                    <VStack flex={1}>
-                      <Heading size={"sm"} color={props.tintColor}>
-                        {notification.title}
-                      </Heading>
-                    </VStack>
-                  </HStack>
-                )}
-              </WithLoading>
-            </VStack>
+          header: ({ navigation }) => (
+            <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+              <VStack
+                alignItems="center"
+                width={"100%"}
+                space="md"
+                top={"$4"}
+                left={"$4"}
+                pb={"$6"}
+              >
+                <HStack w={"$full"} alignItems="center">
+                  <Box>
+                    <CustomBackButton navigation={navigation} />
+                  </Box>
+                  <Box position="absolute" w={"100%"} alignItems="center">
+                    <Heading size="sm" color={"$coolGray400"}>
+                      Notification
+                    </Heading>
+                  </Box>
+                </HStack>
+                <WithLoading isLoading={isLoading}>
+                  {notification && (
+                    <HStack space="md" width={"95%"} alignItems="center">
+                      <Avatar size="md" bg={"transparent"}>
+                        <AvatarImage
+                          source={{
+                            uri:
+                              notification?.sender?.image?.mediaUrl ||
+                              logoWhite,
+                          }}
+                          alt="avatar"
+                          role={"img"}
+                        />
+                      </Avatar>
+                      <VStack flex={1}>
+                        <Heading size={"sm"} color={"#fff"}>
+                          {notification.title}
+                        </Heading>
+                      </VStack>
+                    </HStack>
+                  )}
+                </WithLoading>
+              </VStack>
+            </SafeAreaView>
           ),
         }}
       />

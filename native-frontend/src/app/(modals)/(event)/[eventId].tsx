@@ -21,8 +21,8 @@ import { selectUser } from "@lib/store";
 import { formatDate } from "@lib/utils";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { Calendar } from "lucide-react-native";
-import React from "react";
-import { ScrollView } from "react-native-gesture-handler";
+import React, { useRef } from "react";
+import { Animated } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const tabs = ["Participants", "Schedule", "Results"];
@@ -32,6 +32,10 @@ const EventScreen = () => {
   const { data: eventInfo, isLoading, error } = useGetEventInfoQuery(+eventId);
   const router = useRouter();
   const user = useAppSelector(selectUser);
+
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  const viewRef = useRef();
 
   const onChangeTab = (tabIndex: number) => {
     if (!eventInfo) return;
@@ -46,6 +50,29 @@ const EventScreen = () => {
       router.push({ pathname: "/results", params: { eventId: eventId } });
     }
   };
+
+  const handleScroll = Animated.event(
+    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+    { useNativeDriver: false }
+  );
+
+  const animatedHeight = scrollY.interpolate({
+    inputRange: [0, 120],
+    outputRange: [100, 0], // Replace 'initialHeight' with the actual initial height of your content
+    extrapolate: "clamp",
+  });
+
+  const animatedOpacity = scrollY.interpolate({
+    inputRange: [0, 120],
+    outputRange: [1, 0],
+    extrapolate: "clamp",
+  });
+
+  const translateY = scrollY.interpolate({
+    inputRange: [0, 120],
+    outputRange: [0, -120],
+    extrapolate: "clamp",
+  });
 
   return (
     <>
@@ -65,7 +92,14 @@ const EventScreen = () => {
                     <Heading size="2xl" textAlign="center" color={"#fff"}>
                       {eventInfo.title}
                     </Heading>
-                    <VStack>
+                    <Animated.View
+                      style={{
+                        transform: [{ translateY }],
+                        height: animatedHeight,
+                        opacity: animatedOpacity,
+                        overflow: "hidden", // To ensure content does not overflow during animation
+                      }}
+                    >
                       <HStack space="sm">
                         {eventInfo.location?.country.flagIconUrl && (
                           <Image
@@ -88,7 +122,7 @@ const EventScreen = () => {
                           {formatDate(eventInfo?.startDateTime)}
                         </Heading>
                       </HStack>
-                    </VStack>
+                    </Animated.View>
                     <Tabs
                       activeColor={"$white"}
                       items={tabs}
@@ -102,7 +136,7 @@ const EventScreen = () => {
           ),
         }}
       />
-      <ScrollView>
+      <Animated.ScrollView onScroll={handleScroll}>
         <SkeletonLoader<EventInfo>
           data={eventInfo}
           isLoading={isLoading}
@@ -187,7 +221,7 @@ const EventScreen = () => {
             {(data) => <EventLocations event={data} />}
           </SkeletonLoader>
         </VStack>
-      </ScrollView>
+      </Animated.ScrollView>
     </>
   );
 };

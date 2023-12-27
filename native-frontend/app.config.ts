@@ -16,6 +16,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       },
     },
     package: "com.acebattlemile.abm",
+    googleServicesFile: "./google-services.json",
   },
   extra: {
     eas: {

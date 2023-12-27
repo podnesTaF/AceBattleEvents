@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "676184170578",
+    "project_id": "acebattlemile-aa6db",
+    "storage_bucket": "acebattlemile-aa6db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:676184170578:android:39c83476ca4c63c48ebf8b",
+        "android_client_info": {
+          "package_name": "com.acebattlemile.abm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCLVVXmkeU8fjSFftjB9z-Cx6VaXDEOSg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,13 +7,12 @@ import {
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { config } from "@gluestack-ui/config";
 import { GluestackUIProvider } from "@gluestack-ui/themed";
-import { useAppDispatch } from "@lib/hooks";
+import { useAppDispatch, usePushNotifications } from "@lib/hooks";
 import { useFetchUserInitialDataQuery } from "@lib/services";
 import { removeUser, setLoading, setUser, store } from "@lib/store";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
-import { useColorScheme } from "react-native";
 import { Provider } from "react-redux";
 
 export {
@@ -61,7 +60,8 @@ function RootLayoutNav() {
     error: errorUser,
   } = useFetchUserInitialDataQuery();
   const dispatch = useAppDispatch();
-  const colorScheme = useColorScheme();
+  const { expoPushToken } = usePushNotifications();
+  console.log(expoPushToken?.data);
 
   useEffect(() => {
     if (user) {
