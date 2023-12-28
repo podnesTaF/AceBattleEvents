@@ -7,13 +7,16 @@ import {
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { config } from "@gluestack-ui/config";
 import { GluestackUIProvider } from "@gluestack-ui/themed";
-import { useAppDispatch } from "@lib/hooks";
-import { useFetchUserInitialDataQuery } from "@lib/services";
+import { useAppDispatch, usePushNotifications } from "@lib/hooks";
+import { setUnreadCount } from "@lib/notification/slices";
+import {
+  useFetchUserInitialDataQuery,
+  useGetUnreadNotificationsCountQuery,
+} from "@lib/services";
 import { removeUser, setLoading, setUser, store } from "@lib/store";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
-import { useColorScheme } from "react-native";
 import { Provider } from "react-redux";
 
 export {
@@ -60,8 +63,13 @@ function RootLayoutNav() {
     isLoading,
     error: errorUser,
   } = useFetchUserInitialDataQuery();
+  const {
+    data: unreadCount,
+    isLoading: isNotificationLoading,
+    error: countError,
+  } = useGetUnreadNotificationsCountQuery();
   const dispatch = useAppDispatch();
-  const colorScheme = useColorScheme();
+  const { expoPushToken } = usePushNotifications();
 
   useEffect(() => {
     if (user) {
@@ -72,6 +80,12 @@ function RootLayoutNav() {
       dispatch(removeUser());
     }
   }, [user, isLoading, errorUser, dispatch]);
+
+  useEffect(() => {
+    if (unreadCount && user) {
+      dispatch(setUnreadCount(unreadCount));
+    }
+  }, [unreadCount, user, isNotificationLoading, countError]);
 
   return (
     <GluestackUIProvider config={config}>

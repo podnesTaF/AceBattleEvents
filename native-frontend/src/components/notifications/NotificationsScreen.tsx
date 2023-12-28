@@ -3,8 +3,12 @@ import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import Badge from "@Components/custom/Badge";
 import UserCardSkeleton from "@Components/user/UserCardSkeleton";
 import { Box, Divider, HStack, Heading, VStack } from "@gluestack-ui/themed";
-import { useAppSelector, useScreenSize } from "@lib/hooks";
+import { useAppDispatch, useAppSelector, useScreenSize } from "@lib/hooks";
 import { INotification } from "@lib/models";
+import {
+  decrementUnreadCount,
+  selectUnreadCount,
+} from "@lib/notification/slices";
 import { useGetReceivedNotificationsQuery } from "@lib/services";
 import { selectUser } from "@lib/store";
 import { getNotificationFilters } from "@lib/utils";
@@ -20,27 +24,25 @@ const NotificationsScreen = () => {
     isLoading,
     error,
   } = useGetReceivedNotificationsQuery();
+  const dispatch = useAppDispatch();
+  const unreadNotifications = useAppSelector(selectUnreadCount);
+
   const [notifications, setNotifications] = React.useState<INotification[]>();
+  const [unreadIds, setUnreadIds] = useState<number[]>([]);
   const [activeFilter, setActiveFilter] = useState("All");
   const { isSmallScreen } = useScreenSize();
 
   const readNotification = (id: number) => {
-    setNotifications((prev) =>
-      prev?.map((n) => {
-        if (n.id === id) {
-          return {
-            ...n,
-            status: "read",
-          };
-        }
-        return n;
-      })
-    );
+    dispatch(decrementUnreadCount());
+    setUnreadIds((prev) => prev.filter((n) => n !== id));
   };
 
   useEffect(() => {
     if (notificationsData) {
       setNotifications(notificationsData);
+      setUnreadIds(
+        notificationsData.filter((n) => n.status === "unread").map((n) => n.id)
+      );
     }
   }, [notificationsData]);
 
@@ -51,9 +53,7 @@ const NotificationsScreen = () => {
       } else if (activeFilter === "Team") {
         setNotifications(notificationsData.filter((n) => n.type === "team"));
       } else if (activeFilter === "Manager") {
-        setNotifications(
-          notificationsData.filter((n) => n.status === "manager")
-        );
+        setNotifications(notificationsData.filter((n) => n.type === "manager"));
       }
     }
   }, [activeFilter]);
@@ -76,9 +76,7 @@ const NotificationsScreen = () => {
       >
         <Box>
           <Heading size={"md"}>
-            Notifications (
-            {notifications?.filter((n) => n.status === "unread")?.length || 0}{" "}
-            unread)
+            Notifications ({unreadNotifications + " unread"})
           </Heading>
           <HStack mt={"$2"} space="md">
             {getNotificationFilters(user?.role).map((filter, i) => (
@@ -126,6 +124,7 @@ const NotificationsScreen = () => {
                         <NotificationItem
                           notification={item}
                           pressed={pressed}
+                          isRead={!unreadIds.includes(item.id)}
                         />
                       )}
                     </Pressable>

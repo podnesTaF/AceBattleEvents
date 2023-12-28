@@ -41,6 +41,16 @@ export const UserApi = api.injectEndpoints({
         body: dto,
       }),
     }),
+    registerPushToken: builder.mutation<
+      { message: string },
+      { token: string; deviceIdentifier?: string }
+    >({
+      query: (body) => ({
+        url: "/push-tokens/register",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -49,4 +59,5 @@ export const {
   useFetchUserInitialDataQuery,
   useUpdateUserDataMutation,
   useUpdateUserPasswordMutation,
+  useRegisterPushTokenMutation,
 } = UserApi;
