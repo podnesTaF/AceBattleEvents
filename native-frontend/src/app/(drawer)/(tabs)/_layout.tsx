@@ -1,11 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
+import { Badge, BadgeText, VStack } from "@gluestack-ui/themed";
 import { useAppSelector } from "@lib/hooks";
+import { selectUnreadCount } from "@lib/notification/slices";
 import { selectUser } from "@lib/store";
 import { Tabs } from "expo-router";
 import React from "react";
 
 const Layout = () => {
   const user = useAppSelector(selectUser);
+  const unreadNotifications = useAppSelector(selectUnreadCount);
 
   return (
     <Tabs
@@ -46,8 +49,26 @@ const Layout = () => {
         options={{
           headerShown: false,
           tabBarLabel: "Notifications",
-          tabBarIcon: ({ size, color }) => (
-            <Ionicons name={"notifications"} size={size} color={color} />
+          tabBarIcon: ({ focused, size, color }) => (
+            <VStack>
+              {unreadNotifications > 0 && (
+                <Badge
+                  size="sm"
+                  bg={!focused ? "$red600" : "#1C1E1F"}
+                  borderRadius="$full"
+                  mb={-14}
+                  mr={-14}
+                  zIndex={1}
+                  variant="solid"
+                  alignSelf="flex-end"
+                >
+                  <BadgeText fontWeight="bold" color="$white">
+                    {unreadNotifications}
+                  </BadgeText>
+                </Badge>
+              )}
+              <Ionicons name={"notifications"} size={size} color={color} />
+            </VStack>
           ),
         }}
       />

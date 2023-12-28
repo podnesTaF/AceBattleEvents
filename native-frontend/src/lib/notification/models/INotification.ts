@@ -10,3 +10,7 @@ export type INotification = {
   reveivers: IUser[];
   createdAt: string;
 };
+
+export type NotificationState = {
+  unreadCount: 0;
+};

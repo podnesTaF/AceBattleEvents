@@ -16,11 +16,13 @@ import React from "react";
 interface NotificationItemProps {
   notification: INotification;
   pressed?: boolean;
+  isRead: boolean;
 }
 
 const NotificationItem: React.FC<NotificationItemProps> = ({
   notification,
   pressed,
+  isRead,
 }) => {
   return (
     <HStack opacity={pressed ? 0.8 : 1} space={"sm"} alignItems="center">
@@ -29,7 +31,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         height={"$full"}
         borderTopRightRadius={50}
         borderBottomRightRadius={50}
-        bg={notification.status === "unread" ? "$blue200" : "$coolGray200"}
+        bg={isRead ? "$coolGray200" : "$blue200"}
       ></Box>
       <Avatar size="lg" borderBottomRightRadius={50} bg={"transparent"}>
         <AvatarImage

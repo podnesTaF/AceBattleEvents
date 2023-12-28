@@ -12,7 +12,7 @@ import {
   Text,
   VStack,
 } from "@gluestack-ui/themed";
-import { useGetNotificationQuery } from "@lib/services";
+import { useGetNotificationQuery } from "@lib/notification/services";
 import { getTimeAgo } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";

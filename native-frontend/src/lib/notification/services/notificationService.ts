@@ -1,5 +1,5 @@
 import { api } from "@lib/common/services/api";
-import { CreateNotificationDto } from "../dto/create-notification.dto";
+import { CreateNotificationDto } from "../dto";
 import { INotification } from "../models";
 
 export const NotificationApi = api.injectEndpoints({
@@ -34,6 +34,12 @@ export const NotificationApi = api.injectEndpoints({
       }),
       providesTags: ["Notification"],
     }),
+    getUnreadNotificationsCount: build.query<number, void>({
+      query: () => ({
+        url: "/notifications/unread-count",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -42,4 +48,5 @@ export const {
   usePostUserNotificationMutation,
   useGetNotificationQuery,
   useGetUserSentNotificationsQuery,
+  useGetUnreadNotificationsCountQuery,
 } = NotificationApi;

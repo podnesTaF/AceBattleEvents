@@ -1,4 +1,5 @@
-import { useUpdateUserPushTokenMutation } from "@lib/services";
+import { useAppDispatch } from "@lib/common/hooks/useAppDispatch";
+import { api, useRegisterPushTokenMutation } from "@lib/services";
 import { selectUser } from "@lib/store";
 import { useAppSelector } from "@lib/user/hooks/useAppSelector";
 import Constants from "expo-constants";
@@ -6,6 +7,7 @@ import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import { useEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
+import { incrementUnreadCount } from "../slices";
 
 export interface PushNotificationState {
   expoPushToken?: Notifications.ExpoPushToken;
@@ -30,8 +32,9 @@ export const usePushNotifications = (): PushNotificationState => {
   >();
 
   const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
 
-  const [updatePushToken] = useUpdateUserPushTokenMutation();
+  const [registerPushToken] = useRegisterPushTokenMutation();
 
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
@@ -77,9 +80,13 @@ export const usePushNotifications = (): PushNotificationState => {
       try {
         const token = await registerForPushNotificationsAsync();
         setExpoPushToken(token);
-
-        if (token !== user?.expoPushToken) {
-          await updatePushToken(token?.data);
+        const data = token?.data;
+        if (data && data !== user?.expoPushToken) {
+          const deviceIdentifier = `${Device.osName}-${Device.osVersion}`;
+          await registerPushToken({
+            token: data,
+            deviceIdentifier: deviceIdentifier,
+          });
         }
       } catch (error) {
         console.error("Error updating push token:", error);
@@ -91,11 +98,14 @@ export const usePushNotifications = (): PushNotificationState => {
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
         setNotification(notification);
+        dispatch(incrementUnreadCount());
+        dispatch(api.util.invalidateTags(["Notification"]));
       });
 
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response);
+        dispatch(incrementUnreadCount());
+        dispatch(api.util.invalidateTags(["Notification"]));
       });
 
     return () => {

@@ -1,3 +1,4 @@
+import { notificationReducer } from "@lib/notification/slices";
 import { manageTeamReducer, registerTeamReducer } from "@lib/teams/slices";
 import { userReducer } from "@lib/user/slices/userSlice";
 import { configureStore } from "@reduxjs/toolkit";
@@ -12,6 +13,7 @@ export const makeStore = () => {
       pickItems: pickItemsReducer,
       registerTeam: registerTeamReducer,
       formValues: formValuesReducer,
+      notification: notificationReducer,
       [api.reducerPath]: api.reducer,
     },
     middleware: (getDefaultMiddleware) =>
