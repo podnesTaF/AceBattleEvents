@@ -26,6 +26,7 @@ import { NewsModule } from "./news/news.module";
 import { NotificationModule } from "./notification/notification.module";
 import { PlayersModule } from "./players/players.module";
 import { PrizesModule } from "./prizes/prizes.module";
+import { PushTokenModule } from "./push-token/push-token.module";
 import { RaceRegistrationModule } from "./race-registration/race-registration.module";
 import { RaceModule } from "./race/race.module";
 import { ResetUserModule } from "./reset-user/reset-user.module";
@@ -86,6 +87,7 @@ import { ViewerRegistrationsModule } from "./viewer-registrations/viewer-registr
     TeamRegistrationModule,
     RaceRegistrationModule,
     TeamRaceRunnerModule,
+    PushTokenModule,
   ],
   controllers: [AppController],
   providers: [AppService],

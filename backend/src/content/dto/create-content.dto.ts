@@ -13,7 +13,7 @@ export class CreateContentDto {
   @IsOptional()
   media: Media;
 
-  @IsObject()
+  @IsString()
   @IsOptional()
   purpose: string;
 }

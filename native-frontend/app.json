@@ -20,6 +20,9 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/app_foreground.png",
         "backgroundColor": "#ffffff"
+      },
+      "notification": {
+        "icon": "./assets/images/abm-notification-icon.png"
       }
     },
     "web": {

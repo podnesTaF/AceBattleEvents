@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { CreateVerifyMemberDto } from './dto/create-verify-member.dto';
-import { UpdateVerifyMemberDto } from './dto/update-verify-member.dto';
-import { VerifyMember } from './entities/verify-member.entity';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { CreateVerifyMemberDto } from "./dto/create-verify-member.dto";
+import { UpdateVerifyMemberDto } from "./dto/update-verify-member.dto";
+import { VerifyMember } from "./entities/verify-member.entity";
 
 @Injectable()
 export class VerifyMemberService {
@@ -42,7 +42,7 @@ export class VerifyMemberService {
   async getMember(token: string) {
     const verification = await this.repository.findOne({
       where: { token },
-      relations: ['member'],
+      relations: ["member"],
     });
 
     if (!verification) return null;
@@ -53,7 +53,7 @@ export class VerifyMemberService {
   async getUser(token: string) {
     const verification = await this.repository.findOne({
       where: { token },
-      relations: ['user'],
+      relations: ["user"],
     });
 
     if (!verification) return null;

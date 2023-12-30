@@ -32,9 +32,11 @@ const NotificationsScreen = () => {
   const [activeFilter, setActiveFilter] = useState("All");
   const { isSmallScreen } = useScreenSize();
 
-  const readNotification = (id: number) => {
-    dispatch(decrementUnreadCount());
-    setUnreadIds((prev) => prev.filter((n) => n !== id));
+  const readNotification = (notification: INotification) => {
+    if (unreadIds.includes(notification.id)) {
+      dispatch(decrementUnreadCount());
+      setUnreadIds((prev) => prev.filter((n) => n !== notification.id));
+    }
   };
 
   useEffect(() => {
@@ -119,7 +121,7 @@ const NotificationsScreen = () => {
                     href={`/(drawer)/(tabs)/(notifications)/${item.id}`}
                     asChild
                   >
-                    <Pressable onPress={() => readNotification(item.id)}>
+                    <Pressable onPress={() => readNotification(item)}>
                       {({ pressed }: { pressed: boolean }) => (
                         <NotificationItem
                           notification={item}

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -99,6 +100,14 @@ export class TeamsController {
     return this.teamsService.findAllManagerTeams(+id, query);
   }
 
+  @Get("/contacts/:id")
+  findTeamsContacts(@Param("id") id: string) {
+    if (isNaN(+id)) {
+      throw new BadRequestException("Wrong teamId provided");
+    }
+    return this.teamsService.getContactInfo(+id);
+  }
+
   @Get("/registrations")
   @UseGuards(JwtAuthGuard)
   findAllReg(
@@ -114,6 +123,11 @@ export class TeamsController {
     @Query() query: { past?: boolean; year?: string },
   ) {
     return this.teamsService.getRegistrationsByPlayerId(+id, query);
+  }
+
+  @Get("info/:id")
+  findTeamInfo(@Param("id") id: string) {
+    return this.teamsService.getTeamInfo(+id);
   }
 
   @Get(":id")

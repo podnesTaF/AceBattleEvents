@@ -32,7 +32,7 @@ export class NotificationEntity {
   contents: Content[];
 
   @ManyToOne(() => User, (user) => user.sentNotifications, { nullable: true })
-  sender: User;
+  sender?: User;
 
   @ManyToMany(() => User, (user) => user.receivedNotifications)
   @JoinTable()

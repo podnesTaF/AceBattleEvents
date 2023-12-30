@@ -2,9 +2,11 @@ import { ForbiddenException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import sgMail from "@sendgrid/mail";
 import * as bcrypt from "bcrypt";
+import { Content } from "src/content/entities/content.entity";
 import { CountryService } from "src/country/country.service";
 import { Country } from "src/country/entity/country.entity";
 import { getVerificationLetterTemplate } from "src/member/utils/getLetterTemplate";
+import { NotificationEntity } from "src/notification/entities/notification.entity";
 import { VerifyMemberService } from "src/verify-member/verify-member.service";
 import { Repository } from "typeorm";
 import * as uuid from "uuid";
@@ -19,6 +21,10 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private repository: Repository<User>,
+    @InjectRepository(NotificationEntity)
+    private notificationRepository: Repository<NotificationEntity>,
+    @InjectRepository(Content)
+    private contentRepository: Repository<Content>,
     private countryService: CountryService,
     private verifyRepository: VerifyMemberService,
   ) {}
@@ -101,11 +107,42 @@ export class UserService {
 
       await this.verifyRepository.delete(token);
 
+      await this.sendGreetingNotification(fullUser);
+
       return this.repository.save(fullUser);
     } catch (error) {
       console.log(error.message);
       throw new Error(error.message);
     }
+  }
+
+  async sendGreetingNotification(user: User) {
+    const notification = this.notificationRepository.create({
+      type: "system",
+      receivers: [user],
+      title: `${user.name} ${user.surname}, Welcome to Ace Battle Mile!`,
+      contents: [
+        await this.contentRepository.findOne({
+          where: { purpose: "greeting" },
+        }),
+      ],
+    });
+
+    return this.notificationRepository.save(notification);
+  }
+
+  async getFollowingTeams(userId: number) {
+    const userWithTeams = await this.repository.findOne({
+      where: { id: userId },
+      relations: [
+        "followingTeams",
+        "followingTeams.logo",
+        "followingTeams.teamImage",
+        "followingTeams.country",
+      ],
+    });
+
+    return userWithTeams.followingTeams;
   }
 
   findAll() {
@@ -152,6 +189,9 @@ export class UserService {
         "manager.club",
         "spectator",
         "spectator.favoriteClubs",
+        "coach.teams.logo",
+        "coach",
+        "coach.teams.teamImage",
       ],
     });
 

@@ -216,6 +216,25 @@ export class TeamsService {
     });
   }
 
+  getTeamInfo(id: number) {
+    return this.repository.findOne({
+      where: { id },
+      relations: ["logo", "country", "coach", "players", "teamImage"],
+    });
+  }
+
+  async getContactInfo(teamId: number) {
+    const team = await this.repository.findOne({
+      where: { id: teamId },
+      relations: ["manager.user.image", "coach.user.image"],
+    });
+
+    return {
+      manager: team.manager,
+      coach: team.coach,
+    };
+  }
+
   async getRegistrations(
     userId: number,
     query: { page?: string; limit?: string },

@@ -18,7 +18,9 @@ export class AuthService {
     private jwtService: JwtService,
     private countryService: CountryService,
     private resetRepository: ResetUserService,
-  ) {}
+  ) {
+    sgMail.setApiKey(process.env.SEND_GRID_API_K);
+  }
 
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.userService.findByCond({

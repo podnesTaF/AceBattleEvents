@@ -52,6 +52,12 @@ export class UserController {
     return this.userService.getRunnerFollowers(+req.user.id);
   }
 
+  @Get("/following-teams")
+  @UseGuards(JwtAuthGuard)
+  geFollowingTeams(@Request() req: any) {
+    return this.userService.getFollowingTeams(req.user.id);
+  }
+
   @Get(":id")
   getUserProfile(@Param("id") id: number, @Query() query: { authId: string }) {
     return this.userService.findById(+id, query.authId);
