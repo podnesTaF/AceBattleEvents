@@ -43,10 +43,30 @@ export class NotificationController {
     );
   }
 
+  @Post("/global")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("admin")
+  createGlobalNotification(@Body() dto: { message: string; title: string }) {
+    return this.notificationService.sendGlobalNotification(dto);
+  }
+
   @Get("/received")
   @UseGuards(JwtAuthGuard)
   getUserReceivedNotifications(@Request() req: { user: { id: number } }) {
     return this.notificationService.getUserReceivedNotifications(req.user.id);
+  }
+
+  @Get("/sent")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("manager")
+  getUserSentNotifications(@Request() req: { user: { id: number } }) {
+    return this.notificationService.getUserSentNotification(req.user.id);
+  }
+
+  @Get("/unread-count")
+  @UseGuards(JwtAuthGuard)
+  getUserUnreadNotificationsCount(@Request() req: { user: { id: number } }) {
+    return this.notificationService.getUnreadNotificationsCount(req.user.id);
   }
 
   @Get(":id")

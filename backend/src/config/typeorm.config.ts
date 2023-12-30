@@ -17,6 +17,7 @@ import { News } from "src/news/entities/news.entity";
 import { NotificationEntity } from "src/notification/entities/notification.entity";
 import { PlayerEntity } from "src/players/entities/player.entity";
 import { PrizeEntity } from "src/prizes/entities/prize.entity";
+import { PushToken } from "src/push-token/entities/push-token.entity";
 import { RaceRegistration } from "src/race-registration/entities/race-registration.entity";
 import { Race } from "src/race/entities/race.entity";
 import { ResetUser } from "src/reset-user/entities/reset-user.entity";
@@ -76,6 +77,7 @@ const config: TypeOrmModuleOptions = {
     NotificationEntity,
     RaceRegistration,
     TeamRaceRunner,
+    PushToken,
   ],
   synchronize: true,
 };

@@ -152,7 +152,8 @@ export class RunnerService {
       .leftJoinAndSelect("runner.user", "user")
       .leftJoinAndSelect("user.image", "image")
       .leftJoinAndSelect("runner.teamsAsRunner", "teamsAsRunner")
-      .where("teamsAsRunner.managerId = :id", { id });
+      .leftJoinAndSelect("teamsAsRunner.manager", "manager")
+      .where("manager.userId = :id", { id });
 
     const runners = await qb.getMany();
 

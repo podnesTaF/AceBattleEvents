@@ -2,6 +2,7 @@ import WithLoading from "@Components/HOCs/withLoading";
 import withWatermarkBg from "@Components/HOCs/withWatermark";
 import Container from "@Components/common/Container";
 import CustomBackButton from "@Components/custom/CustomBackButton";
+import TextContent from "@Components/news/TextContent";
 import { logoWhite } from "@Constants/cloud-images";
 import {
   Avatar,
@@ -9,6 +10,7 @@ import {
   Box,
   HStack,
   Heading,
+  ScrollView,
   Text,
   VStack,
 } from "@gluestack-ui/themed";
@@ -74,26 +76,28 @@ const NotificationScreen = () => {
           ),
         }}
       />
-      <Box py={"$4"} px={"$2"}>
-        <Container vertical={true}>
-          <WithLoading isLoading={isLoading}>
-            {notification && (
-              <>
-                {notification?.contents?.map((content, index) => (
-                  <Box key={content.id} py={"$4"}>
-                    <Text size={"md"}>{content?.text}</Text>
-                  </Box>
-                ))}
-                <HStack py={"$4"} justifyContent={"space-between"}>
-                  <Text size={"sm"} color={"$coolGray300"}>
-                    {getTimeAgo(notification.createdAt)}
-                  </Text>
-                </HStack>
-              </>
-            )}
-          </WithLoading>
-        </Container>
-      </Box>
+      <ScrollView>
+        <Box py={"$4"} px={"$2"}>
+          <Container vertical={true}>
+            <WithLoading isLoading={isLoading}>
+              {notification && (
+                <>
+                  {notification?.contents?.map((content, index) => (
+                    <Box key={content.id} py={"$4"}>
+                      <TextContent text={content?.text} />
+                    </Box>
+                  ))}
+                  <HStack py={"$4"} justifyContent={"space-between"}>
+                    <Text size={"sm"} color={"$coolGray300"}>
+                      {getTimeAgo(notification.createdAt)}
+                    </Text>
+                  </HStack>
+                </>
+              )}
+            </WithLoading>
+          </Container>
+        </Box>
+      </ScrollView>
     </>
   );
 };
