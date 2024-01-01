@@ -11,6 +11,7 @@ import {
   Heading,
   Icon,
   Image,
+  ScrollView,
   Text,
   VStack,
 } from "@gluestack-ui/themed";
@@ -21,8 +22,7 @@ import { selectUser } from "@lib/store";
 import { formatDate } from "@lib/utils";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { Calendar } from "lucide-react-native";
-import React, { useRef } from "react";
-import { Animated } from "react-native";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const tabs = ["Participants", "Schedule", "Results"];
@@ -32,10 +32,6 @@ const EventScreen = () => {
   const { data: eventInfo, isLoading, error } = useGetEventInfoQuery(+eventId);
   const router = useRouter();
   const user = useAppSelector(selectUser);
-
-  const scrollY = useRef(new Animated.Value(0)).current;
-
-  const viewRef = useRef();
 
   const onChangeTab = (tabIndex: number) => {
     if (!eventInfo) return;
@@ -50,29 +46,6 @@ const EventScreen = () => {
       router.push({ pathname: "/results", params: { eventId: eventId } });
     }
   };
-
-  const handleScroll = Animated.event(
-    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-    { useNativeDriver: false }
-  );
-
-  const animatedHeight = scrollY.interpolate({
-    inputRange: [0, 120],
-    outputRange: [100, 0], // Replace 'initialHeight' with the actual initial height of your content
-    extrapolate: "clamp",
-  });
-
-  const animatedOpacity = scrollY.interpolate({
-    inputRange: [0, 120],
-    outputRange: [1, 0],
-    extrapolate: "clamp",
-  });
-
-  const translateY = scrollY.interpolate({
-    inputRange: [0, 120],
-    outputRange: [0, -120],
-    extrapolate: "clamp",
-  });
 
   return (
     <>
@@ -92,37 +65,28 @@ const EventScreen = () => {
                     <Heading size="2xl" textAlign="center" color={"#fff"}>
                       {eventInfo.title}
                     </Heading>
-                    <Animated.View
-                      style={{
-                        transform: [{ translateY }],
-                        height: animatedHeight,
-                        opacity: animatedOpacity,
-                        overflow: "hidden", // To ensure content does not overflow during animation
-                      }}
-                    >
-                      <HStack space="sm">
-                        {eventInfo.location?.country.flagIconUrl && (
-                          <Image
-                            role="img"
-                            alt={"country flag"}
-                            source={{
-                              uri: eventInfo.location.country.flagIconUrl,
-                            }}
-                            size="xs"
-                          />
-                        )}
-                        <Heading size="sm" color={"$white"}>
-                          {eventInfo?.location?.city},{" "}
-                          {eventInfo?.location?.country.name}
-                        </Heading>
-                      </HStack>
-                      <HStack left={"$12"} alignItems="center" space={"sm"}>
-                        <Icon as={Calendar} color={"$white"} />
-                        <Heading size="sm" color={"$white"}>
-                          {formatDate(eventInfo?.startDateTime)}
-                        </Heading>
-                      </HStack>
-                    </Animated.View>
+                    <HStack space="sm">
+                      {eventInfo.location?.country.flagIconUrl && (
+                        <Image
+                          role="img"
+                          alt={"country flag"}
+                          source={{
+                            uri: eventInfo.location.country.flagIconUrl,
+                          }}
+                          size="xs"
+                        />
+                      )}
+                      <Heading size="sm" color={"$white"}>
+                        {eventInfo?.location?.city},{" "}
+                        {eventInfo?.location?.country.name}
+                      </Heading>
+                    </HStack>
+                    <HStack left={"$12"} alignItems="center" space={"sm"}>
+                      <Icon as={Calendar} color={"$white"} />
+                      <Heading size="sm" color={"$white"}>
+                        {formatDate(eventInfo?.startDateTime)}
+                      </Heading>
+                    </HStack>
                     <Tabs
                       activeColor={"$white"}
                       items={tabs}
@@ -136,7 +100,7 @@ const EventScreen = () => {
           ),
         }}
       />
-      <Animated.ScrollView onScroll={handleScroll}>
+      <ScrollView>
         <SkeletonLoader<EventInfo>
           data={eventInfo}
           isLoading={isLoading}
@@ -221,7 +185,7 @@ const EventScreen = () => {
             {(data) => <EventLocations event={data} />}
           </SkeletonLoader>
         </VStack>
-      </Animated.ScrollView>
+      </ScrollView>
     </>
   );
 };

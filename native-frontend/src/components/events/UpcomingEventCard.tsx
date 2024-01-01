@@ -15,7 +15,6 @@ const UpcomingEventCard = ({ event }: { event: MappedFutureEvent }) => {
         <Box
           overflow="hidden"
           borderTopLeftRadius={100}
-          softShadow="1"
           position="absolute"
           width={"100%"}
           height="100%"

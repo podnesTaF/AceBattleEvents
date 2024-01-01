@@ -41,7 +41,7 @@ const HorizontalListLayout: React.FC<Props> = ({
         alignItems="center"
         justifyContent="center"
       >
-        <ErrorBox error={error} width={cardWidth} />
+        <ErrorBox errorMessage={error} width={cardWidth} />
       </Box>
     );
   };
@@ -57,10 +57,11 @@ const HorizontalListLayout: React.FC<Props> = ({
         contentContainerStyle={{
           paddingHorizontal: 16,
         }}
-        ItemSeparatorComponent={() => <Box w={"$4"} />}
-        pagingEnabled
+        ItemSeparatorComponent={() => <Box mx={"$2"} />}
+        snapToInterval={cardWidth + 8 * 2}
+        snapToAlignment="start"
+        decelerationRate="fast"
         showsHorizontalScrollIndicator={false}
-        snapToAlignment="center"
         renderItem={({ item }) => (
           <Box maxWidth={cardWidth}>
             <ItemComponent {...{ [identifier]: item }} {...additionalProps} />
