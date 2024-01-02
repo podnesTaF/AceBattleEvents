@@ -1,42 +1,11 @@
-# AceBattleEvents
+# Ace Battle Mile platforms
 
-> Market Place for Ace Battle Mile events for managers and / or team leaders.
+> Welcome to the official repository for Ace Battle Mile, an innovative team running game that combines strategy, speed, and teamwork. Here, teams of 5 to 7 runners compete head-to-head, with their collective mile times determining the outcome of each race. The introduction of "Jokers" – special team members with the ability to replace runners mid-race – adds a thrilling strategic element.
 
-# Ace Battle Events version 2.0
+### In this repository you can find a source code:
+- [Frontend](https://github.com/podnesTaF/AceBattleEvents/tree/main/frontend) - Explore the Ace Battle Mile website, the primary interface for players, spectators and managers.
+- [Native-frontend](https://github.com/podnesTaF/AceBattleEvents/tree/main/frontend) - Access our cross-platform native application client, offering a seamless experience across various devices.
+- [Backend](https://github.com/podnesTaF/AceBattleEvents/tree/main/backend) -  The API that powers both the website and native application, ensuring smooth gameplay and user interaction.
+- [Smart-contract](https://github.com/podnesTaF/AceBattleEvents/tree/main/smart-contract) - A smart contract for the first version of the web app client
+- [ERD table](https://github.com/podnesTaF/AceBattleEvents/blob/main/abe-2.0.mdj)
 
-> - A platform for fans, runners, clubs, coaches and managers to monitor and ragister for Ace Battle Mile events over the world.
-> - All features you can find in planning-2.0.png
-
-## Web3
-
-- The payment system build with smart contracts on ethereum.
-- Internal Mile coins to register teams for ABM events.
-- See your transactions and registrations with ability to withdraw your funds.
-
-## Main Functionality
-
-- Register as a manager of a club
-- Add teams to your personal cabinet
-- Follow the calendar of events
-- See details for each event
-- Register your team for an event
-- Pay by mile coins
-- Know more about Ace Battle Association
-- Read important policies for teams and managers
-- See your personal cabinet with data, balance, teams, registrations and transactions.
-
-## Tech stack
-
-### frontend:
-
-- NextJs / TypeScript
-- TailwindCss / Mui
-- Redux Toolkit / RTK query
-- Ethers
-
-### backend:
-
-- NestJs
-- mySql
-- Google Cloud
-- Solidity / hardhat
