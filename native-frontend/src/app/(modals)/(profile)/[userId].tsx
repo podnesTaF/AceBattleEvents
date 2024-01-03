@@ -20,7 +20,7 @@ import { useFetchUserQuery } from "@lib/user/services/UserService";
 import { getProfileTabByUserRole } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList, View } from "react-native";
+import { Dimensions, FlatList, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const tabsData = (user: IUser) => {
@@ -55,7 +55,7 @@ const tabsData = (user: IUser) => {
     ];
   } else if (user.manager) {
     return [<SpectatorBioTab user={user} />, <TeamsAndRunners user={user} />];
-  } else if (user.spectator) {
+  } else if (user.role === "spectator") {
     return [<SpectatorBioTab user={user} />];
   } else if (user.coach) {
     return [<SpectatorBioTab user={user} />, <CoachTeamsTab user={user} />];
@@ -93,12 +93,12 @@ const ProfileScreen = () => {
             <SafeAreaView style={{ backgroundColor: "#1c1e1f" }}>
               <VStack width={"$full"}>
                 <HStack space="lg" alignItems="center" px={"$2"}>
-                  <Ionicons
-                    name="arrow-back"
-                    size={32}
-                    color="#fff"
+                  <TouchableOpacity
                     onPress={() => navigation.goBack()}
-                  />
+                    hitSlop={40}
+                  >
+                    <Ionicons name="arrow-back" size={32} color="#fff" />
+                  </TouchableOpacity>
                   <Heading
                     w={"$full"}
                     textTransform="capitalize"

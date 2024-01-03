@@ -133,13 +133,16 @@ const NewsScreen = () => {
           >
             {(data) => (
               <VStack space="md">
-                {data.map((news, i, arr) => (
-                  <SmallNewsCard
-                    key={news.id}
-                    news={news}
-                    isLast={i === arr.length - 1}
-                  />
-                ))}
+                <FlatList
+                  data={data}
+                  renderItem={({ item, index }) => (
+                    <SmallNewsCard
+                      news={item}
+                      isLast={index === data.length - 1}
+                    />
+                  )}
+                  keyExtractor={(item) => item.id.toString()}
+                />
               </VStack>
             )}
           </SkeletonLoader>
