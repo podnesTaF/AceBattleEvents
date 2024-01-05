@@ -4,7 +4,10 @@ import {
   Injectable,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { CreateContentDto } from "src/content/dto/create-content.dto";
+import { Content } from "src/content/entities/content.entity";
 import { Event } from "src/events/entities/event.entity";
+import { NotificationService } from "src/notification/notification.service";
 import { Team } from "src/teams/entities/team.entity";
 import { Coach } from "src/users/entities/coach.entity";
 import { MoreThan, Repository } from "typeorm";
@@ -23,6 +26,9 @@ export class TeamRegistrationService {
     private readonly eventRepository: Repository<Event>,
     @InjectRepository(Coach)
     private readonly coachRepository: Repository<Coach>,
+    @InjectRepository(Content)
+    private readonly contentRepository: Repository<Content>,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async create(dto: CreateTeamRegistrationDto, userId: number) {
@@ -50,6 +56,38 @@ export class TeamRegistrationService {
 
     if (coach.manager.user.id !== userId)
       throw new ForbiddenException("You are not allowed to assign this coach");
+
+    const isDuplicate = await this.repository.findOne({
+      where: [{ team }, { event }],
+    });
+
+    if (isDuplicate) {
+      throw new ForbiddenException(
+        "Team with this name already registered for this event",
+      );
+    }
+
+    const contentDto: CreateContentDto = {
+      type: "text",
+      text: `Your team "${team.name}" registered for ${event.title} event. You can check the details about event in the competition page. Good luck!`,
+      purpose: "team-registration",
+      media: null,
+    };
+
+    const title = `Your team "${team.name}" registered for ${event.title} event`;
+
+    await this.notificationService.createSystemNotification({
+      title,
+      type: "system",
+      contents: [contentDto],
+      receivers: [
+        team.manager.user.id,
+        coach.manager.user.id,
+        ...team.players.map((player) => player.user.id),
+      ],
+    });
+
+    await this.contentRepository.save(contentDto);
 
     const teamRegistration = this.repository.create({
       team,

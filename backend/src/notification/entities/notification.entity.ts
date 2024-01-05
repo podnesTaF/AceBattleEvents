@@ -7,7 +7,6 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 
@@ -25,10 +24,12 @@ export class NotificationEntity {
   @Column({ default: "unread" })
   status: string;
 
-  @OneToMany(() => Content, (content) => content.notification, {
+  @ManyToMany(() => Content, (content) => content.notifications, {
     nullable: true,
   })
-  @JoinTable()
+  @JoinTable({
+    name: "content_for_notification",
+  })
   contents: Content[];
 
   @ManyToOne(() => User, (user) => user.sentNotifications, { nullable: true })
