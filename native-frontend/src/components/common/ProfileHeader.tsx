@@ -44,7 +44,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
           </Heading>
         </VStack>
       </HStack>
-      {authed && user.runner && (
+      {authed && user.runner?.approved && (
         <FollowButton
           size={isSmallScreen ? "xs" : "sm"}
           userId={user.runner.id}

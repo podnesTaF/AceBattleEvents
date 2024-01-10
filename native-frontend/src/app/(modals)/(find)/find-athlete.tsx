@@ -46,7 +46,7 @@ const FindAthelteModal = () => {
             <VStack
               mt={"$4"}
               mb={"$2"}
-              left={Platform.OS === "ios" ? "-$1" : "-$16"}
+              left={Platform.OS === "ios" ? "-$2" : "-$16"}
               width={width}
               alignItems="center"
             >

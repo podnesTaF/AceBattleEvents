@@ -14,6 +14,7 @@ import {
   VStack,
 } from "@gluestack-ui/themed";
 import { useGetAllEventsQuery } from "@lib/events/services";
+import { useScreenSize } from "@lib/hooks";
 import { IEvent } from "@lib/models";
 import { scaleSize } from "@lib/utils";
 import { Stack } from "expo-router";
@@ -35,6 +36,8 @@ const FindEventModal = () => {
     error: errorFutureEvents,
   } = useGetAllEventsQuery(`name=${query}`);
 
+  const { isSmallScreen } = useScreenSize();
+
   const width = Dimensions.get("window").width;
 
   return (
@@ -50,7 +53,7 @@ const FindEventModal = () => {
             <VStack
               mt={"$4"}
               mb={"$2"}
-              left={Platform.OS === "ios" ? "-$1" : "-$16"}
+              left={Platform.OS === "ios" ? "-$2" : "-$16"}
               width={width}
               alignItems="center"
             >
@@ -81,7 +84,7 @@ const FindEventModal = () => {
           error={errorPastEvents || errorFutureEvents}
         >
           <ScrollView>
-            <VStack p={"$4"} space={"md"}>
+            <VStack p={"$4"} mt={isSmallScreen ? "$6" : "$2"} space={"md"}>
               {["Upcoming", "Past"].map((title, index) => (
                 <VStack key={index} space={"md"} alignItems="center">
                   <Heading size="md" color="$coolGray500">
@@ -120,8 +123,8 @@ const FindEventModal = () => {
           <Image
             source={require("@Assets/images/runners.png")}
             style={{
-              width: 80,
-              height: 100,
+              width: isSmallScreen ? 50 : 80,
+              height: isSmallScreen ? 80 : 100,
               objectFit: "contain",
             }}
             role={"img"}

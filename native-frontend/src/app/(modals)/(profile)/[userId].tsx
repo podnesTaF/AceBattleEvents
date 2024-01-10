@@ -20,7 +20,13 @@ import { useFetchUserQuery } from "@lib/user/services/UserService";
 import { getProfileTabByUserRole } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  FlatList,
+  Platform,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const tabsData = (user: IUser) => {
@@ -92,13 +98,15 @@ const ProfileScreen = () => {
           header: ({ navigation }) => (
             <SafeAreaView style={{ backgroundColor: "#1c1e1f" }}>
               <VStack width={"$full"}>
-                <HStack space="lg" alignItems="center" px={"$2"}>
-                  <TouchableOpacity
-                    onPress={() => navigation.goBack()}
-                    hitSlop={40}
-                  >
-                    <Ionicons name="arrow-back" size={32} color="#fff" />
-                  </TouchableOpacity>
+                <HStack minHeight={32} space="lg" alignItems="center" px={"$2"}>
+                  {Platform.OS !== "ios" && (
+                    <TouchableOpacity
+                      onPress={() => navigation.goBack()}
+                      hitSlop={40}
+                    >
+                      <Ionicons name="arrow-back" size={32} color="#fff" />
+                    </TouchableOpacity>
+                  )}
                   <Heading
                     w={"$full"}
                     textTransform="capitalize"

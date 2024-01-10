@@ -1,14 +1,13 @@
+import { EvilIcons } from "@expo/vector-icons";
 import {
   Avatar,
   AvatarImage,
   HStack,
   Heading,
-  Icon,
   VStack,
 } from "@gluestack-ui/themed";
 import { useScreenSize } from "@lib/hooks";
 import { IUser } from "@lib/models";
-import { User } from "lucide-react-native";
 import React from "react";
 import Badge from "./custom/Badge";
 
@@ -48,21 +47,21 @@ const UserPreview = ({
             />
           </HStack>
         </VStack>
-        <Avatar
-          rounded={"$full"}
-          size={isSmallScreen ? "md" : "lg"}
-          bgColor="$black"
-        >
-          {user.image?.mediaUrl ? (
+        {user.image?.mediaUrl ? (
+          <Avatar
+            rounded={"$full"}
+            size={isSmallScreen ? "md" : "lg"}
+            bgColor="$black"
+          >
             <AvatarImage
               rounded={"$full"}
               source={{ uri: user.image?.mediaUrl }}
               alt={"avatar"}
             />
-          ) : (
-            <Icon as={User} color="white" size="xl" />
-          )}
-        </Avatar>
+          </Avatar>
+        ) : (
+          <EvilIcons name="user" size={isSmallScreen ? 64 : 80} color="white" />
+        )}
       </HStack>
     </HStack>
   );

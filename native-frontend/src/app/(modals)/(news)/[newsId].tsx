@@ -23,6 +23,7 @@ const ArticlePage = () => {
           },
           headerShown: true,
           headerTintColor: "#fff",
+          title: "",
           headerTitle: ({ tintColor }) => (
             <HeaderSubtitledTitle title={"News"} tintColor={tintColor} />
           ),

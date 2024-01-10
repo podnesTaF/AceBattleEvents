@@ -7,6 +7,7 @@ import {
   Text,
   VStack,
 } from "@gluestack-ui/themed";
+import { useScreenSize } from "@lib/hooks";
 import { ITeamResult } from "@lib/models";
 import { msToMinutesAndSeconds } from "@lib/utils";
 import React from "react";
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const PersonalBestCard: React.FC<Props> = ({ result }) => {
+  const { isSmallScreen } = useScreenSize();
   return (
     <HStack bgColor="$white" softShadow="1" w={"$full"} minHeight={"$32"}>
       <VStack space="lg" flex={2}>
@@ -23,7 +25,7 @@ const PersonalBestCard: React.FC<Props> = ({ result }) => {
           justifyContent="center"
           alignItems="center"
           width={"$full"}
-          height={"$10"}
+          height={isSmallScreen ? "$8" : "$10"}
         >
           <Image
             role={"img"}
@@ -32,17 +34,17 @@ const PersonalBestCard: React.FC<Props> = ({ result }) => {
             size={"full"}
             position="absolute"
           />
-          <Heading size="lg" color={"$white"}>
+          <Heading size={isSmallScreen ? "md" : "lg"} color={"$white"}>
             Result:
           </Heading>
         </Box>
         <HStack ml={"$2"} justifyContent="center" space="md">
-          <Text size={"md"}>Date</Text>
-          <Heading size={"sm"}>23.09.2023</Heading>
+          <Text size={isSmallScreen ? "sm" : "md"}>Date</Text>
+          <Heading size={isSmallScreen ? "xs" : "sm"}>23/09/2023</Heading>
         </HStack>
       </VStack>
       <Center flex={3}>
-        <Heading size={"4xl"}>
+        <Heading size={isSmallScreen ? "2xl" : "4xl"}>
           {msToMinutesAndSeconds(result.resultInMs)}
         </Heading>
       </Center>
