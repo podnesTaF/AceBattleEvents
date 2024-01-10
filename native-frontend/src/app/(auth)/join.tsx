@@ -8,6 +8,7 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { Dimensions } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 const join = () => {
   const user = useAppSelector(selectUser);
@@ -29,27 +30,29 @@ const join = () => {
           headerTransparent: true,
         }}
       />
-      <VStack
-        alignItems="center"
-        justifyContent="space-between"
-        width={"$full"}
-        flex={1}
-        w={"$full"}
-        py={"$2"}
-        mt={"$20"}
-      >
-        <Box maxWidth={350} w={"$full"}>
-          {steps.map((step, i, arr) => (
-            <JoinStep key={i} {...step} isLast={i === arr.length - 1} />
-          ))}
-        </Box>
-        <Box m={"auto"} maxWidth={350} px={"$2"}>
-          <Text color={"$coolGray400"}>
-            *To become a runner, coach and/or manager, you have to create a user
-            account first.
-          </Text>
-        </Box>
-      </VStack>
+      <ScrollView>
+        <VStack
+          alignItems="center"
+          justifyContent="space-between"
+          width={"$full"}
+          flex={1}
+          w={"$full"}
+          py={"$2"}
+          mt={"$20"}
+        >
+          <Box maxWidth={350} w={"$full"}>
+            {steps.map((step, i, arr) => (
+              <JoinStep key={i} {...step} isLast={i === arr.length - 1} />
+            ))}
+          </Box>
+          <Box m={"auto"} maxWidth={350} px={"$2"}>
+            <Text color={"$coolGray400"}>
+              *To become a runner, coach and/or manager, you have to create a
+              user account first.
+            </Text>
+          </Box>
+        </VStack>
+      </ScrollView>
     </>
   );
 };

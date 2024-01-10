@@ -23,7 +23,7 @@ const TabItem: React.FC<TabItemProps> = ({
   size,
 }) => {
   return (
-    <Pressable flex={1} onPress={() => onPress(index)} hitSlop={20}>
+    <Pressable onPress={() => onPress(index)} hitSlop={20}>
       {({ pressed }: { pressed: boolean }) => (
         <HStack
           justifyContent="center"

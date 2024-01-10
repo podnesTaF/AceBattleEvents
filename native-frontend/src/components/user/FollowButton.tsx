@@ -1,9 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Button, ButtonText } from "@gluestack-ui/themed";
+import { useAppSelector } from "@lib/hooks";
 import {
   useFollowRunnerMutation,
   useUnfollowRunnerMutation,
 } from "@lib/services";
+import { selectUser } from "@lib/store";
 
 import React, { useState } from "react";
 
@@ -26,6 +28,8 @@ const FollowButton: React.FC<FollowButtonProps> = ({
   const [unfollowRunner, { isLoading: isUnfollowingLoading }] =
     useUnfollowRunnerMutation();
 
+  const authedUser = useAppSelector(selectUser);
+
   const handleFollow = async () => {
     await followRunner(userId);
     setIsFollowing(true);
@@ -35,6 +39,10 @@ const FollowButton: React.FC<FollowButtonProps> = ({
     await unfollowRunner(userId);
     setIsFollowing(false);
   };
+
+  if (!authedUser) return null;
+
+  if (authedUser.id === userId) return null;
 
   return (
     <Button

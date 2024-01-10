@@ -1,5 +1,6 @@
-import { HStack } from "@gluestack-ui/themed";
+import { Box } from "@gluestack-ui/themed";
 import React from "react";
+import { Dimensions, FlatList } from "react-native";
 import TabItem from "./TabItem";
 
 interface TabsProps {
@@ -19,22 +20,38 @@ const Tabs: React.FC<TabsProps> = ({
   passiveColor,
   size,
 }) => {
+  const windowWidth = Dimensions.get("window").width;
+  const tabWidth = windowWidth / items.length;
+
+  const minWidth = windowWidth * 0.3;
+  const effectiveTabWidth = Math.max(tabWidth, minWidth);
   return (
-    <HStack w={"$full"}>
-      {items.map((item, index) => (
-        <TabItem
-          item={item}
-          size={size}
-          index={index}
-          onPress={onChangeTab}
-          isLast={index === items.length - 1}
-          activeIndex={activeIndex}
-          activeColor={activeColor}
-          passiveColor={passiveColor}
-          key={index}
-        />
-      ))}
-    </HStack>
+    <Box width={"100%"} alignItems="center">
+      <FlatList<string>
+        data={items}
+        horizontal
+        snapToAlignment="start"
+        decelerationRate={"fast"}
+        showsHorizontalScrollIndicator={false}
+        // snapToInterval={effectiveTabWidth}
+        renderItem={({ item, index }) => (
+          <Box minWidth={effectiveTabWidth}>
+            <TabItem
+              item={item}
+              size={size}
+              index={index}
+              onPress={onChangeTab}
+              isLast={index === items.length - 1}
+              activeIndex={activeIndex}
+              activeColor={activeColor}
+              passiveColor={passiveColor}
+              key={index}
+            />
+          </Box>
+        )}
+        keyExtractor={(item, i) => i.toString() + item}
+      />
+    </Box>
   );
 };
 

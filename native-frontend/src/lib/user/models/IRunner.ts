@@ -15,6 +15,8 @@ export interface IRunner {
 
   followers?: IUser[];
   isFollowing?: boolean;
+
+  approved?: boolean;
 }
 
 export interface RunnerPreview {

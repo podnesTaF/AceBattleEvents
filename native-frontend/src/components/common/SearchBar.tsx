@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Input, InputField, InputSlot } from "@gluestack-ui/themed";
 import React from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 
 interface SearchBarProps {
   placeholder: string;
@@ -29,9 +29,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
   value,
   variant,
 }) => {
+  const ref = React.useRef<any>(null);
   return (
-    <TouchableOpacity hitSlop={20}>
+    <TouchableOpacity hitSlop={40} onPress={() => ref.current?.focus()}>
       <Input
+        zIndex={10}
         mb={"$2"}
         sx={{
           borderBottomWidth: 1,
@@ -50,8 +52,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
             color={searchVariants[variant].icon}
           />
         </InputSlot>
-
         <InputField
+          ref={ref}
           placeholder={placeholder}
           color={searchVariants[variant].color}
           value={value}

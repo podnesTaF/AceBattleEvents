@@ -1,17 +1,16 @@
+import { EvilIcons } from "@expo/vector-icons";
 import {
   Avatar,
   AvatarImage,
   Box,
   HStack,
   Heading,
-  Icon,
   VStack,
 } from "@gluestack-ui/themed";
 import { useAppSelector, useScreenSize } from "@lib/hooks";
 import { IUser } from "@lib/models";
 import { selectIsAuth } from "@lib/store";
 import { scaleSize } from "@lib/utils";
-import { User } from "lucide-react-native";
 import React from "react";
 import withWatermarkBg from "./HOCs/withWatermark";
 import Skeleton from "./common/states/Skeleton";
@@ -23,7 +22,7 @@ interface HomeTabTitleProps {
 }
 
 const HomeTabTitle = ({
-  user = {},
+  user,
   annotation = "",
 }: HomeTabTitleProps): JSX.Element => {
   const isAuth = useAppSelector(selectIsAuth);
@@ -65,21 +64,25 @@ const HomeTabTitle = ({
                 />
               </HStack>
             </VStack>
-            <Avatar
-              rounded={"$full"}
-              size={isSmallScreen ? "md" : "lg"}
-              bgColor="$black"
-            >
-              {user.image?.mediaUrl ? (
+            {user.image?.mediaUrl ? (
+              <Avatar
+                rounded={"$full"}
+                size={isSmallScreen ? "md" : "lg"}
+                bgColor="$black"
+              >
                 <AvatarImage
                   rounded={"$full"}
                   source={{ uri: user.image?.mediaUrl }}
                   alt={"avatar"}
                 />
-              ) : (
-                <Icon as={User} color="white" size="xl" />
-              )}
-            </Avatar>
+              </Avatar>
+            ) : (
+              <EvilIcons
+                name="user"
+                size={isSmallScreen ? 64 : 80}
+                color="black"
+              />
+            )}
           </HStack>
         </HStack>
       ) : isAuth === null ? (

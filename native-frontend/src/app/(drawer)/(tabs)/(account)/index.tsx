@@ -12,7 +12,7 @@ import {
   VStack,
 } from "@gluestack-ui/themed";
 import { useAppSelector, useLogout } from "@lib/hooks";
-import { selectUser } from "@lib/store";
+import { selectIsAuth, selectUser } from "@lib/store";
 import { getAccountItems } from "@lib/user/utils/get-account-items";
 import { Link, Stack } from "expo-router";
 import { LogOut } from "lucide-react-native";
@@ -21,9 +21,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const AccountPage = () => {
   const user = useAppSelector(selectUser);
+  const isAuth = useAppSelector(selectIsAuth);
   const [logout, isLoading] = useLogout();
 
-  if (user) {
+  if (isAuth && user) {
     return (
       <>
         <Stack.Screen
