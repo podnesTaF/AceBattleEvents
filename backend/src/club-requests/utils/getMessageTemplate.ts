@@ -6,8 +6,9 @@ import { formatDate } from 'src/utils/date-formater';
 export const acceptJoinRequestTemplate = (club: Club, manager: Manager) => {
   return `
     <!DOCTYPE html>
-    <html>
+    <html lang="en" xml:lang="en">
       <head>
+        <title>Message</title>
         <style>
           /* Your CSS styles here */
           body {
@@ -155,8 +156,9 @@ export const joinRequestTemplate = (
 ) => {
   return `
 <!DOCTYPE html>
-<html>
+<html lang="en" xml:lang="en">
   <head>
+  <title>Message</title>
     <style>
       /* Your CSS styles here */
       body {

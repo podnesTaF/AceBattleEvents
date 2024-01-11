@@ -6,7 +6,7 @@ interface Props {
   googleMapsKey: string;
 }
 
-const Map: React.FC<Props> = ({ address, googleMapsKey }) => {
+const GoogleMap: React.FC<Props> = ({ address, googleMapsKey }) => {
   const loader = new Loader({
     apiKey: googleMapsKey,
     version: "weekly",
@@ -42,4 +42,4 @@ const Map: React.FC<Props> = ({ address, googleMapsKey }) => {
   );
 };
 
-export default Map;
+export default GoogleMap;

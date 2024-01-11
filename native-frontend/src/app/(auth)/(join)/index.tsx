@@ -7,7 +7,7 @@ import { Stack } from "expo-router";
 import React from "react";
 import { Dimensions } from "react-native";
 
-const join = () => {
+const Join = () => {
   const user = useAppSelector(selectUser);
   const height = Dimensions.get("window").height;
   const steps = getMembershipSteps(user);
@@ -54,4 +54,4 @@ const join = () => {
   );
 };
 
-export default join;
+export default Join;

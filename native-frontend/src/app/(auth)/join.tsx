@@ -10,7 +10,7 @@ import React from "react";
 import { Dimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
-const join = () => {
+const Join = () => {
   const user = useAppSelector(selectUser);
   const height = Dimensions.get("window").height;
   const steps = getMembershipSteps(user);
@@ -57,4 +57,4 @@ const join = () => {
   );
 };
 
-export default withWatermarkBg(join);
+export default withWatermarkBg(Join);

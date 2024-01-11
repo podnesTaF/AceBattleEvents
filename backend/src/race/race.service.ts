@@ -291,7 +291,7 @@ export class RaceService {
     });
 
     race.teams = teams || race.teams;
-    race.startTime = new Date(body.startTime) || race.startTime;
+    race.startTime =  body.startTime ? new Date(body.startTime) : race.startTime;
     race.event = event || race.event;
 
     return this.repository.save(race);

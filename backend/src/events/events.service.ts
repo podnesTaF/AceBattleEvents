@@ -503,8 +503,8 @@ export class EventsService {
 
     event.title = title || event.title;
     event.description = description || event.description;
-    event.startDateTime = new Date(startDateTime) || event.startDateTime;
-    event.endDate = new Date(endDate) || event.endDate;
+    event.startDateTime = startDateTime ? new Date(startDateTime) : event.startDateTime;
+    event.endDate = endDate ? new Date(endDate) : event.endDate;
 
     return this.repository.save(event);
   }
