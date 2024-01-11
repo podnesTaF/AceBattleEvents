@@ -50,7 +50,7 @@ const Step = ({ isActive, isLast, isFinished, onPress, value }: StepProps) => {
         {({ pressed }: { pressed: boolean }) => (
           <Box
             softShadow={pressed ? "1" : undefined}
-            borderWidth={isFinished || isActive ? 2 : 2}
+            borderWidth={2}
             borderColor={isActive ? "$black" : "$coolGray200"}
             rounded={"$full"}
             h={"$10"}

@@ -19,7 +19,7 @@ export const getRunnerGroupedData = (
   // Sort the keys (letters) and then sort runners within each group
   const sortedGroupedData: { [key: string]: RunnerPreview[] } = {};
   Object.keys(groupedData)
-    .sort()
+    .sort((a, b) => a.localeCompare(b))
     .forEach((key) => {
       sortedGroupedData[key] = groupedData[key].sort((a, b) =>
         a.user.surname.toUpperCase().localeCompare(b.user.surname.toUpperCase())

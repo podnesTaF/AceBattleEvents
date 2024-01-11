@@ -63,8 +63,9 @@ export const getHTMLContent = (
   `;
   return `
   <!DOCTYPE html>
-  <html>
+  <html lang="en" xml:lang="en">
     <head>
+    <title>Message</title>
       <link rel="stylesheet" type="text/css" href="ticket.css" />
       <style>
         body {
@@ -178,6 +179,5 @@ export const getHTMLContent = (
       </div>
     </body>
   </html>
-  
 `;
 };

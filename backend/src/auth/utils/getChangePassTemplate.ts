@@ -7,8 +7,9 @@ export const changePasswordTemplate = ({
 }) => {
   return `
   <!DOCTYPE html>
-  <html>
+  <html lang="en" xml:lang="en">
     <head>
+      <title>Change Password</title>
       <style>
         /* Your CSS styles here */
         body {

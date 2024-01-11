@@ -9,8 +9,9 @@ export const successRegisterTemplate = (
 ) => {
   return `
     <!DOCTYPE html>
-      <html>
+      <html lang="en" xml:lang="en">
         <head>
+        <title>Message</title>
           <style>
             /* Your CSS styles here */
             body {

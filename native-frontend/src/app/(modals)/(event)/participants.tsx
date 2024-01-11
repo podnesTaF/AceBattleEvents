@@ -17,7 +17,7 @@ const tabsData = (eventId?: string) => {
   ];
 };
 
-const participants = () => {
+const Participants = () => {
   const { eventId, name } = useLocalSearchParams<{
     eventId?: string;
     name?: string;
@@ -80,4 +80,4 @@ const participants = () => {
   );
 };
 
-export default participants;
+export default Participants;

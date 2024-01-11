@@ -1,5 +1,6 @@
 import { Skeleton } from "@mui/material";
-import { LoaderArgs, json } from "@remix-run/node";
+import type { LoaderArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import {
   isRouteErrorResponse,
   useLoaderData,
@@ -13,14 +14,14 @@ import {
   CustomCarousel,
   EventHeader,
   EventUsersAction,
-  Map,
+  GoogleMap,
   NewsCard,
   PrizesPodium,
   SectionTitle,
   TimeTable,
   WideCarousel,
 } from "~/components";
-import { IPrize } from "~/lib/types";
+import type { IPrize } from "~/lib/types";
 import {
   authenticator,
   formatDate,
@@ -347,6 +348,7 @@ const EventPage = () => {
                       <a
                         href={getGoogleMapsLink(event.location)}
                         target="_blank"
+                        rel="noreferrer"
                       >
                         {event?.location.address +
                           ", " +
@@ -361,7 +363,7 @@ const EventPage = () => {
                 </div>
               </div>
               <div className="w-full sm:min-w-[400px] max-w-[450px] max-h-[400px] md:w-3/5 border-[1px] border-black rounded-md overflow-hidden">
-                <Map
+                <GoogleMap
                   address={transformAddress(event.location)}
                   googleMapsKey={googleMapsKey}
                 />

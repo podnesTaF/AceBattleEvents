@@ -46,7 +46,7 @@ const tabsData = (eventResult: EventResult) => {
   ];
 };
 
-const results = () => {
+const Results = () => {
   const [activeTab, setActiveTab] = useState(0);
   const { width } = Dimensions.get("window");
   const { eventId } = useLocalSearchParams();
@@ -132,4 +132,4 @@ const results = () => {
   );
 };
 
-export default results;
+export default Results;
