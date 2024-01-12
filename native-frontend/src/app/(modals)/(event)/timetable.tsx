@@ -4,7 +4,6 @@ import HeaderSubtitledTitle from "@Components/common/HeaderSubtitledTitle";
 import InfoTemplate from "@Components/common/InfoTemplate";
 import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import RaceCard from "@Components/race/RaceCard";
-import { events } from "@Constants/dummy-data";
 import { Box, Heading, VStack } from "@gluestack-ui/themed";
 import { RaceWithCheckIn } from "@lib/models";
 import { useGetRacesByEventQuery } from "@lib/races/services/raceService";
@@ -65,7 +64,6 @@ const Timetable = () => {
                       key={race.id}
                       race={race}
                       registrationAvailable={race.availableForCheckIn}
-                      eventId={events[0].id}
                       isLast={i === data.length - 1}
                     />
                   ))}

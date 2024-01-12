@@ -25,14 +25,12 @@ interface Props {
   race: Partial<RaceWithCheckIn>;
   isLast?: boolean;
   registrationAvailable?: boolean;
-  eventId?: number;
 }
 
 const RaceCard = ({
   race,
   registrationAvailable,
   isLast,
-  eventId,
 }: Props): JSX.Element => {
   const [infoOpen, setInfoOpen] = useState(false);
   const router = useRouter();

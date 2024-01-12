@@ -1,6 +1,4 @@
 import AbmButton from "@Components/common/buttons/AbmButton";
-import LastEventCard from "@Components/events/LastEventCard";
-import { events } from "@Constants/dummy-data";
 import { Box, HStack, Heading, ScrollView } from "@gluestack-ui/themed";
 import { useAppSelector } from "@lib/hooks";
 import { ITeam } from "@lib/models";
@@ -44,12 +42,6 @@ const HomeTeamTab = ({ team }: { team: ITeam }) => {
           )}
         </HStack>
         <TeamPreviewCard team={team} Item={TeamDescription} />
-        <Box my={"$4"}>
-          <Heading size={"lg"} mb={"$2"}>
-            Last Event
-          </Heading>
-          <LastEventCard event={events[0]} height={"$40"} />
-        </Box>
       </Box>
     </ScrollView>
   );
