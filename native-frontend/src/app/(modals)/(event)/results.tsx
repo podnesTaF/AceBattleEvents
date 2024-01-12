@@ -4,7 +4,6 @@ import HeaderSubtitledTitle from "@Components/common/HeaderSubtitledTitle";
 import Tabs from "@Components/common/Tabs";
 import RaceCard from "@Components/race/RaceCard";
 import RaceOverview from "@Components/race/RaceOverview";
-import { eventPodium } from "@Constants/dummy-data";
 import {
   Box,
   HStack,
@@ -34,7 +33,7 @@ const tabsData = (eventResult: EventResult) => {
       <Container borderSize={2}>
         {Object.keys(eventResult.racesByType).map((type, i) => (
           <VStack key={i}>
-            {(eventPodium.racesByType as any)[type].map(
+            {(eventResult.racesByType as any)[type].map(
               (race: RaceShortForm) => (
                 <RaceCard key={race.id} race={race} />
               )

@@ -1,7 +1,5 @@
 import Container from "@Components/common/Container";
 import InfoTemplate from "@Components/common/InfoTemplate";
-import TeamRegistrationCard from "@Components/teams/TeamRegistrationCard";
-import { teams } from "@Constants/dummy-data";
 import { Box, HStack, Icon, Text } from "@gluestack-ui/themed";
 import { IEvent } from "@lib/models";
 import { InfoIcon } from "lucide-react-native";
@@ -21,13 +19,7 @@ const RegistrationsSection: React.FC<RegistrationSectionProps> = ({
     return (
       <>
         {events.length ? (
-          events.map((event) => (
-            <TeamRegistrationCard
-              key={event.id}
-              event={event}
-              team={teams[0]}
-            />
-          ))
+          events.map((event) => <></>)
         ) : (
           <Container>
             <HStack py={"$3"} space={"md"}>
@@ -45,7 +37,8 @@ const RegistrationsSection: React.FC<RegistrationSectionProps> = ({
       <>
         {events.length ? (
           events.map((event) => (
-            <TeamRegistrationCard event={event} team={teams[0]} />
+            // todo
+            <></>
           ))
         ) : (
           <HStack py={"$3"} space={"md"}>

@@ -33,7 +33,7 @@ const Tabs: React.FC<TabsProps> = ({
         snapToAlignment="start"
         decelerationRate={"fast"}
         showsHorizontalScrollIndicator={false}
-        // snapToInterval={effectiveTabWidth}
+        // snapToInterval={effectiveTabWidth}rr
         renderItem={({ item, index }) => (
           <Box minWidth={effectiveTabWidth}>
             <TabItem

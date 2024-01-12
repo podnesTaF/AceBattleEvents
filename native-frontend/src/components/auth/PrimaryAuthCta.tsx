@@ -62,10 +62,10 @@ const AuthCtaBox = ({ screen }: any): JSX.Element => {
           <HStack key={i} space="xs" alignItems="center">
             <Icon as={CheckCircle2} size="md" color="#ff0000" />
             <HStack space="xs">
-              <Heading size={"md"} color={"$black"}>
+              <Heading size={"sm"} color={"$black"}>
                 {p.split(" ").slice(0, -1).join(" ")}
               </Heading>
-              <Heading size={"md"} color={"#ff0000"}>
+              <Heading size={"sm"} color={"#ff0000"}>
                 {p.split(" ").pop()}
               </Heading>
             </HStack>
