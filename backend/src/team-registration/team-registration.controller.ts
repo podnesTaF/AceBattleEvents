@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { JwtOptionalAuthGuard } from "src/auth/guards/jwt-optional-auth.guard";
 import { RolesGuard } from "src/auth/guards/roles.guard";
 import { Roles } from "src/auth/roles/roles.guard";
 import { CreateTeamRegistrationDto } from "./dto/create-team-registration.dto";
@@ -39,12 +40,15 @@ export class TeamRegistrationController {
   }
 
   @Get("user")
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles("manager", "runner", "coach", "admin")
+  @UseGuards(JwtOptionalAuthGuard)
   findUserRegistrations(
     @Request() req: { user: { id: number } },
     @Query() queries?: { role: string },
   ) {
+    if (queries.role === "spectator" || !queries.role || !req.user?.id) {
+      return null;
+    }
+
     return this.teamRegistrationService.findUserRegistrations(
       req.user.id,
       queries.role,
