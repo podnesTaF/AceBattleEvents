@@ -3,7 +3,6 @@ import withWatermarkBg from "@Components/HOCs/withWatermark";
 import AuthCallToAction from "@Components/auth/AuthCallToAction";
 import Container from "@Components/common/Container";
 import HorizontalListLayout from "@Components/common/HorizontalListLayout";
-import InfoTemplate from "@Components/common/InfoTemplate";
 import SearchTitle from "@Components/common/SearchTitle";
 import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import ListStyledWrapper from "@Components/common/wrappers/ListStyledWrapper";
@@ -16,9 +15,10 @@ import {
   useGetAllEventsQuery,
 } from "@lib/events/services";
 import { useAppSelector } from "@lib/hooks";
-import { IEvent, IViewer } from "@lib/models";
+import { IEvent } from "@lib/models";
 import { useFetchSpectatorRegistrationsQuery } from "@lib/services";
 import { selectUser } from "@lib/store";
+import { useFindUserRegistrationsQuery } from "@lib/teams/services/teamRegistrationService";
 import { mapFutureEvents } from "@lib/utils";
 import { Stack } from "expo-router";
 import React from "react";
@@ -28,6 +28,10 @@ const EventsScreen = () => {
   const user = useAppSelector(selectUser);
   const { data: myRegistrations, isLoading: isLoadingRegistrations } =
     useFetchSpectatorRegistrationsQuery();
+
+  const { data: teamUserRegistrations, isLoading: isLoadingTeamUserRegister } =
+    useFindUserRegistrationsQuery({ role: user?.role });
+
   const {
     data: fututeEventsData,
     error,
@@ -74,25 +78,19 @@ const EventsScreen = () => {
                 <Heading size={"lg"} mb={"$4"}>
                   Your Registrations
                 </Heading>
-                <SkeletonLoader<IViewer[]> data={myRegistrations}>
-                  {(data) =>
-                    data.length ? (
-                      data.map((reg) => (
-                        <RegistrationsSection
-                          key={reg.id}
-                          user={user}
-                          events={[]}
-                        />
-                      ))
-                    ) : (
-                      <Box w={"auto"}>
-                        <InfoTemplate
-                          title="Empty"
-                          text="You haven't registered to attend any events yet"
-                        />
-                      </Box>
-                    )
+                <SkeletonLoader<any[]>
+                  data={[myRegistrations, teamUserRegistrations]}
+                  isLoading={
+                    isLoadingTeamUserRegister || isLoadingRegistrations
                   }
+                >
+                  {(data) => (
+                    <RegistrationsSection
+                      user={user}
+                      spectatorRegistrations={data[0]}
+                      teamRegistrations={data[1]}
+                    />
+                  )}
                 </SkeletonLoader>
               </Box>
             </Container>

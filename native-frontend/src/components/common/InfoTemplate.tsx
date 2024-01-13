@@ -33,12 +33,13 @@ const InfoTemplate = ({
 }: InfoTemplateProps): JSX.Element => (
   <Alert
     py={"$6"}
+    flex={1}
     height={height || "$24"}
     action={type || "info"}
     variant={variant || "accent"}
   >
     <AlertIcon as={type ? icons[type] : icons["info"]} mr="$3" />
-    <VStack space="xs" maxWidth={scaleSize(300)}>
+    <VStack space="xs" maxWidth={scaleSize(250)}>
       <AlertText fontWeight="$bold">{title}</AlertText>
       <AlertText numberOfLines={2}>{text}</AlertText>
     </VStack>
