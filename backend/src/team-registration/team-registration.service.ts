@@ -111,12 +111,18 @@ export class TeamRegistrationService {
       });
     } else if (role === "coach") {
       return this.repository.find({
-        where: { coach: { user: { id: userId } } },
+        where: {
+          coach: { user: { id: userId } },
+          event: { startDateTime: MoreThan(new Date()) },
+        },
         relations: ["team", "event.location.country", "coach"],
       });
     } else if (role === "runner") {
       return this.repository.find({
-        where: { team: { players: { user: { id: userId } } } },
+        where: {
+          team: { players: { user: { id: userId } } },
+          event: { startDateTime: MoreThan(new Date()) },
+        },
         relations: ["team", "event.location.country", "coach"],
       });
     }
