@@ -20,8 +20,8 @@ const tabs = ["Enter your email", "Check your mailbox"];
 
 const ResetPass = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const [email, setEmail] = useState("");
   const height = Dimensions.get("window").height;
+  const [submitedEmail, setSubmitedEmail] = useState("");
 
   const [resetRequest, { isLoading, error }] =
     useResetPasswordRequestMutation();
@@ -35,6 +35,7 @@ const ResetPass = () => {
   const handleNext = async (isSubmit?: boolean) => {
     if (isSubmit && activeTab === 0) {
       await form.handleSubmit(sendResetRequest)();
+      if (!submitedEmail) return;
       setActiveTab(1);
     } else if (activeTab === 1) {
       router.replace("/(auth)/login");
@@ -47,9 +48,10 @@ const ResetPass = () => {
     }
   };
 
-  const sendResetRequest = async (data: { email: string }) => {
+  const sendResetRequest = async ({ email }: { email: string }) => {
     try {
       await resetRequest(email).unwrap();
+      setSubmitedEmail(email);
     } catch (error) {
       form.setError("email", { message: "Invalid email" });
     }
@@ -109,7 +111,7 @@ const ResetPass = () => {
                     <Heading textAlign="center" size={"sm"}>
                       We have sent an email to{" "}
                       <Heading size="sm" color={"$primary400"}>
-                        {email}
+                        {submitedEmail}
                       </Heading>{" "}
                       to reset your password.
                     </Heading>

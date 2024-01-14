@@ -10,7 +10,7 @@ import { useGetRacesByEventQuery } from "@lib/races/services/raceService";
 import { getNamedDate } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native";
 
 const Timetable = () => {
   const { eventId } = useLocalSearchParams<{ eventId?: string }>();

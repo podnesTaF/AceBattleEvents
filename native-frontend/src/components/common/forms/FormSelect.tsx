@@ -64,10 +64,11 @@ const FormSelect = ({
                 <SelectDragIndicatorWrapper>
                   <SelectDragIndicator />
                 </SelectDragIndicatorWrapper>
-                <ScrollView>
-                  <Box sx={{ width: "100%" }}>
+                <ScrollView w={"$full"}>
+                  <Box>
                     {items.map((item, index) => (
                       <SelectItem
+                        w={"$full"}
                         key={index}
                         label={item.label}
                         value={item.value}

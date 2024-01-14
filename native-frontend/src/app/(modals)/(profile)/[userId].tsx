@@ -24,10 +24,10 @@ import {
   Dimensions,
   FlatList,
   Platform,
+  SafeAreaView,
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const tabsData = (user: IUser) => {
   if (user.runner) {
@@ -97,7 +97,7 @@ const ProfileScreen = () => {
           headerShown: true,
           header: ({ navigation }) => (
             <SafeAreaView style={{ backgroundColor: "#1c1e1f" }}>
-              <VStack width={"$full"}>
+              <VStack width={width}>
                 <HStack minHeight={32} space="lg" alignItems="center" px={"$2"}>
                   {Platform.OS !== "ios" && (
                     <TouchableOpacity

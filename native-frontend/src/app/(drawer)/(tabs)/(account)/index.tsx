@@ -17,28 +17,35 @@ import { getAccountItems } from "@lib/user/utils/get-account-items";
 import { Link, Stack } from "expo-router";
 import { LogOut } from "lucide-react-native";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native";
 
 const AccountPage = () => {
   const user = useAppSelector(selectUser);
   const isAuth = useAppSelector(selectIsAuth);
   const [logout, isLoading] = useLogout();
 
-  if (isAuth && user) {
-    return (
-      <>
-        <Stack.Screen
-          options={{
-            header: () => (
+  return (
+    <>
+      <Stack.Screen
+        options={{
+          header: (props) =>
+            user && isAuth ? (
               <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
                 <Box p={"$2"}>
                   <UserPreview annotation="personal account" user={user} />
                 </Box>
               </SafeAreaView>
+            ) : (
+              <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+                <Box py={"$4"} alignItems="center">
+                  <LogoTitle />
+                </Box>
+              </SafeAreaView>
             ),
-          }}
-        />
-        <ScrollView>
+        }}
+      />
+      <ScrollView>
+        {isAuth && user ? (
           <VStack>
             <HStack flexWrap="wrap" m={"$4"} space="lg">
               {getAccountItems(user).map((item, i) => (
@@ -61,27 +68,14 @@ const AccountPage = () => {
               />
             </Box>
           </VStack>
-        </ScrollView>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <Stack.Screen
-          options={{
-            headerStyle: {
-              backgroundColor: "#1C1E1F",
-            },
-            headerTintColor: "#fff",
-            headerTitle: (props) => <LogoTitle {...props} />,
-          }}
-        />
-        <VStack flex={1} mt={"$10"}>
-          <AuthCallToAction screen="account" />
-        </VStack>
-      </>
-    );
-  }
+        ) : (
+          <VStack flex={1} mt={"$10"}>
+            <AuthCallToAction screen="account" />
+          </VStack>
+        )}
+      </ScrollView>
+    </>
+  );
 };
 
 export default withWatermarkBg(AccountPage);

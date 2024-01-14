@@ -14,7 +14,7 @@ import { selectUser } from "@lib/store";
 import { scaleSize } from "@lib/utils";
 import { Stack } from "expo-router";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native";
 
 const Followings = () => {
   const user = useAppSelector(selectUser);
