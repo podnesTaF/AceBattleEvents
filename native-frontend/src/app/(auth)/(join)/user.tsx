@@ -4,7 +4,7 @@ import UserJoinForm from "@Components/join/UserJoinForm";
 import { Box, Text, VStack } from "@gluestack-ui/themed";
 import { Stack } from "expo-router";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native";
 
 const JoinUser = () => {
   return (

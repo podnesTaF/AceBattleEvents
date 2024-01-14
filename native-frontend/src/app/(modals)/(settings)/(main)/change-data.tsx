@@ -20,8 +20,7 @@ import { updateUserDataSchema, uploadImage } from "@lib/utils";
 import { Stack, useNavigation } from "expo-router";
 import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Dimensions } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Dimensions, SafeAreaView } from "react-native";
 
 const ChangeUserData = () => {
   const dispatch = useAppDispatch();

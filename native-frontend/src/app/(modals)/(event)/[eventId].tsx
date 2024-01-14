@@ -23,7 +23,7 @@ import { formatDate } from "@lib/utils";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { Calendar } from "lucide-react-native";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native";
 
 const tabs = ["Participants", "Schedule", "Results"];
 

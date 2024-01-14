@@ -33,7 +33,6 @@ const InfoTemplate = ({
 }: InfoTemplateProps): JSX.Element => (
   <Alert
     py={"$6"}
-    flex={1}
     height={height || "$24"}
     action={type || "info"}
     variant={variant || "accent"}

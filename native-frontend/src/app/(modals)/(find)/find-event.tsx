@@ -19,7 +19,7 @@ import { IEvent } from "@lib/models";
 import { scaleSize } from "@lib/utils";
 import { Stack } from "expo-router";
 import React, { useState } from "react";
-import { Dimensions, Platform } from "react-native";
+import { Dimensions, SafeAreaView } from "react-native";
 
 const FindEventModal = () => {
   const [query, setQuery] = useState("");
@@ -44,31 +44,22 @@ const FindEventModal = () => {
     <>
       <Stack.Screen
         options={{
-          headerStyle: {
-            backgroundColor: "#1C1E1F",
-          },
-          headerTintColor: "#fff",
-          headerShown: true,
-          headerTitle: () => (
-            <VStack
-              mt={"$4"}
-              mb={"$2"}
-              left={Platform.OS === "ios" ? "-$2" : "-$16"}
-              width={width}
-              alignItems="center"
-            >
-              <Heading size="sm" color="$coolGray200">
-                Find Event
-              </Heading>
-              <Box w={"$full"}>
-                <SearchBar
-                  variant="dark"
-                  placeholder="Search by name..."
-                  value={query}
-                  onChange={(text) => setQuery(text)}
-                />
-              </Box>
-            </VStack>
+          header: () => (
+            <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+              <VStack mt={"$4"} width={width} alignItems="center">
+                <Heading size="sm" color="$coolGray200">
+                  Find Event
+                </Heading>
+                <Box w={"$full"}>
+                  <SearchBar
+                    variant="dark"
+                    placeholder="Search by name..."
+                    value={query}
+                    onChange={(text) => setQuery(text)}
+                  />
+                </Box>
+              </VStack>
+            </SafeAreaView>
           ),
         }}
       />

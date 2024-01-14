@@ -17,7 +17,7 @@ import { selectUser } from "@lib/store";
 import { scaleSize } from "@lib/utils";
 import { Stack, useNavigation } from "expo-router";
 import React, { useState } from "react";
-import { Dimensions, Platform } from "react-native";
+import { Dimensions, SafeAreaView } from "react-native";
 
 const FindAthelteModal = () => {
   const navigation = useNavigation();
@@ -42,26 +42,22 @@ const FindAthelteModal = () => {
     <>
       <Stack.Screen
         options={{
-          headerTitle: () => (
-            <VStack
-              mt={"$4"}
-              mb={"$2"}
-              left={Platform.OS === "ios" ? "-$2" : "-$16"}
-              width={width}
-              alignItems="center"
-            >
-              <Heading size="sm" color="$coolGray200">
-                Find Athlete
-              </Heading>
-              <Box w={"$full"}>
-                <SearchBar
-                  variant="dark"
-                  placeholder="Search by name..."
-                  value={query}
-                  onChange={(text) => setQuery(text)}
-                />
-              </Box>
-            </VStack>
+          header: () => (
+            <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+              <VStack mt={"$4"} width={width} alignItems="center">
+                <Heading size="sm" color="$coolGray200">
+                  Find Athlete
+                </Heading>
+                <Box w={"$full"} flex={1}>
+                  <SearchBar
+                    variant="dark"
+                    placeholder="Search by name..."
+                    value={query}
+                    onChange={(text) => setQuery(text)}
+                  />
+                </Box>
+              </VStack>
+            </SafeAreaView>
           ),
         }}
       />

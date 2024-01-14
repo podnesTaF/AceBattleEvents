@@ -5,8 +5,7 @@ import TeamsParticipants from "@Components/events/TeamsParticipants";
 import { Box, ScrollView, VStack } from "@gluestack-ui/themed";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Dimensions, FlatList, SafeAreaView } from "react-native";
 
 const tabs = ["Teams", "Runners"];
 

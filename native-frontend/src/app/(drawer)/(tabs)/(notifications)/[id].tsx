@@ -18,7 +18,7 @@ import { useGetNotificationQuery } from "@lib/notification/services";
 import { getTimeAgo } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native";
 
 const NotificationScreen = () => {
   const { id } = useLocalSearchParams();

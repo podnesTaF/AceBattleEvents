@@ -1,4 +1,5 @@
 import WithLoading from "@Components/HOCs/withLoading";
+import withWatermarkBg from "@Components/HOCs/withWatermark";
 import Container from "@Components/common/Container";
 import HeaderSubtitledTitle from "@Components/common/HeaderSubtitledTitle";
 import Tabs from "@Components/common/Tabs";
@@ -18,8 +19,7 @@ import { EventResult, RaceShortForm } from "@lib/models";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { InfoIcon } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Dimensions, FlatList, SafeAreaView } from "react-native";
 
 const tabs = ["Overview", "By Race"];
 
@@ -131,4 +131,4 @@ const Results = () => {
   );
 };
 
-export default Results;
+export default withWatermarkBg(Results, "#fff9ff");

@@ -22,7 +22,7 @@ import { useFindUserRegistrationsQuery } from "@lib/teams/services/teamRegistrat
 import { mapFutureEvents } from "@lib/utils";
 import { Stack } from "expo-router";
 import React from "react";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView } from "react-native";
 
 const EventsScreen = () => {
   const user = useAppSelector(selectUser);
@@ -43,7 +43,7 @@ const EventsScreen = () => {
     error: eventError,
   } = useGetAllEventsQuery("finished=true");
   return (
-    <Box bgColor="#fff9ff">
+    <>
       <Stack.Screen
         options={{
           headerStyle: {
@@ -57,7 +57,7 @@ const EventsScreen = () => {
           ),
         }}
       />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <VStack my={"$4"}>
           <Heading mx={"$3"} size={"lg"}>
             Upcoming Events
@@ -116,7 +116,7 @@ const EventsScreen = () => {
           </SkeletonLoader>
         </ListStyledWrapper>
       </ScrollView>
-    </Box>
+    </>
   );
 };
 
