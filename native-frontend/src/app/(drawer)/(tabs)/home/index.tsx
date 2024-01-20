@@ -20,10 +20,12 @@ import { mapFutureEvents, scaleSize } from "@lib/utils";
 import { Image } from "expo-image";
 import { Stack, router } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Dimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 const Page = () => {
+  const { t } = useTranslation();
   const userState = useAppSelector(selectUserState);
   const isAuthed = useAppSelector(selectIsAuth);
   const { data: eventsData, error, isLoading } = useFetchFutureEventsQuery();
@@ -72,7 +74,7 @@ const Page = () => {
                     textAlign="center"
                     size={"lg"}
                   >
-                    Welcome to ABM
+                    {t("mainPage.welcome")}
                   </Heading>
                   <Box
                     overflow="hidden"
@@ -99,7 +101,7 @@ const Page = () => {
               textTransform="uppercase"
               fontWeight="bold"
             >
-              Upcoming Events
+              {t("mainPage.upcomingEvents")}
             </Heading>
             <HorizontalListLayout
               error={error}
@@ -111,14 +113,17 @@ const Page = () => {
           </VStack>
           <Box mt={"$2"} mb={"$6"}>
             <Heading mb={"$4"} size={"xl"} textAlign="center">
-              Explore concepts
+              {t("mainPage.exploreConcepts")}
             </Heading>
             <VStack w={"$full"} overflow="hidden">
               {infoCards.map((inf, i) => (
                 <StatCard
                   key={i}
-                  title={inf.title}
-                  subtitle={inf.subtitle}
+                  title={t(`mainPage.infoCards.card${i + 1}.title`, inf.title)}
+                  subtitle={t(
+                    `mainPage.infoCards.card${i + 1}.subtitle`,
+                    inf.subtitle
+                  )}
                   dark={inf.dark}
                   bg={inf.bg}
                   radius={inf.radius}
@@ -146,14 +151,14 @@ const Page = () => {
             <Box alignItems="center" mt={"$4"}>
               <AbmButton
                 onPress={() => router.push("/concept")}
-                title="ABM Concept"
+                title={t("mainPage.abmConcept")}
               />
             </Box>
           </Box>
           <TopAthletesPodium />
           <Box m={"$4"}>
             <Heading size={"xl"} mb={"$3"}>
-              ABM TEAMS
+              {t("mainPage.abmTeams")}
             </Heading>
             <SkeletonLoader<ITeam[]>
               height={300}
@@ -179,7 +184,7 @@ const Page = () => {
           </Box>
           <Box my="$6">
             <Heading px={"$4"} size="xl">
-              Latest News
+              {t("mainPage.latestNews")}
             </Heading>
             <HorizontalListLayout
               itemWidth={0.9}

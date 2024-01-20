@@ -1,0 +1,102 @@
+{
+  "mainPage": {
+    "upcomingEvents": "Événements à venir",
+    "exploreConcepts": "Explorer les concepts",
+    "infoCards": {
+      "card1": {
+        "title": "1 MILE",
+        "subtitle": "de course"
+      },
+      "card2": {
+        "title": "2 ÉQUIPES",
+        "subtitle": "compétant sur la piste en même temps"
+      },
+      "card3": {
+        "title": "5 JOUEURS",
+        "subtitle": "commencent pour chaque équipe"
+      },
+      "card4": {
+        "title": "2 JOKERS",
+        "subtitle": "attendent en touche pour renforcer la bataille"
+      }
+    },
+    "abmConcept": "Concept ABM",
+    "topAbmRunners": "Meilleurs coureurs ABM",
+    "genderHeading": {
+      "male": "Hommes",
+      "female": "Femmes"
+    },
+    "runnerDetails": {
+      "rank": "Rang",
+      "name": "Nom"
+    },
+    "abmTeams": "ÉQUIPES ABM",
+    "latestNews": "Dernières nouvelles"
+  },
+  "authCta": {
+    "connectToAbm": "Connectez-vous à ABM",
+    "loginAndGetNotified": "Connectez-vous et soyez notifié",
+    "accessYourPersonalAccount": "Accédez à votre compte personnel",
+    "fullAccessToEvents": "Accès complet aux événements",
+    "privileges": {
+      "visitEvents": "Visiter des événements",
+      "becomeARunner": "Devenir un coureur",
+      "followAthletes": "Suivre des athlètes",
+      "organizeTeams": "Organiser des équipes",
+      "newsAndUpdates": "Nouvelles et mises à jour",
+      "getReminders": "Recevoir des rappels",
+      "registrationStatuses": "Statuts d'inscription",
+      "manageYourProfile": "Gérer votre profil",
+      "seeFollowingAthletes": "Voir les athlètes suivis",
+      "manageYourRoles": "Gérer vos rôles",
+      "registerAthletes": "Inscrire des athlètes",
+      "followEvents": "Suivre des événements"
+    },
+    "joinNow": "Rejoindre maintenant",
+    "login": "Connexion"
+  },
+  "common": {
+    "details": "Voir les détails",
+    "comingSoon": "Bientôt disponible...",
+    "top": "Top",
+    "runners": "Coureurs",
+    "teams": "Équipes",
+    "rank": "Classement",
+    "your": "Vos",
+    "followings": "Abonnements",
+    "follow": "Suivre",
+    "unfollow": "Se désabonner",
+    "edit": "Modifier",
+    "upcoming": "Prochains",
+    "past": "Passés",
+    "noTeam": "Pas d'équipe"
+  },
+  "links": {
+    "visitRunnerProfile": "le profil du coureur",
+    "visitTeamPage": "la page de l'équipe"
+  },
+  "search": {
+    "searchForAnAthlete": "Rechercher un Athlète",
+    "searchForAnEvent": "Rechercher un événement",
+    "searchByNameOrSurname": "Rechercher par nom ou prénom...",
+    "searchByTitle": "Rechercher par titre",
+    "findAthlete": "Trouver Athlète",
+    "findEvent": "Trouver Événement",
+    "noRunnersFound": "Aucun coureur trouvé",
+    "pleaseEditFilters": "Veuillez modifier les filtres",
+    "lookForAthleteOrTeam": "Chercher un athlète ou une équipe",
+    "searchForAthleteOrTeam": "Rechercher un athlète ou une équipe par prénom, nom, ou équipe",
+    "searchForEventByTitle": "Rechercher un événement par titre",
+    "noEventFound": "Aucun événement trouvé",
+    "trySearchingForAnotherEvent": "Essayez de rechercher un autre événement",
+    "youCanSearchForEvent": "Vous pouvez rechercher un événement en tapant le titre dans la barre de recherche"
+  },
+  "auth": {
+    "pleaseAuthorize": "Veuillez vous autoriser",
+    "authorizeToSeeFollowings": "Autorisez pour voir vos abonnements"
+  },
+  "infoTemplate": {
+    "noFollowingsTitle": "Vous n'avez aucun abonnement",
+    "noFollowingsText": "Suivez des athlètes pour les voir ici"
+  }
+}

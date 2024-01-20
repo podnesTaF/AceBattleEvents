@@ -1,0 +1,103 @@
+{
+  "mainPage": {
+    "welcome": "Вітаємо в ABM",
+    "upcomingEvents": "Майбутні події",
+    "exploreConcepts": "Kонцепції ABM",
+    "infoCards": {
+      "card1": {
+        "title": "1 МИЛЯ",
+        "subtitle": "бігу"
+      },
+      "card2": {
+        "title": "2 КОМАНДИ",
+        "subtitle": "змагаються на треку одночасно"
+      },
+      "card3": {
+        "title": "5 ГРАВЦІВ",
+        "subtitle": "починають за кожну команду"
+      },
+      "card4": {
+        "title": "2 ДЖОКЕРИ",
+        "subtitle": "очікують на лінії, щоб посилити битву"
+      }
+    },
+    "abmConcept": "Концепція ABM",
+    "topAbmRunners": "Кращі бігуни ABM",
+    "genderHeading": {
+      "male": "Чоловіки",
+      "female": "Жінки"
+    },
+    "runnerDetails": {
+      "rank": "Ранг",
+      "name": "Ім'я"
+    },
+    "abmTeams": "КОМАНДИ ABM",
+    "latestNews": "Останні новини"
+  },
+  "authCta": {
+    "connectToAbm": "Приєднуйтесь до ABM",
+    "loginAndGetNotified": "Отримуйте сповіщення",
+    "accessYourPersonalAccount": "Доступ до вашого особистого кабінету",
+    "fullAccessToEvents": "Повний доступ до подій",
+    "privileges": {
+      "visitEvents": "Відвідайте події",
+      "becomeARunner": "Станьте бігуном",
+      "followAthletes": "Слідкуйте за атлетами",
+      "organizeTeams": "Організовуйте команди",
+      "newsAndUpdates": "Новини та оновлення",
+      "getReminders": "Отримуйте нагадування",
+      "registrationStatuses": "Статуси реєстрації",
+      "manageYourProfile": "Керуйте вашим профілем",
+      "seeFollowingAthletes": "Слідкуйте за атлетами",
+      "manageYourRoles": "Керуйте вашими ролями",
+      "registerAthletes": "Реєстрація атлетів",
+      "followEvents": "Слідкуйте за подіями"
+    },
+    "joinNow": "Приєднатися зараз",
+    "login": "Увійти"
+  },
+  "common": {
+    "details": "Дивитись деталі",
+    "comingSoon": "Незабаром...",
+    "top": "Топ",
+    "runners": "Бігуни",
+    "teams": "Команди",
+    "rank": "Ранг",
+    "your": "Ваші",
+    "followings": "Підписки",
+    "follow": "Підписатися",
+    "unfollow": "Відписатися",
+    "edit": "Редагувати",
+    "upcoming": "Майбутні",
+    "past": "Минулі",
+    "noTeam": "Немає команди"
+  },
+  "links": {
+    "visitRunnerProfile": "профіль бігуна",
+    "visitTeamPage": "сторінкa команди"
+  },
+  "search": {
+    "searchForAnAthlete": "Шукати атлета",
+    "searchForAnEvent": "Шукати подію",
+    "searchByNameOrSurname": "Шукати за ім'ям або прізвищем...",
+    "searchByTitle": "Шукати за назвою",
+    "findAthlete": "Знайти Атлета",
+    "findEvent": "Знайти Подію",
+    "noRunnersFound": "Бігунів не знайдено",
+    "pleaseEditFilters": "Будь ласка, відредагуйте фільтри",
+    "lookForAthleteOrTeam": "Шукати атлета або команду",
+    "searchForAthleteOrTeam": "Шукати атлета або команду за ім'ям, прізвищем або командою",
+    "searchForEventByTitle": "Шукати подію за назвою",
+    "noEventFound": "Подію не знайдено",
+    "trySearchingForAnotherEvent": "Спробуйте шукати іншу подію",
+    "youCanSearchForEvent": "Ви можете шукати подію, введіть назву в рядку пошуку"
+  },
+  "auth": {
+    "pleaseAuthorize": "Будь ласка, авторизуйтеся",
+    "authorizeToSeeFollowings": "Авторизуйтеся, щоб бачити кого ви підписані"
+  },
+  "infoTemplate": {
+    "noFollowingsTitle": "У вас немає підписок",
+    "noFollowingsText": "Підписуйтесь на атлетів, щоб бачити їх тут"
+  }
+}

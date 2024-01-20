@@ -9,12 +9,14 @@ import {
 import { ITeam } from "@lib/models";
 import { Link } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface TeamProps {
   team: ITeam;
 }
 
 const TeamPreview: React.FC<TeamProps> = ({ team }) => {
+  const { t } = useTranslation();
   return (
     <Box flex={1} p={"$2"}>
       <HStack alignItems="center">
@@ -31,11 +33,11 @@ const TeamPreview: React.FC<TeamProps> = ({ team }) => {
           <Heading size={"md"}>Team {team.name}</Heading>
           <HStack justifyContent="space-between" alignItems="flex-end">
             <Heading size={"xs"} color="$coolGray300">
-              Rank {team.rank}
+              {t("common.rank")} {team.rank}
             </Heading>
             <Link href={`/(modals)/(team)/${team.id}`} asChild>
               <Text color="$red500" fontWeight="600">
-                visit team page
+                {t("links.visitTeamPage")}
               </Text>
             </Link>
           </HStack>

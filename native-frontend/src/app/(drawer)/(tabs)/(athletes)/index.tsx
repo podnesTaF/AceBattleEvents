@@ -13,9 +13,11 @@ import { useGetTopTeamsQuery } from "@lib/services";
 import { selectUser } from "@lib/store";
 import { useGetTopAthletesQuery } from "@lib/user/services/RunnerService";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const Athletes = () => {
   const user = useAppSelector(selectUser);
+  const { t } = useTranslation();
 
   const {
     data: athletes,
@@ -33,11 +35,11 @@ const Athletes = () => {
     <ScrollView bg={"$fff9ff"}>
       <VStack my={"$4"} space="sm">
         <HStack mx={"$4"}>
-          <Heading size="lg">Top </Heading>
+          <Heading size="lg">{t("common.top")} </Heading>
           <Heading size="lg" color="$red500">
             AB{" "}
           </Heading>
-          <Heading size="lg">Teams</Heading>
+          <Heading size="lg">{t("common.teams")}</Heading>
         </HStack>
         <SkeletonLoader<{ male: ITeam[]; female: ITeam[] }>
           data={teams}
@@ -60,11 +62,11 @@ const Athletes = () => {
       </VStack>
       <VStack my={"$4"} space="sm">
         <HStack mx={"$4"}>
-          <Heading size="lg">Top </Heading>
+          <Heading size="lg">{t("common.top")} </Heading>
           <Heading size="lg" color="$red500">
             AB{" "}
           </Heading>
-          <Heading size="lg">Runners</Heading>
+          <Heading size="lg">{t("common.runners")}</Heading>
         </HStack>
         <SkeletonLoader<{
           male: IRunner[] | null;
@@ -85,17 +87,17 @@ const Athletes = () => {
       </VStack>
       <VStack mt={"$4"} mb={"$8"} space="sm">
         <HStack mx={"$4"}>
-          <Heading size="lg">Your </Heading>
+          <Heading size="lg">{t("common.your")} </Heading>
           <Heading size="lg" color="$red500">
-            Followings
+            {t("common.followings")}
           </Heading>
         </HStack>
         {user ? (
           <FollowingAthletesList />
         ) : (
           <InfoTemplate
-            title={"Please Authorize"}
-            text={"Authorize to see your followings"}
+            title={t("auth.pleaseAuthorize")}
+            text={t("auth.authorizeToSeeFollowings")}
           />
         )}
       </VStack>

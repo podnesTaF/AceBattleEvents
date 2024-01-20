@@ -2,10 +2,12 @@ import { Box, Center, HStack, Heading, Spinner } from "@gluestack-ui/themed";
 import { IRunner } from "@lib/models";
 import { useGetTopAthletesQuery } from "@lib/services";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable } from "react-native";
 import AthletePodiumCard from "./AthletePodiumCard";
 
 const TopAthletesPodium = () => {
+  const { t } = useTranslation();
   const { data: topAthletes, isLoading: topAthletesLoading } =
     useGetTopAthletesQuery({ top: 3 });
 
@@ -20,7 +22,7 @@ const TopAthletesPodium = () => {
   return (
     <Box my={"$4"} p={"$3"} bg={"$coolGray900"}>
       <Heading size="lg" color="$white" mb={"$4"}>
-        Top ABM Runners
+        {t("mainPage.topAbmRunners")}
       </Heading>
       <Center width={"$full"} mb={"$4"}>
         <HStack>
@@ -44,7 +46,9 @@ const TopAthletesPodium = () => {
                   py={"$1"}
                 >
                   <Heading size="xl" color="$white" textAlign="center">
-                    {gender === "male" ? "Men" : "Women"}
+                    {gender === "male"
+                      ? t("mainPage.genderHeading.male")
+                      : t("mainPage.genderHeading.female")}
                   </Heading>
                 </Box>
               )}

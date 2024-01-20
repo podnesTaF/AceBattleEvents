@@ -7,10 +7,11 @@ import { Box, VStack } from "@gluestack-ui/themed";
 import { IRunner } from "@lib/models";
 import { useGetMyFollowingsQuery } from "@lib/services";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const FollowingAthletesList = () => {
   const { data: runners, isLoading, error } = useGetMyFollowingsQuery();
-
+  const { t } = useTranslation();
   const loadingComponent = () => (
     <VStack space={"md"}>
       {[...Array(3)].map((_, i) => (
@@ -44,8 +45,8 @@ const FollowingAthletesList = () => {
           <Box px={"$4"}>
             <InfoTemplate
               variant="outline"
-              title="You have no Followings"
-              text="Follow athletes to see them here"
+              title={t("infoTemplate.noFollowingsTitle")}
+              text={t("infoTemplate.noFollowingsTitle")}
             />
           </Box>
         )

@@ -5,9 +5,11 @@ import { formatDate, scaleSize } from "@lib/utils";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const UpcomingEventCard = ({ event }: { event: MappedFutureEvent }) => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <HStack rounded={"$lg"} mb={scaleSize(60)}>
@@ -104,14 +106,14 @@ const UpcomingEventCard = ({ event }: { event: MappedFutureEvent }) => {
         {event.infoAvailable ? (
           <Box py={"$1"} alignItems="center">
             <AbmButton
-              title="View details"
+              title={t("common.details")}
               size="sm"
               onPress={() => router.push(`/(modals)/(event)/${event.id}`)}
             />
           </Box>
         ) : (
           <Heading fontSize={18} fontWeight="bold" textAlign="left" p={"$2"}>
-            Comming Soon...
+            {t("common.comingSoon")}
           </Heading>
         )}
       </Box>

@@ -19,6 +19,7 @@ import { IEvent } from "@lib/models";
 import { scaleSize } from "@lib/utils";
 import { Stack } from "expo-router";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dimensions, SafeAreaView } from "react-native";
 
 const FindEventModal = () => {
@@ -37,6 +38,7 @@ const FindEventModal = () => {
   } = useGetAllEventsQuery(`name=${query}`);
 
   const { isSmallScreen } = useScreenSize();
+  const { t } = useTranslation();
 
   const width = Dimensions.get("window").width;
 
@@ -48,12 +50,12 @@ const FindEventModal = () => {
             <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
               <VStack mt={"$4"} width={width} alignItems="center">
                 <Heading size="sm" color="$coolGray200">
-                  Find Event
+                  {t("search.findEvent")}
                 </Heading>
                 <Box w={"$full"}>
                   <SearchBar
                     variant="dark"
-                    placeholder="Search by name..."
+                    placeholder={t("search.searchForAnEvent")}
                     value={query}
                     onChange={(text) => setQuery(text)}
                   />
@@ -76,14 +78,14 @@ const FindEventModal = () => {
         >
           <ScrollView>
             <VStack p={"$4"} mt={isSmallScreen ? "$6" : "$2"} space={"md"}>
-              {["Upcoming", "Past"].map((title, index) => (
+              {["upcoming", "past"].map((title, index) => (
                 <VStack key={index} space={"md"} alignItems="center">
                   <Heading size="md" color="$coolGray500">
-                    {title}
+                    {t("common." + title)}
                   </Heading>
                   <SkeletonLoader<IEvent[]>
                     data={
-                      title === "Upcoming"
+                      title === "upcoming"
                         ? futureEvents?.events
                         : pastEvents?.events
                     }
@@ -97,8 +99,8 @@ const FindEventModal = () => {
                           ))
                         ) : (
                           <NoResourceFound
-                            title={`No ${title} Events Found`}
-                            text="Try searching for another event"
+                            title={t("search.noEventFound")}
+                            text={t("search.trySearchingForAnotherEvent")}
                           />
                         )}
                       </VStack>
@@ -122,10 +124,10 @@ const FindEventModal = () => {
             alt={"loading..."}
           />
           <Heading size="lg" color="$coolGray500">
-            Search for an event by title
+            {t("search.searchForEventByTitle")}
           </Heading>
           <Text maxWidth={scaleSize(300)} textAlign="center">
-            You can search for an event by typing the title in the search bar
+            {t("search.youCanSearchForEvent")}
           </Text>
         </Center>
       )}

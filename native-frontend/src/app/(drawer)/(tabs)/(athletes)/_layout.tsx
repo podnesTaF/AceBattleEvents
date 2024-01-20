@@ -1,8 +1,10 @@
 import SearchTitle from "@Components/common/SearchTitle";
 import { Stack } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const Layout = () => {
+  const { t } = useTranslation();
   return (
     <Stack>
       <Stack.Screen
@@ -16,7 +18,7 @@ const Layout = () => {
           headerTitle: (props) => (
             <SearchTitle
               link={"/(modals)/(find)/find-athlete"}
-              placeholder="Search for an athlete..."
+              placeholder={t("search.searchForAnAthlete")}
             />
           ),
         }}

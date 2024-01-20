@@ -3,6 +3,7 @@ import { Box, Center, Image, Text, VStack } from "@gluestack-ui/themed";
 import { IRunner } from "@lib/models";
 import { useRouter } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable } from "react-native";
 
 interface AthletePodiumCardProps {
@@ -11,6 +12,7 @@ interface AthletePodiumCardProps {
 
 const AthletePodiumCard: React.FC<AthletePodiumCardProps> = ({ runner }) => {
   const router = useRouter();
+  const { t } = useTranslation();
   if (!runner) return null;
   return (
     <Center
@@ -43,9 +45,14 @@ const AthletePodiumCard: React.FC<AthletePodiumCardProps> = ({ runner }) => {
             </Box>
             <VStack alignItems="center" maxWidth={"$32"}>
               <Text fontWeight="600" size="lg" color={"$white"}>
-                Rank {runner.rank}
+                {t("mainPage.runnerDetails.rank")} {runner.rank}
               </Text>
-              <Text size="md" color="$coolGray300" textAlign="center">
+              <Text
+                size="md"
+                color="$coolGray300"
+                textTransform="capitalize"
+                textAlign="center"
+              >
                 {runner.user.name} {runner.user.surname}
               </Text>
             </VStack>
