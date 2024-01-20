@@ -1,0 +1,102 @@
+{
+  "mainPage": {
+    "upcomingEvents": "Upcoming Events",
+    "exploreConcepts": "Explore concepts",
+    "infoCards": {
+      "card1": {
+        "title": "1 MILE",
+        "subtitle": "of running"
+      },
+      "card2": {
+        "title": "2 TEAMS",
+        "subtitle": "competing on track at a time"
+      },
+      "card3": {
+        "title": "5 PLAYERS",
+        "subtitle": "starting for each team"
+      },
+      "card4": {
+        "title": "2 JOKERS",
+        "subtitle": "waiting sideline to reinforce the battle"
+      }
+    },
+    "abmConcept": "ABM Concept",
+    "topAbmRunners": "Top ABM Runners",
+    "genderHeading": {
+      "male": "Men",
+      "female": "Women"
+    },
+    "runnerDetails": {
+      "rank": "Rank",
+      "name": "Name"
+    },
+    "abmTeams": "ABM TEAMS",
+    "latestNews": "Latest News"
+  },
+  "authCta": {
+    "connectToAbm": "Connect to ABM",
+    "loginAndGetNotified": "Login and Get Notified",
+    "accessYourPersonalAccount": "Access Your Personal Account",
+    "fullAccessToEvents": "Full Access to Events",
+    "privileges": {
+      "visitEvents": "Visit Events",
+      "becomeARunner": "Become a Runner",
+      "followAthletes": "Follow Athletes",
+      "organizeTeams": "Organize Teams",
+      "newsAndUpdates": "News and Updates",
+      "getReminders": "Get Reminders",
+      "registrationStatuses": "Registration statuses",
+      "manageYourProfile": "Manage your profile",
+      "seeFollowingAthletes": "See following athletes",
+      "manageYourRoles": "Manage your roles",
+      "registerAthletes": "Register Athletes",
+      "followEvents": "Follow Events"
+    },
+    "joinNow": "Join Now",
+    "login": "Login"
+  },
+  "common": {
+    "details": "View Details",
+    "comingSoon": "Coming soon...",
+    "top": "Top",
+    "runners": "Runners",
+    "teams": "Teams",
+    "rank": "Rank",
+    "your": "Your",
+    "followings": "Followings",
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "edit": "Edit",
+    "upcoming": "Upcoming",
+    "past": "Past",
+    "noTeam": "No team"
+  },
+  "links": {
+    "visitRunnerProfile": "visit runner profile",
+    "visitTeamPage": "visit team page"
+  },
+  "search": {
+    "searchForAnAthlete": "Search for an Athlete",
+    "searchForAnEvent": "Search for an event",
+    "searchByNameOrSurname": "Search by name or surname...",
+    "searchByTitle": "Search by title",
+    "findAthlete": "Find Athlete",
+    "findEvent": "Find Event",
+    "lookForAthleteOrTeam": "Look for an athlete or team",
+    "searchForAthleteOrTeam": "Search for an athlete or team by first name, last name, or team",
+    "searchForEventByTitle": "Search for an event by title",
+    "noEventFound": "No Event Found",
+    "trySearchingForAnotherEvent": "Try searching for another event",
+    "youCanSearchForEvent": "You can search for an event by typing the title in the search bar",
+    "noRunnersFound": "No Runners Found",
+    "pleaseEditFilters": "Please edit filters"
+  },
+  "auth": {
+    "pleaseAuthorize": "Please Authorize",
+    "authorizeToSeeFollowings": "Authorize to see your followings"
+  },
+  "infoTemplate": {
+    "noFollowingsTitle": "You have no Followings",
+    "noFollowingsText": "Follow athletes to see them here"
+  }
+}

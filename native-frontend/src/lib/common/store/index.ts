@@ -1,3 +1,4 @@
+import { languageReducer } from "@lib/language/slices";
 import { notificationReducer } from "@lib/notification/slices";
 import { manageTeamReducer, registerTeamReducer } from "@lib/teams/slices";
 import { userReducer } from "@lib/user/slices/userSlice";
@@ -14,6 +15,7 @@ export const makeStore = () => {
       registerTeam: registerTeamReducer,
       formValues: formValuesReducer,
       notification: notificationReducer,
+      language: languageReducer,
       [api.reducerPath]: api.reducer,
     },
     middleware: (getDefaultMiddleware) =>

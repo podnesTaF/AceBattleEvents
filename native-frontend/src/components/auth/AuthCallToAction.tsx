@@ -12,6 +12,7 @@ import {
 import { loginPrivileges } from "@lib/common/data";
 import { useRouter } from "expo-router";
 import { CheckIcon } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 
 const AuthCallToAction = ({
   screen,
@@ -19,15 +20,16 @@ const AuthCallToAction = ({
   screen: "home" | "notification" | "account" | "events";
 }) => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <Container vertical borderColor={"$black"}>
       <Box py={"$4"}>
         <Heading size={"lg"} mb={"$2"}>
-          {loginPrivileges(screen).title}
+          {loginPrivileges(screen, t).title}
         </Heading>
         <VStack space="sm" mb={"$4"}>
-          {loginPrivileges(screen).privileges.map((item, index) => (
+          {loginPrivileges(screen, t).privileges.map((item, index) => (
             <HStack key={index} space="sm">
               <Icon as={CheckIcon} size={"lg"} />
               <Text key={index} size={"md"}>
@@ -39,14 +41,14 @@ const AuthCallToAction = ({
         <ButtonGroup space={"lg"}>
           <Box flex={1}>
             <AbmButton
-              title="Join Now"
+              title={t("authCta.joinNow")}
               variant="redFirst"
               onPress={() => router.push("/(auth)/join")}
             />
           </Box>
           <Box flex={1}>
             <AbmButton
-              title="Login"
+              title={t("authCta.login")}
               onPress={() => router.push("/(auth)/login")}
             />
           </Box>

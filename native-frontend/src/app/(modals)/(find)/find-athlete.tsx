@@ -17,6 +17,7 @@ import { selectUser } from "@lib/store";
 import { scaleSize } from "@lib/utils";
 import { Stack, useNavigation } from "expo-router";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dimensions, SafeAreaView } from "react-native";
 
 const FindAthelteModal = () => {
@@ -37,6 +38,7 @@ const FindAthelteModal = () => {
     limit: 20,
     authId: user?.id,
   });
+  const { t } = useTranslation();
 
   return (
     <>
@@ -46,12 +48,12 @@ const FindAthelteModal = () => {
             <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
               <VStack mt={"$4"} width={width} alignItems="center">
                 <Heading size="sm" color="$coolGray200">
-                  Find Athlete
+                  {t("search.findAthlete")}
                 </Heading>
                 <Box w={"$full"} flex={1}>
                   <SearchBar
                     variant="dark"
-                    placeholder="Search by name..."
+                    placeholder={t("search.searchByNameOrSurname")}
                     value={query}
                     onChange={(text) => setQuery(text)}
                   />
@@ -73,7 +75,7 @@ const FindAthelteModal = () => {
               height={"$full"}
             >
               <Box mb={"$4"}>
-                <Heading>Runners</Heading>
+                <Heading>{t("common.runners")}</Heading>
                 <VStack>
                   {runnersData?.runners?.length ? (
                     runnersData?.runners?.map((runner, i) => (
@@ -86,8 +88,8 @@ const FindAthelteModal = () => {
                     ))
                   ) : (
                     <NoResourceFound
-                      title={"No Runners Found"}
-                      text={"Please edit filters"}
+                      title={t("search.noRunnersFound")}
+                      text={t("search.pleaseEditFilters")}
                     />
                   )}
                 </VStack>
@@ -107,10 +109,10 @@ const FindAthelteModal = () => {
               alt={"loading..."}
             />
             <Heading size="lg" color="$coolGray500">
-              Look for an athlete or team
+              {t("search.lookForAthleteOrTeam")}
             </Heading>
             <Text maxWidth={scaleSize(300)} textAlign="center">
-              Search for an athlete or team by first name, last name, or team
+              {t("search.searchForAthleteOrTeam")}
             </Text>
           </Center>
         )}

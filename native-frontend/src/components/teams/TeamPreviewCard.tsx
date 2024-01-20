@@ -13,6 +13,7 @@ import { ITeam } from "@lib/models";
 import { scaleSize } from "@lib/utils";
 import { Link, useRouter } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface ItemProps {
   team: ITeam;
@@ -40,6 +41,7 @@ const TeamPreviewCard = ({
   titlePosition,
 }: TeamProps): JSX.Element => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handlePress = () => {
     if (showLink) {
@@ -92,7 +94,7 @@ const TeamPreviewCard = ({
                     <ButtonIcon>
                       <Ionicons name="md-create" size={16} color="white" />
                     </ButtonIcon>
-                    <ButtonText>Edit</ButtonText>
+                    <ButtonText>{t("common.edit")}</ButtonText>
                   </Button>
                 </Link>
               </Box>

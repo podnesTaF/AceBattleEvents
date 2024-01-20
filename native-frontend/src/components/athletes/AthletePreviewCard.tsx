@@ -5,12 +5,14 @@ import { scaleSize } from "@lib/utils";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface AthleteProps {
   runner: IRunner;
 }
 
 const AthletePreviewCard: React.FC<AthleteProps> = ({ runner }) => {
+  const { t } = useTranslation();
   return (
     <VStack w={scaleSize(320)} rounded={"$md"} bg={"$white"} overflow="hidden">
       <Box
@@ -43,12 +45,12 @@ const AthletePreviewCard: React.FC<AthleteProps> = ({ runner }) => {
                     : "-"}
                 </Heading>
                 <Heading size={"xs"} color="$coolGray300">
-                  Rank {runner.rank > 1000 ? "-" : runner.rank}
+                  {t("common.rank")} {runner.rank > 1000 ? "-" : runner.rank}
                 </Heading>
               </HStack>
               <Link href={`/(modals)/(profile)/${runner.user.id}`} asChild>
                 <Text color="$red500" fontWeight="600">
-                  visit runner profile
+                  {t("links.visitRunnerProfile")}
                 </Text>
               </Link>
             </HStack>

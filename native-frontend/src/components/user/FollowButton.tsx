@@ -8,6 +8,7 @@ import {
 import { selectUser } from "@lib/store";
 
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface FollowButtonProps {
   userId: number;
@@ -23,6 +24,7 @@ const FollowButton: React.FC<FollowButtonProps> = ({
   color = "primary",
 }) => {
   const [isFollowing, setIsFollowing] = useState(isInitiallyFollowing);
+  const { t } = useTranslation();
   const [followRunner, { isLoading: isFollowingLoading }] =
     useFollowRunnerMutation();
   const [unfollowRunner, { isLoading: isUnfollowingLoading }] =
@@ -60,7 +62,7 @@ const FollowButton: React.FC<FollowButtonProps> = ({
         />
       )}
       <ButtonText ml={isFollowing ? "$0" : "$2"}>
-        {isFollowing ? "Unfollow" : "Follow"}
+        {isFollowing ? t("common.unfollow") : t("common.follow")}
       </ButtonText>
     </Button>
   );

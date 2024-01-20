@@ -16,8 +16,10 @@ import {
 import { removeUser, setLoading, setUser, store } from "@lib/store";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import "intl-pluralrules";
 import { useEffect } from "react";
 import { Provider } from "react-redux";
+import "../../i18n";
 
 export {
   // Catch any errors thrown by the Layout component.

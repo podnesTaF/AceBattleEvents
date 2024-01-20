@@ -2,17 +2,20 @@ import withWatermarkBg from "@Components/HOCs/withWatermark";
 import AbmButton from "@Components/common/buttons/AbmButton";
 import { Box, HStack, Heading, Icon, VStack } from "@gluestack-ui/themed";
 import { loginPrivileges } from "@lib/common/data";
-import { useScreenSize } from "@lib/hooks";
+import { useAppSelector, useScreenSize } from "@lib/hooks";
+import { selectLanguage } from "@lib/store";
 import { scaleSize } from "@lib/utils";
 import { useRouter } from "expo-router";
 import { CheckCircle2 } from "lucide-react-native";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface PrimaryAuthCtaProps {
   screen: any;
 }
 
 const PrimaryAuthCta = ({ screen }: PrimaryAuthCtaProps): JSX.Element => {
+  const { t } = useTranslation();
   return (
     <Box
       borderTopLeftRadius={100}
@@ -28,7 +31,7 @@ const PrimaryAuthCta = ({ screen }: PrimaryAuthCtaProps): JSX.Element => {
         textAlign="center"
         size={"lg"}
       >
-        {loginPrivileges(screen).title}
+        {loginPrivileges(screen, t).title}
       </Heading>
       <Box
         overflow="hidden"
@@ -50,15 +53,17 @@ export default PrimaryAuthCta;
 const AuthCtaBox = ({ screen }: any): JSX.Element => {
   const router = useRouter();
   const { isSmallScreen } = useScreenSize();
+  const language = useAppSelector(selectLanguage);
+  const { t } = useTranslation();
   return (
     <Box
-      flexDirection={isSmallScreen ? "column" : "row"}
+      flexDirection={isSmallScreen || language !== "en" ? "column" : "row"}
       pl={scaleSize(24)}
       pr={scaleSize(8)}
       gap={"$4"}
     >
       <VStack flex={1}>
-        {loginPrivileges(screen).privileges.map((p: string, i: number) => (
+        {loginPrivileges(screen, t).privileges.map((p: string, i: number) => (
           <HStack key={i} space="xs" alignItems="center">
             <Icon as={CheckCircle2} size="md" color="#ff0000" />
             <HStack space="xs">
@@ -74,13 +79,12 @@ const AuthCtaBox = ({ screen }: any): JSX.Element => {
       </VStack>
       <VStack flex={1} space="lg">
         <AbmButton
-          title="Join Now"
+          title={t("authCta.joinNow")}
           variant="redFirst"
           onPress={() => router.push("/(auth)/join")}
         />
         <AbmButton
-          title="Login"
-          variant="redFirst"
+          title={t("authCta.login")}
           onPress={() => router.push("/(auth)/login")}
         />
       </VStack>

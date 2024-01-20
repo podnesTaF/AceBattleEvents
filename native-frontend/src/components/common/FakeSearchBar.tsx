@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Box, HStack, Text } from "@gluestack-ui/themed";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const FakeSearchBar = ({
   placeholder,
@@ -11,6 +12,7 @@ const FakeSearchBar = ({
   bg?: any;
   showIcon?: boolean;
 }) => {
+  const { t } = useTranslation();
   return (
     <HStack
       alignItems="center"

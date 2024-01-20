@@ -12,6 +12,7 @@ import { IRunner, IUser, RunnerPreview } from "@lib/models";
 import { getCategoryByDoB } from "@lib/utils";
 import { Link } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import FollowButton from "./FollowButton";
 
 interface UserCardProps {
@@ -31,6 +32,7 @@ const UserCard: React.FC<UserCardProps> = ({
 }) => {
   const runner = user?.runner || runnerPreview;
   const { isSmallScreen } = useScreenSize();
+  const { t } = useTranslation();
 
   if (!user && !runner) {
     return null;
@@ -69,7 +71,7 @@ const UserCard: React.FC<UserCardProps> = ({
                     |{" "}
                     {runner.teamsAsRunner?.length
                       ? runner.teamsAsRunner[0].name
-                      : "no team"}
+                      : t("common.noTeam")}
                   </Heading>
                 )}
                 {description && (
