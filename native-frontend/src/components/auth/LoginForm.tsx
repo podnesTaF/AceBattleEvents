@@ -11,11 +11,13 @@ import { Link, useRouter } from "expo-router";
 import { Lock, MailIcon } from "lucide-react-native";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 const LoginForm = () => {
   const [loginUser, { isLoading, error }] = useLoginUserMutation();
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const form = useForm<LoginUserRequest>({
     mode: "onChange",
@@ -48,8 +50,8 @@ const LoginForm = () => {
       <VStack w={"$full"} space="md">
         <FormField
           name={"email"}
-          label={"Email"}
-          placeholder={"Enter your email here"}
+          label={t("auth.email")}
+          placeholder={t("auth.enterYourEmail")}
           variant="underlined"
           inputProportion={3}
           vertical={true}
@@ -57,8 +59,8 @@ const LoginForm = () => {
         />
         <FormField
           name={"password"}
-          label={"Password"}
-          placeholder={"Enter your password here"}
+          label={t("auth.password")}
+          placeholder={t("auth.enterYourPassword")}
           type={"password"}
           variant="underlined"
           inputProportion={3}
@@ -67,7 +69,7 @@ const LoginForm = () => {
         />
         <FormButton
           marginTop={"$2"}
-          title={"Login"}
+          title={t("auth.login")}
           disabled={
             form.formState.isSubmitting || isLoading || !form.formState.isValid
           }
@@ -75,16 +77,16 @@ const LoginForm = () => {
           onPress={form.handleSubmit(login)}
         />
         <HStack space={"md"} alignItems="center">
-          <Text size="md">You don't have an account?</Text>
+          <Text size="md">{t("auth.noAccount")}</Text>
           <Link href={"/join"}>
-            <Text color={"$primary500"}>Join Us</Text>
+            <Text color={"$primary500"}>{t("auth.joinUs")}</Text>
           </Link>
         </HStack>
         <HStack space={"md"} alignItems="center">
-          <Text size="md"> Forgot your password? </Text>
+          <Text size="md"> {t("auth.forgotPassword")} </Text>
           <Link href={"/(auth)/reset"} asChild>
             <Text size="md" color={"$error500"}>
-              Reset it
+              {t("auth.resetIt")}
             </Text>
           </Link>
         </HStack>

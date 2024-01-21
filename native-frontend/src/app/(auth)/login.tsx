@@ -5,9 +5,11 @@ import { scaleSize } from "@lib/utils";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { KeyboardAvoidingView, Platform } from "react-native";
 
 const Login = () => {
+  const { t } = useTranslation();
   return (
     <>
       <StatusBar style={"dark"} />
@@ -33,7 +35,7 @@ const Login = () => {
               height={140}
             />
           </Box>
-          <Heading size="xl">Sign in</Heading>
+          <Heading size="xl">{t("auth.signIn")}</Heading>
           <Box width={scaleSize(330)}>
             <LoginForm />
           </Box>

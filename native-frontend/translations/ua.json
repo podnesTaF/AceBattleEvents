@@ -70,7 +70,17 @@
     "edit": "Редагувати",
     "upcoming": "Майбутні",
     "past": "Минулі",
-    "noTeam": "Немає команди"
+    "noTeam": "Немає команди",
+    "next": "Далі",
+    "back": "Назад",
+    "submit": "Надіслати",
+    "home": "Головна"
+  },
+
+  "gender": {
+    "genderLabel": "Стать",
+    "male": "Чоловік",
+    "female": "Жінка"
   },
   "links": {
     "visitRunnerProfile": "профіль бігуна",
@@ -94,10 +104,102 @@
   },
   "auth": {
     "pleaseAuthorize": "Будь ласка, авторизуйтеся",
-    "authorizeToSeeFollowings": "Авторизуйтеся, щоб бачити кого ви підписані"
+    "authorizeToSeeFollowings": "Авторизуйтеся, щоб бачити кого ви підписані",
+    "signIn": "Увійти",
+    "email": "Електронна пошта",
+    "enterYourEmail": "Введіть сюди свою електронну пошту",
+    "password": "Пароль",
+    "enterYourPassword": "Введіть сюди свій пароль",
+    "login": "Вхід",
+    "joinUs": "Приєднатися",
+    "noAccount": "У вас немає акаунту?",
+    "forgotPassword": "Забули пароль?",
+    "resetIt": "Змінити",
+    "accountCreationRequirement": "Щоб стати бігуном, тренером та/або менеджером, спочатку вам потрібно створити обліковий запис користувача."
   },
   "infoTemplate": {
     "noFollowingsTitle": "У вас немає підписок",
     "noFollowingsText": "Підписуйтесь на атлетів, щоб бачити їх тут"
+  },
+  "navigation": {
+    "home": "Головна",
+    "events": "Події",
+    "aboutAbm": "Про ABM",
+    "news": "Новини"
+  },
+  "steps": {
+    "userRegistrationTitle": "Реєстрація користувача",
+    "userRegistrationDescription": "Станьте користувачем Ace Battle Mile. Отримуйте оновлення та відвідуйте наші події",
+    "runnerRegistrationTitle": "Реєстрація бігуна",
+    "runnerRegistrationDescription": "Візьміть участь у майбутніх подіях Ace Battle.",
+    "coachRegistrationTitle": "Стати тренером",
+    "coachRegistrationDescription": "Зареєструйтеся як тренер і отримайте можливість тренувати команду",
+    "teamManagerRegistrationTitle": "Стати менеджером команди",
+    "teamManagerRegistrationDescription": "Керуйте та створюйте свої власні команди Ace Battle",
+    "toBecomeCoachOrManager": "Щоб стати бігуном, тренером та/або менеджером, спочатку вам потрібно створити обліковий запис користувача"
+  },
+  "userJoinForm": {
+    "firstNameLabel": "Ім'я",
+    "firstNamePlaceholder": "Введіть своє ім'я тут",
+    "lastNameLabel": "Прізвище",
+    "lastNamePlaceholder": "Введіть своє прізвище тут",
+    "countryLabel": "Країна",
+    "cityLabel": "Місто",
+    "cityPlaceholder": "Введіть своє місто тут",
+    "ageRangeLabel": "Вікова категорія",
+    "ageRangePlaceholder": "Виберіть вашу вікову категорію",
+    "ageRanges": {
+      "under18": "До 18",
+      "18to25": "18-25",
+      "26to35": "26-35",
+      "36to45": "36-45",
+      "over45": "45+"
+    },
+    "uploadAvatarLabel": "Завантажте ваш аватар (Рекомендується)",
+    "uploadProfileImageLabel": "Завантажте фотографію профілю (Необов'язково)",
+    "emailLabel": "Електронна пошта",
+    "emailPlaceholder": "Введіть свою електронну адресу тут",
+    "phoneLabel": "Телефон",
+    "phonePlaceholder": "Введіть свій номер телефону тут",
+    "agreeTermsLabel": "Я погоджуюсь з умовами та політикою (обов'язково)",
+    "agreeNewsLabel": "Я хочу отримувати оновлення про майбутні події та новини",
+    "confirmationRequired": "Підтвердження необхідне",
+    "confirmationEmailSentPart1": "Ми надіслали лист на",
+    "confirmationEmailSentPart2": ", щоб підтвердити справжність вашої електронної адреси.",
+    "personalDetails": "Особисті дані",
+    "avatarAndImage": "Аватар та зображення",
+    "contactAndAgreements": "Контакти та угоди",
+    "confirmEmail": "Підтвердіть електронну пошту"
+  },
+  "runnerForm": {
+    "runnerRegistration": "Реєстрація бігуна",
+    "runnerInfo": "Інформація про бігуна",
+    "personalResults": "Особисті результати",
+    "manager": "Менеджер",
+    "runnerAgreements": "Угоди бігуна",
+    "confirmation": "Підтвердження",
+    "categoryLabel": "Категорія",
+    "categoryPlaceholder": "Виберіть вашу категорію бігу",
+    "categoryOptions": {
+      "professional": "Професійний",
+      "amateur": "Аматор"
+    },
+    "dateOfBirthLabel": "Дата народження",
+    "dateOfBirthPlaceholder": "Виберіть дату народження",
+    "personalBests": "Особисті рекорди",
+    "seasonBests": "Найкращі результати сезону",
+    "runnerAgreementLabel": "Я підтверджую, що прочитав угоди бігуна",
+    "informationIsCorrectLabel": "Я підтверджую, що надана мною інформація є правдивою",
+    "applicationSentHeading": "Вашу заявку на статус бігуна надіслано",
+    "applicationReviewText": "Наші адміністратори розглянуть вашу заявку. Ви отримаєте сповіщення, як тільки заявку буде затверджено"
+  },
+  "managerOptions": {
+    "chooseManager": "Вибрати менеджера",
+    "assignManagerBasedOnLocation": "Призначити менеджера відповідно до мого місцезнаходження",
+    "noManager": "Мені поки що не потрібен менеджер"
+  },
+  "managerInfo": {
+    "willAssignManager": "Ми призначимо для вас менеджера з урахуванням вашого місцезнаходження. Ви отримаєте сповіщення про вашого менеджера.",
+    "ableToChooseLater": "Ви зможете обрати свого менеджера пізніше."
   }
 }

@@ -9,11 +9,12 @@ import {
 } from "@gluestack-ui/themed";
 import React from "react";
 import { useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { KeyboardAvoidingView, Platform } from "react-native";
 
 type StepLayoutProps = {
   children: React.ReactNode;
-  tabName: string;
+  tabName?: string;
   onNext: (isSubmit?: boolean) => void;
   onBack: () => void;
   isSubmit?: boolean;
@@ -31,6 +32,7 @@ const StepLayout = ({
   isFisrt,
 }: StepLayoutProps): JSX.Element => {
   const { formState } = useFormContext();
+  const { t } = useTranslation();
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -65,7 +67,7 @@ const StepLayout = ({
                   variant="outline"
                   action="negative"
                 >
-                  <ButtonText>Back</ButtonText>
+                  <ButtonText>{t("common.back")}</ButtonText>
                 </Button>
               </Box>
             ) : (
@@ -75,7 +77,7 @@ const StepLayout = ({
               (isSubmit ? (
                 <Box flex={1} ml={"$2"}>
                   <FormButton
-                    title={"Submit"}
+                    title={t("common.submit")}
                     disabled={formState.isSubmitting || !formState.isValid}
                     isLoading={formState.isSubmitting}
                     onPress={() => onNext(isSubmit)}
@@ -94,7 +96,11 @@ const StepLayout = ({
                     action="positive"
                   >
                     <ButtonText>
-                      {isSubmit ? "Submit" : goHome ? "Home" : "Next"}
+                      {isSubmit
+                        ? t("common.submit")
+                        : goHome
+                        ? t("common.home")
+                        : t("common.next")}
                     </ButtonText>
                   </Button>
                 </Box>

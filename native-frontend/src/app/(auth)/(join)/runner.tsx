@@ -4,9 +4,11 @@ import RunnerJoinForm from "@Components/join/RunnerJoinForm";
 import { Box, Text, VStack } from "@gluestack-ui/themed";
 import { Stack } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native";
 
 const RunnerJoin = () => {
+  const { t } = useTranslation();
   return (
     <>
       <Stack.Screen
@@ -17,7 +19,7 @@ const RunnerJoin = () => {
                 <HeaderSubtitledTitle
                   tintColor={"#000"}
                   subtitle="Ace Battle Mile"
-                  title="Runner Registration"
+                  title={t("runnerForm.runnerRegistration")}
                 />
               </Box>
             </SafeAreaView>
@@ -35,8 +37,7 @@ const RunnerJoin = () => {
         </Box>
         <Box mx={"auto"} maxWidth={350} px={"$2"}>
           <Text color={"$coolGray400"} textAlign="center">
-            *To become a runner, coach and/or manager, you have to create a user
-            account first.
+            *{t("steps.toBecomeCoachOrManager")}
           </Text>
         </Box>
       </VStack>
