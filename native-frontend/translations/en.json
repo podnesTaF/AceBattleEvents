@@ -69,7 +69,11 @@
     "edit": "Edit",
     "upcoming": "Upcoming",
     "past": "Past",
-    "noTeam": "No team"
+    "noTeam": "No team",
+    "next": "Next",
+    "back": "Back",
+    "submit": "Submit",
+    "home": "Home"
   },
   "links": {
     "visitRunnerProfile": "visit runner profile",
@@ -93,10 +97,107 @@
   },
   "auth": {
     "pleaseAuthorize": "Please Authorize",
-    "authorizeToSeeFollowings": "Authorize to see your followings"
+    "authorizeToSeeFollowings": "Authorize to see your followings",
+    "signIn": "Sign in",
+    "email": "Email",
+    "enterYourEmail": "Enter your email here",
+    "password": "Password",
+    "enterYourPassword": "Enter your password here",
+    "login": "Login",
+    "joinUs": "Join Us",
+    "noAccount": "You don't have an account?",
+    "forgotPassword": "Forgot your password?",
+    "resetIt": "Reset it",
+    "accountCreationRequirement": "To become a runner, coach and/or manager, you have to create a user account first."
   },
   "infoTemplate": {
     "noFollowingsTitle": "You have no Followings",
     "noFollowingsText": "Follow athletes to see them here"
+  },
+  "navigation": {
+    "home": "Home",
+    "events": "Events",
+    "aboutAbm": "About ABM",
+    "news": "News"
+  },
+  "steps": {
+    "userRegistrationTitle": "User Registration",
+    "userRegistrationDescription": "Become a user of Ace Battle Mile. Keep updated and visit our events",
+    "runnerRegistrationTitle": "Runner Registration",
+    "runnerRegistrationDescription": "Be able to participate in future Ace Battle Events.",
+    "coachRegistrationTitle": "Become a Coach",
+    "coachRegistrationDescription": "Register as a coach and be able to coach a team",
+    "teamManagerRegistrationTitle": "Become a Team Manager",
+    "teamManagerRegistrationDescription": "Manage and create your own Ace Battle Teams",
+    "toBecomeCoachOrManager": "To become a runner, coach and/or manager, you have to create a user account first."
+  },
+  "userJoinForm": {
+    "firstNameLabel": "First Name",
+    "firstNamePlaceholder": "Enter your name here",
+    "lastNameLabel": "Last Name",
+    "lastNamePlaceholder": "Enter your surname here",
+    "countryLabel": "Country",
+    "cityLabel": "City",
+    "cityPlaceholder": "Enter your city here",
+    "ageRangeLabel": "Age Range",
+    "ageRangePlaceholder": "Select your age range",
+    "ageRanges": {
+      "under18": "Under 18",
+      "18to25": "18-25",
+      "26to35": "26-35",
+      "36to45": "36-45",
+      "over45": "45+"
+    },
+    "uploadAvatarLabel": "Upload your avatar (Recommended)",
+    "uploadProfileImageLabel": "Upload a profile Image (Optional)",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email here",
+    "phoneLabel": "Phone",
+    "phonePlaceholder": "Enter your phone number here",
+    "agreeTermsLabel": "I agree with statements and policies (required)",
+    "agreeNewsLabel": "I want to stay updated with upcoming events and news",
+    "confirmationRequired": "Confirmation Required",
+    "confirmationEmailSentPart1": "We have sent an email to",
+    "confirmationEmailSentPart2": "to confirm the validity of your email address.",
+    "personalDetails": "Personal Details",
+    "avatarAndImage": "Avatar and Image",
+    "contactAndAgreements": "Contact and Agreements",
+    "confirmEmail": "Confirm email"
+  },
+  "runnerForm": {
+    "runnerRegistration": "Runner Registration",
+    "runnerInfo": "Runner Info",
+    "personalResults": "Personal Results",
+    "manager": "Manager",
+    "runnerAgreements": "Runner Agreements",
+    "confirmation": "Confirmation",
+    "categoryLabel": "Category",
+    "categoryPlaceholder": "Select your running Category",
+    "categoryOptions": {
+      "professional": "Professional",
+      "amateur": "Amateur"
+    },
+    "genderLabel": "Gender",
+    "genderOptions": {
+      "male": "Male",
+      "female": "Female"
+    },
+    "dateOfBirthLabel": "Date of Birth",
+    "dateOfBirthPlaceholder": "Select your date of birth",
+    "personalBests": "Personal Bests",
+    "seasonBests": "Season Bests",
+    "runnerAgreementLabel": "I submit I have read the runner agreements",
+    "informationIsCorrectLabel": "I submit that the information I provided is true",
+    "applicationSentHeading": "Your application to become a runner has been sent",
+    "applicationReviewText": "Our admins will review your application. You will be notified as soon as you get approval"
+  },
+  "managerOptions": {
+    "chooseManager": "Choose Manager",
+    "assignManagerBasedOnLocation": "Assign manager based on my location",
+    "noManager": "I don't need a manager for now"
+  },
+  "managerInfo": {
+    "willAssignManager": "We will assign a manager for you based on your location. You will get notification about your manager.",
+    "ableToChooseLater": "You will be able to choose your manager later."
   }
 }

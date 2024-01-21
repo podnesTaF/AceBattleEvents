@@ -3,9 +3,11 @@ import LogoTitle from "@Components/LogoTitle";
 import { usePathname } from "expo-router";
 import Drawer from "expo-router/drawer";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const Layout = () => {
   const pathname = usePathname();
+  const { t } = useTranslation();
 
   return (
     <Drawer
@@ -45,26 +47,26 @@ const Layout = () => {
         key={"homepage"}
         name="(tabs)"
         options={{
-          drawerLabel: "Home",
+          drawerLabel: t("navigation.home"),
         }}
       />
       <Drawer.Screen
         name="(events)"
         options={{
           title: "Events",
-          drawerLabel: "Events",
+          drawerLabel: t("navigation.events"),
         }}
       />
       <Drawer.Screen
         name="concept"
         options={{
-          drawerLabel: "About ABM",
+          drawerLabel: t("navigation.aboutAbm"),
         }}
       />
       <Drawer.Screen
         name="news"
         options={{
-          drawerLabel: "News",
+          drawerLabel: t("navigation.news"),
         }}
       />
     </Drawer>

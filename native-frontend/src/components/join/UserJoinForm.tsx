@@ -7,7 +7,7 @@ import PickField from "@Components/common/forms/PickField";
 import { availableCountries } from "@Constants/country-codes";
 import { Box, Heading, Image, Text, VStack } from "@gluestack-ui/themed";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useAppDispatch, useAppSelector } from "@lib/hooks";
+import { useAppDispatch, useAppSelector, useJoinUserTabs } from "@lib/hooks";
 import { IMedia } from "@lib/models";
 import { useRegisterUserMutation, useUploadImageMutation } from "@lib/services";
 import { clearAllValues, selectValues } from "@lib/store";
@@ -16,14 +16,9 @@ import { useRouter } from "expo-router";
 import { MailIcon } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native-gesture-handler";
 import StepLayout from "./StepLayout";
-const tabs = [
-  "Personal Details",
-  "Avatar and Image",
-  "Contact and Agreements",
-  "Confirm email",
-];
 
 const UserJoinForm = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -33,6 +28,8 @@ const UserJoinForm = () => {
   const [registerUser, { isLoading, error }] = useRegisterUserMutation();
   const [uploadMedia, { isLoading: isMediaLoading, error: mediaError }] =
     useUploadImageMutation();
+  const { t } = useTranslation();
+  const tabs = useJoinUserTabs();
 
   const [email, setEmail] = useState("");
 
@@ -148,16 +145,16 @@ const UserJoinForm = () => {
               <>
                 <FormField
                   name={"name"}
-                  label={"First Name"}
-                  placeholder={"Enter your name here"}
+                  label={t("userJoinForm.firstNameLabel")}
+                  placeholder={t("userJoinForm.firstNamePlaceholder")}
                   variant="underlined"
                   inputProportion={3}
                   vertical={true}
                 />
                 <FormField
                   name={"surname"}
-                  label={"Last Name"}
-                  placeholder={"Enter your surname here"}
+                  label={t("userJoinForm.lastNameLabel")}
+                  placeholder={t("userJoinForm.lastNamePlaceholder")}
                   variant="underlined"
                   inputProportion={3}
                   vertical={true}
@@ -165,36 +162,36 @@ const UserJoinForm = () => {
                 <Box w={"$full"}>
                   <PickField
                     name={"country"}
-                    label={"Country"}
+                    label={t("userJoinForm.countryLabel")}
                     placeholder={
                       newValues?.country
                         ? availableCountries.find(
                             (c) => c.id === newValues.country
                           )!.title
-                        : "Country"
+                        : t("userJoinForm.countryLabel")
                     }
                   />
                 </Box>
                 <FormField
                   name={"city"}
-                  label={"City"}
-                  placeholder={"Enter your city here"}
+                  label={t("userJoinForm.cityLabel")}
+                  placeholder={t("userJoinForm.cityPlaceholder")}
                   variant="underlined"
                   inputProportion={3}
                   vertical={true}
                 />
                 <FormSelect
-                  defaultPlaceholder="Select your age range"
-                  label="Age Range"
+                  label={t("userJoinForm.ageRangeLabel")}
+                  defaultPlaceholder={t("userJoinForm.ageRangePlaceholder")}
                   name="ageRange"
                   defaultValue={form.getValues("ageRange") || ""}
                   items={[
                     {
-                      label: "Under 18",
+                      label: t("userJoinForm.ageRanges.under18"),
                       value: "Under 18",
                     },
                     {
-                      label: "18-25",
+                      label: t("userJoinForm.ageRanges.18to25"),
                       value: "18-25",
                     },
                     {
@@ -221,7 +218,7 @@ const UserJoinForm = () => {
                   }
                   imageUrl={form.getValues("avatar")}
                   name={"avatar"}
-                  label="Upload your avatar (Recommended)"
+                  label={t("userJoinForm.uploadAvatarLabel")}
                   onImagePicked={onImagePicked}
                   vertical={true}
                   withoutUnderline={true}
@@ -234,7 +231,7 @@ const UserJoinForm = () => {
                   }
                   name={"image"}
                   imageUrl={form.getValues("image")}
-                  label="Upload a profile Image (Optional)"
+                  label={t("userJoinForm.uploadProfileImageLabel")}
                   onImagePicked={onImagePicked}
                   vertical={true}
                   withoutUnderline={true}
@@ -247,8 +244,8 @@ const UserJoinForm = () => {
               <>
                 <FormField
                   name={"email"}
-                  label={"Email"}
-                  placeholder={"Enter your email here"}
+                  label={t("userJoinForm.emailLabel")}
+                  placeholder={t("userJoinForm.emailPlaceholder")}
                   variant="underlined"
                   inputProportion={3}
                   vertical={true}
@@ -257,18 +254,18 @@ const UserJoinForm = () => {
                 <PhoneField
                   name={"phone"}
                   defaultValue={form.getValues("countryCode")}
-                  label={"Phone"}
-                  placeholder={"Enter your phone number here"}
+                  label={t("userJoinForm.phoneLabel")}
+                  placeholder={t("userJoinForm.phonePlaceholder")}
                 />
                 <FormCheckbox
                   size={"md"}
                   name={"agreeTerms"}
-                  label={"I agree with statements and policies (required)"}
+                  label={t("userJoinForm.agreeTermsLabel")}
                 />
                 <FormCheckbox
                   size={"md"}
                   name={"agreeNews"}
-                  label={"I want to stay updated with upcoming events and news"}
+                  label={t("userJoinForm.agreeNewsLabel")}
                 />
                 <Box w={"$full"} mt={"$4"}>
                   <Text textAlign="center" size={"sm"} color={"$red400"}>
@@ -285,7 +282,7 @@ const UserJoinForm = () => {
                 my={"$4"}
               >
                 <Heading textAlign="center" size="lg">
-                  Confirmation Required
+                  {t("userJoinForm.confirmationRequired")}
                 </Heading>
                 <Image
                   role="img"
@@ -296,11 +293,11 @@ const UserJoinForm = () => {
                   resizeMode="contain"
                 />
                 <Heading textAlign="center" size={"sm"}>
-                  We have sent an email to{" "}
+                  {t("userJoinForm.confirmationEmailSentPart1")}{" "}
                   <Heading size="sm" color={"$primary400"}>
                     {email}
                   </Heading>{" "}
-                  to confirm the validity of your email address.
+                  {t("userJoinForm.confirmationEmailSentPart2")}
                 </Heading>
               </VStack>
             )}

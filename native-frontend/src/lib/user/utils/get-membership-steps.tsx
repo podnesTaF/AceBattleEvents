@@ -1,6 +1,7 @@
 import { Icon } from "@gluestack-ui/themed";
 import { Image } from "expo-image";
 import { UserIcon } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 import { IUser } from "../models";
 
 type Step = {
@@ -12,65 +13,6 @@ type Step = {
   isActive?: boolean;
   isFinished?: boolean;
 };
-
-const staticSteps: Step[] = [
-  {
-    id: 1,
-    title: "User Registration",
-    description:
-      "Become a user of ace battle mile. Keep updated and visit our events",
-    icon: <Icon as={UserIcon} size={"xl"} />,
-    link: "/user",
-    isActive: true,
-  },
-  {
-    id: 2,
-    title: "Runner Registration",
-    link: "/runner",
-    description: "Be able to participate in future Ace Battle Events.",
-    icon: (
-      <Image
-        contentFit="contain"
-        contentPosition={"center"}
-        style={{ height: 36, width: 36 }}
-        source={require("@Assets/images/active-step.png")}
-        alt={"st"}
-      />
-    ),
-  },
-  {
-    id: 3,
-    title: "Become a Coach",
-    link: "/coach",
-    description: "Register as a coach and be able to coach a team",
-    icon: (
-      <Image
-        contentFit="contain"
-        contentPosition={"center"}
-        style={{ height: 36, width: 36 }}
-        source={require("@Assets/images/coach-icon.png")}
-        alt={"coach"}
-      />
-    ),
-    isActive: false,
-  },
-  {
-    id: 4,
-    title: "Become a Team Manager",
-    link: "/manager",
-    description: "Manage and create your own Ace Battle Teams",
-    icon: (
-      <Image
-        contentFit="contain"
-        contentPosition={"center"}
-        style={{ height: 36, width: 36 }}
-        source={require("@Assets/images/manager-icon.png")}
-        alt={"st"}
-      />
-    ),
-    isActive: false,
-  },
-];
 
 const roleModifications = {
   runner: (steps: Step[]) => {
@@ -86,12 +28,70 @@ const roleModifications = {
 };
 
 export const getMembershipSteps = (user?: IUser | null) => {
+  const { t } = useTranslation();
   // Clone the static steps to avoid mutating the original array
-  const joinSteps = staticSteps.map((step) => ({
-    ...step,
-    isActive: step.isActive,
-    isFinished: step.isFinished,
-  }));
+  const joinSteps = [
+    {
+      id: 1,
+      title: t("steps.userRegistrationTitle"),
+      description: t("steps.userRegistrationDescription"),
+      icon: <Icon as={UserIcon} size={"xl"} />,
+      link: "/user",
+      isActive: true,
+      isFinished: false,
+    },
+    {
+      id: 2,
+      title: t("steps.runnerRegistrationTitle"),
+      description: t("steps.runnerRegistrationDescription"),
+      icon: (
+        <Image
+          contentFit="contain"
+          contentPosition={"center"}
+          style={{ height: 36, width: 36 }}
+          source={require("@Assets/images/active-step.png")}
+          alt={"st"}
+        />
+      ),
+      link: "/runner",
+      isActive: false,
+      isFinished: false,
+    },
+    {
+      id: 3,
+      title: t("steps.coachRegistrationTitle"),
+      description: t("steps.coachRegistrationDescription"),
+      icon: (
+        <Image
+          contentFit="contain"
+          contentPosition={"center"}
+          style={{ height: 36, width: 36 }}
+          source={require("@Assets/images/coach-icon.png")}
+          alt={"coach"}
+        />
+      ),
+      link: "/coach",
+      isActive: false,
+      isFinished: false,
+    },
+    {
+      id: 4,
+      title: t("steps.teamManagerRegistrationTitle"),
+      description: t("steps.teamManagerRegistrationDescription"),
+      icon: (
+        <Image
+          contentFit="contain"
+          contentPosition={"center"}
+          style={{ height: 36, width: 36 }}
+          source={require("@Assets/images/manager-icon.png")}
+          alt={"manager"}
+        />
+      ),
+      link: "/manager",
+      isActive: false,
+      isFinished: false,
+    },
+  ];
 
   if (user?.role) {
     joinSteps[0].description = "You are registered as a user";

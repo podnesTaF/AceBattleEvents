@@ -69,7 +69,16 @@
     "edit": "Modifier",
     "upcoming": "Prochains",
     "past": "Passés",
-    "noTeam": "Pas d'équipe"
+    "noTeam": "Pas d'équipe",
+    "next": "Suivant",
+    "back": "Retour",
+    "submit": "Soumettre",
+    "home": "Accueil"
+  },
+  "gender": {
+    "genderLabel": "Genre",
+    "male": "Homme",
+    "female": "Femme"
   },
   "links": {
     "visitRunnerProfile": "le profil du coureur",
@@ -93,10 +102,104 @@
   },
   "auth": {
     "pleaseAuthorize": "Veuillez vous autoriser",
-    "authorizeToSeeFollowings": "Autorisez pour voir vos abonnements"
+    "authorizeToSeeFollowings": "Autorisez pour voir vos abonnements",
+    "signIn": "Se connecter",
+    "email": "Email",
+    "enterYourEmail": "Entrez votre email ici",
+    "password": "Mot de passe",
+    "enterYourPassword": "Entrez votre mot de passe ici",
+    "login": "Connexion",
+    "joinUs": "Rejoignez-nous",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "forgotPassword": "Mot de passe oublié ?",
+    "resetIt": "Réinitialisez-le",
+    "accountCreationRequirement": "Pour devenir coureur, entraîneur et/ou gestionnaire, vous devez d'abord créer un compte utilisateur."
   },
   "infoTemplate": {
     "noFollowingsTitle": "Vous n'avez aucun abonnement",
     "noFollowingsText": "Suivez des athlètes pour les voir ici"
+  },
+  "navigation": {
+    "home": "Accueil",
+    "events": "Événements",
+    "aboutAbm": "À propos de ABM",
+    "news": "Actualités"
+  },
+  "steps": {
+    "userRegistrationTitle": "Inscription de l'utilisateur",
+    "userRegistrationDescription": "Devenez un utilisateur de Ace Battle Mile. Restez informé et visitez nos événements",
+    "runnerRegistrationTitle": "Inscription du coureur",
+    "runnerRegistrationDescription": "Participez aux futurs événements Ace Battle.",
+    "coachRegistrationTitle": "Devenir entraîneur",
+    "coachRegistrationDescription": "Inscrivez-vous en tant qu'entraîneur et ayez la possibilité d'entraîner une équipe",
+    "teamManagerRegistrationTitle": "Devenir gestionnaire d'équipe",
+    "teamManagerRegistrationDescription": "Gérez et créez vos propres équipes Ace Battle",
+    "toBecomeCoachOrManager": "Pour devenir coureur, entraîneur et/ou gestionnaire, vous devez d'abord créer un compte utilisateur."
+  },
+  "userJoinForm": {
+    "firstNameLabel": "Prénom",
+    "firstNamePlaceholder": "Entrez votre prénom ici",
+    "lastNameLabel": "Nom de famille",
+    "lastNamePlaceholder": "Entrez votre nom de famille ici",
+    "countryLabel": "Pays",
+    "cityLabel": "Ville",
+    "cityPlaceholder": "Entrez votre ville ici",
+    "ageRangeLabel": "Tranche d'âge",
+    "ageRangePlaceholder": "Sélectionnez votre tranche d'âge",
+    "ageRanges": {
+      "under18": "Moins de 18 ans",
+      "18to25": "18-25 ans",
+      "26to35": "26-35 ans",
+      "36to45": "36-45 ans",
+      "over45": "Plus de 45 ans"
+    },
+    "uploadAvatarLabel": "Téléchargez votre avatar (Recommandé)",
+    "uploadProfileImageLabel": "Téléchargez une image de profil (Facultatif)",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Entrez votre email ici",
+    "phoneLabel": "Téléphone",
+    "phonePlaceholder": "Entrez votre numéro de téléphone ici",
+    "agreeTermsLabel": "Je suis d'accord avec les déclarations et les politiques (obligatoire)",
+    "agreeNewsLabel": "Je souhaite être informé des événements et des actualités à venir",
+    "confirmationRequired": "Confirmation requise",
+    "confirmationEmailSent": "Nous avons envoyé un email à {email} pour confirmer la validité de votre adresse email.",
+    "confirmationEmailSentPart1": "Nous avons envoyé un email à",
+    "confirmationEmailSentPart2": "pour confirmer la validité de votre adresse email.",
+    "personalDetails": "Détails personnels",
+    "avatarAndImage": "Avatar et Image",
+    "contactAndAgreements": "Contact et Accords",
+    "confirmEmail": "Confirmer l'email"
+  },
+  "runnerForm": {
+    "runnerRegistration": "Inscription Coureur",
+    "runnerInfo": "Infos Coureur",
+    "personalResults": "Résultats Personnels",
+    "manager": "Gestionnaire",
+    "runnerAgreements": "Accords de Coureur",
+    "confirmation": "Confirmation",
+    "categoryLabel": "Catégorie",
+    "categoryPlaceholder": "Sélectionnez votre catégorie de course",
+    "categoryOptions": {
+      "professional": "Professionnel",
+      "amateur": "Amateur"
+    },
+    "genderLabel": "Genre",
+    "dateOfBirthLabel": "Date de naissance",
+    "dateOfBirthPlaceholder": "Sélectionnez votre date de naissance",
+    "personalBests": "Meilleurs personnels",
+    "seasonBests": "Meilleurs de la saison",
+    "runnerAgreementLabel": "Je confirme avoir lu les accords de coureur",
+    "informationIsCorrectLabel": "Je confirme que les informations fournies sont vraies",
+    "applicationSentHeading": "Votre demande pour devenir coureur a été envoyée",
+    "applicationReviewText": "Nos administrateurs examineront votre demande. Vous serez notifié dès que vous obtiendrez l'approbation"
+  },
+  "managerOptions": {
+    "chooseManager": "Choisir un gestionnaire",
+    "assignManagerBasedOnLocation": "Assigner un gestionnaire basé sur mon emplacement",
+    "noManager": "Je n'ai pas besoin de gestionnaire pour le moment"
+  },
+  "managerInfo": {
+    "willAssignManager": "Nous vous assignerons un gestionnaire basé sur votre emplacement. Vous recevrez une notification concernant votre gestionnaire.",
+    "ableToChooseLater": "Vous pourrez choisir votre gestionnaire plus tard."
   }
 }

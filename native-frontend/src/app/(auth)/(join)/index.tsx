@@ -5,12 +5,14 @@ import { selectUser } from "@lib/store";
 import { getMembershipSteps, scaleSize } from "@lib/utils";
 import { Stack } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Dimensions } from "react-native";
 
 const Join = () => {
   const user = useAppSelector(selectUser);
   const height = Dimensions.get("window").height;
   const steps = getMembershipSteps(user);
+  const { t } = useTranslation();
 
   return (
     <>
@@ -19,7 +21,7 @@ const Join = () => {
           headerTintColor: "black",
           headerTitle: ({ tintColor }) => (
             <Box justifyContent="center" my={"$2"}>
-              <Heading style={{ color: tintColor }}>Join Us</Heading>
+              <Heading style={{ color: tintColor }}>{t("auth.joinUs")}</Heading>
             </Box>
           ),
           headerShown: true,
@@ -42,10 +44,9 @@ const Join = () => {
             ))}
           </Box>
 
-          <Box m={"auto"} maxWidth={scaleSize(350)} px={"$2"}>
+          <Box maxWidth={scaleSize(350)} px={"$2"} my={"$4"}>
             <Text color={"$coolGray400"}>
-              *To become a runner, coach and/or manager, you have to create a
-              user account first.
+              *{t("steps.toBecomeCoachOrManager")}
             </Text>
           </Box>
         </VStack>

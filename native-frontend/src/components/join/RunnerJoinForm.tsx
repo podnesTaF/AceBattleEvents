@@ -4,7 +4,6 @@ import FormRadioGroup from "@Components/common/forms/FormRadioGroup";
 import FormSelect from "@Components/common/forms/FormSelect";
 import PickField from "@Components/common/forms/PickField";
 import ResultInput from "@Components/common/forms/ResultInput";
-import { MANAGER_OPTIONS } from "@Constants/manager-options";
 import {
   Box,
   Center,
@@ -17,7 +16,12 @@ import {
   VStack,
 } from "@gluestack-ui/themed";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useAppDispatch, useAppSelector } from "@lib/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+  useJoinRunnerTabs,
+  useManagerOptions,
+} from "@lib/hooks";
 import { useRegisterRunnerMutation } from "@lib/services";
 import {
   clearAllItems,
@@ -39,17 +43,9 @@ import { useRouter } from "expo-router";
 import { PlusCircle } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native-gesture-handler";
 import StepLayout from "./StepLayout";
-
-const tabs = [
-  "Runner Info",
-  "Pesonal Results",
-  "Personal Results",
-  "Manager",
-  "Runner Agreements",
-  "Confirmation",
-];
 
 const RunnerJoinForm = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -61,6 +57,12 @@ const RunnerJoinForm = () => {
   const [managerOption, setManagerOption] = useState<string>("choose-manager");
   const { data: managers, isLoading: managersLoading } =
     useGetAllManagersQuery();
+
+  const managerOptions = useManagerOptions();
+
+  const tabs = useJoinRunnerTabs();
+
+  const { t } = useTranslation();
 
   const [registerRunner, { isLoading, error }] = useRegisterRunnerMutation();
 
@@ -161,28 +163,34 @@ const RunnerJoinForm = () => {
             {activeStep === 0 && (
               <>
                 <FormSelect
-                  label="Category"
-                  defaultPlaceholder="Select your running Category"
+                  label={t("runnerForm.categoryLabel")}
+                  defaultPlaceholder={t("runnerForm.categoryPlaceholder")}
                   defaultValue={form.getValues("category") || ""}
                   name="category"
                   items={[
-                    { label: "Professional", value: "professional" },
-                    { label: "Amateur", value: "amateur" },
+                    {
+                      label: t("runnerForm.categoryOptions.professional"),
+                      value: "professional",
+                    },
+                    {
+                      label: t("runnerForm.categoryOptions.amateur"),
+                      value: "amateur",
+                    },
                   ]}
                 />
                 <FormRadioGroup
                   name="gender"
                   options={[
                     {
-                      label: "Male",
+                      label: t("gender.male"),
                       value: "male",
                     },
                     {
-                      label: "Female",
+                      label: t("gender.female"),
                       value: "female",
                     },
                   ]}
-                  parentLabel="Gender"
+                  parentLabel={t("gender.genderLabel")}
                 />
                 <FormDatePicker
                   name="dateOfBirth"
@@ -194,7 +202,7 @@ const RunnerJoinForm = () => {
             )}
             {activeStep === 1 && (
               <>
-                <Heading size={"sm"}>Personal Bests</Heading>
+                <Heading size={"sm"}>{t("runnerForm.personalBests")}</Heading>
                 {form.watch("personalBests")?.map(
                   (
                     field: {
@@ -237,7 +245,7 @@ const RunnerJoinForm = () => {
             )}
             {activeStep === 2 && (
               <>
-                <Heading size={"sm"}>Season Bests</Heading>
+                <Heading size={"sm"}>{t("runnerForm.seasonBests")}</Heading>
                 {form.watch("seasonBests")?.map(
                   (
                     field: {
@@ -282,7 +290,7 @@ const RunnerJoinForm = () => {
               <>
                 <FormRadioGroup
                   name="managerOption"
-                  options={MANAGER_OPTIONS}
+                  options={managerOptions}
                   customOnChange={(value) => {
                     setManagerOption(value);
                   }}
@@ -301,13 +309,12 @@ const RunnerJoinForm = () => {
                   )}
                   {managerOption === "location-manager" && (
                     <Heading size={"sm"} color={"$coolGray400"}>
-                      We will assign a manager for you based on your location.
-                      You will get notification about your manager.
+                      {t("managerInfo.willAssignManager")}
                     </Heading>
                   )}
                   {managerOption === "no-manager" && (
                     <Heading size={"sm"} color={"$coolGray400"}>
-                      You will able to choose your manager later.
+                      {t("managerInfo.ableToChooseLater")}
                     </Heading>
                   )}
                 </Box>
@@ -317,11 +324,11 @@ const RunnerJoinForm = () => {
               <VStack flex={1} space="lg" justifyContent="center">
                 <FormCheckbox
                   name="runnerAgreement"
-                  label="I submit I have read the runner agreements"
+                  label={t("runnerForm.runnerAgreementLabel")}
                 />
                 <FormCheckbox
                   name="informationIsCorrect"
-                  label="I submit that the information I provided is true"
+                  label={t("runnerForm.informationIsCorrectLabel")}
                 />
                 <Heading textAlign="center" size={"sm"} color={"$red400"}>
                   {form.formState.errors.root?.message}
@@ -342,12 +349,11 @@ const RunnerJoinForm = () => {
                     source={require("@Assets/images/confirm-paper.png")}
                   />
                   <Heading size="md" flex={1}>
-                    Your application to become a runner has been sent
+                    {t("runnerForm.applicationSentHeading")}
                   </Heading>
                 </HStack>
                 <Text color="$coolGray300" size="md">
-                  Our admins will review your application. You will be notified
-                  as soon as you get approval
+                  {t("runnerForm.applicationSentHeading")}
                 </Text>
               </Center>
             )}
