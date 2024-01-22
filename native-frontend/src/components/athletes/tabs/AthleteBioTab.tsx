@@ -7,6 +7,7 @@ import { selectUser } from "@lib/store";
 import { getUsersInfo } from "@lib/utils";
 import { Image } from "expo-image";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface AthleteBioTabProps {
   user: IUser;
@@ -14,6 +15,7 @@ interface AthleteBioTabProps {
 
 const AthleteBioTab = ({ user }: AthleteBioTabProps): JSX.Element => {
   const authedUser = useAppSelector(selectUser);
+  const { t } = useTranslation();
   return (
     <Box>
       <Box mb={"$4"} overflow="hidden">
@@ -31,7 +33,7 @@ const AthleteBioTab = ({ user }: AthleteBioTabProps): JSX.Element => {
           )}
         </Box>
         <Box flex={1}>
-          <UserInfoList items={getUsersInfo(user)} />
+          <UserInfoList items={getUsersInfo(user, t)} />
         </Box>
       </Box>
       {authedUser?.id === user.id ||

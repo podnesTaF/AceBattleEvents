@@ -18,11 +18,11 @@ import { useAppSelector } from "@lib/hooks";
 import { IEvent } from "@lib/models";
 import { useFetchSpectatorRegistrationsQuery } from "@lib/services";
 import { selectUser } from "@lib/store";
-import { useFindUserRegistrationsQuery } from "@lib/teams/services/teamRegistrationService";
 import { mapFutureEvents } from "@lib/utils";
 import { Stack } from "expo-router";
 import React from "react";
 import { ScrollView } from "react-native";
+import { useFindUserRegistrationsQuery } from "teamRegistrationService";
 
 const EventsScreen = () => {
   const user = useAppSelector(selectUser);

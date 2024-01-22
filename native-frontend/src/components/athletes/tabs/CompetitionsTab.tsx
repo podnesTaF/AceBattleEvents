@@ -3,12 +3,14 @@ import Badge from "@Components/custom/Badge";
 import EventCard from "@Components/events/EventCard";
 import { Box, Center, HStack, Heading, Text } from "@gluestack-ui/themed";
 import { useGetRunnerCompetitionsQuery } from "@lib/services";
-import { useFindRunnerRegistrationsQuery } from "@lib/teams/services/teamRegistrationService";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native";
+import { useFindRunnerRegistrationsQuery } from "teamRegistrationService";
 
 const CompetitionsTab = ({ runnerId }: { runnerId: number }) => {
   const [year, setYear] = useState("2023");
+  const { t } = useTranslation();
   const {
     data: registrations,
     error,
@@ -28,7 +30,7 @@ const CompetitionsTab = ({ runnerId }: { runnerId: number }) => {
     <ScrollView>
       <Box my={"$4"} mx={"$3"}>
         <Heading size={"lg"} mb={"$4"}>
-          Upcoming competitions
+          {t("competitions.upcomingCompetitions")}
         </Heading>
         <WithLoading isLoading={isLoading || !registrations}>
           {registrations?.length ? (
@@ -38,7 +40,7 @@ const CompetitionsTab = ({ runnerId }: { runnerId: number }) => {
                 event={registration.event}
               >
                 <HStack justifyContent="space-between" space="md">
-                  <Text size={"md"}>Team</Text>
+                  <Text size={"md"}>{t("common.team")}</Text>
                   <Heading size={"md"}>{registration.team.name}</Heading>
                 </HStack>
               </EventCard>
@@ -46,7 +48,7 @@ const CompetitionsTab = ({ runnerId }: { runnerId: number }) => {
           ) : (
             <Center height={"$32"}>
               <Heading size={"lg"} color={"$coolGray400"}>
-                No upcoming competitions
+                {t("competitions.noUpcomingCompetitions")}
               </Heading>
             </Center>
           )}
@@ -54,7 +56,7 @@ const CompetitionsTab = ({ runnerId }: { runnerId: number }) => {
       </Box>
       <Box my={"$4"} mx={"$3"}>
         <Heading size={"lg"} mb={"$2"}>
-          Past competitions
+          {t("competitions.pastCompetitions")}
         </Heading>
         <HStack m={"$2"} space="md">
           {["2023", "2022"].map((resultYear, i) => (
@@ -77,7 +79,7 @@ const CompetitionsTab = ({ runnerId }: { runnerId: number }) => {
                 passed={true}
               >
                 <HStack justifyContent="space-between" space="md">
-                  <Text size={"md"}>Team</Text>
+                  <Text size={"md"}>{t("common.team")}</Text>
                   <Heading size={"md"}>{registration.team.name}</Heading>
                 </HStack>
               </EventCard>
@@ -85,7 +87,7 @@ const CompetitionsTab = ({ runnerId }: { runnerId: number }) => {
           ) : (
             <Center height={"$32"}>
               <Heading size={"lg"} color={"$coolGray400"}>
-                No past competitions
+                {t("competitions.noPastCompetitions")}
               </Heading>
             </Center>
           )}

@@ -7,19 +7,17 @@ import SkeletonLoader from "@Components/common/states/SkeletonLoader";
 import TeamPreview from "@Components/teams/TeamPreview";
 import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
 import { Box, HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
-import { useAppSelector } from "@lib/hooks";
 import { ITeam } from "@lib/models";
 import { useGetFollowingTeamsQuery } from "@lib/services";
-import { selectUser } from "@lib/store";
 import { scaleSize } from "@lib/utils";
 import { Stack } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native";
 
 const Followings = () => {
-  const user = useAppSelector(selectUser);
   const { data: teams, isLoading, error } = useGetFollowingTeamsQuery();
-
+  const { t } = useTranslation();
   return (
     <>
       <Stack.Screen
@@ -30,7 +28,7 @@ const Followings = () => {
               <VStack alignItems="center" width={"100%"} py={"$1"} space="md">
                 <LogoTitle {...props} />
                 <Heading size="sm" color="$coolGray200">
-                  Followings
+                  {t("common.followings")}
                 </Heading>
               </VStack>
             </SafeAreaView>
@@ -40,9 +38,8 @@ const Followings = () => {
       <ScrollView bg={"$fff9ff"}>
         <VStack my={"$4"} space="sm">
           <HStack mx={"$4"}>
-            <Heading size="lg">Following </Heading>
             <Heading size="lg" color="$red500">
-              Teams
+              {t("common.teams")}
             </Heading>
           </HStack>
           <SkeletonLoader<ITeam[]>
@@ -66,8 +63,8 @@ const Followings = () => {
                 <Box px={"$4"}>
                   <InfoTemplate
                     variant="outline"
-                    title="You have no Followings"
-                    text="Follow athletes to see them here"
+                    title={t("infoTemplate.noFollowingsTitle")}
+                    text={t("infoTemplate.noFollowingsText")}
                   />
                 </Box>
               )
@@ -76,10 +73,7 @@ const Followings = () => {
         </VStack>
         <VStack mt={"$4"} mb={"$8"} space="sm">
           <HStack mx={"$4"}>
-            <Heading size="lg" color="$red500">
-              Following{" "}
-            </Heading>
-            <Heading size="lg">Athletes</Heading>
+            <Heading size="lg">{t("common.runners")}</Heading>
           </HStack>
           <FollowingAthletesList />
         </VStack>

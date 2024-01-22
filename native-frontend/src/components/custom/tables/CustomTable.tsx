@@ -1,6 +1,7 @@
 import { HStack, Heading, VStack } from "@gluestack-ui/themed";
 import { useScreenSize } from "@lib/hooks";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import TableRowItem from "./TableRowItem";
 
 interface Props {
@@ -17,6 +18,7 @@ interface Props {
 }
 
 const CustomTable: React.FC<Props> = ({ rows }) => {
+  const { t } = useTranslation();
   const { isSmallScreen } = useScreenSize();
   return (
     <VStack>
@@ -28,6 +30,7 @@ const CustomTable: React.FC<Props> = ({ rows }) => {
                 <Heading
                   color={"$white"}
                   key={i}
+                  textTransform="capitalize"
                   textAlign={i === arr.length - 1 ? "right" : "left"}
                   flex={i === arr.length - 1 ? 2 : 1}
                   size={isSmallScreen ? "sm" : "md"}
@@ -59,7 +62,7 @@ const CustomTable: React.FC<Props> = ({ rows }) => {
         </>
       ) : (
         <Heading size={"md"} textAlign={"center"} color={"$black"}>
-          No results found
+          {t("team.noResultsFound")}
         </Heading>
       )}
     </VStack>

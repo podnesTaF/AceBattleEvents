@@ -14,6 +14,7 @@ import { selectUser } from "@lib/store";
 import { getNotificationFilters } from "@lib/utils";
 import { Link, router } from "expo-router";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList, Pressable } from "react-native";
 import NotificationItem from "./NotificationItem";
 
@@ -31,6 +32,7 @@ const NotificationsScreen = () => {
   const [unreadIds, setUnreadIds] = useState<number[]>([]);
   const [activeFilter, setActiveFilter] = useState("All");
   const { isSmallScreen } = useScreenSize();
+  const { t } = useTranslation();
 
   const readNotification = (notification: INotification) => {
     if (unreadIds.includes(notification.id)) {
@@ -78,7 +80,8 @@ const NotificationsScreen = () => {
       >
         <Box>
           <Heading size={"md"}>
-            Notifications ({unreadNotifications + " unread"})
+            {t("notificationPage.notifications")} (
+            {unreadNotifications + ` ${t("notificationPage.unread")}`})
           </Heading>
           <HStack mt={"$2"} space="md">
             {getNotificationFilters(user?.role).map((filter, i) => (
@@ -95,7 +98,7 @@ const NotificationsScreen = () => {
         </Box>
         {user?.role === "manager" && (
           <AbmButton
-            title="Send Notification"
+            title={t("notificationPage.sendNotification")}
             size="sm"
             onPress={() => router.push("/send-notification")}
           />
@@ -135,7 +138,9 @@ const NotificationsScreen = () => {
               />
             ) : (
               <Box p={"$4"}>
-                <Heading size={"md"}>No notifications yet</Heading>
+                <Heading size={"md"}>
+                  {t("notificationPage.noNotificationsYet")}
+                </Heading>
               </Box>
             )
           }

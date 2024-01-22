@@ -74,7 +74,15 @@
     "next": "Далі",
     "back": "Назад",
     "submit": "Надіслати",
-    "home": "Головна"
+    "home": "Головна",
+    "managersTeams": "Команди менеджера",
+    "distance": "Дистанція",
+    "time": "Час",
+    "date": "Дата",
+    "location": "Місце",
+    "eventPage": "Сторінка події",
+    "team": "Team",
+    "save": "Зберегти"
   },
 
   "gender": {
@@ -102,6 +110,24 @@
     "trySearchingForAnotherEvent": "Спробуйте шукати іншу подію",
     "youCanSearchForEvent": "Ви можете шукати подію, введіть назву в рядку пошуку"
   },
+  "fields": {
+    "teamName": "Назва команди",
+    "teamNamePlaceholder": "Введіть назву вашої команди",
+    "city": "Місто",
+    "cityPlaceholder": "Введіть місто",
+    "country": "Країна",
+    "countryPlaceholder": "Введіть країну",
+    "coach": "Тренер",
+    "coachPlaceholder": "Виберіть тренера",
+    "gender": "Стать",
+    "teamType": "Тип команди",
+    "players": "Гравці",
+    "noPlayersSelected": "Гравців не вибрано",
+    "teamLogo": "Логотип команди",
+    "teamLogoPlaceholder": "Виберіть логотип команди",
+    "teamImage": "Зображення команди",
+    "teamImagePlaceholder": "Виберіть зображення команди"
+  },
   "auth": {
     "pleaseAuthorize": "Будь ласка, авторизуйтеся",
     "authorizeToSeeFollowings": "Авторизуйтеся, щоб бачити кого ви підписані",
@@ -111,6 +137,7 @@
     "password": "Пароль",
     "enterYourPassword": "Введіть сюди свій пароль",
     "login": "Вхід",
+    "logout": "Вийти",
     "joinUs": "Приєднатися",
     "noAccount": "У вас немає акаунту?",
     "forgotPassword": "Забули пароль?",
@@ -201,5 +228,87 @@
   "managerInfo": {
     "willAssignManager": "Ми призначимо для вас менеджера з урахуванням вашого місцезнаходження. Ви отримаєте сповіщення про вашого менеджера.",
     "ableToChooseLater": "Ви зможете обрати свого менеджера пізніше."
+  },
+  "notificationPage": {
+    "yourNotifications": "Ваші сповіщення",
+    "sent": "Надіслані",
+    "notifications": "Сповіщення",
+    "sendNotification": "Надіслати",
+    "noNotificationsYet": "Сповіщень поки що немає",
+    "unread": "Непрочитані"
+  },
+  "accountItems": {
+    "myProfile": {
+      "title": "Мій Профіль",
+      "subtitle": "Переглянути ваш профіль"
+    },
+    "settings": {
+      "title": "Налаштування",
+      "subtitle": "Керуйте вашими налаштуваннями"
+    },
+    "followings": {
+      "title": "Підписки",
+      "subtitle": "Ваші улюблені бігуни"
+    },
+    "membership": {
+      "title": "Членство",
+      "subtitle": "Переглянути та отримати нові ролі"
+    },
+    "calendar": {
+      "title": "Календар",
+      "subtitle": "Ваші реєстрації",
+      "teamSubtitle": "Реєстрації вашої команди"
+    },
+    "teams": {
+      "title": "Команди",
+      "subtitle": "Налаштування команд"
+    }
+  },
+  "profileTabs": {
+    "bio": "БІО",
+    "teamsAndRunners": "Команди та Бігуни",
+    "teams": "Команди",
+    "results": "Результати",
+    "events": "Події"
+  },
+  "userInfo": {
+    "nationality": "Національність",
+    "gender": "Стать",
+    "dateOfBirth": "Дата народження",
+    "rank": "Ранг",
+    "contactInfo": "Контактна інформація",
+    "email": "електронна пошта",
+    "phone": "телефон",
+    "profile": "Профіль"
+  },
+  "team": {
+    "country": "Країна",
+    "rank": "Ранг",
+    "coach": "Тренер",
+    "finishedRaces": "Завершені перегони",
+    "notMemberOfAnyTeam": "Цей атлет не є членом жодної команди",
+    "allResults": "Усі результати",
+    "noResultsFound": "Результатів не знайдено",
+    "teamName": "Назва команди",
+    "namePlaceholder": "Введіть назву команди тут",
+    "noTeamsFound": "Команди не знайдені",
+    "noTeamsYet": "У вас поки що немає команд"
+  },
+  "race": {
+    "viewRace": "Забіг"
+  },
+  "competitions": {
+    "upcomingCompetitions": "Майбутні змагання",
+    "noUpcomingCompetitions": "Немає майбутніх змагань",
+    "pastCompetitions": "Минулі змагання",
+    "noPastCompetitions": "Минулих змагань немає"
+  },
+  "calendar": {
+    "yourEventsRegistrations": "Реєстрації на ваші події",
+    "noRegistrationsFound": "Реєстрації не знайдені",
+    "noRegistrationsYet": "У вас ще немає реєстрацій",
+    "yourTeamRegistrations": "Реєстрації вашої команди",
+    "exploreFutureEvents": "Ви можете ознайомитись з майбутніми подіями, натиснувши на кнопку нижче",
+    "exploreEvents": "Досліджувати події"
   }
 }

@@ -13,13 +13,13 @@ import SpectatorBioTab from "@Components/user/tabs/SpectatorBioTab";
 import TeamsAndRunners from "@Components/user/tabs/TeamsAndRunners";
 import { Ionicons } from "@expo/vector-icons";
 import { Box, HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
-import { useAppSelector } from "@lib/hooks";
+import { useAppSelector, useProfileTabByUserRole } from "@lib/hooks";
 import { IUser } from "@lib/models";
 import { selectUser } from "@lib/store";
 import { useFetchUserQuery } from "@lib/user/services/UserService";
-import { getProfileTabByUserRole } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Dimensions,
   FlatList,
@@ -30,6 +30,7 @@ import {
 } from "react-native";
 
 const tabsData = (user: IUser) => {
+  const { t } = useTranslation();
   if (user.runner) {
     return [
       <ScrollView>
@@ -50,7 +51,7 @@ const tabsData = (user: IUser) => {
           ) : (
             <Box>
               <Heading size="md" color="$coolGray300">
-                This athlete is not a member of any team
+                {t("team.noResultsFound")}
               </Heading>
             </Box>
           )}
@@ -78,6 +79,9 @@ const ProfileScreen = () => {
     isLoading,
     error,
   } = useFetchUserQuery({ userId: +params.userId, authId: auth?.id });
+
+  const profileTabs = useProfileTabByUserRole(user?.role);
+  const { t } = useTranslation();
 
   const flatListRef = useRef<FlatList>(null);
   const { width } = Dimensions.get("window");
@@ -115,7 +119,7 @@ const ProfileScreen = () => {
                     size={"xs"}
                     color="$coolGray300"
                   >
-                    Profile
+                    {t("userInfo.profile")}
                   </Heading>
                 </HStack>
                 <SkeletonLoader<IUser>
@@ -132,7 +136,7 @@ const ProfileScreen = () => {
                 </SkeletonLoader>
                 <Tabs
                   size="sm"
-                  items={getProfileTabByUserRole(user?.role)}
+                  items={profileTabs}
                   activeColor="$red500"
                   onChangeTab={onChangeTab}
                   activeIndex={activeTab}

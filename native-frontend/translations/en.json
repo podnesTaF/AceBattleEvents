@@ -2,6 +2,7 @@
   "mainPage": {
     "upcomingEvents": "Upcoming Events",
     "exploreConcepts": "Explore concepts",
+    "welcome": "Welcome to ABM",
     "infoCards": {
       "card1": {
         "title": "1 MILE",
@@ -73,7 +74,16 @@
     "next": "Next",
     "back": "Back",
     "submit": "Submit",
-    "home": "Home"
+    "home": "Home",
+    "managersTeams": "Manager's Teams",
+    "distance": "Distance",
+    "time": "Time",
+    "date": "Date",
+    "location": "Location",
+    "results": "Results",
+    "eventPage": "Event Page",
+    "team": "Team",
+    "save": "Save"
   },
   "links": {
     "visitRunnerProfile": "visit runner profile",
@@ -104,11 +114,30 @@
     "password": "Password",
     "enterYourPassword": "Enter your password here",
     "login": "Login",
+    "logout": "Logout",
     "joinUs": "Join Us",
     "noAccount": "You don't have an account?",
     "forgotPassword": "Forgot your password?",
     "resetIt": "Reset it",
     "accountCreationRequirement": "To become a runner, coach and/or manager, you have to create a user account first."
+  },
+  "fields": {
+    "teamName": "Team Name",
+    "teamNamePlaceholder": "Enter your team name",
+    "city": "City",
+    "cityPlaceholder": "Enter city",
+    "country": "Country",
+    "countryPlaceholder": "Enter country",
+    "coach": "Coach",
+    "coachPlaceholder": "Choose a coach",
+    "gender": "Gender",
+    "teamType": "Team Type",
+    "players": "Players",
+    "noPlayersSelected": "No players selected",
+    "teamLogo": "Team Logo",
+    "teamLogoPlaceholder": "Select team logo",
+    "teamImage": "Team Image",
+    "teamImagePlaceholder": "Select team image"
   },
   "infoTemplate": {
     "noFollowingsTitle": "You have no Followings",
@@ -199,5 +228,87 @@
   "managerInfo": {
     "willAssignManager": "We will assign a manager for you based on your location. You will get notification about your manager.",
     "ableToChooseLater": "You will be able to choose your manager later."
+  },
+  "notificationPage": {
+    "yourNotifications": "Your Notifications",
+    "sent": "Sent",
+    "notifications": "Notifications",
+    "sendNotification": "Send Notification",
+    "noNotificationsYet": "No notifications yet",
+    "unread": "Unread"
+  },
+  "accountItems": {
+    "myProfile": {
+      "title": "My Profile",
+      "subtitle": "View your profile"
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Manage your settings"
+    },
+    "followings": {
+      "title": "Followings",
+      "subtitle": "Your favorite runners"
+    },
+    "membership": {
+      "title": "Membership",
+      "subtitle": "View and get new role"
+    },
+    "calendar": {
+      "title": "Calendar",
+      "subtitle": "Your registrations",
+      "teamSubtitle": "Your teams' registrations"
+    },
+    "teams": {
+      "title": "Teams",
+      "subtitle": "Teams settings"
+    }
+  },
+  "profileTabs": {
+    "bio": "BIO",
+    "teamsAndRunners": "Teams and Runners",
+    "teams": "Teams",
+    "results": "Results",
+    "events": "Events"
+  },
+  "userInfo": {
+    "nationality": "Nationality",
+    "gender": "Gender",
+    "dateOfBirth": "Date of birth",
+    "rank": "Rank",
+    "contactInfo": "Contact info",
+    "email": "email",
+    "phone": "phone",
+    "profile": "Profile"
+  },
+  "team": {
+    "country": "Country",
+    "rank": "Rank",
+    "coach": "Coach",
+    "finishedRaces": "Finished Races",
+    "notMemberOfAnyTeam": "This athlete is not a member of any team",
+    "allResults": "All Results",
+    "noResultsFound": "No results found",
+    "teamName": "Team Name",
+    "teamMembers": "Team Members",
+    "noTeamsFound": "No teams found",
+    "noTeamsYet": "you have no teams yet"
+  },
+  "race": {
+    "viewRace": "View Race"
+  },
+  "competitions": {
+    "upcomingCompetitions": "Upcoming competitions",
+    "noUpcomingCompetitions": "No upcoming competitions",
+    "pastCompetitions": "Past competitions",
+    "noPastCompetitions": "No past competitions"
+  },
+  "calendar": {
+    "yourEventsRegistrations": "Your Events Registrations",
+    "noRegistrationsFound": "No registrations found",
+    "noRegistrationsYet": "You don't have any registrations yet",
+    "yourTeamRegistrations": "Your Team Registrations",
+    "exploreFutureEvents": "You can explore future events by clicking on the button below",
+    "exploreEvents": "Explore Events"
   }
 }

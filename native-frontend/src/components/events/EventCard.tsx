@@ -11,6 +11,7 @@ import { IEvent } from "@lib/models";
 import { convertFlagIntoPng, formatDate } from "@lib/utils";
 import { useRouter } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   event: IEvent;
@@ -21,6 +22,7 @@ interface Props {
 
 const EventCard: React.FC<Props> = ({ event, children, passed, isLast }) => {
   const router = useRouter();
+  const { t } = useTranslation();
   return (
     <Box
       p={"$3"}
@@ -33,13 +35,13 @@ const EventCard: React.FC<Props> = ({ event, children, passed, isLast }) => {
       </Heading>
       <VStack space="md" width={"$full"}>
         <HStack justifyContent="space-between" space="md">
-          <Text size={"md"}>Date</Text>
+          <Text size={"md"}>{t("common.date")}</Text>
           <Heading size={"md"}>
             {formatDate(event.startDateTime, false)}
           </Heading>
         </HStack>
         <HStack justifyContent="space-between" space="md">
-          <Text size={"md"}>Location</Text>
+          <Text size={"md"}>{t("common.location")}</Text>
           <HStack alignItems="center" space="sm">
             {event.location.country?.flagIconUrl && (
               <Image
@@ -67,13 +69,13 @@ const EventCard: React.FC<Props> = ({ event, children, passed, isLast }) => {
                   params: { eventId: event.id + "" },
                 })
               }
-              title={"Results"}
+              title={t("common.results")}
             />
           ) : (
             <Box my={"$2"}>
               <AbmButton
                 onPress={() => router.push(`/(modals)/(event)/${event.id}`)}
-                title={"Event Page"}
+                title={t("common.eventPage")}
               />
             </Box>
           )}

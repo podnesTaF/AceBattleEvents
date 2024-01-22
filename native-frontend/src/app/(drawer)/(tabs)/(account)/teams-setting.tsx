@@ -19,9 +19,11 @@ import { selectUser } from "@lib/store";
 import { Link, Stack } from "expo-router";
 import { BadgePlus } from "lucide-react-native";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const TeamsSetting = () => {
   const user = useAppSelector(selectUser);
+  const { t } = useTranslation();
   const {
     data: teams,
     isLoading,
@@ -69,7 +71,7 @@ const TeamsSetting = () => {
               ListFooterComponent={() => <VStack h={"$8"} />}
               ListHeaderComponent={() => (
                 <Heading size={"xl"} mb={"$4"}>
-                  Your Teams
+                  {t("common.your")} {t("common.teams")}
                 </Heading>
               )}
               ItemSeparatorComponent={() => <VStack h={"$4"} />}
@@ -88,8 +90,8 @@ const TeamsSetting = () => {
             />
           ) : (
             <InfoTemplate
-              title={"No teams found"}
-              text={"you have no teams yet"}
+              title={t("teamInfo.noTeamsFound")}
+              text={t("teamInfo.noTeamsYet")}
             />
           )
         }
