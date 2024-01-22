@@ -9,6 +9,7 @@ import { selectUser } from "@lib/store";
 import { getNotificationTabs } from "@lib/utils";
 import { Stack } from "expo-router";
 import React, { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Dimensions, FlatList } from "react-native";
 
 const getNotificationsScreens = (role?: string): JSX.Element[] => {
@@ -27,6 +28,7 @@ const Notifications = () => {
 
   const flatListRef = useRef<FlatList>(null);
   const width = Dimensions.get("window").width;
+  const { t } = useTranslation();
 
   const onChangeTab = (tabIndex: number) => {
     setActiveTab(tabIndex);
@@ -61,7 +63,7 @@ const Notifications = () => {
               <Tabs
                 activeColor={"#ff0000"}
                 activeIndex={activeTab}
-                items={getNotificationTabs(user?.role)}
+                items={getNotificationTabs(t, user?.role)}
                 onChangeTab={onChangeTab}
               />
             </Box>

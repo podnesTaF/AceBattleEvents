@@ -5,6 +5,7 @@ import { INotification } from "@lib/models";
 import { useGetUserSentNotificationsQuery } from "@lib/services";
 import { Link } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList, Pressable } from "react-native";
 import NotificationItem from "./NotificationItem";
 
@@ -14,6 +15,7 @@ const SentNotifications = () => {
     isLoading,
     error,
   } = useGetUserSentNotificationsQuery();
+  const { t } = useTranslation();
 
   const loadingComponent = () => (
     <VStack space={"md"}>
@@ -26,7 +28,7 @@ const SentNotifications = () => {
   return (
     <VStack my={"$4"}>
       <Heading mx={"$4"} mb={"$4"} size={"md"}>
-        Sent Notifications
+        {t("notificationPage.sent")} {t("notificationPage.notifications")}
       </Heading>
       <Box bgColor="$white">
         <SkeletonLoader<INotification[]>
@@ -53,6 +55,7 @@ const SentNotifications = () => {
                         <NotificationItem
                           notification={item}
                           pressed={pressed}
+                          isRead={true}
                         />
                       )}
                     </Pressable>

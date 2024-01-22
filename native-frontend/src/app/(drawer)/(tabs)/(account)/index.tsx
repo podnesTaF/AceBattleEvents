@@ -13,15 +13,18 @@ import {
 } from "@gluestack-ui/themed";
 import { useAppSelector, useLogout } from "@lib/hooks";
 import { selectIsAuth, selectUser } from "@lib/store";
-import { getAccountItems } from "@lib/user/utils/get-account-items";
+import { useAccountItems } from "@lib/user/utils/get-account-items";
 import { Link, Stack } from "expo-router";
 import { LogOut } from "lucide-react-native";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native";
 
 const AccountPage = () => {
   const user = useAppSelector(selectUser);
   const isAuth = useAppSelector(selectIsAuth);
+  const profilteItems = useAccountItems(user);
+  const { t } = useTranslation();
   const [logout, isLoading] = useLogout();
 
   return (
@@ -47,8 +50,8 @@ const AccountPage = () => {
       <ScrollView>
         {isAuth && user ? (
           <VStack>
-            <HStack flexWrap="wrap" m={"$4"} space="lg">
-              {getAccountItems(user).map((item, i) => (
+            <HStack justifyContent="center" flexWrap="wrap" m={"$4"} space="lg">
+              {profilteItems.map((item, i) => (
                 <Link key={i} href={item.link} asChild>
                   <Pressable width={"46%"}>
                     <ProfileItem {...item} />
@@ -58,7 +61,7 @@ const AccountPage = () => {
             </HStack>
             <Box mx={"$4"}>
               <FormButton
-                title={"Logout"}
+                title={t("auth.logout")}
                 onPress={logout}
                 isLoading={isLoading}
                 w={"$full"}

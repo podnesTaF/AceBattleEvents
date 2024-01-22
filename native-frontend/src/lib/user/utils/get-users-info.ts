@@ -1,4 +1,5 @@
 import { formatDate } from "@lib/common/utils";
+import { TFunction } from "i18next";
 import { IUser } from "../models";
 
 export type InfoItem = {
@@ -7,26 +8,29 @@ export type InfoItem = {
   value: string;
 };
 
-export const getUsersInfo = (user: IUser): InfoItem[] => {
+export const getUsersInfo = (
+  user: IUser,
+  t: TFunction<"translation", undefined>
+): InfoItem[] => {
   const infoArray: InfoItem[] = [];
   infoArray.push({
-    label: "Nationality",
+    label: t("userInfo.nationality"),
     labelImage: user.country?.flagIconUrl,
     value: user.country?.name || "",
   });
 
   if (user.runner) {
     infoArray.push({
-      label: "Gender",
+      label: t("userInfo.gender"),
       value: user.runner.gender,
     });
     infoArray.push({
-      label: "Date of birth",
-      value: formatDate(user.runner.dateOfBirth, false),
+      label: t("userInfo.dateOfBirth"),
+      value: formatDate(user.runner.dateOfBirth, false), // Ensure formatDate is defined
     });
     infoArray.push({
-      label: "Rank",
-      value: user.runner.rank < 1000 ? user.runner.rank + "" : "-",
+      label: t("userInfo.rank"),
+      value: user.runner.rank < 1000 ? user.runner.rank.toString() : "-",
     });
   }
 

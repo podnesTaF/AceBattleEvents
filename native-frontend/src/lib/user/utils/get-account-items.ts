@@ -1,4 +1,5 @@
 import { IUser } from "@lib/models";
+import { useTranslation } from "react-i18next";
 
 type AccountItem = {
   title: string;
@@ -9,35 +10,37 @@ type AccountItem = {
   link: any;
 };
 
-export const getAccountItems = (user: IUser): AccountItem[] => {
+export const useAccountItems = (user?: IUser | null): AccountItem[] => {
+  const { t } = useTranslation();
+  if (!user) return [];
   const items: AccountItem[] = [
     {
-      title: "My Profile",
-      subtitle: "View your profile",
+      title: t("accountItems.myProfile.title"),
+      subtitle: t("accountItems.myProfile.subtitle"),
       icon: "person",
       color: "$green500",
       isDark: true,
       link: `/(modals)/(profile)/${user.id}`,
     },
     {
-      title: "Settings",
-      subtitle: "Manage your settings",
+      title: t("accountItems.settings.title"),
+      subtitle: t("accountItems.settings.subtitle"),
       icon: "settings",
       color: "$blue500",
       isDark: true,
       link: "/(modals)/(settings)",
     },
     {
-      title: "Followings",
-      subtitle: "Your favorite runners",
+      title: t("accountItems.followings.title"),
+      subtitle: t("accountItems.followings.subtitle"),
       icon: "people",
       color: "#1E1D1F",
       isDark: true,
       link: `/followings`,
     },
     {
-      title: "Membership",
-      subtitle: "View and get new memberships",
+      title: t("accountItems.membership.title"),
+      subtitle: t("accountItems.membership.subtitle"),
       icon: "card-outline",
       color: "$yellow500",
       isDark: true,
@@ -47,8 +50,8 @@ export const getAccountItems = (user: IUser): AccountItem[] => {
 
   if (user.role === "runner") {
     items.push({
-      title: "Calendar",
-      subtitle: "Your registrations",
+      title: t("accountItems.calendar.title"),
+      subtitle: t("accountItems.calendar.subtitle"),
       icon: "calendar",
       color: "$white",
       isDark: false,
@@ -56,16 +59,16 @@ export const getAccountItems = (user: IUser): AccountItem[] => {
     });
   } else if (user.role === "manager") {
     items.push({
-      title: "Calendar",
-      subtitle: "Your teams' registrations",
+      title: t("accountItems.calendar.title"),
+      subtitle: t("accountItems.calendar.teamSubtitle"),
       icon: "calendar",
       color: "$white",
       isDark: false,
       link: "/calendar",
     });
     items.push({
-      title: "Teams",
-      subtitle: "Teams settings",
+      title: t("accountItems.teams.title"),
+      subtitle: t("accountItems.teams.subtitle"),
       icon: "people",
       color: "$orange500",
       isDark: true,
@@ -73,8 +76,8 @@ export const getAccountItems = (user: IUser): AccountItem[] => {
     });
   } else if (user.role === "spectator") {
     items.push({
-      title: "Calendar",
-      subtitle: "Your registrations",
+      title: t("accountItems.calendar.title"),
+      subtitle: t("accountItems.calendar.subtitle"),
       icon: "calendar",
       color: "$white",
       isDark: false,

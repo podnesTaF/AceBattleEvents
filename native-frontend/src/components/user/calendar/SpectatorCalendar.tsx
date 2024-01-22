@@ -4,15 +4,18 @@ import ListStyledWrapper from "@Components/common/wrappers/ListStyledWrapper";
 import { VStack } from "@gluestack-ui/themed";
 import { useFetchSpectatorRegistrationsQuery } from "@lib/services";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import SpectatorRegistrationCard from "../SpectatorRegistrationCard";
 
 const SpectatorCalendar = (): JSX.Element => {
+  const { t } = useTranslation();
+
   const { data: registrations, isLoading } =
     useFetchSpectatorRegistrationsQuery();
 
   return (
     <ListStyledWrapper
-      title={"Your Events Registrations"}
+      title={t("calendar.yourEventsRegistrations")}
       primaryBgColor={"#1e1c1f"}
     >
       <WithLoading isLoading={!registrations || isLoading}>
@@ -23,8 +26,8 @@ const SpectatorCalendar = (): JSX.Element => {
         ) : (
           <VStack space="md">
             <InfoTemplate
-              title="No registrations found"
-              text="You don't have any registrations yet"
+              title={t("calendar.noRegistrationsFound")}
+              text={t("calendar.noRegistrationsYet")}
             />
           </VStack>
         )}

@@ -21,7 +21,6 @@ import { Image } from "expo-image";
 import { Stack, router } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Dimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 const Page = () => {
@@ -36,7 +35,6 @@ const Page = () => {
   } = useGetAllTeamsQuery({
     limit: 4,
   });
-  const width = Dimensions.get("window").width;
   const { data: newsData, isLoading: isNewsLoading } =
     useFetchNewsPreviewsQuery({ limit: 4 });
 

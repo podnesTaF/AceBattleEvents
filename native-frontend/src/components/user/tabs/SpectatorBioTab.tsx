@@ -3,6 +3,7 @@ import { Image, VStack } from "@gluestack-ui/themed";
 import { IUser } from "@lib/models";
 import { getUsersInfo, scaleSize } from "@lib/utils";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import UserContactInfo from "../UserContactInfo";
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const SpectatorBioTab: React.FC<Props> = ({ user }) => {
+  const { t } = useTranslation();
   return (
     <VStack space="lg">
       <VStack>
@@ -22,7 +24,7 @@ const SpectatorBioTab: React.FC<Props> = ({ user }) => {
             height={scaleSize(210)}
           />
         )}
-        <UserInfoList items={getUsersInfo(user)} />
+        <UserInfoList items={getUsersInfo(user, t)} />
       </VStack>
       <UserContactInfo user={user} />
     </VStack>

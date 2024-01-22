@@ -7,6 +7,7 @@ import {
 } from "@react-navigation/drawer";
 import i18n from "i18next";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import LogoTitle from "./LogoTitle";
 import SwitchLanguageItem from "./common/SwitchLanguageItem";
 import FormButton from "./common/forms/FormButton";
@@ -16,6 +17,7 @@ const CustomDrawerContent = (props: any) => {
   const currentLanguage = useAppSelector(selectLanguage);
   const dispatch = useAppDispatch();
   const [logout, isLoading] = useLogout();
+  const { t } = useTranslation();
 
   const switchLanguage = (languageCode: string) => {
     i18n.changeLanguage(languageCode);
@@ -47,7 +49,7 @@ const CustomDrawerContent = (props: any) => {
         {isAuth && (
           <Box p={"$2"} mt={"auto"}>
             <FormButton
-              title={"Logout"}
+              title={t("auth.logout")}
               onPress={logout}
               isLoading={isLoading}
               action={"negative"}

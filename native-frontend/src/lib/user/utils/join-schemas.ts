@@ -11,7 +11,7 @@ export const createUserSchema = yup.object().shape({
   email: yup.string().email().required("Email is required"),
   phone: yup
     .string()
-    .matches(/^(\+)?([ 0-9]){10,14}$/, "Phone number must be 10-14 digits long")
+    .matches(/^(\+)?([ 0-9]){5,15}$/, "Enter a valid phone number")
     .required("Phone is required"),
   countryCode: yup.string().required("Country code is required"),
   acceptTerms: yup

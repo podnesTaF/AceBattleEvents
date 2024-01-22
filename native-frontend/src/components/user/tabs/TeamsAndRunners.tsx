@@ -11,6 +11,7 @@ import {
 } from "@lib/services";
 import { scaleSize } from "@lib/utils";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import UserCard from "../UserCard";
 
 const TeamsAndRunners = ({ user }: { user: IUser }): JSX.Element => {
@@ -23,13 +24,12 @@ const TeamsAndRunners = ({ user }: { user: IUser }): JSX.Element => {
   });
   const { data: runners, isLoading: isRunnerLoading } =
     useGetRunnersByManagerQuery(user.manager?.id);
-
+  const { t } = useTranslation();
   return (
     <ScrollView>
       <VStack my={"$4"} space={"md"}>
         <HStack mx={"$4"}>
-          <Heading size="lg">Manager's </Heading>
-          <Heading size="lg">Teams</Heading>
+          <Heading size="lg">{t("common.managersTeams")}</Heading>
         </HStack>
         <Box alignItems="center" overflow="hidden">
           <SkeletonLoader<ITeam[]>
@@ -61,7 +61,7 @@ const TeamsAndRunners = ({ user }: { user: IUser }): JSX.Element => {
       </VStack>
       <VStack space={"lg"}>
         <Heading mx={"$4"} size="lg">
-          Runners
+          {t("common.runners")}
         </Heading>
         <WithLoading isLoading={isRunnerLoading || !runners}>
           <Container>

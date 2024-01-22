@@ -32,6 +32,7 @@ import {
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 
 const ManageTeam = () => {
@@ -40,6 +41,9 @@ const ManageTeam = () => {
   const { newValues, defaultValues } = useAppSelector(selectValues);
   const { availableCoaches } = useAppSelector(selectItems);
   const user = useAppSelector(selectUser);
+
+  const { t } = useTranslation();
+
   const { data: team, isLoading } = useGetTeamInfoQuery(
     teamId ? +teamId : undefined
   );
@@ -141,23 +145,23 @@ const ManageTeam = () => {
             <VStack space="xs">
               <FormField
                 name="name"
-                label={"Team Name"}
-                placeholder={"Enter team name"}
+                label={t("fields.teamName")}
+                placeholder={t("fields.teamNamePlaceholder")}
                 variant={"underlined"}
                 size={"md"}
                 customOnChange={customOnChange}
               />
               <FormField
                 name="city"
-                label={"City"}
-                placeholder={"Enter city"}
+                label={t("fields.city")}
+                placeholder={t("fields.cityPlaceholder")}
                 variant={"underlined"}
                 size={"md"}
                 customOnChange={customOnChange}
               />
               <PickField
                 name="coach"
-                label={"Coach"}
+                label={t("fields.coach")}
                 placeholder={defineItemLabel({
                   name: "coach",
                   id: newValues.coach,
@@ -167,7 +171,7 @@ const ManageTeam = () => {
               />
               <FormRadioGroup
                 name={"gender"}
-                parentLabel={"Team Type"}
+                parentLabel={t("fields.teamType")}
                 options={[
                   {
                     label: "Men's",
@@ -181,34 +185,34 @@ const ManageTeam = () => {
               />
               <PickField
                 name="players"
-                label={"Players"}
+                label={t("fields.players")}
                 placeholder={
                   newValues.players?.length
                     ? cutString(
                         `${newValues.players.length} players selected`,
                         20
                       )
-                    : "No runners selected"
+                    : t("fields.noPlayersSelected")
                 }
                 multiple={true}
               />
               <FormImagePicker
-                placeholder="Select team logo"
+                placeholder={t("fields.teamLogoPlaceholder")}
                 name="logo"
                 defaultImageName={defaultValues?.logo?.title}
                 onImagePicked={onImagePicked}
-                label="Team Logo"
+                label={t("fields.teamLogo")}
               />
               <FormImagePicker
-                placeholder="Select team image"
+                placeholder={t("fields.teamImagePlaceholder")}
                 name="teamImage"
                 defaultImageName={defaultValues?.teamImage?.title}
                 onImagePicked={onImagePicked}
-                label="Team Image"
+                label={t("fields.teamImage")}
               />
             </VStack>
             <Button my={"$4"} onPress={form.handleSubmit(onSubmit)}>
-              <ButtonText>Save</ButtonText>
+              <ButtonText>{t("common.save")}</ButtonText>
             </Button>
           </FormProvider>
         </Container>

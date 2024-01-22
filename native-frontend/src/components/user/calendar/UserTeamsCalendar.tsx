@@ -5,18 +5,21 @@ import TeamRegistrationCard from "@Components/teams/TeamRegistrationCard";
 import { ITeamRegistration, IUser } from "@lib/models";
 import { useFindUserRegistrationsQuery } from "@lib/teams/services/teamRegistrationService";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   user: IUser;
 }
 
 const UserTeamsCalendar = ({ user }: Props): JSX.Element => {
+  const { t } = useTranslation();
+
   const { data: teamRegistrations, isLoading } = useFindUserRegistrationsQuery({
     role: user.role,
   });
   return (
     <ListStyledWrapper
-      title={"Your Team Registrations"}
+      title={t("calendar.yourTeamRegistrations")}
       primaryBgColor={"#1e1c1f"}
     >
       <SkeletonLoader<ITeamRegistration[]> data={teamRegistrations}>
@@ -31,12 +34,10 @@ const UserTeamsCalendar = ({ user }: Props): JSX.Element => {
             ))
           ) : (
             <NoItemsAvailable
-              title={"No registrations found"}
-              text={
-                "You can expore future events by clicking on the button below"
-              }
+              title={t("calendar.noRegistrationsFound")}
+              text={t("calendar.exploreFutureEvents")}
               link={`/(drawer)/events`}
-              linkButtonText={"Explore Events"}
+              linkButtonText={t("calendar.exploreEvents")}
             />
           )
         }

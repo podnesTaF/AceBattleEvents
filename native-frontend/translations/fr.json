@@ -2,6 +2,7 @@
   "mainPage": {
     "upcomingEvents": "Événements à venir",
     "exploreConcepts": "Explorer les concepts",
+    "welcome": "Bienvenue à ABM",
     "infoCards": {
       "card1": {
         "title": "1 MILE",
@@ -73,7 +74,33 @@
     "next": "Suivant",
     "back": "Retour",
     "submit": "Soumettre",
-    "home": "Accueil"
+    "home": "Accueil",
+    "managersTeams": "Équipes du manager",
+    "distance": "Distance",
+    "time": "Temps",
+    "date": "Date",
+    "location": "Lieu",
+    "eventPage": "l'événement",
+    "team": "Team",
+    "save": "Enregistrer"
+  },
+  "fields": {
+    "teamName": "Nom de l'équipe",
+    "teamNamePlaceholder": "Entrez le nom de votre équipe",
+    "city": "Ville",
+    "cityPlaceholder": "Entrez la ville",
+    "country": "Pays",
+    "countryPlaceholder": "Entrez le pays",
+    "coach": "Entraîneur",
+    "coachPlaceholder": "Choisissez un entraîneur",
+    "gender": "Genre",
+    "teamType": "Type d'équipe",
+    "players": "Joueurs",
+    "noPlayersSelected": "Aucun joueur sélectionné",
+    "teamLogo": "Logo de l'équipe",
+    "teamLogoPlaceholder": "Sélectionnez le logo de l'équipe",
+    "teamImage": "Image de l'équipe",
+    "teamImagePlaceholder": "Sélectionnez l'image de l'équipe"
   },
   "gender": {
     "genderLabel": "Genre",
@@ -109,6 +136,7 @@
     "password": "Mot de passe",
     "enterYourPassword": "Entrez votre mot de passe ici",
     "login": "Connexion",
+    "logout": "Déconnexion",
     "joinUs": "Rejoignez-nous",
     "noAccount": "Vous n'avez pas de compte ?",
     "forgotPassword": "Mot de passe oublié ?",
@@ -201,5 +229,85 @@
   "managerInfo": {
     "willAssignManager": "Nous vous assignerons un gestionnaire basé sur votre emplacement. Vous recevrez une notification concernant votre gestionnaire.",
     "ableToChooseLater": "Vous pourrez choisir votre gestionnaire plus tard."
+  },
+  "notificationPage": {
+    "yourNotifications": "Vos notifications",
+    "sent": "Envoyé",
+    "notifications": "Notifications",
+    "sendNotification": "Envoyer",
+    "noNotificationsYet": "Pas de notifications pour l'instant",
+    "unread": "Non lu"
+  },
+  "accountItems": {
+    "myProfile": {
+      "title": "Mon Profil",
+      "subtitle": "Voir votre profil"
+    },
+    "settings": {
+      "title": "Paramètres",
+      "subtitle": "Gérer vos paramètres"
+    },
+    "followings": {
+      "title": "Abonnements",
+      "subtitle": "Vos coureurs favoris"
+    },
+    "membership": {
+      "title": "Adhésion",
+      "subtitle": "Obtenir de nouvelles adhésions"
+    },
+    "calendar": {
+      "title": "Calendrier",
+      "subtitle": "Vos inscriptions",
+      "teamSubtitle": "Les inscriptions de vos équipes"
+    },
+    "teams": {
+      "title": "Équipes",
+      "subtitle": "Paramètres des équipes"
+    }
+  },
+  "profileTabs": {
+    "bio": "BIO",
+    "teamsAndRunners": "Équipes et Coureurs",
+    "teams": "Équipes",
+    "results": "Résultats",
+    "events": "Événements"
+  },
+  "userInfo": {
+    "nationality": "Nationalité",
+    "gender": "Genre",
+    "dateOfBirth": "Date de naissance",
+    "rank": "Classement",
+    "contactInfo": "Infos de contact",
+    "email": "email",
+    "phone": "téléphone",
+    "profile": "Profil"
+  },
+  "team": {
+    "country": "Pays",
+    "rank": "Classement",
+    "coach": "Entraîneur",
+    "finishedRaces": "Courses terminées",
+    "notMemberOfAnyTeam": "Cet athlète n'est membre d'aucune équipe",
+    "allResults": "Tous les résultats",
+    "noResultsFound": "Aucun résultat trouvé",
+    "noTeamsFound": "Aucune équipe trouvée",
+    "noTeamsYet": "vous n'avez pas encore d'équipes"
+  },
+  "race": {
+    "viewRace": "la course"
+  },
+  "competitions": {
+    "upcomingCompetitions": "Compétitions à venir",
+    "noUpcomingCompetitions": "Aucune compétition à venir",
+    "pastCompetitions": "Compétitions passées",
+    "noPastCompetitions": "Aucune compétition passée"
+  },
+  "calendar": {
+    "yourEventsRegistrations": "Vos inscriptions aux événements",
+    "noRegistrationsFound": "Aucune inscription trouvée",
+    "noRegistrationsYet": "Vous n'avez encore aucune inscription",
+    "yourTeamRegistrations": "Vos inscriptions d'équipe",
+    "exploreFutureEvents": "Vous pouvez explorer les événements futurs en cliquant sur le bouton ci-dessous",
+    "exploreEvents": "Explorer les événements"
   }
 }
