@@ -83,7 +83,12 @@
     "results": "Results",
     "eventPage": "Event Page",
     "team": "Team",
-    "save": "Save"
+    "save": "Save",
+    "category": "Category",
+    "winners": "Winners",
+    "result": "Result",
+    "sportsmen": "Sportsmen",
+    "runner": "Runner"
   },
   "links": {
     "visitRunnerProfile": "visit runner profile",
@@ -301,7 +306,50 @@
     "upcomingCompetitions": "Upcoming competitions",
     "noUpcomingCompetitions": "No upcoming competitions",
     "pastCompetitions": "Past competitions",
-    "noPastCompetitions": "No past competitions"
+    "noPastCompetitions": "No past competitions",
+    "registrations": "Your registrations",
+    "searchForAnEvent": "Search for an event...",
+    "pastEvents": "Past Events"
+  },
+  "event": {
+    "participants": "Participants",
+    "schedule": "Schedule",
+    "results": "Results",
+    "aboutTheEvent": "About the Event",
+    "preliminaryTeams": "Preliminary teams:",
+    "professionals": "Professionals",
+    "womensTeams": "women's teams",
+    "mensTeams": "men's teams",
+    "teamsDescription": "teams consist of professionals from different clubs and countries",
+    "kidsUnder16": "Kids. u16",
+    "mixedTeams": "mixed teams",
+    "youthDescription": "Young athletes from local schools and youth running clubs",
+    "locationAndDate": "Location and Date",
+    "stadium": "Stadium",
+    "address": "Address",
+    "dateAndTime": "Date and Time",
+    "officialTeams": "Official Teams",
+    "noTeamRegisteredYet": "No Team Registered yet",
+    "noOfficialParticipants": "There is no official participants yet. See preliminary participant on the main page",
+    "noTeamsInCategory": "No teams in this category",
+    "officialRunners": "Official Runners",
+    "noOfficialRunnersYet": "No Official Runners yet",
+    "noRunnersInEvent": "There are no runners in this event",
+    "noRunnersInCategory": "No runners in this category",
+    "timetable": "Timetable",
+    "races": "Races",
+    "noRacesYet": "No Races Yet for this event",
+    "racesAvailableSoon": "The races will be available soon. Stay tuned!",
+    "registerYourTeam": "Register your team for the race",
+    "raceRegistrations": "Race registrations",
+    "modalText": "You have to submit the final structure of the team. Pick 7 runners",
+    "overview": "Overview",
+    "byRace": "By Race",
+    "overviewNotReady": "Overview is not ready. The event has not been finished yet. You can try to see the results by race in the other tab!",
+    "bestMile": "Best Mile",
+    "mileResult": "Mile Result",
+    "mileRunners": "Mile Runners",
+    "totalResult": "Total Result"
   },
   "calendar": {
     "yourEventsRegistrations": "Your Events Registrations",
@@ -309,6 +357,28 @@
     "noRegistrationsYet": "You don't have any registrations yet",
     "yourTeamRegistrations": "Your Team Registrations",
     "exploreFutureEvents": "You can explore future events by clicking on the button below",
-    "exploreEvents": "Explore Events"
+    "exploreEvents": "Explore Events",
+    "registrations": "Registrations"
+  },
+  "error": {
+    "errorFetching": "Error Fetching",
+    "errorOccured": "Error occurred",
+    "defaultErrorMessage": "There is an error occurred while fetching"
+  },
+  "eventRegistration": {
+    "registrationsClosed": "Registrations are closed",
+    "cantRegisterAnymore": "You can't register to this event anymore.",
+    "attendEvent": "Attend the Event",
+    "eventIsFree": "The Event is free to visit",
+    "comeWithoutRegistration": "You can come without any registrations",
+    "youAreRegistered": "You are registered for this event",
+    "registrationsOpen": "Registrations are open",
+    "viewInCalendar": "View in calendar",
+    "visitEvent": "Visit the event",
+    "registerYourTeam": "Register your team",
+    "registerTeams": "Register Teams",
+    "allTeamsRegistered": "You registered all your teams",
+    "registeredTeams": "Registered Teams:",
+    "noTeamsRegistered": "No teams registered yet"
   }
 }

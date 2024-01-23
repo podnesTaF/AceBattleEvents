@@ -10,11 +10,12 @@ import { useGetRacesByEventQuery } from "@lib/races/services/raceService";
 import { getNamedDate } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native";
 
 const Timetable = () => {
   const { eventId } = useLocalSearchParams<{ eventId?: string }>();
-
+  const { t } = useTranslation();
   const { data: races, isLoading, error } = useGetRacesByEventQuery(eventId);
   return (
     <>
@@ -33,8 +34,7 @@ const Timetable = () => {
             >
               <VStack space={"md"} alignItems="center" w={"$full"} pb={"$3"}>
                 <HeaderSubtitledTitle
-                  title={"Timetable"}
-                  subtitle="Brussels mile"
+                  title={t("event.timetable")}
                   tintColor={"#fff"}
                 />
               </VStack>
@@ -49,7 +49,7 @@ const Timetable = () => {
         </Heading>
         <VStack>
           <Heading mx={"$4"} size={"lg"} py={"$1"}>
-            Races
+            {t("event.races")}
           </Heading>
           <SkeletonLoader<RaceWithCheckIn[]>
             data={races}
@@ -72,8 +72,8 @@ const Timetable = () => {
                 <Box mx={"$4"}>
                   <InfoTemplate
                     variant="outline"
-                    title="No Races Yet for this event"
-                    text="The races will be available soon. Stay tuned!"
+                    title={t("event.noRacesYet")}
+                    text={t("event.racesAvailableSoon")}
                   />
                 </Box>
               )

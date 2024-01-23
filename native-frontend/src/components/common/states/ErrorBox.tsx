@@ -1,5 +1,6 @@
 import { Box } from "@gluestack-ui/themed";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import InfoTemplate from "../InfoTemplate";
 
 type ErrorBoxProps = {
@@ -15,6 +16,7 @@ const ErrorBox = ({
   height = "auto",
   width = "$full",
 }: ErrorBoxProps): JSX.Element => {
+  const { t } = useTranslation();
   return (
     <Box
       height={height}
@@ -23,8 +25,10 @@ const ErrorBox = ({
       alignItems="center"
     >
       <InfoTemplate
-        title={type === "fetch" ? "Error Fetching" : "Error occured"}
-        text={errorMessage || "There is an error occured while fething"}
+        title={
+          type === "fetch" ? t("error.errorFetching") : t("error.errorOccured")
+        }
+        text={errorMessage || t("error.defaultErrorMessage")}
         type={"error"}
       />
     </Box>

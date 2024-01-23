@@ -31,7 +31,9 @@ const SkeletonLoader = <T extends {}>({
   }
 
   if (error) {
-    return <ErrorBox error={error} width={width} height={height || 200} />;
+    return (
+      <ErrorBox errorMessage={error} width={width} height={height || 200} />
+    );
   }
 
   if (!data) {

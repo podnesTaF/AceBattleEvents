@@ -5,9 +5,8 @@ import TeamsParticipants from "@Components/events/TeamsParticipants";
 import { Box, ScrollView, VStack } from "@gluestack-ui/themed";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dimensions, FlatList, SafeAreaView } from "react-native";
-
-const tabs = ["Teams", "Runners"];
 
 const tabsData = (eventId?: string) => {
   return [
@@ -17,10 +16,13 @@ const tabsData = (eventId?: string) => {
 };
 
 const Participants = () => {
+  const { t } = useTranslation();
   const { eventId, name } = useLocalSearchParams<{
     eventId?: string;
     name?: string;
   }>();
+
+  const tabs = [t("common.teams"), t("common.runners")];
 
   const [activeTab, setActiveTab] = useState(0);
 
@@ -45,7 +47,7 @@ const Participants = () => {
             <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
               <VStack space={"md"} alignItems="center" w={"$full"}>
                 <HeaderSubtitledTitle
-                  title={"Participants"}
+                  title={t("event.participants")}
                   subtitle={name || "Event"}
                   tintColor={"#fff"}
                 />

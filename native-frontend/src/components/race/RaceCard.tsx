@@ -20,6 +20,7 @@ import {
 import { Link, useRouter } from "expo-router";
 import { InfoIcon } from "lucide-react-native";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   race: Partial<RaceWithCheckIn>;
@@ -33,6 +34,7 @@ const RaceCard = ({
   isLast,
 }: Props): JSX.Element => {
   const [infoOpen, setInfoOpen] = useState(false);
+  const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -69,7 +71,7 @@ const RaceCard = ({
           </Heading>
           <Link href={`/(modals)/(race)/${race.id}`} asChild>
             <Button size={"sm"}>
-              <ButtonText>View Race</ButtonText>
+              <ButtonText>{t("race.viewRace")}</ButtonText>
             </Button>
           </Link>
         </HStack>
@@ -81,7 +83,7 @@ const RaceCard = ({
               action="positive"
               flex={1}
             >
-              <ButtonText>Register your team for the race</ButtonText>
+              <ButtonText>{t("event.registerYourTeam")}</ButtonText>
             </Button>
             <Center p={"$2"}>
               <Pressable onPress={() => setInfoOpen(true)}>
@@ -99,12 +101,10 @@ const RaceCard = ({
         )}
       </VStack>
       <CustomModal
-        title={"Race registrations"}
+        title={t("event.raceRegistrations")}
         isOpen={infoOpen}
-        onClose={(title) => setInfoOpen(false)}
-        text={
-          "You have to submit the final structre of the team. Pick 7 runners"
-        }
+        onClose={() => setInfoOpen(false)}
+        text={t("event.modalText")}
       />
     </>
   );

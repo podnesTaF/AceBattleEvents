@@ -17,18 +17,21 @@ import {
 import { useFetchEventResultsQuery } from "@lib/events/services";
 import { EventResult, RaceShortForm } from "@lib/models";
 import { Stack, useLocalSearchParams } from "expo-router";
+import { TFunction } from "i18next";
 import { InfoIcon } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dimensions, FlatList, SafeAreaView } from "react-native";
 
-const tabs = ["Overview", "By Race"];
-
-const tabsData = (eventResult: EventResult) => {
+const tabsData = (
+  eventResult: EventResult,
+  t: TFunction<"translation", undefined>
+) => {
   return [
     <RaceOverview eventResult={eventResult} />,
     <Box py={"$4"}>
       <Heading mx={"$4"} size="lg" mb={"$2"}>
-        Races
+        {t("event.races")}
       </Heading>
       <Container borderSize={2}>
         {Object.keys(eventResult.racesByType).map((type, i) => (
@@ -46,9 +49,11 @@ const tabsData = (eventResult: EventResult) => {
 };
 
 const Results = () => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState(0);
   const { width } = Dimensions.get("window");
   const { eventId } = useLocalSearchParams();
+  const tabs = [t("event.overview"), t("event.byRace")];
 
   const {
     data: eventResult,
@@ -80,7 +85,7 @@ const Results = () => {
               <VStack space={"md"} alignItems="center" w={"$full"}>
                 <HeaderSubtitledTitle
                   subtitle={eventResult?.eventTitle || ""}
-                  title={"Results"}
+                  title={t("common.results")}
                   tintColor={"#fff"}
                 />
                 <Tabs
@@ -100,7 +105,7 @@ const Results = () => {
             <ScrollView>
               <FlatList
                 ref={flatListRef}
-                data={tabsData(eventResult)}
+                data={tabsData(eventResult, t)}
                 horizontal
                 pagingEnabled
                 showsHorizontalScrollIndicator={false}
@@ -117,10 +122,7 @@ const Results = () => {
               <Box py={"$4"} pr={"$4"} minHeight={"$24"}>
                 <HStack space="sm" alignItems="center">
                   <Icon as={InfoIcon} size="lg" />
-                  <Text>
-                    Overview is not ready. The event has not been finished yet.
-                    You can try to see the results by race in the other tab!
-                  </Text>
+                  <Text>{t("event.overviewNotReady")}</Text>
                 </HStack>
               </Box>
             </Container>

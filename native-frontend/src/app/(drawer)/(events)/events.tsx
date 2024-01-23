@@ -16,16 +16,22 @@ import {
 } from "@lib/events/services";
 import { useAppSelector } from "@lib/hooks";
 import { IEvent } from "@lib/models";
-import { useFetchSpectatorRegistrationsQuery } from "@lib/services";
+import {
+  useFetchSpectatorRegistrationsQuery,
+  useFindUserRegistrationsQuery,
+} from "@lib/services";
 import { selectUser } from "@lib/store";
 import { mapFutureEvents } from "@lib/utils";
 import { Stack } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native";
-import { useFindUserRegistrationsQuery } from "teamRegistrationService";
 
 const EventsScreen = () => {
   const user = useAppSelector(selectUser);
+
+  const { t } = useTranslation();
+
   const { data: myRegistrations, isLoading: isLoadingRegistrations } =
     useFetchSpectatorRegistrationsQuery();
 
@@ -52,7 +58,7 @@ const EventsScreen = () => {
           headerTitle: () => (
             <SearchTitle
               link="/(modals)/(find)/find-event"
-              placeholder="Search for an event..."
+              placeholder={t("competitions.searchForAnEvent")}
             />
           ),
         }}
@@ -60,7 +66,7 @@ const EventsScreen = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <VStack my={"$4"}>
           <Heading mx={"$3"} size={"lg"}>
-            Upcoming Events
+            {t("mainPage.upcomingEvents")}
           </Heading>
           <WithLoading isLoading={isLoading}>
             <HorizontalListLayout
@@ -76,7 +82,7 @@ const EventsScreen = () => {
             <Container vertical>
               <Box px={"$2"} py={"$4"}>
                 <Heading size={"lg"} mb={"$4"}>
-                  Your Registrations
+                  {t("competitions.registrations")}
                 </Heading>
                 <SkeletonLoader<any[]>
                   data={[myRegistrations, teamUserRegistrations]}
@@ -98,7 +104,7 @@ const EventsScreen = () => {
             <AuthCallToAction screen="events" />
           )}
         </Box>
-        <ListStyledWrapper title={"Past Events"}>
+        <ListStyledWrapper title={t("competitions.pastEvents")}>
           <SkeletonLoader<IEvent[]>
             data={eventsData?.events}
             isLoading={isLoadingEvents}

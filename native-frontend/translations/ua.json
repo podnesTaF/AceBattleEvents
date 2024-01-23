@@ -81,8 +81,13 @@
     "date": "Дата",
     "location": "Місце",
     "eventPage": "Сторінка події",
-    "team": "Team",
-    "save": "Зберегти"
+    "team": "Команда",
+    "save": "Зберегти",
+    "category": "Категорія",
+    "winners": "Переможці",
+    "result": "Результат",
+    "sportsmen": "Спортсмени",
+    "runner": "Runner"
   },
 
   "gender": {
@@ -301,7 +306,50 @@
     "upcomingCompetitions": "Майбутні змагання",
     "noUpcomingCompetitions": "Немає майбутніх змагань",
     "pastCompetitions": "Минулі змагання",
-    "noPastCompetitions": "Минулих змагань немає"
+    "noPastCompetitions": "Минулих змагань немає",
+    "registrations": "Ваші реєстрації",
+    "searchForAnEvent": "Шукати подію...",
+    "pastEvents": "Минулі Події"
+  },
+  "event": {
+    "participants": "Учасники",
+    "schedule": "Розклад",
+    "results": "Результати",
+    "aboutTheEvent": "Про подію",
+    "preliminaryTeams": "Попередні команди:",
+    "professionals": "Професіонали",
+    "womensTeams": "жіночі команди",
+    "mensTeams": "чоловічі команди",
+    "teamsDescription": "команди складаються з професіоналів різних клубів та країн",
+    "kidsUnder16": "Діти. до 16",
+    "mixedTeams": "змішані команди",
+    "youthDescription": "Юні атлети з місцевих шкіл та клубів юних бігунів",
+    "locationAndDate": "Місцезнаходження та Дата",
+    "stadium": "Стадіон",
+    "address": "Адреса",
+    "dateAndTime": "Дата та Час",
+    "officialTeams": "Офіційні команди",
+    "noTeamRegisteredYet": "Команди ще не зареєстровані",
+    "noOfficialParticipants": "Офіційних учасників поки немає. Перегляньте попередніх учасників на головній сторінці",
+    "noTeamsInCategory": "В цій категорії немає команд",
+    "officialRunners": "Офіційні бігуни",
+    "noOfficialRunnersYet": "Офіційних бігунів ще немає",
+    "noRunnersInEvent": "У цій події немає бігунів",
+    "noRunnersInCategory": "У цій категорії немає бігунів",
+    "timetable": "Розклад",
+    "races": "Забіги",
+    "noRacesYet": "Забігів ще немає для цієї події",
+    "racesAvailableSoon": "Забіги будуть доступні незабаром. Слідкуйте за оновленнями!",
+    "registerYourTeam": "Зареєструйте свою команду на забіг",
+    "raceRegistrations": "Реєстрація на забіг",
+    "modalText": "Ви повинні подати остаточний склад команди. Виберіть 7 бігунів",
+    "overview": "Огляд",
+    "byRace": "За забігами",
+    "overviewNotReady": "Огляд ще не готовий. Подія ще не завершилася. Ви можете спробувати переглянути результати за забігами на іншій вкладці!",
+    "bestMile": "Найкраща миля",
+    "mileResult": "Результат милі",
+    "mileRunners": "Бігуни на милю",
+    "totalResult": "Загальний результат"
   },
   "calendar": {
     "yourEventsRegistrations": "Реєстрації на ваші події",
@@ -309,6 +357,28 @@
     "noRegistrationsYet": "У вас ще немає реєстрацій",
     "yourTeamRegistrations": "Реєстрації вашої команди",
     "exploreFutureEvents": "Ви можете ознайомитись з майбутніми подіями, натиснувши на кнопку нижче",
-    "exploreEvents": "Досліджувати події"
+    "exploreEvents": "Досліджувати події",
+    "registrations": "Реєстрації"
+  },
+  "error": {
+    "errorFetching": "Помилка завантаження",
+    "errorOccured": "Сталася помилка",
+    "defaultErrorMessage": "Під час завантаження сталася помилка"
+  },
+  "eventRegistration": {
+    "registrationsClosed": "Реєстрацію закрито",
+    "cantRegisterAnymore": "Реєстрація на цю подію більше неможлива.",
+    "attendEvent": "Відвідайте подію",
+    "eventIsFree": "Подія безкоштовна для відвідування",
+    "comeWithoutRegistration": "Ви можете прийти без реєстрації",
+    "youAreRegistered": "Ви зареєстровані на цю подію",
+    "registrationsOpen": "Реєстрація відкрита",
+    "viewInCalendar": "Переглянути в календарі",
+    "visitEvent": "Відвідати подію",
+    "registerYourTeam": "Зареєструйте свою команду",
+    "registerTeams": "Зареєструвати команди",
+    "allTeamsRegistered": "Ви зареєстрували всі свої команди",
+    "registeredTeams": "Зареєстровані команди:",
+    "noTeamsRegistered": "Команд ще не зареєстровано"
   }
 }

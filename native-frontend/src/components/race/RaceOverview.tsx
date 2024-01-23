@@ -4,13 +4,15 @@ import ResultPodium from "@Components/events/ResultPodium";
 import { Box, Heading, VStack } from "@gluestack-ui/themed";
 import { EventResult } from "@lib/models";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const RaceOverview = ({ eventResult }: { eventResult: EventResult }) => {
+  const { t } = useTranslation();
   return (
     <>
       <Box my={"$4"}>
         <Heading size={"xl"} mx={"$4"}>
-          Winners
+          {t("common.winners")}
         </Heading>
         <VStack
           space="md"
@@ -24,7 +26,7 @@ const RaceOverview = ({ eventResult }: { eventResult: EventResult }) => {
         </VStack>
       </Box>
       <VStack px={"$3"} my="$4" space="md">
-        <Heading size={"lg"}>Best Mile</Heading>
+        <Heading size={"lg"}>{t("event.bestMile")}</Heading>
         {Object.keys(eventResult.bestSportsmen).map((item: any) => (
           <MilerCard
             key={item}

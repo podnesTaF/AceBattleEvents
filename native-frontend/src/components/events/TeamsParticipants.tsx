@@ -9,11 +9,12 @@ import { participantsFilters } from "@lib/common/utils/filters";
 import { ITeam } from "@lib/models";
 import { useGetTeamsByEventQuery } from "@lib/services";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList } from "react-native";
 
 const TeamsParticipants = ({ eventId }: { eventId?: string }) => {
   const [category, setCategory] = useState<string | undefined>(undefined);
-
+  const { t } = useTranslation();
   const {
     data: teams,
     isLoading: isTeamsLoading,
@@ -34,7 +35,7 @@ const TeamsParticipants = ({ eventId }: { eventId?: string }) => {
         >
           <HStack px={"$3"} py={"$1"} space="lg" alignItems="center">
             <Heading color="$coolGray400" size={"sm"}>
-              Category
+              {t("common.category")}
             </Heading>
             <Box flex={1}>
               <CustomSelect
@@ -67,21 +68,19 @@ const TeamsParticipants = ({ eventId }: { eventId?: string }) => {
             />
           ) : !category ? (
             <ListStyledWrapper
-              title={"Official Teams"}
+              title={t("event.officialTeams")}
               primaryBgColor={"#1e1c1f"}
             >
               <NoItemsAvailable
-                title={"No Team Registered yet"}
-                text={
-                  "There is no official participants yet. See preliminary participant on the main page"
-                }
+                title={t("event.noTeamRegisteredYet")}
+                text={t("event.noOfficialParticipants")}
                 link={`/(modals)/(event)/${eventId}`}
-                linkButtonText={"Home"}
+                linkButtonText={t("common.home")}
               />
             </ListStyledWrapper>
           ) : (
             <Heading textAlign="center" size="lg">
-              No teams in this category
+              {t("event.noTeamsInCategory")}
             </Heading>
           )
         }
