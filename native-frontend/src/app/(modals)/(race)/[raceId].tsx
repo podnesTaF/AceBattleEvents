@@ -24,13 +24,13 @@ import {
   msToMinutesAndSeconds,
 } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
+import { TFunction } from "i18next";
 import { InfoIcon } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dimensions, FlatList, SafeAreaView } from "react-native";
 
-const tabs = ["Overview", "Mile Runners", "Pacer-Joker"];
-
-const tabsData = (race: IRace) => {
+const tabsData = (race: IRace, t: TFunction<"translation", undefined>) => {
   return [
     race.teamResults?.map((teamResult, i) => (
       <VStack key={teamResult.id}>
@@ -49,7 +49,7 @@ const tabsData = (race: IRace) => {
     <ExpandableTable
       rows={getRunnerResultsRows(getFullDistanceAthletes(race))}
     />,
-    <ExpandableTable rows={getPacersJokersResultTable(race)} />,
+    <ExpandableTable rows={getPacersJokersResultTable(race, t)} />,
   ];
 };
 
@@ -59,6 +59,8 @@ const RaceScreen = () => {
   const { data: race, isLoading, error } = useGetFullRaceQuery(+raceId);
   const flatListRef = useRef<FlatList>(null);
   const { width } = Dimensions.get("window");
+  const { t } = useTranslation();
+  const tabs = [t("event.overview"), t("event.mileRunners"), "Pacer-Joker"];
 
   const onChangeTab = (tabIndex: number) => {
     setActiveTab(tabIndex);
@@ -117,7 +119,7 @@ const RaceScreen = () => {
                 <Box py={"$5"}>
                   <FlatList
                     ref={flatListRef}
-                    data={tabsData(data)}
+                    data={tabsData(data, t)}
                     horizontal
                     pagingEnabled
                     showsHorizontalScrollIndicator={false}

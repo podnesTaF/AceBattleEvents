@@ -82,7 +82,12 @@
     "location": "Lieu",
     "eventPage": "l'événement",
     "team": "Team",
-    "save": "Enregistrer"
+    "save": "Enregistrer",
+    "category": "Catégorie",
+    "winners": "Gagnants",
+    "result": "Résultat",
+    "sportsmen": "Sportifs",
+    "runner": "Coureur"
   },
   "fields": {
     "teamName": "Nom de l'équipe",
@@ -300,7 +305,50 @@
     "upcomingCompetitions": "Compétitions à venir",
     "noUpcomingCompetitions": "Aucune compétition à venir",
     "pastCompetitions": "Compétitions passées",
-    "noPastCompetitions": "Aucune compétition passée"
+    "noPastCompetitions": "Aucune compétition passée",
+    "registrations": "Vos inscriptions",
+    "searchForAnEvent": "Rechercher un événement...",
+    "pastEvents": "Événements Passés"
+  },
+  "event": {
+    "participants": "Participants",
+    "schedule": "Programme",
+    "results": "Résultats",
+    "aboutTheEvent": "À propos de l'événement",
+    "preliminaryTeams": "Équipes préliminaires :",
+    "professionals": "Professionnels",
+    "womensTeams": "équipes féminines",
+    "mensTeams": "équipes masculines",
+    "teamsDescription": "équipes composées de professionnels de différents clubs et pays",
+    "kidsUnder16": "Enfants. u16",
+    "mixedTeams": "équipes mixtes",
+    "youthDescription": "Jeunes athlètes des écoles locales et des clubs de course pour jeunes",
+    "locationAndDate": "Lieu et Date",
+    "stadium": "Stade",
+    "address": "Adresse",
+    "dateAndTime": "Date et Heure",
+    "officialTeams": "Équipes officielles",
+    "noTeamRegisteredYet": "Aucune équipe enregistrée pour le moment",
+    "noOfficialParticipants": "Il n'y a pas encore de participants officiels. Voir les participants préliminaires sur la page principale",
+    "noTeamsInCategory": "Pas d'équipes dans cette catégorie",
+    "officialRunners": "Coureurs officiels",
+    "noOfficialRunnersYet": "Pas encore de coureurs officiels",
+    "noRunnersInEvent": "Il n'y a pas de coureurs dans cet événement",
+    "noRunnersInCategory": "Pas de coureurs dans cette catégorie",
+    "timetable": "Emploi du temps",
+    "races": "Courses",
+    "noRacesYet": "Pas encore de courses pour cet événement",
+    "racesAvailableSoon": "Les courses seront bientôt disponibles. Restez à l'écoute !",
+    "registerYourTeam": "Inscrivez votre équipe pour la course",
+    "raceRegistrations": "Inscriptions pour la course",
+    "modalText": "Vous devez soumettre la structure finale de l'équipe. Choisissez 7 coureurs",
+    "overview": "Aperçu",
+    "byRace": "Par Course",
+    "overviewNotReady": "L'aperçu n'est pas prêt. L'événement n'est pas encore terminé. Vous pouvez essayer de voir les résultats par course dans l'autre onglet !",
+    "bestMile": "Meilleur Mile",
+    "mileResult": "Résultat du Mile",
+    "mileRunners": "Coureurs du Mile",
+    "totalResult": "Résultat Total"
   },
   "calendar": {
     "yourEventsRegistrations": "Vos inscriptions aux événements",
@@ -308,6 +356,28 @@
     "noRegistrationsYet": "Vous n'avez encore aucune inscription",
     "yourTeamRegistrations": "Vos inscriptions d'équipe",
     "exploreFutureEvents": "Vous pouvez explorer les événements futurs en cliquant sur le bouton ci-dessous",
-    "exploreEvents": "Explorer les événements"
+    "exploreEvents": "Explorer les événements",
+    "registrations": "Inscriptions"
+  },
+  "error": {
+    "errorFetching": "Erreur de chargement",
+    "errorOccured": "Erreur survenue",
+    "defaultErrorMessage": "Une erreur s'est produite lors du chargement"
+  },
+  "eventRegistration": {
+    "registrationsClosed": "Inscriptions fermées",
+    "cantRegisterAnymore": "Vous ne pouvez plus vous inscrire à cet événement.",
+    "attendEvent": "Assister à l'événement",
+    "eventIsFree": "L'événement est gratuit à visiter",
+    "comeWithoutRegistration": "Vous pouvez venir sans aucune inscription",
+    "youAreRegistered": "Vous êtes inscrit à cet événement",
+    "registrationsOpen": "Les inscriptions sont ouvertes",
+    "viewInCalendar": "Voir dans le calendrier",
+    "visitEvent": "Visiter l'événement",
+    "registerYourTeam": "Inscrire votre équipe",
+    "registerTeams": "Inscrire des équipes",
+    "allTeamsRegistered": "Vous avez inscrit toutes vos équipes",
+    "registeredTeams": "Équipes inscrites :",
+    "noTeamsRegistered": "Aucune équipe inscrite pour le moment"
   }
 }

@@ -1,9 +1,11 @@
 import JokerResultDetails from "@Components/race/JokerResultDetails";
 import { msToMinutesAndSeconds } from "@lib/utils";
+import { TFunction } from "i18next";
 import { IRace, ITeamResult } from "../models";
 
 export const getPacersJokersResultTable = (
-  race: IRace
+  race: IRace,
+  t: TFunction<"translation", undefined>
 ): {
   [key: string]: string | JSX.Element;
 }[] => {
@@ -29,8 +31,8 @@ export const getPacersJokersResultTable = (
     const firstPairObj = {
       expand: <JokerResultDetails runnerResults={firstPair} />,
 
-      "total result": msToMinutesAndSeconds(firstPairResult),
-      sportsmen: firstPair
+      [t("event.totalResult")]: msToMinutesAndSeconds(firstPairResult),
+      [t("common.sportsmen")]: firstPair
         .map(
           (res) =>
             res.runner.user.name +

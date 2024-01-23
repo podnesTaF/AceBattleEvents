@@ -4,6 +4,7 @@ import { useScreenSize } from "@lib/hooks";
 import { IRunner } from "@lib/models";
 import { msToMinutesAndSeconds, scaleSize } from "@lib/utils";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const MilerCard = ({
   runner,
@@ -13,6 +14,7 @@ const MilerCard = ({
   resultInMs: number;
 }) => {
   const { isSmallScreen } = useScreenSize();
+  const { t } = useTranslation();
   return (
     <HStack bgColor="$white" borderRightWidth={2} borderColor="#ff0000">
       <Box flex={2}>
@@ -31,7 +33,7 @@ const MilerCard = ({
         </Heading>
         <HStack justifyContent="space-between" space="lg">
           <Heading fontSize={scaleSize(16)} textTransform="uppercase">
-            Mile Result
+            {t("event.mileResult")}
           </Heading>
           <Heading fontSize={scaleSize(16)} textTransform="uppercase">
             {msToMinutesAndSeconds(resultInMs)}
@@ -39,7 +41,7 @@ const MilerCard = ({
         </HStack>
         <HStack justifyContent="space-between" space="lg">
           <Heading fontSize={scaleSize(16)} textTransform="uppercase">
-            Rank
+            {t("common.rank")}
           </Heading>
           <Heading fontSize={scaleSize(16)} textTransform="uppercase">
             {runner.rank}

@@ -11,12 +11,15 @@ import { ITeam, RunnerPreview } from "@lib/models";
 import { useGetRunnersEventParitipantsQuery } from "@lib/services";
 import { getRunnerGroupedData, transformGroupedData } from "@lib/utils";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList } from "react-native";
 
 const RunnerParticipants = ({ eventId }: { eventId?: string }) => {
   const [category, setCategory] = useState<string | undefined>(undefined);
   const [groupedData, setGroupedData] = useState<any>({});
   const [teams, setTeams] = useState<{ [key: string]: ITeam }>({});
+
+  const { t } = useTranslation();
 
   const [teamsFilter, setTeamsFilter] = useState<number>();
 
@@ -74,7 +77,7 @@ const RunnerParticipants = ({ eventId }: { eventId?: string }) => {
         >
           <HStack px={"$3"} py={"$1"} space="lg" alignItems="center">
             <Heading color="$coolGray400" size={"sm"}>
-              Category
+              {t("common.category")}
             </Heading>
             <Box flex={1}>
               <CustomSelect
@@ -92,7 +95,7 @@ const RunnerParticipants = ({ eventId }: { eventId?: string }) => {
         >
           <HStack px={"$3"} py={"$1"} space="lg" alignItems="center">
             <Heading color="$coolGray400" size={"sm"}>
-              Team
+              {t("common.team")}
             </Heading>
             <Box flex={1}>
               <CustomSelect
@@ -122,17 +125,17 @@ const RunnerParticipants = ({ eventId }: { eventId?: string }) => {
               />
             ) : !category ? (
               <ListStyledWrapper
-                title={"Official Runners"}
+                title={t("event.officialRunners")}
                 primaryBgColor={"#1e1c1f"}
               >
                 <NoItemsAvailable
-                  title={"No Official Runners yet"}
-                  text={"There are no runners in this event"}
+                  title={t("event.noOfficialRunnersYet")}
+                  text={t("event.noRunnersInEvent")}
                 />
               </ListStyledWrapper>
             ) : (
               <Heading textAlign="center" size="lg">
-                No runners in this category
+                {t("event.noRunnersInCategory")}
               </Heading>
             )
           }

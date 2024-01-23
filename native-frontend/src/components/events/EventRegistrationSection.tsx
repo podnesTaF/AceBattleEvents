@@ -10,9 +10,10 @@ import {
 } from "@gluestack-ui/themed";
 import { EventInfo, IUser } from "@lib/models";
 import { formatDate } from "@lib/utils";
-import { Link, useRouter } from "expo-router";
+import { Link } from "expo-router";
 import { InfoIcon } from "lucide-react-native";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Text } from "react-native";
 
 interface Props {
@@ -21,17 +22,16 @@ interface Props {
 }
 
 const EventRegistrationSection: React.FC<Props> = ({ user, event }) => {
-  const router = useRouter();
-
+  const { t } = useTranslation();
   // fetch user status for current competition. Handle by state
 
   if (!event.isOpenToRegister) {
     return (
       <VStack space="lg" p={"$3"} bg={"$white"}>
-        <Heading size={"lg"}>Registrations</Heading>
+        <Heading size={"lg"}>{t("calendar.registrations")}</Heading>
         <InfoTemplate
-          title="Registrations are closed"
-          text="You can't register to this event anymore."
+          title={t("eventRegistration.registrationsClosed")}
+          text={t("eventRegistration.cantRegisterAnymore")}
         />
       </VStack>
     );
@@ -40,12 +40,12 @@ const EventRegistrationSection: React.FC<Props> = ({ user, event }) => {
   if (user?.role === "spectator") {
     return (
       <VStack space="lg" p={"$3"} bg={"$white"}>
-        <Heading size={"lg"}>Attend the Event</Heading>
+        <Heading size={"lg"}>{t("eventRegistration.attendEvent")}</Heading>
         {event.attendanceType === "free" ? (
           <InfoTemplate
             type="success"
-            title={"The Event is free to visit"}
-            text={"You can come without any registrations"}
+            title={t("eventRegistration.eventIsFree")}
+            text={t("eventRegistration.comeWithoutRegistration")}
           />
         ) : (
           <>
@@ -53,21 +53,23 @@ const EventRegistrationSection: React.FC<Props> = ({ user, event }) => {
               <Icon as={InfoIcon} color={"$primary400"} />
               <Text>
                 {event.isRegisteredToVisit
-                  ? "You are registered for this event"
-                  : "Registrations are open"}
+                  ? t("eventRegistration.youAreRegistered")
+                  : t("eventRegistration.registrationsOpen")}
               </Text>
             </HStack>
             <Box w={"$full"} alignItems="center">
               {event.isRegisteredToVisit ? (
                 <Link href={"/(drawer)/(tabs)/(account)/calendar"} asChild>
                   <Button>
-                    <ButtonText>View in calendar</ButtonText>
+                    <ButtonText>
+                      {t("eventRegistration.viewInCalendar")}
+                    </ButtonText>
                   </Button>
                 </Link>
               ) : (
                 <Link href={"/(modals)/(event)/attend-event"} asChild>
                   <Button>
-                    <ButtonText>Visit the event</ButtonText>
+                    <ButtonText>{t("eventRegistration.visitEvent")}</ButtonText>
                   </Button>
                 </Link>
               )}
@@ -80,10 +82,10 @@ const EventRegistrationSection: React.FC<Props> = ({ user, event }) => {
   if (user?.role === "manager") {
     return (
       <VStack space="lg" p={"$3"} bg={"$white"}>
-        <Heading size={"lg"}>Register your team</Heading>
+        <Heading size={"lg"}>{t("eventRegistration.registerYourTeam")}</Heading>
         <HStack space="md" alignItems="center">
           <Icon as={InfoIcon} color={"$primary400"} />
-          <Text>Registrations are open</Text>
+          <Text>{t("eventRegistration.registrationsOpen")}</Text>
         </HStack>
         {!event.allTeamsRegistered ? (
           <Link
@@ -94,20 +96,22 @@ const EventRegistrationSection: React.FC<Props> = ({ user, event }) => {
             asChild
           >
             <Button>
-              <ButtonText>Register Teams</ButtonText>
+              <ButtonText>{t("eventRegistration.registerTeams")}</ButtonText>
             </Button>
           </Link>
         ) : (
           <Heading size={"sm"} textAlign="center" color={"$coolGray400"}>
-            You registered all your teams
+            {t("eventRegistration.allTeamsRegistered")}
           </Heading>
         )}
         {event.managerTeamRegistrations && (
           <VStack my={"$2"} space="md">
-            <Heading size={"md"}>Registered Teams:</Heading>
+            <Heading size={"md"}>
+              {t("eventRegistration.registeredTeams")}
+            </Heading>
             {!event.managerTeamRegistrations.length ? (
               <Heading size={"sm"} color={"$coolGray300"}>
-                No teams registered yet
+                {t("eventRegistration.noTeamsRegistered")}
               </Heading>
             ) : (
               event.managerTeamRegistrations.map((registration) => (

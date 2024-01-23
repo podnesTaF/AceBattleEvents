@@ -14,6 +14,7 @@ import {
   selectValues,
   setItems,
 } from "@lib/store";
+import { useRegisterTeamMutation } from "@lib/teams/services/teamRegistrationService";
 import { useGetCoachesByManagerQuery } from "@lib/user/services/CoachService";
 import {
   defineItemLabel,
@@ -25,7 +26,6 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import { useNavigation } from "expo-router/src/useNavigation";
 import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useRegisterTeamMutation } from "teamRegistrationService";
 
 const RegisterTeamModal = () => {
   const navigation = useNavigation();

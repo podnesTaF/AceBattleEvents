@@ -4,6 +4,7 @@ import { IRunnerResult } from "@lib/models";
 import { msToMinutesAndSeconds } from "@lib/utils";
 import { Link } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 type PairCardProps = {
   runnerResults: IRunnerResult[];
@@ -16,12 +17,13 @@ const PairCard = ({
   finalResultInMs,
   category,
 }: PairCardProps): JSX.Element => {
+  const { t } = useTranslation();
   return (
     <Container vertical>
       <HStack p={"$2"} alignItems="center">
         <VStack flex={1} space={"sm"}>
           <Heading size="sm" textTransform="uppercase">
-            Runners
+            {t("common.runners")}
           </Heading>
           {runnerResults.map((runnerResult, index) => (
             <Link
@@ -39,7 +41,7 @@ const PairCard = ({
             </Link>
           ))}
           <Heading size="sm" textTransform="uppercase">
-            Result:
+            {t("common.result")}:
           </Heading>
           <Heading size="sm" textAlign="center">
             {msToMinutesAndSeconds(finalResultInMs)}
@@ -47,7 +49,7 @@ const PairCard = ({
         </VStack>
         <Center flex={1}>
           <Heading size={"lg"} textTransform="uppercase">
-            {category === "male" ? "Men" : "Women"}
+            {t(`mainPage.genderHeading.${category}`)}
           </Heading>
         </Center>
       </HStack>
