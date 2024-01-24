@@ -152,7 +152,8 @@
     "home": "Home",
     "events": "Events",
     "aboutAbm": "About ABM",
-    "news": "News"
+    "news": "News",
+    "backToHome": "Back to Home"
   },
   "steps": {
     "userRegistrationTitle": "User Registration",
@@ -380,5 +381,71 @@
     "allTeamsRegistered": "You registered all your teams",
     "registeredTeams": "Registered Teams:",
     "noTeamsRegistered": "No teams registered yet"
+  },
+  "conceptExplanations": [
+    "Two teams of 5 players each starting together on the line while 2 Joker players of each team waiting sideline.",
+    "Timing of each player is summarized for a team result and shown each lap so each player can react on the gap or the advantage.",
+    "Depending on the team tactics the team coach will change two running players to Jokers in order to speed up the team effort.",
+    "The winning team will get a point on the tournament phase of the event and then in the playoffs will need to beat each team on its way to overall win."
+  ],
+  "points": [
+    "Based on the city clubs approach rather than nations.",
+    "This is the modern way of bringing up the traditional sports.",
+    "Teams are formed with athletes of different nations to represent one city.",
+    "Ongoing competitions between the AB city teams."
+  ],
+  "concept": {
+    "coreConcept": "Core Concept",
+    "bringingTeamBattles": "Bringing Team Battles to Individual Sport",
+    "provenInUkraine": "Proven in Ukraine",
+    "whatIsAceBattleMile": "What is Ace Battle Mile",
+    "milestones": "Milestones",
+    "getInTouch": "GET IN TOUCH",
+    "aceBattleMilePlatform": "Ace Battle Mile Platform"
+  },
+  "provenContent": [
+    {
+      "title": "2 YEARS",
+      "subtitle": "of operating in Ukraine"
+    },
+    {
+      "title": "10 EVENTS",
+      "subtitle": "happened indoor and outdoor"
+    },
+    {
+      "title": "40 RUNNING CLUBS",
+      "subtitle": "are involved"
+    },
+    {
+      "title": "500 PLAYERS",
+      "subtitle": "are active community members"
+    }
+  ],
+  "milestones": [
+    {
+      "title": "2020",
+      "text": "Inaugural event in Cherkassy, Ukraine"
+    },
+    {
+      "title": "2020-2022",
+      "text": "First Indoor League in Kyiv, Ukraine, 10 events to date"
+    },
+    {
+      "title": "September 23, 2023",
+      "text": "Ace Battle Mile Mace of Brussels (Testing Event), Brussels, Belgium"
+    },
+    {
+      "title": "Spring, 2024",
+      "text": "Ace Battle Mile Roger Bannister Cup, Oxford, UK"
+    },
+    {
+      "title": "Summer/Fall, 2024",
+      "text": "Ace Battle Mile UK Open League and European League Tour: Rome, Paris, Barcelona, London"
+    }
+  ],
+  "newsScreen": {
+    "latestNews": "Latest News",
+    "videos": "Videos",
+    "allArticles": "All Articles"
   }
 }

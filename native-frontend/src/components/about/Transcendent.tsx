@@ -1,17 +1,13 @@
 import { Box, Heading, Image, VStack } from "@gluestack-ui/themed";
-import { useScreenSize } from "@lib/hooks";
+import { usePoints, useScreenSize } from "@lib/hooks";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import ConceptWrapper from "./ConceptWrapper";
-
-const points = [
-  "Based on the city clubs approach rather than nations.",
-  "This is the modern way of bringing up the traditional sports.",
-  "Teams are formed with athletes of different nations to represent one city.",
-  "Ongoing competitions between the AB city teams.",
-];
 
 const Transcendent = () => {
   const { isSmallScreen } = useScreenSize();
+  const { t } = useTranslation();
+  const points = usePoints();
   return (
     <ConceptWrapper title={"Transcendent"}>
       <Box w={"$full"} height={isSmallScreen ? 200 : 240}>
@@ -26,7 +22,7 @@ const Transcendent = () => {
       </Box>
       <Box pb={"$1/6"}>
         <Heading size={isSmallScreen ? "md" : "lg"} color="#ff0000">
-          BRINGING TEAM BATTLES TO INDIVIDUAL SPORT
+          {t("concept.bringingTeamBattles")}
         </Heading>
         <VStack space="sm">
           {points.map((p, i) => (

@@ -20,7 +20,7 @@ const ConceptWrapper = ({ title, secondaryBg, children }: any) => {
         {isValidElement(children[0]) ? children[0] : null}
       </VStack>
       {isValidElement(children[1]) ? (
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <VStack
             pl={"$12"}
             flex={1}

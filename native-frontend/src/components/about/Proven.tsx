@@ -1,14 +1,16 @@
 import YoutubeCard from "@Components/common/YoutubeCard";
-import { provenContent } from "@Constants/info-contents";
 import { Center, HStack, Heading, VStack } from "@gluestack-ui/themed";
-import { useScreenSize } from "@lib/hooks";
+import { useScreenSize, useTranslatedProvenContent } from "@lib/hooks";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import ConceptWrapper from "./ConceptWrapper";
 
 const Proven = () => {
   const { isSmallScreen } = useScreenSize();
+  const { t } = useTranslation();
+  const provenContent = useTranslatedProvenContent();
   return (
-    <ConceptWrapper title={"PROVEN IN UKRAINE"}>
+    <ConceptWrapper title={t("concept.provenInUkraine")}>
       <HStack
         pl={"$8"}
         flexWrap="wrap"
@@ -32,7 +34,7 @@ const Proven = () => {
       </HStack>
       <>
         <Heading color="#ff0000" size={isSmallScreen ? "md" : "xl"}>
-          BRINGING TEAM BATTLES TO INDIVIDUAL SPORT
+          {t("concept.whatIsAceBattleMile")}
         </Heading>
         <Center w={"$full"} height={200}>
           <YoutubeCard

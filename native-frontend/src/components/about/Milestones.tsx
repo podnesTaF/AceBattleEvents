@@ -1,4 +1,3 @@
-import { milestones } from "@Constants/info-contents";
 import {
   Box,
   Center,
@@ -8,14 +7,17 @@ import {
   Text,
   VStack,
 } from "@gluestack-ui/themed";
-import { useScreenSize } from "@lib/hooks";
+import { useMilestones, useScreenSize } from "@lib/hooks";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import ConceptWrapper from "./ConceptWrapper";
 
 const Milestones = () => {
   const { isSmallScreen } = useScreenSize();
+  const { t } = useTranslation();
+  const milestones = useMilestones();
   return (
-    <ConceptWrapper title={"MILESTONES"}>
+    <ConceptWrapper title={t("concept.milestones")}>
       <ScrollView>
         <Box pl={"$8"} flex={1} p={"$4"} pb={"$20"}>
           <VStack>

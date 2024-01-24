@@ -16,16 +16,20 @@ import {
   YoutubeIcon,
 } from "lucide-react-native";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const GetInTouch = () => {
+  const { t } = useTranslation();
   return (
     <VStack pl={"$10"} justifyContent="space-between" height={"$full"}>
       <Box bg={"#ff0000"} borderBottomRightRadius={100} py={"$6"} px={"$3"}>
         <Heading color={"$white"} size={"xl"} mb={"$2"}>
-          GET IN TOUCH
+          {t("concept.getInTouch")}
         </Heading>
         <VStack space="md" maxWidth={"$80"}>
-          <Heading color={"$white"}>Ace Battle Mile Platform</Heading>
+          <Heading color={"$white"}>
+            {t("concept.aceBattleMilePlatform")}
+          </Heading>
           <Link href="https://acebattlemile.org" isExternal>
             <HStack alignItems="center">
               <LinkText size="lg" color="$blue100">
@@ -122,7 +126,7 @@ const GetInTouch = () => {
         <ExpoLink href={"/(drawer)/(tabs)/home"}>
           <HStack space={"md"} alignItems="center">
             <Icon as={ArrowLeft} size={"xl"} />
-            <Heading size={"lg"}>Back to Home</Heading>
+            <Heading size={"lg"}>{t("navigation.backToHome")}</Heading>
           </HStack>
         </ExpoLink>
       </Box>

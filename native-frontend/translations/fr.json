@@ -156,7 +156,8 @@
     "home": "Accueil",
     "events": "Événements",
     "aboutAbm": "À propos de ABM",
-    "news": "Actualités"
+    "news": "Actualités",
+    "backToHome": "Retour à l'accueil"
   },
   "steps": {
     "userRegistrationTitle": "Inscription de l'utilisateur",
@@ -379,5 +380,71 @@
     "allTeamsRegistered": "Vous avez inscrit toutes vos équipes",
     "registeredTeams": "Équipes inscrites :",
     "noTeamsRegistered": "Aucune équipe inscrite pour le moment"
+  },
+  "conceptExplanations": [
+    "Deux équipes de 5 joueurs chacune démarrent ensemble sur la ligne, tandis que 2 joueurs Joker de chaque équipe attendent sur le côté.",
+    "Le temps de chaque joueur est cumulé pour un résultat d'équipe et affiché à chaque tour, permettant ainsi à chaque joueur de réagir à l'écart ou à l'avantage.",
+    "Selon la tactique de l'équipe, l'entraîneur peut changer deux coureurs en Jokers pour accélérer l'effort de l'équipe.",
+    "L'équipe gagnante obtiendra un point lors de la phase de tournoi de l'événement et devra ensuite battre chaque équipe sur son chemin pour remporter la victoire finale."
+  ],
+  "points": [
+    "Basé sur l'approche des clubs de ville plutôt que sur les nations.",
+    "C'est la manière moderne de valoriser les sports traditionnels.",
+    "Les équipes sont formées d'athlètes de différentes nations pour représenter une ville.",
+    "Compétitions en cours entre les équipes des villes AB."
+  ],
+  "concept": {
+    "coreConcept": "Concept Principal",
+    "bringingTeamBattles": "Apporter les batailles d'équipes aux sports individuels",
+    "provenInUkraine": "Éprouvé en Ukraine",
+    "whatIsAceBattleMile": "Qu'est-ce que Ace Battle Mile",
+    "milestones": "Jalons",
+    "getInTouch": "PRENDRE CONTACT",
+    "aceBattleMilePlatform": "Plateforme Ace Battle Mile"
+  },
+  "provenContent": [
+    {
+      "title": "2 ANS",
+      "subtitle": "d'opération en Ukraine"
+    },
+    {
+      "title": "10 ÉVÉNEMENTS",
+      "subtitle": "organisés en intérieur et extérieur"
+    },
+    {
+      "title": "40 CLUBS DE COURSE",
+      "subtitle": "sont impliqués"
+    },
+    {
+      "title": "500 JOUEURS",
+      "subtitle": "sont des membres actifs de la communauté"
+    }
+  ],
+  "milestones": [
+    {
+      "title": "2020",
+      "text": "Événement inaugural à Tcherkassy, Ukraine"
+    },
+    {
+      "title": "2020-2022",
+      "text": "Première ligue en salle à Kyiv, 10 événements"
+    },
+    {
+      "title": "23 septembre 2023",
+      "text": "Ace Battle Mile Bâton de Bruxelles, Belgique"
+    },
+    {
+      "title": "Printemps 2024",
+      "text": "Ace Battle Mile Coupe Roger Bannister, Oxford, Royaume-Uni"
+    },
+    {
+      "title": "Été/Automne 2024",
+      "text": "Ace Battle Mile Ligue Ouverte du Royaume-Uni et Tour Européen: Rome, Paris, Barcelone, Londres"
+    }
+  ],
+  "newsScreen": {
+    "latestNews": "Dernières Nouvelles",
+    "videos": "Vidéos",
+    "allArticles": "Tous les Articles"
   }
 }
