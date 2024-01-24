@@ -8,6 +8,7 @@ import { Box, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
 import { IHashtag, NewsPreview } from "@lib/models";
 import { useFetchNewsPreviewsQuery, useFetchTagsQuery } from "@lib/services";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList } from "react-native";
 
 const videoItems = [
@@ -30,6 +31,9 @@ const videoItems = [
 
 const NewsScreen = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  const { t } = useTranslation();
+
   const {
     data: newsData,
     isLoading: isNewsLoading,
@@ -54,7 +58,7 @@ const NewsScreen = () => {
     <ScrollView>
       <VStack space={"sm"} mt={"$4"}>
         <Heading mx={"$2"} size={"lg"}>
-          Latest News
+          {t("newsScreen.latestNews")}
         </Heading>
         <SkeletonLoader<NewsPreview[]>
           data={latestNews?.newsPreviews}
@@ -73,7 +77,7 @@ const NewsScreen = () => {
       </VStack>
       <VStack my={"$4"} space={"lg"}>
         <Heading mx={"$4"} size={"lg"}>
-          Videos
+          {t("newsScreen.videos")}
         </Heading>
         <HorizontalListLayout
           itemWidth={0.9}
@@ -92,7 +96,7 @@ const NewsScreen = () => {
             borderColor="#ff0000"
             w={"auto"}
           >
-            All Articles
+            {t("newsScreen.allArticles")}
           </Heading>
           <SkeletonLoader<IHashtag[]>
             data={tags}

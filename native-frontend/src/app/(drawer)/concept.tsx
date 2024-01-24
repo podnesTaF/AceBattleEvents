@@ -7,6 +7,7 @@ import SideStepper from "@Components/common/stepper/SideStepper";
 import { Box, HStack, Heading } from "@gluestack-ui/themed";
 import Drawer from "expo-router/drawer";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Animated } from "react-native";
 
 const steps = [0, 1, 2, 3, 4];
@@ -30,6 +31,8 @@ const renderTabContent = (index: number) => {
 
 const Concept = () => {
   const [active, setActive] = useState(0);
+
+  const { t } = useTranslation();
 
   const opacityAnim = useRef(steps.map(() => new Animated.Value(0))).current;
 
@@ -66,7 +69,7 @@ const Concept = () => {
 
           headerTitle: ({ tintColor }) => (
             <Heading color={tintColor} textAlign="center">
-              About ABM
+              {t("navigation.aboutAbm")}
             </Heading>
           ),
         }}

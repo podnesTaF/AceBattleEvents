@@ -29,13 +29,6 @@ export const infoCards = [
   },
 ];
 
-export const explanations = [
-  `Two teams of 5 players each starting together on the line while 2 Joker players of each team waiting sideline.`,
-  `Timing of each player is summarized for a team result and shown each lap so each player can react on the gap or the advantage.`,
-  `Depending on the team tactics the team coach will change two running players to Jokers in order to speed up the team effort.`,
-  `The winning team will get a point on the tournament phase of the event and then in the playoffs will need to beat each team on its way to overall win.`,
-];
-
 export const provenContent = [
   {
     title: "2 YEARS",

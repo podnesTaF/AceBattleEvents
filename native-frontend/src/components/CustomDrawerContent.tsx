@@ -34,8 +34,7 @@ const CustomDrawerContent = (props: any) => {
           <Box px={"$2"} py={"$4"} pb={"$8"}>
             <LogoTitle />
           </Box>
-          <DrawerItemList {...props} />
-          <HStack px={"$2"}>
+          <HStack px={"$2"} w={"$full"}>
             {["en", "fr", "ua"].map((languageCode) => (
               <SwitchLanguageItem
                 key={languageCode}
@@ -45,6 +44,7 @@ const CustomDrawerContent = (props: any) => {
               />
             ))}
           </HStack>
+          <DrawerItemList {...props} />
         </VStack>
         {isAuth && (
           <Box p={"$2"} mt={"auto"}>
