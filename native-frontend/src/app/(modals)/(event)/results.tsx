@@ -15,6 +15,7 @@ import {
   VStack,
 } from "@gluestack-ui/themed";
 import { useFetchEventResultsQuery } from "@lib/events/services";
+import { useTranslatedTabs } from "@lib/hooks";
 import { EventResult, RaceShortForm } from "@lib/models";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { TFunction } from "i18next";
@@ -53,7 +54,7 @@ const Results = () => {
   const [activeTab, setActiveTab] = useState(0);
   const { width } = Dimensions.get("window");
   const { eventId } = useLocalSearchParams();
-  const tabs = [t("event.overview"), t("event.byRace")];
+  const tabs = useTranslatedTabs(["event.overview", "event.byRace"]);
 
   const {
     data: eventResult,

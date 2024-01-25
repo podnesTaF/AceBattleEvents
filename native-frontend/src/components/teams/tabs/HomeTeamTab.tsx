@@ -5,6 +5,7 @@ import { ITeam } from "@lib/models";
 import { useFollowTeamMutation, useUnfollowTeamMutation } from "@lib/services";
 import { selectIsAuth } from "@lib/store";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import TeamDescription from "../TeamDescription";
 import TeamPreviewCard from "../TeamPreviewCard";
 
@@ -13,6 +14,9 @@ const HomeTeamTab = ({ team }: { team: ITeam }) => {
   const [followTeam, { isLoading: isFollowLoading }] = useFollowTeamMutation();
   const [unfollowTeam, { isLoading: isUnfollowing }] =
     useUnfollowTeamMutation();
+
+  const { t } = useTranslation();
+
   const onPress = async () => {
     try {
       if (team.isFollowing) {
@@ -31,12 +35,16 @@ const HomeTeamTab = ({ team }: { team: ITeam }) => {
         <HStack alignItems="center" p={"$2"} justifyContent="space-between">
           <Heading size={"lg"}>
             {team.followersCount}{" "}
-            {(team.followersCount || 0) > 1 ? "Followers" : "Follower"}
+            {(team.followersCount || 0) > 1
+              ? t("common.followers")
+              : t("common.follower")}
           </Heading>
           {isAuth && (
             <AbmButton
               isLoading={isFollowLoading || isUnfollowing}
-              title={team.isFollowing ? "Unfollow" : "Follow"}
+              title={
+                team.isFollowing ? t("common.unfollow") : t("common.follow")
+              }
               onPress={onPress}
             />
           )}

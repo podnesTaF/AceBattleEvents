@@ -3,27 +3,29 @@ import InfoTemplate from "@Components/common/InfoTemplate";
 import { Heading, VStack } from "@gluestack-ui/themed";
 import { IRace, ITeam } from "@lib/models";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList } from "react-native";
 import PersonalBestCard from "../PersonalBestCard";
 import TeamRaceItem from "../TeamRaceItem";
 
 const TeamResultsTab = ({ team }: { team: ITeam }) => {
+  const { t } = useTranslation();
   return (
     <VStack space={"xl"}>
       <VStack p={"$3"} space="md">
-        <Heading size={"md"}>Team Best</Heading>
+        <Heading size={"md"}>{t("team.teamBest")}</Heading>
         {team.personalBest ? (
           <PersonalBestCard result={team.personalBest} />
         ) : (
           <InfoTemplate
-            title={"No Team Best"}
-            text="The team doesn't have team best"
+            title={t("team.noTeamBest")}
+            text={t("team.noTeamBestMessage")}
           />
         )}
       </VStack>
       <VStack space={"md"}>
         <Heading mx={"$3"} size={"md"}>
-          All Results
+          {t("team.allResults")}
         </Heading>
       </VStack>
       <Container>

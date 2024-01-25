@@ -3,6 +3,7 @@ import Tabs from "@Components/common/Tabs";
 import RunnerParticipants from "@Components/events/RunnerParticipants";
 import TeamsParticipants from "@Components/events/TeamsParticipants";
 import { Box, ScrollView, VStack } from "@gluestack-ui/themed";
+import { useTranslatedTabs } from "@lib/hooks";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -22,7 +23,7 @@ const Participants = () => {
     name?: string;
   }>();
 
-  const tabs = [t("common.teams"), t("common.runners")];
+  const tabs = useTranslatedTabs(["common.teams", "common.runners"]);
 
   const [activeTab, setActiveTab] = useState(0);
 

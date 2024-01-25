@@ -85,9 +85,15 @@
     "save": "Зберегти",
     "category": "Категорія",
     "winners": "Переможці",
+    "results": "Результати",
     "result": "Результат",
     "sportsmen": "Спортсмени",
-    "runner": "Runner"
+    "runner": "Runner",
+    "phone": "Телефон",
+    "email": "Пошта",
+    "contact": "Контакт",
+    "follower": "Підписник",
+    "followers": "Підписники"
   },
 
   "gender": {
@@ -298,7 +304,11 @@
     "teamName": "Назва команди",
     "namePlaceholder": "Введіть назву команди тут",
     "noTeamsFound": "Команди не знайдені",
-    "noTeamsYet": "У вас поки що немає команд"
+    "noTeamsYet": "У вас поки що немає команд",
+    "teamBest": "Найкраще від команди",
+    "noTeamBest": "Немає командних рекордів",
+    "noTeamBestMessage": "Команда не має командних рекордів",
+    "contactTeam": "Зв'язатися з командою"
   },
   "race": {
     "viewRace": "Забіг"
@@ -350,7 +360,11 @@
     "bestMile": "Найкраща миля",
     "mileResult": "Результат милі",
     "mileRunners": "Бігуни на милю",
-    "totalResult": "Загальний результат"
+    "totalResult": "Загальний результат",
+    "notRegisteredAsRunner": "Ви ще не зареєстровані як бігун на будь-які заходи. Запитайте у свого менеджера про ваш статус",
+    "noTeamsRegistered": "Ви ще не зареєстрували жодної зі своїх команд",
+    "empty": "Порожньо",
+    "notRegisteredToAttend": "Ви ще не зареєстровані для участі в будь-яких заходах"
   },
   "calendar": {
     "yourEventsRegistrations": "Реєстрації на ваші події",
@@ -447,5 +461,18 @@
     "latestNews": "Останні новини",
     "videos": "Відео",
     "allArticles": "Всі статті"
+  },
+  "settings": {
+    "changeProfileInfo": "Змінити інформацію профілю",
+    "setNewPassword": "Встановити новий пароль",
+    "changeProfileData": "Змінити дані профілю",
+    "yourImage": "Ваше зображення",
+    "selectImage": "Вибрати зображення",
+    "oldPassword": "Старий пароль",
+    "enterOldPassword": "Введіть ваш старий пароль",
+    "newPassword": "Новий пароль",
+    "enterNewPassword": "Введіть ваш новий пароль",
+    "confirmPassword": "Підтвердити пароль",
+    "enterNewPasswordAgain": "Введіть новий пароль"
   }
 }

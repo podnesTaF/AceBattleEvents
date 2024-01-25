@@ -22,8 +22,7 @@ import {
   mapTeamsToPickItems,
   registerTeamSchema,
 } from "@lib/utils";
-import { Stack, useLocalSearchParams } from "expo-router";
-import { useNavigation } from "expo-router/src/useNavigation";
+import { Stack, useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -106,7 +105,6 @@ const RegisterTeamModal = () => {
     <>
       <Stack.Screen
         options={{
-          presentation: "modal",
           headerStyle: {
             backgroundColor: "#1C1E1F",
           },

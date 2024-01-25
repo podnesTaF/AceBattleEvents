@@ -11,12 +11,6 @@ export const useTranslatedExplanations = () => {
   ];
 };
 
-export const usePoints = () => {
-  const { t } = useTranslation();
-
-  return [t("points.0"), t("points.1"), t("points.2"), t("points.3")];
-};
-
 export const useTranslatedProvenContent = () => {
   const { t } = useTranslation();
 

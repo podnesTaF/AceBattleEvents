@@ -20,6 +20,7 @@ import { updateUserDataSchema, uploadImage } from "@lib/utils";
 import { Stack, useNavigation } from "expo-router";
 import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { Dimensions, SafeAreaView } from "react-native";
 
 const ChangeUserData = () => {
@@ -30,6 +31,8 @@ const ChangeUserData = () => {
   const [addImage, { error: uploadingError }] = useUploadImageMutation();
   const navigation = useNavigation();
   const width = Dimensions.get("window").width;
+
+  const { t } = useTranslation();
 
   const form = useForm({
     mode: "onChange",
@@ -105,10 +108,10 @@ const ChangeUserData = () => {
                 py="$1"
               >
                 <Text color={"#fff"} size="md">
-                  Settings
+                  {t("accountItems.settings.title")}
                 </Text>
                 <Heading size="lg" color={"#fff"}>
-                  Change Profile Data
+                  {t("settings.changeProfileData")}
                 </Heading>
               </VStack>
             </SafeAreaView>
@@ -121,36 +124,36 @@ const ChangeUserData = () => {
             <VStack>
               <FormField
                 name="name"
-                label={"Name"}
-                placeholder={"Enter your name"}
+                label={t("userJoinForm.firstNameLabel")}
+                placeholder={t("userJoinForm.firstNamePlaceholder")}
                 variant={"underlined"}
                 size={"md"}
               />
               <FormField
                 name="surname"
-                label={"Surname"}
-                placeholder={"Enter your surname"}
+                label={t("userJoinForm.lastNameLabel")}
+                placeholder={t("userJoinForm.lastNamePlaceholder")}
                 variant={"underlined"}
                 size={"md"}
               />
               <FormField
                 name="city"
-                label={"City"}
-                placeholder={"Enter your city"}
+                label={t("userJoinForm.cityLabel")}
+                placeholder={t("userJoinForm.cityPlaceholder")}
                 variant={"underlined"}
                 size={"md"}
               />
               <FormField
                 name="country"
-                label={"Country"}
-                placeholder={"Enter your country"}
+                label={t("fields.country")}
+                placeholder={t("fields.countryPlaceholder")}
                 variant={"underlined"}
                 size={"md"}
               />
               <FormImagePicker
                 name={"image"}
-                label={"Your Image"}
-                placeholder="Select Image"
+                label={t("settings.yourImage")}
+                placeholder={t("settings.selectImage")}
                 defaultImageName={defaultValues?.image?.title}
                 onImagePicked={onImagePicked}
               />
@@ -161,7 +164,7 @@ const ChangeUserData = () => {
               }
               isLoading={form.formState.isSubmitting}
               onPress={form.handleSubmit(onSubmit)}
-              title={"Save"}
+              title={t("common.save")}
             />
           </FormProvider>
         </Container>

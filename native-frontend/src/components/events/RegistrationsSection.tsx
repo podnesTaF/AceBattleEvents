@@ -5,6 +5,7 @@ import { ITeamRegistration, IUser, IViewer } from "@lib/models";
 import { scaleSize } from "@lib/utils";
 import { InfoIcon } from "lucide-react-native";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface RegistrationSectionProps {
   user: IUser;
@@ -17,11 +18,8 @@ const RegistrationsSection: React.FC<RegistrationSectionProps> = ({
   spectatorRegistrations,
   teamRegistrations,
 }) => {
-  // spectator - IViewer
-  // manager - find all team registrations
-  // runner - find all team registrations
+  const { t } = useTranslation();
 
-  // fecth registrations by user, if logged in
   if (user.role === "manager" || user.role === "runner") {
     return (
       <>
@@ -36,10 +34,7 @@ const RegistrationsSection: React.FC<RegistrationSectionProps> = ({
         ) : user.role === "runner" ? (
           <HStack py={"$3"} space={"md"} alignItems="center">
             <Icon as={InfoIcon} size={"lg"} color="$primary400" />
-            <Text size="lg">
-              You haven't been registered as a runner to any events yet. Ask
-              your manager your status
-            </Text>
+            <Text size="lg">{t("event.notRegisteredAsRunner")}</Text>
           </HStack>
         ) : (
           <HStack
@@ -49,7 +44,7 @@ const RegistrationsSection: React.FC<RegistrationSectionProps> = ({
             width={scaleSize(250)}
           >
             <Icon as={InfoIcon} size={"lg"} color="$primary400" />
-            <Text size="lg">You haven't registered any of your teams</Text>
+            <Text size="lg">{t("event.noTeamsRegistered")}</Text>
           </HStack>
         )}
       </>
@@ -60,8 +55,8 @@ const RegistrationsSection: React.FC<RegistrationSectionProps> = ({
     <>
       <Box w={"auto"} h={"$24"}>
         <InfoTemplate
-          title="Empty"
-          text="You haven't registered to attend any events yet"
+          title={t("event.empty")}
+          text={t("event.notRegisteredToAttend")}
         />
       </Box>
     </>;
@@ -72,8 +67,8 @@ const RegistrationsSection: React.FC<RegistrationSectionProps> = ({
       <Box h={"$24"}>
         <InfoTemplate
           height={"auto"}
-          title="Empty"
-          text="You haven't registered to attend any events yet"
+          title={t("event.empty")}
+          text={t("event.notRegisteredToAttend")}
         />
       </Box>
     </>

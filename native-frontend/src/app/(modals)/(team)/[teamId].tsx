@@ -15,14 +15,13 @@ import {
   VStack,
   View,
 } from "@gluestack-ui/themed";
+import { useTranslatedTabs } from "@lib/hooks";
 import { ITeam } from "@lib/models";
 import { useGetTeamQuery } from "@lib/services";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useRef, useState } from "react";
 import { Dimensions, FlatList, SafeAreaView } from "react-native";
-
-const tabs = ["Home", "Runners", "Results", "Contact"];
 
 const tabsData = (team: ITeam) => {
   return [
@@ -39,6 +38,13 @@ const TeamScreen = () => {
   const [activeTab, setActiveTab] = useState(0);
   const flatListRef = useRef<FlatList>(null);
   const { width } = Dimensions.get("window");
+
+  const tabs = useTranslatedTabs([
+    "common.home",
+    "common.runners",
+    "common.results",
+    "common.contact",
+  ]);
 
   const onChangeTab = (tabIndex: number) => {
     setActiveTab(tabIndex);
