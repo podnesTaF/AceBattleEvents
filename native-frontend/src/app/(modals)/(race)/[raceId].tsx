@@ -12,6 +12,7 @@ import {
   Text,
   VStack,
 } from "@gluestack-ui/themed";
+import { useTranslatedTabs } from "@lib/hooks";
 import { IRace } from "@lib/models";
 import { useGetFullRaceQuery } from "@lib/races/services/raceService";
 import { getPacersJokersResultTable } from "@lib/races/utils/pacer-joker-table";
@@ -60,7 +61,11 @@ const RaceScreen = () => {
   const flatListRef = useRef<FlatList>(null);
   const { width } = Dimensions.get("window");
   const { t } = useTranslation();
-  const tabs = [t("event.overview"), t("event.mileRunners"), "Pacer-Joker"];
+  const tabs = useTranslatedTabs([
+    "event.overview",
+    "event.mileRunners",
+    "Pacer-Joker",
+  ]);
 
   const onChangeTab = (tabIndex: number) => {
     setActiveTab(tabIndex);

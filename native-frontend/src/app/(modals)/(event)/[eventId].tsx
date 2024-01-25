@@ -16,7 +16,7 @@ import {
   VStack,
 } from "@gluestack-ui/themed";
 import { useGetEventInfoQuery } from "@lib/events/services";
-import { useAppSelector, useEventTabs } from "@lib/hooks";
+import { useAppSelector, useTranslatedTabs } from "@lib/hooks";
 import { EventInfo } from "@lib/models";
 import { selectUser } from "@lib/store";
 import { formatDate } from "@lib/utils";
@@ -34,7 +34,11 @@ const EventScreen = () => {
   const { data: eventInfo, isLoading, error } = useGetEventInfoQuery(+eventId);
   const router = useRouter();
   const user = useAppSelector(selectUser);
-  const tabs = useEventTabs();
+  const tabs = useTranslatedTabs([
+    "event.participants",
+    "event.schedule",
+    "event.results",
+  ]);
 
   const onChangeTab = (tabIndex: number) => {
     if (!eventInfo) return;

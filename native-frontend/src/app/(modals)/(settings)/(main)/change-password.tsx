@@ -6,15 +6,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useUpdateUserPasswordMutation } from "@lib/services";
 import { changePasswordSchema } from "@lib/utils";
 import { Stack } from "expo-router";
-import { useNavigation } from "expo-router/src/useNavigation";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { Dimensions, SafeAreaView } from "react-native";
 
 const ChangeUserPassword = () => {
   const [updatePassword, { isLoading }] = useUpdateUserPasswordMutation();
-  const navigation = useNavigation();
   const width = Dimensions.get("window").width;
+
+  const { t } = useTranslation();
 
   const form = useForm({
     mode: "onChange",
@@ -44,10 +45,10 @@ const ChangeUserPassword = () => {
                 py="$1"
               >
                 <Text color={"#fff"} size="md">
-                  Settings
+                  {t("accountItems.settings.title")}
                 </Text>
                 <Heading size="lg" color={"#fff"}>
-                  Set New Password
+                  {t("settings.setNewPassword")}
                 </Heading>
               </VStack>
             </SafeAreaView>
@@ -60,23 +61,23 @@ const ChangeUserPassword = () => {
             <VStack>
               <FormField
                 name="oldPassword"
-                label={"Old password"}
-                placeholder={"Enter your old password"}
+                label={t("settings.oldPassword")}
+                placeholder={t("settings.enterOldPassword")}
                 variant={"underlined"}
                 size={"md"}
               />
               <FormField
                 name="newPassword"
-                label={"New Password"}
-                placeholder={"Enter your surname"}
+                label={t("settings.newPassword")}
+                placeholder={t("settings.enterNewPassword")}
                 variant={"underlined"}
                 size={"md"}
               />
               <FormField
                 name="confirmPassword"
                 inputProportion={1.5}
-                label={"Confirm Password"}
-                placeholder={"Enter your city"}
+                label={t("settings.confirmPassword")}
+                placeholder={t("settings.enterNewPasswordAgain")}
                 variant={"underlined"}
                 size={"md"}
               />
@@ -87,7 +88,7 @@ const ChangeUserPassword = () => {
               }
               isLoading={form.formState.isSubmitting || isLoading}
               onPress={form.handleSubmit(onSubmit)}
-              title={"Save"}
+              title={t("common.save")}
             />
           </FormProvider>
         </Container>

@@ -88,7 +88,12 @@
     "winners": "Winners",
     "result": "Result",
     "sportsmen": "Sportsmen",
-    "runner": "Runner"
+    "runner": "Runner",
+    "phone": "Phone",
+    "email": "Email",
+    "contact": "Contact",
+    "follower": "Follower",
+    "followers": "Followers"
   },
   "links": {
     "visitRunnerProfile": "visit runner profile",
@@ -168,12 +173,12 @@
   },
   "userJoinForm": {
     "firstNameLabel": "First Name",
-    "firstNamePlaceholder": "Enter your name here",
+    "firstNamePlaceholder": "Enter your name",
     "lastNameLabel": "Last Name",
-    "lastNamePlaceholder": "Enter your surname here",
+    "lastNamePlaceholder": "Enter your surname",
     "countryLabel": "Country",
     "cityLabel": "City",
-    "cityPlaceholder": "Enter your city here",
+    "cityPlaceholder": "Enter your city",
     "ageRangeLabel": "Age Range",
     "ageRangePlaceholder": "Select your age range",
     "ageRanges": {
@@ -298,7 +303,11 @@
     "teamName": "Team Name",
     "teamMembers": "Team Members",
     "noTeamsFound": "No teams found",
-    "noTeamsYet": "you have no teams yet"
+    "noTeamsYet": "you have no teams yet",
+    "teamBest": "Team Best",
+    "noTeamBest": "No Team Best",
+    "noTeamBestMessage": "The team doesn't have team best",
+    "contactTeam": "Contact team"
   },
   "race": {
     "viewRace": "View Race"
@@ -350,7 +359,11 @@
     "bestMile": "Best Mile",
     "mileResult": "Mile Result",
     "mileRunners": "Mile Runners",
-    "totalResult": "Total Result"
+    "totalResult": "Total Result",
+    "notRegisteredAsRunner": "You haven't been registered as a runner to any events yet. Ask your manager your status",
+    "noTeamsRegistered": "You haven't registered any of your teams",
+    "empty": "Empty",
+    "notRegisteredToAttend": "You haven't registered to attend any events yet"
   },
   "calendar": {
     "yourEventsRegistrations": "Your Events Registrations",
@@ -447,5 +460,18 @@
     "latestNews": "Latest News",
     "videos": "Videos",
     "allArticles": "All Articles"
+  },
+  "settings": {
+    "changeProfileInfo": "Change profile information",
+    "setNewPassword": "Set new password",
+    "changeProfileData": "Change Profile Data",
+    "yourImage": "Your Image",
+    "selectImage": "Select Image",
+    "oldPassword": "Old password",
+    "enterOldPassword": "Enter your old password",
+    "newPassword": "New Password",
+    "enterNewPassword": "Enter your new password",
+    "confirmPassword": "Confirm Password",
+    "enterNewPasswordAgain": "Enter a new password"
   }
 }

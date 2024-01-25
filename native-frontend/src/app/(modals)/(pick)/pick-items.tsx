@@ -30,6 +30,7 @@ const PickItemsModal = () => {
             backgroundColor: "#1C1E1F",
           },
           headerTintColor: "#fff",
+          headerLeft: () => <></>,
           headerShadowVisible: false,
           headerTitle: (props) => (
             <Heading size="xl" color={props.tintColor}>

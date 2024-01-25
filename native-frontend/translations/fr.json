@@ -87,7 +87,12 @@
     "winners": "Gagnants",
     "result": "Résultat",
     "sportsmen": "Sportifs",
-    "runner": "Coureur"
+    "runner": "Coureur",
+    "email": "Email",
+    "phone": "Téléphone",
+    "contact": "Contact",
+    "follower": "Abonné",
+    "followers": "Abonnés"
   },
   "fields": {
     "teamName": "Nom de l'équipe",
@@ -297,7 +302,11 @@
     "allResults": "Tous les résultats",
     "noResultsFound": "Aucun résultat trouvé",
     "noTeamsFound": "Aucune équipe trouvée",
-    "noTeamsYet": "vous n'avez pas encore d'équipes"
+    "noTeamsYet": "vous n'avez pas encore d'équipes",
+    "teamBest": "Meilleur de l'équipe",
+    "noTeamBest": "Pas de meilleur de l'équipe",
+    "noTeamBestMessage": "L'équipe n'a pas de meilleur résultat",
+    "contactTeam": "Contacter l'équipe"
   },
   "race": {
     "viewRace": "la course"
@@ -349,7 +358,11 @@
     "bestMile": "Meilleur Mile",
     "mileResult": "Résultat du Mile",
     "mileRunners": "Coureurs du Mile",
-    "totalResult": "Résultat Total"
+    "totalResult": "Résultat Total",
+    "notRegisteredAsRunner": "Vous n'êtes pas encore inscrit comme coureur à aucun événement. Demandez votre statut à votre manager",
+    "noTeamsRegistered": "Vous n'avez inscrit aucune de vos équipes",
+    "empty": "Vide",
+    "notRegisteredToAttend": "Vous n'êtes pas encore inscrit pour assister à des événements"
   },
   "calendar": {
     "yourEventsRegistrations": "Vos inscriptions aux événements",
@@ -446,5 +459,18 @@
     "latestNews": "Dernières Nouvelles",
     "videos": "Vidéos",
     "allArticles": "Tous les Articles"
+  },
+  "settings": {
+    "changeProfileInfo": "Modifier les informations du profil",
+    "setNewPassword": "Définir un nouveau mot de passe",
+    "changeProfileData": "Modifier les données du profil",
+    "yourImage": "Votre image",
+    "selectImage": "Sélectionner une image",
+    "oldPassword": "Ancien mot de passe",
+    "enterOldPassword": "Entrez votre ancien mot de passe",
+    "newPassword": "Nouveau mot de passe",
+    "enterNewPassword": "Entrez votre nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "enterNewPasswordAgain": "Entrez à nouveau le nouveau mot de passe"
   }
 }

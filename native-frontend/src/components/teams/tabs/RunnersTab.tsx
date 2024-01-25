@@ -3,14 +3,16 @@ import UserCard from "@Components/user/UserCard";
 import { Heading, ScrollView, VStack } from "@gluestack-ui/themed";
 import { ITeam } from "@lib/models";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const RunnersTab = ({ team }: { team: ITeam }) => {
+  const { t } = useTranslation();
   return (
     <ScrollView>
       <VStack p={"$3"} space="lg">
         <VStack>
           <Heading size="sm" mb={"$2"}>
-            Coaches
+            {t("fields.coach")}
           </Heading>
           {team.coach && (
             <Container>
@@ -23,7 +25,7 @@ const RunnersTab = ({ team }: { team: ITeam }) => {
         </VStack>
         <VStack>
           <Heading size={"sm"} mb={"$2"}>
-            Runners
+            {t("common.runners")}
           </Heading>
           <Container>
             {team.players.map((r) => (
