@@ -19,7 +19,7 @@ import { useGetEventInfoQuery } from "@lib/events/services";
 import { useAppSelector, useTranslatedTabs } from "@lib/hooks";
 import { EventInfo } from "@lib/models";
 import { selectUser } from "@lib/store";
-import { formatDate } from "@lib/utils";
+import { formatDate, getPaddingForPlatform } from "@lib/utils";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { Calendar } from "lucide-react-native";
 import React from "react";
@@ -60,7 +60,12 @@ const EventScreen = () => {
         options={{
           headerShown: true,
           header: ({ navigation }) => (
-            <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+            <SafeAreaView
+              style={{
+                backgroundColor: "#1C1E1F",
+                paddingTop: getPaddingForPlatform(),
+              }}
+            >
               <SkeletonLoader<EventInfo>
                 data={eventInfo}
                 isLoading={isLoading}

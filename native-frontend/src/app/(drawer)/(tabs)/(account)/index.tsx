@@ -18,7 +18,7 @@ import { Link, Stack } from "expo-router";
 import { LogOut } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { SafeAreaView } from "react-native";
+import { Platform, SafeAreaView, StatusBar } from "react-native";
 
 const AccountPage = () => {
   const user = useAppSelector(selectUser);
@@ -26,25 +26,33 @@ const AccountPage = () => {
   const profilteItems = useAccountItems(user);
   const { t } = useTranslation();
   const [logout, isLoading] = useLogout();
+  const isAndroid = Platform.OS === "android";
+  const statusBarHeight = StatusBar.currentHeight;
 
   return (
     <>
       <Stack.Screen
         options={{
-          header: (props) =>
-            user && isAuth ? (
-              <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+          header: (props) => (
+            <SafeAreaView
+              style={{
+                backgroundColor: "#1C1E1F",
+                paddingTop: isAndroid ? statusBarHeight : 0,
+              }}
+            >
+              {user && isAuth ? (
                 <Box p={"$2"}>
                   <UserPreview annotation="personal account" user={user} />
                 </Box>
-              </SafeAreaView>
-            ) : (
-              <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
-                <Box py={"$4"} alignItems="center">
-                  <LogoTitle />
-                </Box>
-              </SafeAreaView>
-            ),
+              ) : (
+                <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+                  <Box py={"$4"} alignItems="center">
+                    <LogoTitle />
+                  </Box>
+                </SafeAreaView>
+              )}
+            </SafeAreaView>
+          ),
         }}
       />
       <ScrollView>

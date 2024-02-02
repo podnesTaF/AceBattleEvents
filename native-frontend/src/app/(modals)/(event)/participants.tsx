@@ -4,6 +4,7 @@ import RunnerParticipants from "@Components/events/RunnerParticipants";
 import TeamsParticipants from "@Components/events/TeamsParticipants";
 import { Box, ScrollView, VStack } from "@gluestack-ui/themed";
 import { useTranslatedTabs } from "@lib/hooks";
+import { getPaddingForPlatform } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -45,7 +46,12 @@ const Participants = () => {
           headerShown: true,
           headerTintColor: "#fff",
           header: () => (
-            <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+            <SafeAreaView
+              style={{
+                backgroundColor: "#1C1E1F",
+                paddingTop: getPaddingForPlatform(),
+              }}
+            >
               <VStack space={"md"} alignItems="center" w={"$full"}>
                 <HeaderSubtitledTitle
                   title={t("event.participants")}

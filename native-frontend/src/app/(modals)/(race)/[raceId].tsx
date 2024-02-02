@@ -20,6 +20,7 @@ import {
   formatDate,
   getBattleName,
   getFullDistanceAthletes,
+  getPaddingForPlatform,
   getRunnerResultsRows,
   isPassed,
   msToMinutesAndSeconds,
@@ -85,7 +86,12 @@ const RaceScreen = () => {
           headerShown: true,
           headerTintColor: "#fff",
           header: ({ navigation }) => (
-            <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+            <SafeAreaView
+              style={{
+                backgroundColor: "#1C1E1F",
+                paddingTop: getPaddingForPlatform(),
+              }}
+            >
               <VStack space={"md"} alignItems="center" w={"$full"}>
                 <Box position="absolute" left={16} top={16}>
                   <CustomBackButton navigation={navigation} />

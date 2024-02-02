@@ -14,7 +14,7 @@ import {
 import { useAppSelector, useDebounce, useScreenSize } from "@lib/hooks";
 import { useGetRunnerPreviewsQuery } from "@lib/services";
 import { selectUser } from "@lib/store";
-import { scaleSize } from "@lib/utils";
+import { getPaddingForPlatform, scaleSize } from "@lib/utils";
 import { Stack, useNavigation } from "expo-router";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -45,7 +45,12 @@ const FindAthelteModal = () => {
       <Stack.Screen
         options={{
           header: () => (
-            <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+            <SafeAreaView
+              style={{
+                backgroundColor: "#1C1E1F",
+                paddingTop: getPaddingForPlatform(),
+              }}
+            >
               <VStack mt={"$4"} width={width} alignItems="center">
                 <Heading size="sm" color="$coolGray200">
                   {t("search.findAthlete")}

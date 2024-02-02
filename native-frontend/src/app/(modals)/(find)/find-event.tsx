@@ -16,7 +16,7 @@ import {
 import { useGetAllEventsQuery } from "@lib/events/services";
 import { useScreenSize } from "@lib/hooks";
 import { IEvent } from "@lib/models";
-import { scaleSize } from "@lib/utils";
+import { getPaddingForPlatform, scaleSize } from "@lib/utils";
 import { Stack } from "expo-router";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -47,7 +47,12 @@ const FindEventModal = () => {
       <Stack.Screen
         options={{
           header: () => (
-            <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+            <SafeAreaView
+              style={{
+                backgroundColor: "#1C1E1F",
+                paddingTop: getPaddingForPlatform(),
+              }}
+            >
               <VStack mt={"$4"} width={width} alignItems="center">
                 <Heading size="sm" color="$coolGray200">
                   {t("search.findEvent")}

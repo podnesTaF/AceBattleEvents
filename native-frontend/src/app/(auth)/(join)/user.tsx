@@ -2,6 +2,7 @@ import withWatermarkBg from "@Components/HOCs/withWatermark";
 import HeaderSubtitledTitle from "@Components/common/HeaderSubtitledTitle";
 import UserJoinForm from "@Components/join/UserJoinForm";
 import { Box, Text, VStack } from "@gluestack-ui/themed";
+import { getPaddingForPlatform } from "@lib/utils";
 import { Stack } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -9,12 +10,17 @@ import { SafeAreaView } from "react-native";
 
 const JoinUser = () => {
   const { t } = useTranslation();
+
   return (
     <>
       <Stack.Screen
         options={{
           header: () => (
-            <SafeAreaView>
+            <SafeAreaView
+              style={{
+                paddingTop: getPaddingForPlatform(),
+              }}
+            >
               <Box w={"$full"}>
                 <HeaderSubtitledTitle
                   tintColor={"#000"}
