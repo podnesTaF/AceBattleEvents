@@ -7,7 +7,7 @@ import RaceCard from "@Components/race/RaceCard";
 import { Box, Heading, VStack } from "@gluestack-ui/themed";
 import { RaceWithCheckIn } from "@lib/models";
 import { useGetRacesByEventQuery } from "@lib/races/services/raceService";
-import { getNamedDate } from "@lib/utils";
+import { getNamedDate, getPaddingForPlatform } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -30,6 +30,7 @@ const Timetable = () => {
             <SafeAreaView
               style={{
                 backgroundColor: "#1C1E1F",
+                paddingTop: getPaddingForPlatform(),
               }}
             >
               <VStack space={"md"} alignItems="center" w={"$full"} pb={"$3"}>

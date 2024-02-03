@@ -2,6 +2,7 @@ import withWatermarkBg from "@Components/HOCs/withWatermark";
 import HeaderSubtitledTitle from "@Components/common/HeaderSubtitledTitle";
 import RunnerJoinForm from "@Components/join/RunnerJoinForm";
 import { Box, Text, VStack } from "@gluestack-ui/themed";
+import { getPaddingForPlatform } from "@lib/utils";
 import { Stack } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -14,7 +15,7 @@ const RunnerJoin = () => {
       <Stack.Screen
         options={{
           header: () => (
-            <SafeAreaView>
+            <SafeAreaView style={{ paddingTop: getPaddingForPlatform() }}>
               <Box w={"$full"}>
                 <HeaderSubtitledTitle
                   tintColor={"#000"}

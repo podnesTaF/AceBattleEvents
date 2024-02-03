@@ -149,6 +149,11 @@
     "teamImage": "Team Image",
     "teamImagePlaceholder": "Select team image"
   },
+  "gender": {
+    "genderLabel": "Gender",
+    "male": "Male",
+    "female": "Female"
+  },
   "infoTemplate": {
     "noFollowingsTitle": "You have no Followings",
     "noFollowingsText": "Follow athletes to see them here"

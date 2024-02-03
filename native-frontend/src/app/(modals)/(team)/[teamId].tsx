@@ -18,6 +18,7 @@ import {
 import { useTranslatedTabs } from "@lib/hooks";
 import { ITeam } from "@lib/models";
 import { useGetTeamQuery } from "@lib/services";
+import { getPaddingForPlatform } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useRef, useState } from "react";
@@ -61,7 +62,7 @@ const TeamScreen = () => {
         options={{
           headerShown: true,
           header: (props) => (
-            <SafeAreaView>
+            <SafeAreaView style={{ paddingTop: getPaddingForPlatform() }}>
               <VStack alignItems="center" width={width} space="md" zIndex={10}>
                 <HStack
                   py={"$2"}

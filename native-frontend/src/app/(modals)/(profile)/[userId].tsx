@@ -17,6 +17,7 @@ import { useAppSelector, useProfileTabByUserRole } from "@lib/hooks";
 import { IUser } from "@lib/models";
 import { selectUser } from "@lib/store";
 import { useFetchUserQuery } from "@lib/user/services/UserService";
+import { getPaddingForPlatform } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -100,7 +101,12 @@ const ProfileScreen = () => {
         options={{
           headerShown: true,
           header: ({ navigation }) => (
-            <SafeAreaView style={{ backgroundColor: "#1c1e1f" }}>
+            <SafeAreaView
+              style={{
+                backgroundColor: "#1c1e1f",
+                paddingTop: getPaddingForPlatform(),
+              }}
+            >
               <VStack width={width}>
                 <HStack minHeight={32} space="lg" alignItems="center" px={"$2"}>
                   {Platform.OS !== "ios" && (

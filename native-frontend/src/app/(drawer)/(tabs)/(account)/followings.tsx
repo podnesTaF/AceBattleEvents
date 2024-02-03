@@ -9,7 +9,7 @@ import TeamPreviewCard from "@Components/teams/TeamPreviewCard";
 import { Box, HStack, Heading, ScrollView, VStack } from "@gluestack-ui/themed";
 import { ITeam } from "@lib/models";
 import { useGetFollowingTeamsQuery } from "@lib/services";
-import { scaleSize } from "@lib/utils";
+import { getPaddingForPlatform, scaleSize } from "@lib/utils";
 import { Stack } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -24,7 +24,12 @@ const Followings = () => {
         options={{
           headerTintColor: "#fff",
           header: (props) => (
-            <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+            <SafeAreaView
+              style={{
+                backgroundColor: "#1C1E1F",
+                paddingTop: getPaddingForPlatform(),
+              }}
+            >
               <VStack alignItems="center" width={"100%"} py={"$1"} space="md">
                 <LogoTitle {...props} />
                 <Heading size="sm" color="$coolGray200">

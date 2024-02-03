@@ -17,6 +17,7 @@ import {
 import { useFetchEventResultsQuery } from "@lib/events/services";
 import { useTranslatedTabs } from "@lib/hooks";
 import { EventResult, RaceShortForm } from "@lib/models";
+import { getPaddingForPlatform } from "@lib/utils";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { TFunction } from "i18next";
 import { InfoIcon } from "lucide-react-native";
@@ -82,7 +83,12 @@ const Results = () => {
           headerShown: true,
           headerTintColor: "#fff",
           header: () => (
-            <SafeAreaView style={{ backgroundColor: "#1C1E1F" }}>
+            <SafeAreaView
+              style={{
+                backgroundColor: "#1C1E1F",
+                paddingTop: getPaddingForPlatform(),
+              }}
+            >
               <VStack space={"md"} alignItems="center" w={"$full"}>
                 <HeaderSubtitledTitle
                   subtitle={eventResult?.eventTitle || ""}
