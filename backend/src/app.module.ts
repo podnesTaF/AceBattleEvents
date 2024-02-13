@@ -43,6 +43,12 @@ import { SpectatorModule } from "./users/modules/spectator.module";
 import { UserModule } from "./users/modules/user.module";
 import { VerifyMemberModule } from "./verify-member/verify-member.module";
 import { ViewerRegistrationsModule } from "./viewer-registrations/viewer-registrations.module";
+import { RoleModule } from './role/role.module';
+import { UserRoleModule } from './user-role/user-role.module';
+import { GenderModule } from './gender/gender.module';
+import { CategoryModule } from './category/category.module';
+import { BestResultsModule } from './best-results/best-results.module';
+import { StandardModule } from './standard/standard.module';
 
 @Module({
   imports: [
@@ -88,6 +94,12 @@ import { ViewerRegistrationsModule } from "./viewer-registrations/viewer-registr
     RaceRegistrationModule,
     TeamRaceRunnerModule,
     PushTokenModule,
+    RoleModule,
+    UserRoleModule,
+    GenderModule,
+    CategoryModule,
+    BestResultsModule,
+    StandardModule,
   ],
   controllers: [AppController],
   providers: [AppService],
