@@ -39,6 +39,9 @@ export class User {
   @Column({ nullable: true })
   password: string;
 
+  @Column({ nullable: true })
+  genderId: number;
+
   @ManyToOne(() => Gender, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'genderId' })
   gender: Gender;
@@ -63,6 +66,9 @@ export class User {
     }
     return this.roles.map((userRole) => userRole.role);
   }
+
+  @Column({ nullable: true })
+  countryId: number;
 
   @ManyToOne(() => Country, (country) => country.users, {
     onDelete: 'SET NULL',

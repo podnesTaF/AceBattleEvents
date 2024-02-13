@@ -11,26 +11,25 @@ import { CreateUserDto } from '../dtos/create-user.dto';
 import { LoginUserDto } from '../dtos/login-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { User } from '../entities/user.entity';
+import { AbstractUserService } from './abstract-user.service';
 
 @Injectable()
-export class UserService {
+export class UserService extends AbstractUserService {
   constructor(
     @InjectRepository(User)
     private repository: Repository<User>,
     @InjectRepository(Content)
     private contentRepository: Repository<Content>,
-    private roleService: RoleService,
-    private userRoleService: UserRoleService,
     private countryService: CountryService,
-  ) {}
+    protected readonly roleService: RoleService,
+    protected readonly userRoleService: UserRoleService,
+  ) {
+    super(roleService, userRoleService);
+  }
 
   async create(dto: CreateUserDto) {
     const user = await this.repository.save(dto);
-    const role = await this.roleService.findByName('user');
-    const userRole = await this.userRoleService.createUserRole({
-      roleId: role.id,
-      userId: user.id,
-    });
+    const userRole = await this.createRoleForUser(user.id, 'user');
     user.roles = [userRole];
     return this.repository.save(user);
     // const isDuplicate = await this.repository.findOne({

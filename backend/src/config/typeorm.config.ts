@@ -13,6 +13,7 @@ import { PushToken } from 'src/push-token/entities/push-token.entity';
 import { ResetUser } from 'src/reset-user/entities/reset-user.entity';
 import { Role } from 'src/role/entities/role.entity';
 import { Standard } from 'src/standard/entities/standard.entity';
+import { Subscription } from 'src/subscription/enitites/subscription.entity';
 import { UserRole } from 'src/user-role/entities/user-role.entity';
 import { User } from 'src/users/entities/user.entity';
 evnconfig();
@@ -41,6 +42,7 @@ const config: TypeOrmModuleOptions = {
     Distance,
     BestResult,
     Standard,
+    Subscription,
   ],
   synchronize: true,
 };

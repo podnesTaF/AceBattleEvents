@@ -13,6 +13,9 @@ export class Category {
   @Column({ type: 'text' })
   description: string;
 
+  @Column()
+  rank: number;
+
   @OneToMany(() => User, (user) => user.category)
   runners: User[];
 

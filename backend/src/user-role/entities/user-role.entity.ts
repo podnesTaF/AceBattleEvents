@@ -1,14 +1,33 @@
 import { Role } from 'src/role/entities/role.entity';
+import { Subscription } from 'src/subscription/enitites/subscription.entity';
 import { User } from 'src/users/entities/user.entity';
-import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 
 @Entity('user_role')
+@Unique(['userId', 'roleId'])
 export class UserRole {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
   userId: number;
 
-  @PrimaryColumn()
+  @Column()
   roleId: number;
+
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  assignedAt: Date;
+
+  @Column({ default: true })
+  active: boolean;
 
   @ManyToOne(() => User, (user) => user.roles, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
@@ -17,4 +36,9 @@ export class UserRole {
   @ManyToOne(() => Role, (role) => role.userRoles, { onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'roleId' })
   role: Role;
+
+  @OneToMany(() => Subscription, (subscription) => subscription.userRole, {
+    nullable: true,
+  })
+  subscriptions: Subscription[];
 }

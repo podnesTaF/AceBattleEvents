@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { resolve } from 'path';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { BestResultsModule } from './best-results/best-results.module';
 import { CategoryModule } from './category/category.module';
@@ -20,6 +19,7 @@ import { PushTokenModule } from './push-token/push-token.module';
 import { ResetUserModule } from './reset-user/reset-user.module';
 import { RoleModule } from './role/role.module';
 import { StandardModule } from './standard/standard.module';
+import { SubscriptionModule } from './subscription/subscription.module';
 import { UserRoleModule } from './user-role/user-role.module';
 import { UserModule } from './users/modules/user.module';
 
@@ -27,11 +27,12 @@ import { UserModule } from './users/modules/user.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-    }), // Import the ConfigModule to load environment variables
+    }),
     TypeOrmModule.forRoot(typeOrmConfig),
     ServeStaticModule.forRoot({
       rootPath: resolve(__dirname, 'static'),
     }),
+    ScheduleModule.forRoot(),
     UserModule,
     AuthModule,
     CountryModule,
@@ -48,8 +49,9 @@ import { UserModule } from './users/modules/user.module';
     CategoryModule,
     BestResultsModule,
     StandardModule,
+    SubscriptionModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

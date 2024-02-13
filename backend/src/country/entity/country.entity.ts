@@ -10,7 +10,10 @@ export class Country {
   name: string;
 
   @Column()
-  code: string;
+  phoneCode: string;
+
+  @Column({ nullable: true })
+  shortName: string;
 
   @Column({ nullable: true })
   flagIconUrl: string;

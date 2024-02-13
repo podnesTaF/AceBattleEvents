@@ -15,4 +15,13 @@ export class BestResultsService {
     const bestResult = this.bestResultRepository.create(dto);
     return await this.bestResultRepository.save(bestResult);
   }
+
+  async createManyBestResults(
+    dtos: CreateBestResultDto[],
+  ): Promise<BestResult[]> {
+    const bestResults = dtos.map((dto) =>
+      this.bestResultRepository.create(dto),
+    );
+    return await this.bestResultRepository.save(bestResults);
+  }
 }

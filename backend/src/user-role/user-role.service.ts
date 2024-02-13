@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserRoleDto } from './dto/create-user-role.dto';
@@ -13,6 +13,17 @@ export class UserRoleService {
 
   async createUserRole(body: CreateUserRoleDto): Promise<UserRole> {
     const userRole = this.userRoleRepository.create(body);
-    return await this.userRoleRepository.save(userRole);
+
+    try {
+      return await this.userRoleRepository.save(userRole);
+    } catch (error) {
+      if (
+        error.code === 'ER_DUP_ENTRY' ||
+        error.message.includes('Duplicate entry')
+      ) {
+        throw new ConflictException(`The user already has the specified role.`);
+      }
+      throw error;
+    }
   }
 }

@@ -1,4 +1,6 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/roles/roles-auth.decorator';
 import { CreateDistanceDto } from '../dto/create-distance.dto';
 import { DistanceService } from '../services/distance.service';
 
@@ -7,6 +9,8 @@ export class DistanceController {
   constructor(private readonly distanceService: DistanceService) {}
 
   @Post()
+  @UseGuards(RolesGuard)
+  @Roles('admin')
   createDistance(@Body() dto: CreateDistanceDto) {
     return this.distanceService.createDistance(dto);
   }

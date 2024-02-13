@@ -23,10 +23,16 @@ export class BestResult {
   distance: Distance;
 
   @Column()
+  distanceId: number;
+
+  @Column()
   year: number;
 
   @Column({ default: 'personal best' })
   type: string;
+
+  @Column()
+  runnerId: number;
 
   @ManyToOne(() => User, (runner) => runner.bestResults, {
     onDelete: 'CASCADE',

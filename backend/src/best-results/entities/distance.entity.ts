@@ -10,6 +10,9 @@ export class Distance {
   @Column()
   inCm: number;
 
+  @Column()
+  name: string;
+
   @OneToMany(() => BestResult, (bestResult) => bestResult.distance)
   bestResults: BestResult[];
 

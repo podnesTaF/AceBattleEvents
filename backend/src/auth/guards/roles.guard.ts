@@ -9,6 +9,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
+import { UserRole } from 'src/user-role/entities/user-role.entity';
 import { ROLES_KEY } from '../roles/roles-auth.decorator';
 
 @Injectable()
@@ -39,7 +40,10 @@ export class RolesGuard implements CanActivate {
 
       const user = this.jwtService.verify(token);
       req.user = user;
-      return user.roles.some((role) => requiredRoles.includes(role.value));
+      return user.roles.some(
+        (userRole: UserRole) =>
+          requiredRoles.includes(userRole.role.name) && userRole.active,
+      );
     } catch (e) {
       console.log(e);
       throw new HttpException('No access rights', HttpStatus.FORBIDDEN);

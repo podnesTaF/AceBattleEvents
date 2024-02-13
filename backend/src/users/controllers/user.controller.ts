@@ -13,18 +13,12 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/roles/roles-auth.decorator';
 import { CompleteVerificationDto } from '../dtos/complete-verification.dto';
-import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { UserService } from '../services/user.service';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
-  @Post('/register')
-  register(@Body() body: CreateUserDto) {
-    return this.userService.create(body);
-  }
 
   @Post('/verify')
   verifyMember(

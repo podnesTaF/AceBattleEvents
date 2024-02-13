@@ -26,11 +26,13 @@ export class AuthService {
   }
 
   async login(user: Partial<User>) {
-    return this.generateJwtToken({
-      id: user.id,
-      email: user.email,
-      roles: user.roles,
-    });
+    return {
+      token: this.generateJwtToken({
+        id: user.id,
+        email: user.email,
+        roles: user.roles,
+      }),
+    };
   }
 
   async register(dto: CreateUserDto) {
@@ -69,7 +71,7 @@ export class AuthService {
   }
 
   generateJwtToken(data: { id: number; email: string; roles: UserRole[] }) {
-    const payload = { email: data.email, sub: data.id, roles: data.roles };
+    const payload = { email: data.email, id: data.id, roles: data.roles };
     return this.jwtService.sign(payload);
   }
 

@@ -11,7 +11,7 @@ export class CreateBestResultDto {
   year: number;
 
   @IsNumber()
-  userId: number;
+  runnerId: number;
 
   @IsString()
   type: string;
