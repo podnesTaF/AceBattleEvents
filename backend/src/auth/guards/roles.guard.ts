@@ -1,27 +1,48 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { UserRole } from '../roles.enum';
+import { JwtService } from '@nestjs/jwt';
+import { Observable } from 'rxjs';
+import { ROLES_KEY } from '../roles/roles-auth.decorator';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private readonly reflector: Reflector) {}
+  constructor(private jwtService: JwtService, private reflector: Reflector) {}
 
-  canActivate(context: ExecutionContext): boolean {
-    const roles = this.reflector.get<UserRole[]>('roles', context.getHandler());
+  canActivate(
+    context: ExecutionContext,
+  ): boolean | Promise<boolean> | Observable<boolean> {
+    try {
+      const requiredRoles = this.reflector.getAllAndOverride<string[]>(
+        ROLES_KEY,
+        [context.getHandler(), context.getClass()],
+      );
+      if (!requiredRoles) {
+        return true;
+      }
+      const req = context.switchToHttp().getRequest();
+      const authHeader = req.headers.authorization;
+      const bearer = authHeader.split(' ')[0];
+      const token = authHeader.split(' ')[1];
 
-    if (!roles) {
-      return true; // No roles specified, allow access
+      if (bearer !== 'Bearer' || !token) {
+        throw new UnauthorizedException({
+          message: 'The user is not authorized',
+        });
+      }
+
+      const user = this.jwtService.verify(token);
+      req.user = user;
+      return user.roles.some((role) => requiredRoles.includes(role.value));
+    } catch (e) {
+      console.log(e);
+      throw new HttpException('No access rights', HttpStatus.FORBIDDEN);
     }
-    const request = context.switchToHttp().getRequest();
-    const user = request.user; // Assuming you store user information in the request
-    if (!user || !user.roles) {
-      return false; // User is not authenticated or does not have any roles
-    }
-
-    if (roles.includes(UserRole.ADMIN) && user.roles.includes(UserRole.ADMIN)) {
-      return true; // Allow access for admins
-    }
-
-    return roles.some((role) => user.roles.includes(role));
   }
 }

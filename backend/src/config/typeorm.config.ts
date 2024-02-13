@@ -1,45 +1,20 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { config as evnconfig } from 'dotenv';
-import { Admin } from 'src/admin/entities/admin.entity';
 import { BestResult } from 'src/best-results/entities/best-result.entity';
 import { Distance } from 'src/best-results/entities/distance.entity';
-import { Best } from 'src/bests/entities/best.entity';
 import { Category } from 'src/category/entities/category.entity';
-import { JoinRequest } from 'src/club-requests/entities/club-request.entity';
-import { Club } from 'src/club/entities/club.entity';
 import { Content } from 'src/content/entities/content.entity';
 import { Country } from 'src/country/entity/country.entity';
-import { Event } from 'src/events/entities/event.entity';
-import { FutureEvent } from 'src/events/entities/future-event.entity';
-import { Feedback } from 'src/feedbacks/entities/feedback.entity';
 import { Gender } from 'src/gender/entities/gender.entity';
 import { Hashtag } from 'src/hashtag/entities/hashtag.entity';
-import { Location } from 'src/locations/entities/locations.entity';
 import { Media } from 'src/media/entities/media.entity';
-import { Member } from 'src/member/entities/member.entity';
 import { News } from 'src/news/entities/news.entity';
-import { NotificationEntity } from 'src/notification/entities/notification.entity';
-import { PlayerEntity } from 'src/players/entities/player.entity';
-import { PrizeEntity } from 'src/prizes/entities/prize.entity';
 import { PushToken } from 'src/push-token/entities/push-token.entity';
-import { RaceRegistration } from 'src/race-registration/entities/race-registration.entity';
-import { Race } from 'src/race/entities/race.entity';
 import { ResetUser } from 'src/reset-user/entities/reset-user.entity';
 import { Role } from 'src/role/entities/role.entity';
-import { RunnerResult } from 'src/runner-results/entities/runner-results.entity';
-import { Split } from 'src/splits/entities/splits.entity';
 import { Standard } from 'src/standard/entities/standard.entity';
-import { TeamRaceRunner } from 'src/team-race-runner/entities/team-race-runner.entity';
-import { TeamRegistration } from 'src/team-registration/entities/team-registration.entity';
-import { TeamResult } from 'src/team-results/entities/team-results.entity';
-import { Team } from 'src/teams/entities/team.entity';
 import { UserRole } from 'src/user-role/entities/user-role.entity';
-import { Coach } from 'src/users/entities/coach.entity';
-import { Manager } from 'src/users/entities/manager.entity';
-import { Runner } from 'src/users/entities/runner.entity';
 import { User } from 'src/users/entities/user.entity';
-import { VerifyMember } from 'src/verify-member/entities/verify-member.entity';
-import { ViewerRegistration } from 'src/viewer-registrations/entities/viewer-registration.entity';
 evnconfig();
 
 const config: TypeOrmModuleOptions = {
@@ -52,36 +27,12 @@ const config: TypeOrmModuleOptions = {
   entities: [
     User,
     Event,
-    Club,
-    Location,
     Country,
-    PlayerEntity,
-    Team,
-    Coach,
-    Best,
-    PrizeEntity,
     Media,
-    ViewerRegistration,
-    JoinRequest,
     Hashtag,
     Content,
     News,
-    Race,
-    TeamResult,
-    Admin,
-    RunnerResult,
-    Split,
     ResetUser,
-    Member,
-    VerifyMember,
-    Manager,
-    Runner,
-    Feedback,
-    FutureEvent,
-    TeamRegistration,
-    NotificationEntity,
-    RaceRegistration,
-    TeamRaceRunner,
     PushToken,
     Role,
     UserRole,

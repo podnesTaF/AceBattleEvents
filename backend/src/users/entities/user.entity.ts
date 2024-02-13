@@ -2,23 +2,20 @@ import { BestResult } from 'src/best-results/entities/best-result.entity';
 import { Category } from 'src/category/entities/category.entity';
 import { Country } from 'src/country/entity/country.entity';
 import { Gender } from 'src/gender/entities/gender.entity';
-import { NotificationEntity } from 'src/notification/entities/notification.entity';
 import { PushToken } from 'src/push-token/entities/push-token.entity';
-import { Team } from 'src/teams/entities/team.entity';
+import { Role } from 'src/role/entities/role.entity';
 import { UserRole } from 'src/user-role/entities/user-role.entity';
 import {
+  AfterLoad,
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Runner } from './runner.entity';
 
 export enum MemberRole {
   RUNNER = 'runner',
@@ -58,14 +55,23 @@ export class User {
   @OneToMany(() => UserRole, (userRole) => userRole.user)
   roles: UserRole[];
 
-  @ManyToOne(() => Country, (country) => country.players, {
+  @AfterLoad()
+  async getRoles(): Promise<Role[]> {
+    if (!this.roles) {
+      console.error('Roles are not loaded');
+      return [];
+    }
+    return this.roles.map((userRole) => userRole.role);
+  }
+
+  @ManyToOne(() => Country, (country) => country.users, {
     onDelete: 'SET NULL',
     nullable: true,
   })
   @JoinColumn({ name: 'countryId' })
   country: Country;
 
-  @Column()
+  @Column({ nullable: true })
   city: string;
 
   @Column({ nullable: true })
@@ -77,22 +83,22 @@ export class User {
   @Column({ default: false })
   newsSubscription: boolean;
 
-  @OneToMany(() => NotificationEntity, (notification) => notification.sender)
-  sentNotifications: NotificationEntity[];
+  // @OneToMany(() => NotificationEntity, (notification) => notification.sender)
+  // sentNotifications: NotificationEntity[];
 
-  @ManyToMany(
-    () => NotificationEntity,
-    (notification) => notification.receivers,
-  )
-  receivedNotifications: NotificationEntity[];
+  // @ManyToMany(
+  //   () => NotificationEntity,
+  //   (notification) => notification.receivers,
+  // )
+  // receivedNotifications: NotificationEntity[];
 
-  @ManyToMany(() => Runner, (runner) => runner.followers)
-  @JoinTable()
-  followingRunners: Runner[];
+  // @ManyToMany(() => Runner, (runner) => runner.followers)
+  // @JoinTable()
+  // followingRunners: Runner[];
 
-  @ManyToMany(() => Team, (team) => team.followers)
-  @JoinTable()
-  followingTeams: Team[];
+  // @ManyToMany(() => Team, (team) => team.followers)
+  // @JoinTable()
+  // followingTeams: Team[];
 
   @OneToMany(() => BestResult, (bestResult) => bestResult.runner)
   bestResults: BestResult[];

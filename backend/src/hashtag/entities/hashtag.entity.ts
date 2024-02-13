@@ -1,4 +1,3 @@
-import { Event } from 'src/events/entities/event.entity';
 import { News } from 'src/news/entities/news.entity';
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -13,9 +12,9 @@ export class Hashtag {
   @ManyToMany(() => News, (news) => news.hashtags, { nullable: true })
   news: News[];
 
-  @ManyToMany(() => Event, (event) => event.hashtags, {
-    nullable: true,
-    onDelete: 'CASCADE',
-  })
-  events: Event[];
+  // @ManyToMany(() => Event, (event) => event.hashtags, {
+  //   nullable: true,
+  //   onDelete: 'CASCADE',
+  // })
+  // events: Event[];
 }

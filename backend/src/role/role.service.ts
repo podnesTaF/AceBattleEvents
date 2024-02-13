@@ -16,6 +16,10 @@ export class RoleService {
     return await this.roleRepository.save(role);
   }
 
+  async findByName(name: string): Promise<Role> {
+    return await this.roleRepository.findOne({ where: { name } });
+  }
+
   async getRoles(): Promise<Role[]> {
     return await this.roleRepository.find();
   }

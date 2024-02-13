@@ -1,7 +1,7 @@
-import { ValidationPipe } from "@nestjs/common";
-import { NestFactory } from "@nestjs/core";
-import { config } from "dotenv";
-import { AppModule } from "./app.module";
+import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { config } from 'dotenv';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   config();
@@ -9,16 +9,16 @@ async function bootstrap() {
 
   app.enableCors({
     origin: [/^(.*)/],
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
     optionsSuccessStatus: 200,
     credentials: true,
     allowedHeaders:
-      "Origin,X-Requested-With,Content-Type,Accept,Authorization,authorization,X-Forwarded-for",
+      'Origin,X-Requested-With,Content-Type,Accept,Authorization,authorization,X-Forwarded-for',
   });
   app.useGlobalPipes(new ValidationPipe());
 
-  app.setGlobalPrefix("api/v1");
+  app.setGlobalPrefix('api/v2');
   await app.listen(process.env.PORT || 4000, process.env.HOST);
 }
 bootstrap();
