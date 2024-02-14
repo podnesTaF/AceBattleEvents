@@ -1,5 +1,4 @@
-import { IsObject, IsOptional, IsString } from "class-validator";
-import { Media } from "src/media/entities/media.entity";
+import { IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
 
 export class CreateContentDto {
   @IsString()
@@ -11,9 +10,13 @@ export class CreateContentDto {
 
   @IsObject()
   @IsOptional()
-  media: Media;
+  mediaUrl: string;
 
   @IsString()
   @IsOptional()
-  purpose: string;
+  contentFor: string;
+
+  @IsNumber()
+  @IsOptional()
+  articleId: number;
 }

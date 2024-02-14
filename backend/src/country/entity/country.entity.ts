@@ -15,8 +15,11 @@ export class Country {
   @Column({ nullable: true })
   shortName: string;
 
-  @Column({ nullable: true })
-  flagIconUrl: string;
+  get flagIconUrl(): string {
+    return this.shortName
+      ? `https://flagcdn.com/${this.shortName.toLowerCase()}.svg`
+      : null;
+  }
 
   @OneToMany(() => User, (user) => user.country)
   users: User[];

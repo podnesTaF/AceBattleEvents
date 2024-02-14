@@ -4,7 +4,7 @@ import { Roles } from 'src/auth/roles/roles-auth.decorator';
 import { CountryService } from './country.service';
 import { CreateCountryDto } from './dto/create-country.dto';
 
-@Controller('country')
+@Controller('countries')
 export class CountryController {
   constructor(private readonly countryService: CountryService) {}
 

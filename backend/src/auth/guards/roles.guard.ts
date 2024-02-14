@@ -1,8 +1,7 @@
 import {
   CanActivate,
   ExecutionContext,
-  HttpException,
-  HttpStatus,
+  ForbiddenException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -47,8 +46,7 @@ export class RolesGuard implements CanActivate {
         (role: RequestRole) => requiredRoles.includes(role.name) && role.active,
       );
     } catch (e) {
-      console.log(e);
-      throw new HttpException('No access rights', HttpStatus.FORBIDDEN);
+      throw new ForbiddenException('No access rights');
     }
   }
 }

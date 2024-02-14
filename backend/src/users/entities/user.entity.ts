@@ -5,6 +5,8 @@ import { Country } from 'src/country/entity/country.entity';
 import { Gender } from 'src/gender/entities/gender.entity';
 import { PushToken } from 'src/push-token/entities/push-token.entity';
 import { RunnerCoach } from 'src/runner-coach/entity/runner-coach.entity';
+import { TeamPlayer } from 'src/team/entities/team-player.entity';
+import { Team } from 'src/team/entities/team.entity';
 import { UserRole } from 'src/user-role/entities/user-role.entity';
 import {
   Column,
@@ -121,6 +123,14 @@ export class User {
     nullable: true,
   })
   requestsInitiated: RunnerCoach[];
+
+  @OneToMany(() => Team, (team) => team.coach, { nullable: true })
+  coachTeams: Team[];
+
+  @OneToMany(() => TeamPlayer, (teamPlayer) => teamPlayer.runner, {
+    nullable: true,
+  })
+  runnerTeams: Team[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

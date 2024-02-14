@@ -10,8 +10,4 @@ export class CreateCountryDto {
   @IsString()
   @IsOptional()
   shortName?: string;
-
-  @IsString()
-  @IsOptional()
-  flagIconUrl?: string;
 }

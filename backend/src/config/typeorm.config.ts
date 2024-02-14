@@ -1,5 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { config as evnconfig } from 'dotenv';
+import { Article } from 'src/article/entities/article.entity';
 import { BestResult } from 'src/best-results/entities/best-result.entity';
 import { Distance } from 'src/best-results/entities/distance.entity';
 import { Category } from 'src/category/entities/category.entity';
@@ -8,13 +9,14 @@ import { Country } from 'src/country/entity/country.entity';
 import { Gender } from 'src/gender/entities/gender.entity';
 import { Hashtag } from 'src/hashtag/entities/hashtag.entity';
 import { Media } from 'src/media/entities/media.entity';
-import { News } from 'src/news/entities/news.entity';
 import { PushToken } from 'src/push-token/entities/push-token.entity';
 import { ResetUser } from 'src/reset-user/entities/reset-user.entity';
 import { Role } from 'src/role/entities/role.entity';
 import { RunnerCoach } from 'src/runner-coach/entity/runner-coach.entity';
 import { Standard } from 'src/standard/entities/standard.entity';
 import { Subscription } from 'src/subscription/enitites/subscription.entity';
+import { TeamPlayer } from 'src/team/entities/team-player.entity';
+import { Team } from 'src/team/entities/team.entity';
 import { UserRole } from 'src/user-role/entities/user-role.entity';
 import { User } from 'src/users/entities/user.entity';
 evnconfig();
@@ -33,7 +35,7 @@ const config: TypeOrmModuleOptions = {
     Media,
     Hashtag,
     Content,
-    News,
+    Article,
     ResetUser,
     PushToken,
     Role,
@@ -45,6 +47,8 @@ const config: TypeOrmModuleOptions = {
     Standard,
     Subscription,
     RunnerCoach,
+    Team,
+    TeamPlayer,
   ],
   synchronize: true,
 };

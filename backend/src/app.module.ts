@@ -4,6 +4,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { resolve } from 'path';
+import { ArticleModule } from './article/article.module';
 import { AuthModule } from './auth/auth.module';
 import { BestResultsModule } from './best-results/best-results.module';
 import { CategoryModule } from './category/category.module';
@@ -14,15 +15,15 @@ import { GenderModule } from './gender/gender.module';
 import { HashtagModule } from './hashtag/hashtag.module';
 import { IntegrationModule } from './integration/integration.module';
 import { MediaModule } from './media/media.module';
-import { NewsModule } from './news/news.module';
 import { PushTokenModule } from './push-token/push-token.module';
 import { ResetUserModule } from './reset-user/reset-user.module';
 import { RoleModule } from './role/role.module';
+import { RunnerCoachModule } from './runner-coach/runner-coach.module';
 import { StandardModule } from './standard/standard.module';
 import { SubscriptionModule } from './subscription/subscription.module';
+import { TeamModule } from './team/team.module';
 import { UserRoleModule } from './user-role/user-role.module';
 import { UserModule } from './users/modules/user.module';
-import { RunnerCoachModule } from './runner-coach/runner-coach.module';
 
 @Module({
   imports: [
@@ -38,7 +39,6 @@ import { RunnerCoachModule } from './runner-coach/runner-coach.module';
     AuthModule,
     CountryModule,
     MediaModule,
-    NewsModule,
     HashtagModule,
     ContentModule,
     IntegrationModule,
@@ -52,6 +52,8 @@ import { RunnerCoachModule } from './runner-coach/runner-coach.module';
     StandardModule,
     SubscriptionModule,
     RunnerCoachModule,
+    TeamModule,
+    ArticleModule,
   ],
   controllers: [],
   providers: [],
