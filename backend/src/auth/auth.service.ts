@@ -12,7 +12,7 @@ import { User } from '../users/entities/user.entity';
 import { UserService } from '../users/services/user.service';
 
 import { ResetUserService } from 'src/reset-user/reset-user.service';
-import { UserRole } from 'src/user-role/entities/user-role.entity';
+import { RequestRole } from 'src/users/decorators/user.decorator';
 import { changePasswordTemplate } from './utils/getChangePassTemplate';
 
 @Injectable()
@@ -26,11 +26,16 @@ export class AuthService {
   }
 
   async login(user: Partial<User>) {
+    const roles = user.roles.map((userRole) => ({
+      id: userRole.role.id,
+      name: userRole.role.name,
+      active: userRole.active,
+    }));
     return {
       token: this.generateJwtToken({
         id: user.id,
         email: user.email,
-        roles: user.roles,
+        roles,
       }),
     };
   }
@@ -70,7 +75,7 @@ export class AuthService {
     return null;
   }
 
-  generateJwtToken(data: { id: number; email: string; roles: UserRole[] }) {
+  generateJwtToken(data: { id: number; email: string; roles: RequestRole[] }) {
     const payload = { email: data.email, id: data.id, roles: data.roles };
     return this.jwtService.sign(payload);
   }

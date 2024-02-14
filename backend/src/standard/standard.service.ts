@@ -42,6 +42,10 @@ export class StandardService {
     bestResults: BestResult[],
     genderId: number,
   ): Promise<Standard | undefined> {
+    if (bestResults.length === 0) {
+      return { category: null } as Standard;
+    }
+
     const promises = bestResults.map(async (bestResult) => {
       return this.standardRepository
         .createQueryBuilder('standard')
@@ -53,16 +57,18 @@ export class StandardService {
         .andWhere('standard.timeInMs >= :timeInMs', {
           timeInMs: bestResult.timeInMs,
         })
+        .orWhere('standard.timeInMs IS NULL')
         .orderBy('category.rank', 'ASC')
         .getOne();
     });
 
     const followedStandards = await Promise.all(promises);
-    const validStandards = followedStandards.filter(Boolean); // Remove undefined results
 
-    if (validStandards.length === 0) {
-      return undefined;
+    if (followedStandards.length === 0) {
+      return { category: null } as Standard;
     }
+    const validStandards = followedStandards.filter(Boolean);
+
     return validStandards.sort((a, b) => a.category.rank - b.category.rank)[0];
   }
 }

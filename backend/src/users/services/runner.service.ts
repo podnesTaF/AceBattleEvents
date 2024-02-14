@@ -13,35 +13,24 @@ import { AbstractUserService } from './abstract-user.service';
 export class RunnerService extends AbstractUserService {
   constructor(
     @InjectRepository(User)
-    private userRepository: Repository<User>,
-    private readonly bestResultsService: BestResultsService,
-    protected readonly roleService: RoleService,
+    protected readonly userRepository: Repository<User>,
     protected readonly userRoleService: UserRoleService,
     protected readonly standardService: StandardService,
+    private readonly bestResultsService: BestResultsService,
+    protected readonly roleService: RoleService,
   ) {
-    super(roleService, userRoleService);
+    super(userRepository, roleService, userRoleService);
   }
 
-  async becomeRunner(userId: number, dto: BecomeRunnerDto): Promise<any> {
-    const user = await this.userRepository.findOne({
-      where: { id: userId },
-      relations: ['roles'],
-    });
-
+  async becomeRunner(userId: number, dto: BecomeRunnerDto): Promise<User> {
     // assing user fields from dto to user
-
-    user.dateOfBirth = new Date(dto.dateOfBirth);
-    user.genderId = dto.genderId;
-    user.avatarUrl = dto.avatarUrl;
-    user.imageUrl = dto.imageUrl;
-    user.countryId = dto.countryId;
-    user.city = dto.city;
+    const user = await this.assignRequiredRoleFields(userId, dto, 'runner');
 
     // Creating bestResults
 
-    const bestResults = await this.bestResultsService.createManyBestResults(
-      dto.bestResults,
-    );
+    const bestResults = await this.bestResultsService.createManyBestResults([
+      ...dto.bestResults.map((result) => ({ ...result, runnerId: userId })),
+    ]);
 
     user.bestResults = bestResults;
 

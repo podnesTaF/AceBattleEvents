@@ -7,11 +7,13 @@ import {
   Patch,
   Post,
   Query,
-} from "@nestjs/common";
-import { CreateNewsDto, updateNewsDto } from "./dto/create.dto";
-import { NewsService } from "./news.service";
+} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger/dist/decorators/api-use-tags.decorator';
+import { CreateNewsDto, updateNewsDto } from './dto/create.dto';
+import { NewsService } from './news.service';
 
-@Controller("news")
+@ApiTags('news')
+@Controller('news')
 export class NewsController {
   constructor(private readonly newsService: NewsService) {}
 
@@ -20,7 +22,7 @@ export class NewsController {
     return this.newsService.getNews();
   }
 
-  @Get("previews")
+  @Get('previews')
   getNewsPreviews(
     @Query()
     query: {
@@ -38,8 +40,8 @@ export class NewsController {
     });
   }
 
-  @Get(":id")
-  getNewsById(@Param("id") id: string) {
+  @Get(':id')
+  getNewsById(@Param('id') id: string) {
     return this.newsService.getNewsById(+id);
   }
 
@@ -48,13 +50,13 @@ export class NewsController {
     return this.newsService.createNews(body);
   }
 
-  @Patch(":id")
-  updateNews(@Param("id") id: string, @Body() body: updateNewsDto) {
+  @Patch(':id')
+  updateNews(@Param('id') id: string, @Body() body: updateNewsDto) {
     return this.newsService.updateNews(+id, body);
   }
 
-  @Delete(":id")
-  deleteNews(@Param("id") id: string) {
+  @Delete(':id')
+  deleteNews(@Param('id') id: string) {
     return this.newsService.deleteNews(+id);
   }
 }

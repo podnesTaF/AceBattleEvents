@@ -22,6 +22,7 @@ import { StandardModule } from './standard/standard.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { UserRoleModule } from './user-role/user-role.module';
 import { UserModule } from './users/modules/user.module';
+import { RunnerCoachModule } from './runner-coach/runner-coach.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { UserModule } from './users/modules/user.module';
     BestResultsModule,
     StandardModule,
     SubscriptionModule,
+    RunnerCoachModule,
   ],
   controllers: [],
   providers: [],

@@ -17,14 +17,14 @@ import { AbstractUserService } from './abstract-user.service';
 export class UserService extends AbstractUserService {
   constructor(
     @InjectRepository(User)
-    private repository: Repository<User>,
+    protected readonly repository: Repository<User>,
+    protected readonly roleService: RoleService,
+    protected readonly userRoleService: UserRoleService,
     @InjectRepository(Content)
     private contentRepository: Repository<Content>,
     private countryService: CountryService,
-    protected readonly roleService: RoleService,
-    protected readonly userRoleService: UserRoleService,
   ) {
-    super(roleService, userRoleService);
+    super(repository, roleService, userRoleService);
   }
 
   async create(dto: CreateUserDto) {

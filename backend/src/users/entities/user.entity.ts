@@ -1,12 +1,12 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { BestResult } from 'src/best-results/entities/best-result.entity';
 import { Category } from 'src/category/entities/category.entity';
 import { Country } from 'src/country/entity/country.entity';
 import { Gender } from 'src/gender/entities/gender.entity';
 import { PushToken } from 'src/push-token/entities/push-token.entity';
-import { Role } from 'src/role/entities/role.entity';
+import { RunnerCoach } from 'src/runner-coach/entity/runner-coach.entity';
 import { UserRole } from 'src/user-role/entities/user-role.entity';
 import {
-  AfterLoad,
   Column,
   CreateDateColumn,
   Entity,
@@ -36,6 +36,7 @@ export class User {
   @Column({ unique: true })
   email: string;
 
+  @ApiProperty({ minimum: 8, example: 'Password-12' })
   @Column({ nullable: true })
   password: string;
 
@@ -49,6 +50,10 @@ export class User {
   @Column({ nullable: true, type: 'date' })
   dateOfBirth: Date;
 
+  @ApiProperty({
+    example: '+1234567890',
+    description: 'Phone number of the user, nullable',
+  })
   @Column({ nullable: true })
   phoneNumber: string;
 
@@ -57,15 +62,6 @@ export class User {
 
   @OneToMany(() => UserRole, (userRole) => userRole.user)
   roles: UserRole[];
-
-  @AfterLoad()
-  async getRoles(): Promise<Role[]> {
-    if (!this.roles) {
-      console.error('Roles are not loaded');
-      return [];
-    }
-    return this.roles.map((userRole) => userRole.role);
-  }
 
   @Column({ nullable: true })
   countryId: number;
@@ -80,31 +76,23 @@ export class User {
   @Column({ nullable: true })
   city: string;
 
+  @ApiProperty({
+    description: "URL to the user's full scale image, nullable",
+  })
   @Column({ nullable: true })
   imageUrl: string;
 
+  @ApiProperty({
+    description: "URL to the user's avatar image, nullable",
+  })
   @Column({ nullable: true })
   avatarUrl: string;
 
+  @ApiProperty({
+    description: 'Indicates if the user is subscribed to news updates',
+  })
   @Column({ default: false })
   newsSubscription: boolean;
-
-  // @OneToMany(() => NotificationEntity, (notification) => notification.sender)
-  // sentNotifications: NotificationEntity[];
-
-  // @ManyToMany(
-  //   () => NotificationEntity,
-  //   (notification) => notification.receivers,
-  // )
-  // receivedNotifications: NotificationEntity[];
-
-  // @ManyToMany(() => Runner, (runner) => runner.followers)
-  // @JoinTable()
-  // followingRunners: Runner[];
-
-  // @ManyToMany(() => Team, (team) => team.followers)
-  // @JoinTable()
-  // followingTeams: Team[];
 
   @OneToMany(() => BestResult, (bestResult) => bestResult.runner)
   bestResults: BestResult[];
@@ -118,6 +106,21 @@ export class User {
 
   @OneToMany(() => PushToken, (pushToken) => pushToken.user)
   pushTokens: PushToken[];
+
+  @OneToMany(() => RunnerCoach, (runnerCoach) => runnerCoach.runner, {
+    nullable: true,
+  })
+  runnerCoaches: RunnerCoach[];
+
+  @OneToMany(() => RunnerCoach, (runnerCoach) => runnerCoach.coach, {
+    nullable: true,
+  })
+  coachRunners: RunnerCoach[];
+
+  @OneToMany(() => RunnerCoach, (runnerCoach) => runnerCoach.initiator, {
+    nullable: true,
+  })
+  requestsInitiated: RunnerCoach[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

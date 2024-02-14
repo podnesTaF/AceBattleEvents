@@ -14,7 +14,7 @@ export class Standard {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   timeInMs: number;
 
   @ManyToOne(() => Distance, (distance) => distance.standards, {
