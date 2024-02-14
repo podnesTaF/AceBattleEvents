@@ -1,43 +1,44 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AdminService } from 'src/admin/admin.service';
-import { Admin } from 'src/admin/entities/admin.entity';
 import { CountryService } from 'src/country/country.service';
 import { Country } from 'src/country/entity/country.entity';
 import { ResetUser } from 'src/reset-user/entities/reset-user.entity';
 import { ResetUserService } from 'src/reset-user/reset-user.service';
 import { UserModule } from '../users/modules/user.module';
-import { AdminAuthController } from './admin-auth.controller';
-import { AdminAuthService } from './admin-auth.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RolesGuard } from './guards/roles.guard';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { LocalAdminStrategy } from './strategies/local-admin.strategy';
-import { LocalStrategy } from './strategies/local-user.strategy';
+import { LocalStrategy } from './strategies/local.strategy';
 
+@Global()
 @Module({
   imports: [
     UserModule,
     PassportModule,
-    JwtModule.register({
-      secret: 'ahmo-chat',
-      signOptions: { expiresIn: '30d' },
+    ConfigModule.forRoot(),
+    JwtModule.registerAsync({
+      useFactory: async () => {
+        return {
+          secret: process.env.JWT_SECRET,
+          signOptions: { expiresIn: '60m' },
+        };
+      },
     }),
-    TypeOrmModule.forFeature([Country, Admin, ResetUser]),
+    TypeOrmModule.forFeature([Country, ResetUser]),
   ],
-  controllers: [AuthController, AdminAuthController],
+  controllers: [AuthController],
   providers: [
     AuthService,
     LocalStrategy,
     JwtStrategy,
-    LocalAdminStrategy,
     CountryService,
-    AdminAuthService,
-    AdminService,
     RolesGuard,
+    JwtAuthGuard,
     ResetUserService,
   ],
   exports: [PassportModule, JwtModule],

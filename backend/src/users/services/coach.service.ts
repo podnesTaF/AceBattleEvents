@@ -1,32 +1,35 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { CreateCoachDto } from "../dtos/create-coach.dto";
-import { Coach } from "../entities/coach.entity";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { RoleService } from 'src/role/role.service';
+import { UserRoleService } from 'src/user-role/user-role.service';
+import { Repository } from 'typeorm';
+import { BecomeCoachDto } from '../dtos/become-coach.dto';
+import { User } from '../entities/user.entity';
+import { AbstractUserService } from './abstract-user.service';
 
 @Injectable()
-export class CoachService {
+export class CoachService extends AbstractUserService {
   constructor(
-    @InjectRepository(Coach)
-    private repository: Repository<Coach>,
-  ) {}
-
-  async create(dto: CreateCoachDto) {
-    return await this.repository.save({ manager: { id: dto.managerId } });
+    @InjectRepository(User)
+    protected readonly userRepository: Repository<User>,
+    protected readonly roleService: RoleService,
+    protected readonly userRoleService: UserRoleService,
+  ) {
+    super(userRepository, roleService, userRoleService);
   }
 
-  findById(id: number) {
-    return { id };
-  }
+  async becomeCoach(userId: number, dto: BecomeCoachDto): Promise<User> {
+    // assing user fields from dto to user
+    const user = await this.assignRequiredRoleFields(userId, dto, 'coach');
 
-  async getCoachesByManager({ userId }: { userId: number }) {
-    return this.repository
-      .createQueryBuilder("coach")
-      .leftJoinAndSelect("coach.user", "user")
-      .leftJoinAndSelect("user.avatar", "avatar")
-      .leftJoinAndSelect("coach.manager", "manager")
-      .leftJoinAndSelect("manager.user", "managerUser")
-      .where("manager.userId = :userId", { userId })
-      .getMany();
+    // Creating userRole for coach
+
+    const userRole = await this.createRoleForUser(user.id, 'coach');
+
+    user.roles = user.roles ? [...user.roles, userRole] : [userRole];
+
+    // Save user
+
+    return this.userRepository.save(user);
   }
 }
