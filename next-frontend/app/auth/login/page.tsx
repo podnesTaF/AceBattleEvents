@@ -31,14 +31,13 @@ const Login = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6 justify-center h-full mx-auto max-w-sm">
+    <>
       <div>
-        <h2 className="text-3xl font-bold mb-2 text-color-primary">
+        <h2 className="text-2xl md:text-3xl font-bold mb-5 text-color-primary text-center">
           Nice to see you again!
         </h2>
-        <p className="text-color-secondary">
-          With cross-fit factory you will access to all necessary learning
-          materials and special programs!
+        <p className="text-md md:text-lg text-color-secondary text-center">
+          Join Ace Battle Mile to Participate in our fascinating game
         </p>
       </div>
       <Form {...form}>
@@ -49,9 +48,12 @@ const Login = () => {
               name="login"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Login</FormLabel>
                   <FormControl>
-                    <Input placeholder="shadcn" {...field} />
+                    <Input
+                      className="px-3 md:px-5 py-6 md:py-6 xl:py-7 text-lg placeholder:text-md placeholder:md:text-lg font-medium placeholder:font-medium"
+                      placeholder="Email"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -62,9 +64,12 @@ const Login = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="enter your password" {...field} />
+                    <Input
+                      className="px-3 md:px-5 py-6 md:py-6 xl:py-7 text-lg placeholder:text-md placeholder:md:text-lg font-medium placeholder:font-medium"
+                      placeholder="Password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -90,20 +95,27 @@ const Login = () => {
                 Forgot password?
               </a>
             </div>
-            <Button type="submit">Sign In</Button>
-            <div className="bg-gray-200 w-full h-[2px]"></div>
-            <Button className="bg-accent">
-              <span className="flex items-center gap-2">
-                <Image
-                  src="/images/google.svg"
-                  alt="google"
-                  width={24}
-                  height={24}
-                  className="w-6 h-6"
-                />
-                <span>Sign in with Google</span>
-              </span>
-            </Button>
+            <div className="flex flex-col gap-6 mt-3">
+              <Button
+                className="px-3 md:px-5 py-6 md:py-6 xl:py-7"
+                type="submit"
+              >
+                Sign In
+              </Button>
+              <div className="bg-gray-200 w-full h-[2px]"></div>
+              <Button className="px-3 md:px-5 py-6 md:py-6 xl:py-7">
+                <span className="flex items-center gap-2">
+                  <Image
+                    src="/icons/google.svg"
+                    alt="google"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6"
+                  />
+                  <span>Sign in with Google</span>
+                </span>
+              </Button>
+            </div>
             <p className="text-center text-sm">
               Don&apos;t have an account?{" "}
               <a href="#" className="text-primary">
@@ -113,7 +125,7 @@ const Login = () => {
           </div>
         </form>
       </Form>
-    </div>
+    </>
   );
 };
 
