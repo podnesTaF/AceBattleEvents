@@ -1,9 +1,11 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/roles/roles-auth.decorator';
 import { CreateDistanceDto } from '../dto/create-distance.dto';
 import { DistanceService } from '../services/distance.service';
 
+@ApiTags('distances')
 @Controller('distances')
 export class DistanceController {
   constructor(private readonly distanceService: DistanceService) {}

@@ -6,8 +6,14 @@ import { Distance } from 'src/best-results/entities/distance.entity';
 import { Category } from 'src/category/entities/category.entity';
 import { Content } from 'src/content/entities/content.entity';
 import { Country } from 'src/country/entity/country.entity';
+import { Document } from 'src/document/entities/document.entity.dto';
+import { EventRaceType } from 'src/event-race-type/entities/event-race-type.entity';
+import { RaceType } from 'src/event-race-type/entities/race-type.entity';
+import { EventType } from 'src/event/entities/event-type.entity';
+import { Event } from 'src/event/entities/event.entity';
 import { Gender } from 'src/gender/entities/gender.entity';
 import { Hashtag } from 'src/hashtag/entities/hashtag.entity';
+import { Location } from 'src/location/entities/location.entity';
 import { Media } from 'src/media/entities/media.entity';
 import { PushToken } from 'src/push-token/entities/push-token.entity';
 import { ResetUser } from 'src/reset-user/entities/reset-user.entity';
@@ -17,6 +23,8 @@ import { Standard } from 'src/standard/entities/standard.entity';
 import { Subscription } from 'src/subscription/enitites/subscription.entity';
 import { TeamPlayer } from 'src/team/entities/team-player.entity';
 import { Team } from 'src/team/entities/team.entity';
+import { TimetableRow } from 'src/timetable/entities/timetable-row.entity';
+import { Timetable } from 'src/timetable/entities/timetable.entity';
 import { UserRole } from 'src/user-role/entities/user-role.entity';
 import { User } from 'src/users/entities/user.entity';
 evnconfig();
@@ -49,6 +57,14 @@ const config: TypeOrmModuleOptions = {
     RunnerCoach,
     Team,
     TeamPlayer,
+    Location,
+    Document,
+    Timetable,
+    TimetableRow,
+    RaceType,
+    EventRaceType,
+    Event,
+    EventType,
   ],
   synchronize: true,
 };

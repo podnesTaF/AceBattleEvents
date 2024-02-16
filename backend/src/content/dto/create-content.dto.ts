@@ -19,4 +19,8 @@ export class CreateContentDto {
   @IsNumber()
   @IsOptional()
   articleId: number;
+
+  @IsNumber()
+  @IsOptional()
+  eventId: number;
 }

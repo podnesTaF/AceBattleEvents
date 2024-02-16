@@ -1,7 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateMediaDto } from './dto/createMedia.dto';
 import { MediaService } from './media.service';
 
+@ApiTags('media')
 @Controller('media')
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
