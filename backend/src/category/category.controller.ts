@@ -1,9 +1,11 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/roles/roles-auth.decorator';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 
+@ApiTags('categories')
 @Controller('categories')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}

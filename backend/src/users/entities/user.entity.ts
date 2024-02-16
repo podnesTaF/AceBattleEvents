@@ -43,6 +43,12 @@ export class User {
   password: string;
 
   @Column({ nullable: true })
+  oauthProvider: string;
+
+  @Column({ nullable: true })
+  oauthId: string;
+
+  @Column({ nullable: true })
   genderId: number;
 
   @ManyToOne(() => Gender, { nullable: true, onDelete: 'SET NULL' })

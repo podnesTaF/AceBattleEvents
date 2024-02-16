@@ -1,9 +1,11 @@
 import { Content } from 'src/content/entities/content.entity';
+import { Event } from 'src/event/entities/event.entity';
 import { Hashtag } from 'src/hashtag/entities/hashtag.entity';
 import {
   Column,
   Entity,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -38,4 +40,13 @@ export class Article {
 
   @OneToMany(() => Content, (content) => content.article)
   contents: Content[];
+
+  @Column({ nullable: true })
+  eventId: number;
+
+  @ManyToOne(() => Event, (event) => event.articles, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  event: Event;
 }

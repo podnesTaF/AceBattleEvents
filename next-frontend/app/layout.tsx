@@ -1,4 +1,3 @@
-import Navbar from "@/components/common/navbar/Navbar";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
@@ -24,9 +23,6 @@ export default function RootLayout({
           montserrat.variable
         )}
       >
-        <div className="fixed w-full left-0 top-0  flex justify-center pt-4 z-10">
-          <Navbar />
-        </div>
         {children}
       </body>
     </html>

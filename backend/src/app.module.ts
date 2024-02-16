@@ -24,6 +24,11 @@ import { SubscriptionModule } from './subscription/subscription.module';
 import { TeamModule } from './team/team.module';
 import { UserRoleModule } from './user-role/user-role.module';
 import { UserModule } from './users/modules/user.module';
+import { EventModule } from './event/event.module';
+import { LocationModule } from './location/location.module';
+import { DocumentModule } from './document/document.module';
+import { TimetableModule } from './timetable/timetable.module';
+import { EventRaceTypeModule } from './event-race-type/event-race-type.module';
 
 @Module({
   imports: [
@@ -54,6 +59,11 @@ import { UserModule } from './users/modules/user.module';
     RunnerCoachModule,
     TeamModule,
     ArticleModule,
+    EventModule,
+    LocationModule,
+    DocumentModule,
+    TimetableModule,
+    EventRaceTypeModule,
   ],
   controllers: [],
   providers: [],

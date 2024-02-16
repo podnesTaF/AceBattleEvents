@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/roles/roles-auth.decorator';
@@ -11,6 +12,7 @@ import { CreateTeamDto } from '../dto/create-team.dto';
 import { TeamPlayer } from '../entities/team-player.entity';
 import { TeamService } from '../services/team.service';
 
+@ApiTags('teams')
 @Controller('teams')
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}

@@ -33,26 +33,31 @@ const Login = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6 justify-center">
+    <>
       <div>
-        <h2 className="text-3xl font-bold mb-2 text-color-primary">Welcome!</h2>
-        <p className="text-color-secondary">
-          With cross-fit factory you will access to all necessary learning
-          materials and special programs!
+        <h2 className="text-2xl md:text-3xl font-bold mb-5 text-color-primary text-center">
+          Welcome!
+        </h2>
+        <p className="text-md md:text-lg text-color-secondary text-center">
+          Join Ace Battle Mile to Participate in our fascinating game
         </p>
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="flex flex-col gap-4">
-            <div className="flex gap-3 items-end">
+          <div className="flex flex-col gap-3 md:gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:items-end w-full">
               <FormField
                 control={form.control}
                 name="firstName"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="flex-1">
                     <FormLabel>Full Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="First Name" {...field} />
+                      <Input
+                        className="px-3 md:px-4 py-4 md:py-4 xl:py-5 placeholder:text-sm font-medium "
+                        placeholder="First Name"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -62,9 +67,13 @@ const Login = () => {
                 control={form.control}
                 name="lastName"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="flex-1">
                     <FormControl>
-                      <Input placeholder="Last Name" {...field} />
+                      <Input
+                        className="px-3 md:px-4 py-4 md:py-4 xl:py-5 placeholder:text-sm font-medium "
+                        placeholder="Last Name"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -78,7 +87,11 @@ const Login = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your email address" {...field} />
+                    <Input
+                      className="px-3 md:px-4 py-4 md:py-4 xl:py-5 placeholder:text-sm font-medium "
+                      placeholder="Enter your email address"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -91,7 +104,11 @@ const Login = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your password" {...field} />
+                    <Input
+                      className="px-3 md:px-4 py-4 md:py-4 xl:py-5 placeholder:text-sm font-medium "
+                      placeholder="Enter your password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -104,30 +121,47 @@ const Login = () => {
                 <FormItem>
                   <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="Confirm password" {...field} />
+                    <Input
+                      className="px-3 md:px-4 py-4 md:py-4 xl:py-5 placeholder:text-sm font-medium "
+                      placeholder="Confirm password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit">Sign Up</Button>
-            <div className="bg-gray-200 w-full h-[2px]"></div>
-            <Button className="bg-accent">
-              <span className="flex items-center gap-2">
-                <Image
-                  src="/icons/google.svg"
-                  alt="google"
-                  width={24}
-                  height={24}
-                  className="w-6 h-6"
-                />
-                <span>Sign up with Google</span>
-              </span>
-            </Button>
+            <div className="flex flex-col gap-6 mt-3">
+              <Button
+                className="px-3 md:px-4 py-4 lg:py-6 font-semibold text-lg"
+                type="submit"
+              >
+                Sign Up
+              </Button>
+              <div className="bg-gray-200 w-full h-[2px]"></div>
+              <Button className="px-3 md:px-4 py-4 lg:py-5 md:py-6 xl:py-7">
+                <span className="flex items-center gap-2">
+                  <Image
+                    src="/icons/google.svg"
+                    alt="google"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6"
+                  />
+                  <span>Sign up with Google</span>
+                </span>
+              </Button>
+            </div>
+            <p className="text-center text-sm">
+              Already have an account?{" "}
+              <a href="#" className="text-primary">
+                Sign In
+              </a>
+            </p>
           </div>
         </form>
       </Form>
-    </div>
+    </>
   );
 };
 
