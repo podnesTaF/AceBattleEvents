@@ -30,5 +30,7 @@ export class EventRaceTypeController {
     return this.eventRaceTypeService.addRaceTypeToEvent(eventId, dto);
   }
 
+  // create registration fee and add it to the event race type
+
   // remove race type from the event
 }

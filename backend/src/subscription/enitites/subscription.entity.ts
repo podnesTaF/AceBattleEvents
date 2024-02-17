@@ -1,9 +1,11 @@
+import { Payment } from 'src/payment/entities/payment.entity';
 import { UserRole } from 'src/user-role/entities/user-role.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -29,4 +31,7 @@ export class Subscription {
   })
   @JoinColumn({ name: 'userRoleId' })
   userRole: UserRole;
+
+  @OneToMany(() => Payment, (payment) => payment.subscription)
+  payments: Payment[];
 }

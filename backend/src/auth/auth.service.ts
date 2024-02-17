@@ -31,7 +31,12 @@ export class AuthService {
       name: userRole.role.name,
       active: userRole.active,
     }));
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...userData } = user;
     return {
+      id: user.id,
+      email: user.email,
+      roles: roles,
       token: this.generateJwtToken({
         id: user.id,
         email: user.email,
