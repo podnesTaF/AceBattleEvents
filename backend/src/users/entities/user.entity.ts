@@ -2,8 +2,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { BestResult } from 'src/best-results/entities/best-result.entity';
 import { Category } from 'src/category/entities/category.entity';
 import { Country } from 'src/country/entity/country.entity';
+import { EventRaceRegistration } from 'src/event-race-registration/entities/event-race-registration.entity';
 import { Gender } from 'src/gender/entities/gender.entity';
+import { Payment } from 'src/payment/entities/payment.entity';
 import { PushToken } from 'src/push-token/entities/push-token.entity';
+import { Race } from 'src/race/entities/race.entity';
 import { RunnerCoach } from 'src/runner-coach/entity/runner-coach.entity';
 import { TeamPlayer } from 'src/team/entities/team-player.entity';
 import { Team } from 'src/team/entities/team.entity';
@@ -137,6 +140,21 @@ export class User {
     nullable: true,
   })
   runnerTeams: Team[];
+
+  @OneToMany(
+    () => EventRaceRegistration,
+    (eventRaceRegistration) => eventRaceRegistration.runner,
+    {
+      nullable: true,
+    },
+  )
+  registrations: EventRaceRegistration[];
+
+  @OneToMany(() => Race, (race) => race.raceRunners, { nullable: true })
+  runnerForRaces: Race[];
+
+  @OneToMany(() => Payment, (payment) => payment.user)
+  payments: Payment[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

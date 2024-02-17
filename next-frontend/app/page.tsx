@@ -1,10 +1,14 @@
 import Navbar from "@/components/common/navbar/Navbar";
+import { auth } from "@/lib/auth/utils/auth";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+
+  console.log("home", session?.user);
   return (
     <>
       <div className="fixed w-full left-0 top-0  flex justify-center pt-4 z-10">
-        <Navbar />
+        <Navbar session={session} />
       </div>
       <div>
         <div className="h-screen w-full bg-[url('/images/brussels-preview.jpg')] bg-no-repeat bg-cover relative">

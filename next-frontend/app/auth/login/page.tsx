@@ -11,24 +11,32 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { loginSchema } from "@/utils/validators";
+import { LoginFormSchema } from "@/lib/auth/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const Login = () => {
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<z.infer<typeof LoginFormSchema>>({
+    resolver: zodResolver(LoginFormSchema),
     defaultValues: {
-      login: "",
+      email: "",
       password: "",
+      rememberMe: false,
     },
   });
 
-  function onSubmit(values: z.infer<typeof loginSchema>) {
-    console.log(values);
-  }
+  const onSubmit = async (dto: z.infer<typeof LoginFormSchema>) => {
+    const result = await signIn("credentials", {
+      email: dto.email,
+      password: dto.password,
+      rememberMe: dto.rememberMe,
+      redirect: true,
+      callbackUrl: "/",
+    });
+  };
 
   return (
     <>
@@ -45,7 +53,7 @@ const Login = () => {
           <div className="flex flex-col gap-4">
             <FormField
               control={form.control}
-              name="login"
+              name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -78,7 +86,7 @@ const Login = () => {
             <div className="flex justify-between">
               <FormField
                 control={form.control}
-                name="remember"
+                name="rememberMe"
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex items-center gap-2">

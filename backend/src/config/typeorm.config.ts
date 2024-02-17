@@ -7,15 +7,25 @@ import { Category } from 'src/category/entities/category.entity';
 import { Content } from 'src/content/entities/content.entity';
 import { Country } from 'src/country/entity/country.entity';
 import { Document } from 'src/document/entities/document.entity.dto';
+import { EventRaceRegistration } from 'src/event-race-registration/entities/event-race-registration.entity';
 import { EventRaceType } from 'src/event-race-type/entities/event-race-type.entity';
 import { RaceType } from 'src/event-race-type/entities/race-type.entity';
+import { RegistrationFee } from 'src/event-race-type/entities/registration-fee.entity';
 import { EventType } from 'src/event/entities/event-type.entity';
 import { Event } from 'src/event/entities/event.entity';
 import { Gender } from 'src/gender/entities/gender.entity';
 import { Hashtag } from 'src/hashtag/entities/hashtag.entity';
 import { Location } from 'src/location/entities/location.entity';
 import { Media } from 'src/media/entities/media.entity';
+import { PaymentPurpose } from 'src/payment/entities/payment-purpose.entity';
+import { Payment } from 'src/payment/entities/payment.entity';
+import { Penalty } from 'src/penalty/entities/penalty.entity';
 import { PushToken } from 'src/push-token/entities/push-token.entity';
+import { RaceRunner } from 'src/race-runner/entities/race-runner.entity';
+import { RunnerRole } from 'src/race-runner/entities/runner-role.entity';
+import { RunnerStatus } from 'src/race-runner/entities/runner-status.entity';
+import { RaceTeam } from 'src/race-team/entities/race-team.entity';
+import { Race } from 'src/race/entities/race.entity';
 import { ResetUser } from 'src/reset-user/entities/reset-user.entity';
 import { Role } from 'src/role/entities/role.entity';
 import { RunnerCoach } from 'src/runner-coach/entity/runner-coach.entity';
@@ -65,6 +75,16 @@ const config: TypeOrmModuleOptions = {
     EventRaceType,
     Event,
     EventType,
+    Payment,
+    PaymentPurpose,
+    EventRaceRegistration,
+    RegistrationFee,
+    RaceTeam,
+    RaceRunner,
+    RunnerRole,
+    RunnerStatus,
+    Race,
+    Penalty,
   ],
   synchronize: true,
 };

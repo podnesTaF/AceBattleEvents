@@ -1,6 +1,8 @@
 import { Category } from 'src/category/entities/category.entity';
 import { Country } from 'src/country/entity/country.entity';
+import { EventRaceRegistration } from 'src/event-race-registration/entities/event-race-registration.entity';
 import { Gender } from 'src/gender/entities/gender.entity';
+import { RaceTeam } from 'src/race-team/entities/race-team.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
   Column,
@@ -62,4 +64,13 @@ export class Team {
 
   @OneToMany(() => TeamPlayer, (teamPlayer) => teamPlayer.team)
   teamRunners: TeamPlayer[];
+
+  @OneToMany(
+    () => EventRaceRegistration,
+    (eventRaceRegistration) => eventRaceRegistration.team,
+  )
+  registrations: EventRaceRegistration[];
+
+  @OneToMany(() => RaceTeam, (raceTeam) => raceTeam.team)
+  teamRaces: RaceTeam[];
 }
