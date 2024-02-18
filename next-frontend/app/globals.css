@@ -69,6 +69,7 @@
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
   }
   body {
     @apply bg-background text-foreground;
@@ -80,4 +81,62 @@
   border-image-slice: 1;
   border-image-source: linear-gradient(to right, #ff00001a 0%, #1c1e1f 100%);
   border-radius: 30px;
+}
+
+.divider-gradient {
+  background: rgb(30, 28, 31);
+  background: linear-gradient(
+    90deg,
+    rgba(30, 28, 31, 0.3) 0%,
+    rgba(30, 28, 31, 1) 20%,
+    rgba(30, 28, 31, 1) 80%,
+    rgba(30, 28, 31, 0.3) 100%
+  );
+}
+
+.divider-gradient-dark {
+  background: rgb(30, 28, 31);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 1) 20%,
+    rgba(255, 255, 255, 1) 80%,
+    rgba(255, 255, 255, 0.3) 100%
+  );
+}
+
+.menu-item-light-right {
+  background: rgb(255, 0, 0);
+  background: linear-gradient(
+    270deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(255, 255, 255, 0.3) 100%
+  );
+}
+
+.menu-item-light-left {
+  background: rgb(255, 0, 0);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(255, 255, 255, 0.3) 100%
+  );
+}
+
+.menu-item-dark-left {
+  background: rgb(255, 0, 0);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+}
+
+.menu-item-dark-right {
+  background: rgb(255, 0, 0);
+  background: linear-gradient(
+    270deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
 }
