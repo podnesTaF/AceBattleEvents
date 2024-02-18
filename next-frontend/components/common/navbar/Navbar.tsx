@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import Divider from "@/components/ui/divider";
+import { Menubar } from "@/components/ui/menubar";
 import RoundedGradientBorder from "@/components/ui/rounded-gradient-border";
 import { AlignJustify, X } from "lucide-react";
 import { Session } from "next-auth";
@@ -10,31 +11,23 @@ import { useEffect, useState } from "react";
 import { Element } from "react-scroll";
 import BurgerMenu from "./BurgerMenu";
 import MenuItem from "./MenuItem";
+import EventsExpandMenu from "./NavbarItems/EventsExpandMenu";
+import GenericMenubarMenu from "./NavbarItems/GenericMenubarMenu";
 
-export const menuItems = [
-  {
-    name: "Home",
-    href: "/",
-  },
-  {
-    name: "Events",
-    href: "/",
-  },
-  {
-    name: "News",
-    href: "/",
-  },
-  {
-    name: "Runners",
-    href: "/",
-  },
-  {
-    name: "Stats",
-    href: "/",
-  },
+export const runnersMenuItems = [
+  { content: "Teams", href: "/" },
+  { content: "Runners Profiles", href: "/" },
+  { content: "Ranking", href: "/" },
 ];
 
-const Navbar = ({ session }: { session: Session | null }) => {
+export const statsMenuItems = [
+  { content: "Ranking", href: "/" },
+  { content: "Top Results", href: "/" },
+  { content: "Ranking Criteria", href: "/" },
+  { content: "Results Archive", href: "/" },
+];
+
+export const Navbar = ({ session }: { session: Session | null }) => {
   const [showNavbar, setShowNavbar] = useState(true);
   const [expanded, setExpanded] = useState(false);
 
@@ -82,11 +75,25 @@ const Navbar = ({ session }: { session: Session | null }) => {
               height={30}
             />
             <Divider size="w-[1px]" />
-            {menuItems.map((item, i) => (
-              <MenuItem className="hidden lg:flex" key={i} href={item.href}>
-                {item.name}
-              </MenuItem>
-            ))}
+            <MenuItem className="hidden lg:flex" href={"/"}>
+              Home
+            </MenuItem>
+            <Menubar className="border-none hidden lg:flex">
+              <EventsExpandMenu variant="dark" />
+              <GenericMenubarMenu
+                variant="dark"
+                title="Runners"
+                items={runnersMenuItems}
+              />
+              <GenericMenubarMenu
+                variant="dark"
+                title="Stats"
+                items={statsMenuItems}
+              />
+            </Menubar>
+            <MenuItem className="hidden lg:flex" href={"/"}>
+              News
+            </MenuItem>
           </div>
           <div className="hidden lg:flex items-center gap-4">
             <Divider size="w-[1px]" />

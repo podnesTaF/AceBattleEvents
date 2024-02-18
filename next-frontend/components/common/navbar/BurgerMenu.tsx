@@ -1,8 +1,11 @@
+import { Menubar } from "@/components/ui/menubar";
 import RoundedGradientBorder from "@/components/ui/rounded-gradient-border";
 import Image from "next/image";
 import Link from "next/link";
 import MenuItem from "./MenuItem";
-import { menuItems } from "./Navbar";
+import { runnersMenuItems, statsMenuItems } from "./Navbar";
+import EventsExpandMenu from "./NavbarItems/EventsExpandMenu";
+import GenericMenubarMenu from "./NavbarItems/GenericMenubarMenu";
 
 interface BurgerMenuProps {
   expanded: boolean;
@@ -14,15 +17,25 @@ const BurgerMenu = ({ expanded }: BurgerMenuProps): JSX.Element => {
       className={`min-h-96 max-w-sm ml-auto flex flex-col gap-16 justify-between lg:hidden border-2 border-red-500 bg-white rounded-[20px] mt-2 p-3`}
     >
       <div className="w-full flex flex-col">
-        {menuItems.map((item, i) => (
-          <MenuItem
-            className="border-b-[1px] border-gray-400 py-2"
-            key={i}
-            href={item.href}
-          >
-            {item.name}
-          </MenuItem>
-        ))}
+        <MenuItem className="border-b-[1px] border-gray-200 py-2" href={"/"}>
+          Home
+        </MenuItem>
+        <Menubar className="border-none flex-col p-0">
+          <EventsExpandMenu variant="dark" />
+          <GenericMenubarMenu
+            variant="dark"
+            title="Runners"
+            items={runnersMenuItems}
+          />
+          <GenericMenubarMenu
+            variant="dark"
+            title="Stats"
+            items={statsMenuItems}
+          />
+        </Menubar>
+        <MenuItem className="hidden lg:flex" href={"/"}>
+          News
+        </MenuItem>
       </div>
       <div className="flex flex-col w-full gap-2">
         <Link href={"/auth/signup"}>

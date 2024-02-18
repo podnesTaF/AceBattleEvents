@@ -1,9 +1,10 @@
-import Link from "next/link";
+"use client";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 type MenuItemProps = {
   children: React.ReactNode;
-  href: string;
+  href?: string;
   className?: string;
 };
 
@@ -12,16 +13,18 @@ const MenuItem = ({
   children,
   className,
 }: MenuItemProps): JSX.Element => {
+  const router = useRouter();
+
   return (
-    <Link className={`h-full`} href={href}>
+    <div className={`h-full`} onClick={() => href && router.push(href)}>
       <div
-        className={`hover:bg-gray-100 h-full px-3 flex items-center ${
+        className={`hover:bg-gray-100 cursor-pointer h-full px-3 flex items-center ${
           className ?? ""
         }`}
       >
-        <h4 className="font-semibold text-xl">{children}</h4>
+        <h4 className="font-semibold text-xl select-none">{children}</h4>
       </div>
-    </Link>
+    </div>
   );
 };
 
