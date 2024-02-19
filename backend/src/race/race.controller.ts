@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Patch,
   Post,
@@ -12,7 +13,7 @@ import { CreateRaceDto } from './dto/create-race.dto';
 import { UpdateRaceDto } from './dto/update-race.dto';
 import { RaceService } from './race.service';
 
-@Controller('race')
+@Controller('races')
 export class RaceController {
   constructor(private readonly raceService: RaceService) {}
 
@@ -25,6 +26,11 @@ export class RaceController {
     @Param('eventRaceTypeId') eventRaceTypeId: number,
   ) {
     return this.raceService.createRace(eventRaceTypeId, dto);
+  }
+
+  @Get(':id')
+  async getRace(@Param('id') id: number) {
+    return this.raceService.getRace(id);
   }
 
   // Automatically create races based on the registrations for the event race type.

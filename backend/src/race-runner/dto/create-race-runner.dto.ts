@@ -7,9 +7,6 @@ export class CreateRaceParticipantDto {
   @IsNumber()
   readonly runnerRoleId: number;
 
-  @IsNumber()
-  readonly statusId: number;
-
   @IsString()
   @IsOptional()
   readonly startNumber: string;

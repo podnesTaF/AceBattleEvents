@@ -15,7 +15,7 @@ export class EventRaceRegistration {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false })
+  @Column({ default: true })
   active: boolean;
 
   @Column({ nullable: true })

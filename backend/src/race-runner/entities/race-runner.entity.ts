@@ -1,10 +1,13 @@
+import { RaceTeam } from 'src/race-team/entities/race-team.entity';
 import { Race } from 'src/race/entities/race.entity';
+import { Split } from 'src/split/entities/split.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { RunnerRole } from './runner-role.entity';
@@ -30,13 +33,22 @@ export class RaceRunner {
   })
   race?: Race;
 
+  @Column({ nullable: true })
+  raceTeamId: number;
+  @ManyToOne(() => RaceTeam, (raceTeam) => raceTeam.raceRunners, {
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
+  @JoinColumn({ name: 'raceTeamId' })
+  raceTeam?: RaceTeam;
+
   @Column({ default: false })
   confirmed: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   startNumber: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: 1 })
   statusId: number;
   @ManyToOne(() => RunnerStatus, {
     onDelete: 'RESTRICT',
@@ -50,4 +62,7 @@ export class RaceRunner {
   @ManyToOne(() => RunnerRole, (runnerRole) => runnerRole.raceRunners)
   @JoinColumn({ name: 'runnerRoleId' })
   runnerRole: RunnerRole;
+
+  @OneToMany(() => Split, (split) => split.raceRunner, { nullable: true })
+  splits: Split[];
 }

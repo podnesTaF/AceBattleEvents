@@ -1,4 +1,5 @@
 import { Penalty } from 'src/penalty/entities/penalty.entity';
+import { RaceRunner } from 'src/race-runner/entities/race-runner.entity';
 import { Race } from 'src/race/entities/race.entity';
 import { Team } from 'src/team/entities/team.entity';
 import {
@@ -6,6 +7,7 @@ import {
   Entity,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -27,6 +29,9 @@ export class RaceTeam {
     onDelete: 'RESTRICT',
   })
   race: Race;
+
+  @OneToMany(() => RaceRunner, (raceRunner) => raceRunner.raceTeam)
+  raceRunners: RaceRunner[];
 
   @Column({ default: false })
   confirmed: boolean;

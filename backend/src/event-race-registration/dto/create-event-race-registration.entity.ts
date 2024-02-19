@@ -6,7 +6,9 @@ export class CreateEventRaceRegistrationDto {
 
   @IsNumber()
   readonly feeId: number;
+}
 
+export class CreateEventRaceTeamRegistrationDto extends CreateEventRaceRegistrationDto {
   @IsNumber()
   readonly teamId: number;
 }

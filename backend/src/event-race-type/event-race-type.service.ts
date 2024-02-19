@@ -4,8 +4,10 @@ import { Event } from 'src/event/entities/event.entity';
 import { Repository } from 'typeorm';
 import { CreateEventRaceTypeDto } from './dto/create-event-race-type.dto';
 import { CreateRaceTypeDto } from './dto/create-race-type.dto';
+import { CreateRegistrationFeeDto } from './dto/create-registration-fee.dto';
 import { EventRaceType } from './entities/event-race-type.entity';
 import { RaceType } from './entities/race-type.entity';
+import { RegistrationFee } from './entities/registration-fee.entity';
 
 @Injectable()
 export class EventRaceTypeService {
@@ -14,6 +16,8 @@ export class EventRaceTypeService {
     private readonly eventRaceTypeRepository: Repository<EventRaceType>,
     @InjectRepository(RaceType)
     private readonly raceTypeRepository: Repository<RaceType>,
+    @InjectRepository(RegistrationFee)
+    private readonly registrationFeeRepository: Repository<RegistrationFee>,
     @InjectRepository(Event)
     private readonly eventRepository: Repository<Event>,
   ) {}
@@ -48,6 +52,15 @@ export class EventRaceTypeService {
     return await this.eventRaceTypeRepository.save({
       ...dto,
       eventId,
+    });
+  }
+
+  // create registration fee
+  async createRegistrationFee(
+    dto: CreateRegistrationFeeDto,
+  ): Promise<RegistrationFee> {
+    return await this.registrationFeeRepository.save({
+      ...dto,
     });
   }
 }

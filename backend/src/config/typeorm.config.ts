@@ -29,6 +29,7 @@ import { Race } from 'src/race/entities/race.entity';
 import { ResetUser } from 'src/reset-user/entities/reset-user.entity';
 import { Role } from 'src/role/entities/role.entity';
 import { RunnerCoach } from 'src/runner-coach/entity/runner-coach.entity';
+import { Split } from 'src/split/entities/split.entity';
 import { Standard } from 'src/standard/entities/standard.entity';
 import { Subscription } from 'src/subscription/enitites/subscription.entity';
 import { TeamPlayer } from 'src/team/entities/team-player.entity';
@@ -85,6 +86,7 @@ const config: TypeOrmModuleOptions = {
     RunnerStatus,
     Race,
     Penalty,
+    Split,
   ],
   synchronize: true,
 };

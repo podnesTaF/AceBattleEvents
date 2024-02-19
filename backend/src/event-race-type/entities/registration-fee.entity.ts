@@ -25,7 +25,7 @@ export class RegistrationFee {
   @Column()
   amount: number;
 
-  @Column({ nullable: true })
+  @Column({ default: true })
   active: boolean;
 
   @Column({ nullable: true })

@@ -38,6 +38,15 @@ export class RaceService {
     );
   }
 
+  async getRace(id: number): Promise<Race> {
+    return await this.raceRepository.findOne({
+      where: {
+        id: id,
+      },
+      relations: ['raceTeams.team', 'raceTeams.raceRunners.runner'],
+    });
+  }
+
   // update
   async updateRace(raceId: number, dto: UpdateRaceDto) {
     const race = await this.raceRepository.findOne({ where: { id: raceId } });

@@ -35,6 +35,7 @@ import { RaceModule } from './race/race.module';
 import { RaceRunnerModule } from './race-runner/race-runner.module';
 import { RaceTeamModule } from './race-team/race-team.module';
 import { PenaltyModule } from './penalty/penalty.module';
+import { SplitModule } from './split/split.module';
 
 @Module({
   imports: [
@@ -76,6 +77,7 @@ import { PenaltyModule } from './penalty/penalty.module';
     RaceRunnerModule,
     RaceTeamModule,
     PenaltyModule,
+    SplitModule,
   ],
   controllers: [],
   providers: [],
