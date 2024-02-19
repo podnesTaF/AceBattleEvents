@@ -46,7 +46,7 @@ const GenericMenubarMenu = ({
         }`}
       >
         {children ? children : null}
-        <div className="w-full">
+        <div className="w-full mb-2">
           <p
             className={`text-md lg:text-xl font-medium text-center  ${
               variant === "dark" ? "text-white" : ""
@@ -63,7 +63,7 @@ const GenericMenubarMenu = ({
         {items.map((item, index) => (
           <MenubarItem
             key={index}
-            className="hover:bg-inherit focus:bg-inherit"
+            className="hover:bg-inherit focus:bg-inherit py-1"
           >
             <MenuItemGradient variant={variant}>
               <Link href={item.href}>

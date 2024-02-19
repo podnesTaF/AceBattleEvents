@@ -4,7 +4,6 @@ import { auth } from "@/lib/auth/utils/auth";
 export default async function Home() {
   const session = await auth();
 
-  console.log("home", session?.user);
   return (
     <>
       <div className="fixed w-full left-0 top-0  flex justify-center pt-4 z-10">
