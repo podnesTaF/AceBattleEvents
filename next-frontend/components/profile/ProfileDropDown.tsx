@@ -16,7 +16,7 @@ type ProfileDropDownProps = {
 
 const accountItems = [
   { content: "Settings", href: "/settings" },
-  { content: "My Ace Battle Mile", href: "/" },
+  { content: "My Ace Battle Mile", href: "/my" },
 ];
 
 const ProfileDropDown = ({ variant }: ProfileDropDownProps): JSX.Element => {
