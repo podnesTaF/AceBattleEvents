@@ -16,6 +16,7 @@ type GenericMenubarMenuProps = {
   iconSrc?: string;
   children?: React.ReactNode;
   variant?: "light" | "dark";
+  titleVariant?: "light" | "dark";
 };
 
 const GenericMenubarMenu = ({
@@ -25,11 +26,21 @@ const GenericMenubarMenu = ({
   iconSrc,
   children,
   variant = "light",
+  titleVariant = "dark",
 }: GenericMenubarMenuProps): JSX.Element => {
   return (
     <MenubarMenu>
-      <MenubarTrigger className="relative w-full lg:w-auto px-0 lg:px-3 py-2 border-b-[1px]  lg:border-b-0 border-gray-200">
-        <MenuItem className={`w-full h-full hover:bg-transparent`}>
+      <MenubarTrigger
+        className={`relative w-full lg:w-auto px-0 lg:px-3 py-2 border-b-[1px]  lg:border-b-0 border-gray-200  ${
+          titleVariant === "dark"
+            ? "hover:bg-transparent focus:bg-gray-200"
+            : "hover:bg-white/10 focus:bg-white/10 data-[state=open]:bg-white/10"
+        }`}
+      >
+        <MenuItem
+          variant={titleVariant}
+          className={`w-full h-full hover:bg-transparent`}
+        >
           {title}
         </MenuItem>
         <Image
@@ -46,7 +57,7 @@ const GenericMenubarMenu = ({
         }`}
       >
         {children ? children : null}
-        <div className="w-full">
+        <div className="w-full mb-2">
           <p
             className={`text-md lg:text-xl font-medium text-center  ${
               variant === "dark" ? "text-white" : ""
@@ -63,7 +74,7 @@ const GenericMenubarMenu = ({
         {items.map((item, index) => (
           <MenubarItem
             key={index}
-            className="hover:bg-inherit focus:bg-inherit"
+            className="hover:bg-inherit focus:bg-inherit py-1"
           >
             <MenuItemGradient variant={variant}>
               <Link href={item.href}>

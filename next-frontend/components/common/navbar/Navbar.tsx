@@ -1,4 +1,5 @@
 "use client";
+import ProfileDropDown from "@/components/profile/ProfileDropDown";
 import { Button } from "@/components/ui/button";
 import Divider from "@/components/ui/divider";
 import { Menubar } from "@/components/ui/menubar";
@@ -27,11 +28,18 @@ export const statsMenuItems = [
   { content: "Results Archive", href: "/" },
 ];
 
+export const homeItems = [
+  { content: "Home", href: "/" },
+  { content: "Memberships", href: "/" },
+  { content: "About ABM", href: "/" },
+  { content: "Game Rules", href: "/" },
+  { content: "Support", href: "/" },
+];
+
 export const Navbar = ({ session }: { session: Session | null }) => {
   const [showNavbar, setShowNavbar] = useState(true);
   const [expanded, setExpanded] = useState(false);
 
-  console.log("navbar", session);
   useEffect(() => {
     let lastScrollTop = 0;
 
@@ -75,10 +83,12 @@ export const Navbar = ({ session }: { session: Session | null }) => {
               height={30}
             />
             <Divider size="w-[1px]" />
-            <MenuItem className="hidden lg:flex" href={"/"}>
-              Home
-            </MenuItem>
             <Menubar className="border-none hidden lg:flex">
+              <GenericMenubarMenu
+                variant="dark"
+                title="Home"
+                items={homeItems}
+              />
               <EventsExpandMenu variant="dark" />
               <GenericMenubarMenu
                 variant="dark"
@@ -97,20 +107,26 @@ export const Navbar = ({ session }: { session: Session | null }) => {
           </div>
           <div className="hidden lg:flex items-center gap-4">
             <Divider size="w-[1px]" />
-            <MenuItem href={"/auth/login"}>Log In</MenuItem>
-            <Link href={"/auth/signup"}>
-              <div className="bg-red-500 text-white flex px-12 py-1 items-center h-12 rounded-[30px] relative">
-                <h4 className="font-semibold text-xl">Sign Up</h4>
-                <div className="absolute left-1 top-1 bg-white rounded-full p-2">
-                  <Image
-                    src={"/icons/running-guy-icon.svg"}
-                    alt="Running guy"
-                    width={24}
-                    height={24}
-                  />
-                </div>
-              </div>
-            </Link>
+            {session?.user ? (
+              <ProfileDropDown variant="dark" />
+            ) : (
+              <>
+                <MenuItem href={"/auth/login"}>Log In</MenuItem>
+                <Link href={"/auth/signup"}>
+                  <div className="bg-red-500 text-white flex px-12 py-1 items-center h-12 rounded-[30px] relative">
+                    <h4 className="font-semibold text-xl">Sign Up</h4>
+                    <div className="absolute left-1 top-1 bg-white rounded-full p-2">
+                      <Image
+                        src={"/icons/running-guy-icon.svg"}
+                        alt="Running guy"
+                        width={24}
+                        height={24}
+                      />
+                    </div>
+                  </div>
+                </Link>
+              </>
+            )}
           </div>
           <div className="flex bg-red-500 w-12 h-12 rounded-full justify-center items-center lg:hidden">
             <Button
@@ -128,7 +144,7 @@ export const Navbar = ({ session }: { session: Session | null }) => {
           </div>
         </div>
       </RoundedGradientBorder>
-      {expanded && <BurgerMenu expanded={expanded} />}
+      {expanded && <BurgerMenu session={session} />}
     </Element>
   );
 };
