@@ -15,6 +15,7 @@ import { EventType } from 'src/modules/event/entities/event-type.entity';
 import { Event } from 'src/modules/event/entities/event.entity';
 import { Gender } from 'src/modules/gender/entities/gender.entity';
 import { Hashtag } from 'src/modules/hashtag/entities/hashtag.entity';
+import { JoinRequest } from 'src/modules/join-request/entities/join-request.entity';
 import { Location } from 'src/modules/location/entities/location.entity';
 import { PaymentPurpose } from 'src/modules/payment/entities/payment-purpose.entity';
 import { Payment } from 'src/modules/payment/entities/payment.entity';
@@ -27,7 +28,6 @@ import { RaceTeam } from 'src/modules/race-team/entities/race-team.entity';
 import { Race } from 'src/modules/race/entities/race.entity';
 import { ResetUser } from 'src/modules/reset-user/entities/reset-user.entity';
 import { Role } from 'src/modules/role/entities/role.entity';
-import { RunnerCoach } from 'src/modules/runner-coach/entity/runner-coach.entity';
 import { Split } from 'src/modules/split/entities/split.entity';
 import { Standard } from 'src/modules/standard/entities/standard.entity';
 import { Subscription } from 'src/modules/subscription/enitites/subscription.entity';
@@ -64,7 +64,7 @@ const config: TypeOrmModuleOptions = {
     BestResult,
     Standard,
     Subscription,
-    RunnerCoach,
+    JoinRequest,
     Team,
     TeamPlayer,
     Location,

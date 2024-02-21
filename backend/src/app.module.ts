@@ -20,6 +20,7 @@ import { FileModule } from './modules/file/file.module';
 import { GenderModule } from './modules/gender/gender.module';
 import { HashtagModule } from './modules/hashtag/hashtag.module';
 import { IntegrationModule } from './modules/integration/integration.module';
+import { JoinRequestModule } from './modules/join-request/join-request.module';
 import { LocationModule } from './modules/location/location.module';
 import { MediaModule } from './modules/media/media.module';
 import { PaymentsModule } from './modules/payment/payment.module';
@@ -30,7 +31,6 @@ import { RaceTeamModule } from './modules/race-team/race-team.module';
 import { RaceModule } from './modules/race/race.module';
 import { ResetUserModule } from './modules/reset-user/reset-user.module';
 import { RoleModule } from './modules/role/role.module';
-import { RunnerCoachModule } from './modules/runner-coach/runner-coach.module';
 import { SplitModule } from './modules/split/split.module';
 import { StandardModule } from './modules/standard/standard.module';
 import { SubscriptionModule } from './modules/subscription/subscription.module';
@@ -65,7 +65,6 @@ import { UserModule } from './modules/users/modules/user.module';
     BestResultsModule,
     StandardModule,
     SubscriptionModule,
-    RunnerCoachModule,
     TeamModule,
     ArticleModule,
     EventModule,
@@ -82,6 +81,7 @@ import { UserModule } from './modules/users/modules/user.module';
     PenaltyModule,
     SplitModule,
     FileModule,
+    JoinRequestModule,
   ],
 })
 export class AppModule implements NestModule {

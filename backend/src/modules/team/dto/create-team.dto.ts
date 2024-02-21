@@ -1,4 +1,4 @@
-import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateTeamDto {
   @IsString()
@@ -27,7 +27,4 @@ export class CreateTeamDto {
   @IsString()
   @IsOptional()
   teamBio: string;
-
-  @IsArray()
-  runners: number[];
 }

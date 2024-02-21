@@ -42,7 +42,7 @@ export abstract class AbstractUserService {
 
     user.dateOfBirth = new Date(dto.dateOfBirth);
     user.genderId = dto.genderId;
-    user.avatarName = dto.avatarUrl;
+    user.avatarName = dto.avatarName;
     user.imageName = dto.imageUrl;
     user.countryId = dto.countryId;
     user.city = dto.city;

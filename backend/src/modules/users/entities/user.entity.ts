@@ -4,10 +4,10 @@ import { Category } from 'src/modules/category/entities/category.entity';
 import { Country } from 'src/modules/country/entity/country.entity';
 import { EventRaceRegistration } from 'src/modules/event-race-registration/entities/event-race-registration.entity';
 import { Gender } from 'src/modules/gender/entities/gender.entity';
+import { JoinRequest } from 'src/modules/join-request/entities/join-request.entity';
 import { Payment } from 'src/modules/payment/entities/payment.entity';
 import { PushToken } from 'src/modules/push-token/entities/push-token.entity';
 import { Race } from 'src/modules/race/entities/race.entity';
-import { RunnerCoach } from 'src/modules/runner-coach/entity/runner-coach.entity';
 import { TeamPlayer } from 'src/modules/team/entities/team-player.entity';
 import { Team } from 'src/modules/team/entities/team.entity';
 import { UserRole } from 'src/modules/user-role/entities/user-role.entity';
@@ -118,28 +118,18 @@ export class User {
   @OneToMany(() => PushToken, (pushToken) => pushToken.user)
   pushTokens: PushToken[];
 
-  @OneToMany(() => RunnerCoach, (runnerCoach) => runnerCoach.runner, {
-    nullable: true,
-  })
-  runnerCoaches: RunnerCoach[];
-
-  @OneToMany(() => RunnerCoach, (runnerCoach) => runnerCoach.coach, {
-    nullable: true,
-  })
-  coachRunners: RunnerCoach[];
-
-  @OneToMany(() => RunnerCoach, (runnerCoach) => runnerCoach.initiator, {
-    nullable: true,
-  })
-  requestsInitiated: RunnerCoach[];
-
   @OneToMany(() => Team, (team) => team.coach, { nullable: true })
   coachTeams: Team[];
 
   @OneToMany(() => TeamPlayer, (teamPlayer) => teamPlayer.runner, {
     nullable: true,
   })
-  runnerTeams: Team[];
+  runnerTeams: TeamPlayer[];
+
+  @OneToMany(() => JoinRequest, (joinRequest) => joinRequest.runner, {
+    nullable: true,
+  })
+  joinRequests: JoinRequest[];
 
   @OneToMany(
     () => EventRaceRegistration,

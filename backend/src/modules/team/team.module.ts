@@ -12,5 +12,6 @@ import { TeamService } from './services/team.service';
   imports: [TypeOrmModule.forFeature([Team, TeamPlayer, User])],
   controllers: [TeamController, TeamPlayerController],
   providers: [TeamService, TeamPlayerService],
+  exports: [TeamPlayerService],
 })
 export class TeamModule {}

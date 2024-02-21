@@ -2,6 +2,7 @@ import { Category } from 'src/modules/category/entities/category.entity';
 import { Country } from 'src/modules/country/entity/country.entity';
 import { EventRaceRegistration } from 'src/modules/event-race-registration/entities/event-race-registration.entity';
 import { Gender } from 'src/modules/gender/entities/gender.entity';
+import { JoinRequest } from 'src/modules/join-request/entities/join-request.entity';
 import { RaceTeam } from 'src/modules/race-team/entities/race-team.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 import {
@@ -56,6 +57,9 @@ export class Team {
   @Column({ nullable: true })
   teamBio: string;
 
+  @Column({ nullable: true })
+  joinRequestOpen: boolean;
+
   @Column()
   coachId: number;
 
@@ -64,6 +68,9 @@ export class Team {
 
   @OneToMany(() => TeamPlayer, (teamPlayer) => teamPlayer.team)
   teamRunners: TeamPlayer[];
+
+  @OneToMany(() => JoinRequest, (joinRequest) => joinRequest.team)
+  joinRequests: JoinRequest[];
 
   @OneToMany(
     () => EventRaceRegistration,
