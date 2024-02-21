@@ -4,6 +4,7 @@ import { Document } from 'src/modules/document/entities/document.entity.dto';
 import { EventRaceType } from 'src/modules/event-race-type/entities/event-race-type.entity';
 import { Location } from 'src/modules/location/entities/location.entity';
 import { Timetable } from 'src/modules/timetable/entities/timetable.entity';
+import { Ticket } from 'src/ticket/entities/ticket.entity';
 import {
   Column,
   Entity,
@@ -71,4 +72,7 @@ export class Event {
 
   @OneToMany(() => EventRaceType, (eventRaceType) => eventRaceType.event)
   eventRaceTypes: EventRaceType[];
+
+  @OneToMany(() => Ticket, (ticket) => ticket.event)
+  tickets: Ticket[];
 }

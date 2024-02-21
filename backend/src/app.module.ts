@@ -38,6 +38,8 @@ import { TeamModule } from './modules/team/team.module';
 import { TimetableModule } from './modules/timetable/timetable.module';
 import { UserRoleModule } from './modules/user-role/user-role.module';
 import { UserModule } from './modules/users/modules/user.module';
+import { TicketModule } from './ticket/ticket.module';
+import { VisitorTicketModule } from './visitor-ticket/visitor-ticket.module';
 
 @Module({
   imports: [
@@ -82,6 +84,8 @@ import { UserModule } from './modules/users/modules/user.module';
     SplitModule,
     FileModule,
     JoinRequestModule,
+    TicketModule,
+    VisitorTicketModule,
   ],
 })
 export class AppModule implements NestModule {

@@ -63,6 +63,7 @@
     "@types/node": "18.16.12",
     "@types/pdfkit": "^0.12.10",
     "@types/pdfmake": "^0.2.2",
+    "@types/qrcode": "^1.5.5",
     "@types/sharp": "^0.32.0",
     "@types/supertest": "^2.0.11",
     "@types/uuid": "^9.0.2",

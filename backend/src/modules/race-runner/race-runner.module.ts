@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventRaceRegistration } from 'src/modules/event-race-registration/entities/event-race-registration.entity';
 import { RaceTeam } from 'src/modules/race-team/entities/race-team.entity';
@@ -13,6 +14,13 @@ import { RaceRunnerService } from './race-runner.service';
 
 @Module({
   imports: [
+    JwtModule.registerAsync({
+      useFactory: async () => {
+        return {
+          secret: process.env.JWT_SECRET,
+        };
+      },
+    }),
     TypeOrmModule.forFeature([
       RaceRunner,
       RunnerRole,
@@ -24,6 +32,6 @@ import { RaceRunnerService } from './race-runner.service';
     ]),
   ],
   controllers: [RaceRunnerController],
-  providers: [RaceRunnerService, SplitService],
+  providers: [RaceRunnerService, SplitService, JwtService],
 })
 export class RaceRunnerModule {}

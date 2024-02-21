@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   Query,
@@ -10,6 +11,7 @@ import {
 import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
 import { Roles } from 'src/modules/auth/roles/roles-auth.decorator';
 import { CreateRaceRunnerSplitDto } from 'src/modules/split/dto/create-split.dto';
+import { AuthenticatedUser, GetUser } from '../users/decorators/user.decorator';
 import { CreateRaceParticipantDto } from './dto/create-race-runner.dto';
 import { CreateRunnerRoleDto } from './dto/create-runner-role.dto';
 import { CreateRunnerStatusDto } from './dto/create-runner-status.dto';
@@ -29,6 +31,30 @@ export class RaceRunnerController {
     @Query('raceTeamId') raceTeamId?: number,
   ) {
     return this.raceRunnerService.addRaceRunners(raceId, dto, raceTeamId);
+  }
+
+  @Get('/qrcode/:token')
+  @UseGuards(RolesGuard)
+  @Roles('admin')
+  async readQrcodeInfo(@Param('token') raceToken: string) {
+    return this.raceRunnerService.readQrcode(raceToken);
+  }
+
+  @Get('/:id/qrcode')
+  @UseGuards(RolesGuard)
+  @Roles('runner', 'admin')
+  async getRaceRunnerQrCode(
+    @GetUser() user: AuthenticatedUser,
+    @Param('id') raceRunnerId: number,
+  ) {
+    return this.raceRunnerService.getQrCodeForRaceRunner(user, raceRunnerId);
+  }
+
+  @Post('/:id/confirm')
+  @UseGuards(RolesGuard)
+  @Roles('admin')
+  async confirmRaceRunnerParticipation(@Param('id') raceRunnerId: number) {
+    return this.raceRunnerService.confirmParticipation(raceRunnerId);
   }
 
   // remove race runner

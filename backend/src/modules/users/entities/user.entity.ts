@@ -11,6 +11,7 @@ import { Race } from 'src/modules/race/entities/race.entity';
 import { TeamPlayer } from 'src/modules/team/entities/team-player.entity';
 import { Team } from 'src/modules/team/entities/team.entity';
 import { UserRole } from 'src/modules/user-role/entities/user-role.entity';
+import { VisitorTicket } from 'src/visitor-ticket/entities/visitor-ticket.entity';
 import {
   Column,
   CreateDateColumn,
@@ -145,6 +146,9 @@ export class User {
 
   @OneToMany(() => Payment, (payment) => payment.user)
   payments: Payment[];
+
+  @OneToMany(() => VisitorTicket, (visitorTicket) => visitorTicket.user)
+  visitorTickets: VisitorTicket[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
