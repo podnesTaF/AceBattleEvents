@@ -1,5 +1,5 @@
 "use client";
-import ProfileDropDown from "@/components/profile/ProfileDropDown";
+import ProfileDropDown from "@/app/settings/_components/ProfileDropDown";
 import { Button } from "@/components/ui/button";
 import Divider from "@/components/ui/divider";
 import { Menubar } from "@/components/ui/menubar";

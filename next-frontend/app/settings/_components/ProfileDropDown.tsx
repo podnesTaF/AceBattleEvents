@@ -1,14 +1,17 @@
+"use client";
+
 import { Menubar } from "@radix-ui/react-menubar";
 import { LogOut } from "lucide-react";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import MenuItemGradient from "../common/navbar/MenuItemGradient";
+import MenuItemGradient from "../../../components/common/navbar/MenuItemGradient";
 import {
   MenubarContent,
   MenubarItem,
   MenubarMenu,
   MenubarTrigger,
-} from "../ui/menubar";
+} from "../../../components/ui/menubar";
 
 type ProfileDropDownProps = {
   variant?: "light" | "dark";
@@ -83,13 +86,13 @@ const ProfileDropDown = ({ variant }: ProfileDropDownProps): JSX.Element => {
           </MenubarItem>
           <MenubarItem className="hover:bg-inherit focus:bg-inherit py-1">
             <MenuItemGradient variant={"dark"} direction="left">
-              <Link
-                href={"/"}
+              <div
+                onClick={() => signOut()}
                 className="flex gap-2 items-center text-red-500 p-2"
               >
                 <LogOut size={24} />
                 <p className={`text-md font-semibold text-left`}>Logout</p>
-              </Link>
+              </div>
             </MenuItemGradient>
           </MenubarItem>
         </MenubarContent>

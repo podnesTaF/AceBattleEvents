@@ -4,9 +4,9 @@ import { LogOut } from "lucide-react";
 import { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
+import ProfileDropDown from "../../app/settings/_components/ProfileDropDown";
 import MenuItem from "../common/navbar/MenuItem";
 import GenericMenubarMenu from "../common/navbar/NavbarItems/GenericMenubarMenu";
-import ProfileDropDown from "../profile/ProfileDropDown";
 
 interface MyNavbarProps {
   session: Session | null;

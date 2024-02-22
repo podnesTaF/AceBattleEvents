@@ -1,11 +1,13 @@
-"use client";
-import ProfileDropDown from "@/components/profile/ProfileDropDown";
+import ProfileDropDown from "@/app/settings/_components/ProfileDropDown";
 import { Button } from "@/components/ui/button";
+import { auth } from "@/lib/auth/utils/auth";
 import Link from "next/link";
 
-export default function SettingsLayout({
+export default async function SettingsLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const session = await auth();
+
   return (
     <div>
       <div className="h-72 w-full bg-[url('/images/profile-bg.jpg')] bg-no-repeat bg-bottom bg-cover p-4 flex flex-col items-center">
@@ -23,18 +25,19 @@ export default function SettingsLayout({
           <h1 className="text-white font-semibold text-5xl">Profile</h1>
         </div>
         <div className="flex gap-4">
-          <Button className="bg-white/10 hover:bg-white/5 w-32 py-3 text-white font-semibold">
-            Profile
-          </Button>
-          <Button className="bg-white/10 hover:bg-white/5 w-32 py-3 text-white font-semibold">
-            Settings
-          </Button>
-          <Button className="bg-white/10 hover:bg-white/5 w-32 py-3 text-white font-semibold">
-            Membership
-          </Button>
+          <Link href={"/settings"}>
+            <Button className="bg-white/10 hover:bg-white/5 min-w-40 p-5 text-white font-semibold text-xl">
+              Profile
+            </Button>
+          </Link>
+          <Link href={"/settings/membership"}>
+            <Button className="bg-white/10 hover:bg-white/5 min-w-40 p-5 text-white font-semibold text-xl">
+              Membership
+            </Button>
+          </Link>
         </div>
       </div>
-      {children}
+      <div className="max-w-4xl mx-auto my-4">{children}</div>
     </div>
   );
 }
