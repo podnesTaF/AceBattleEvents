@@ -36,9 +36,9 @@ export type IUser = {
 
   city?: string;
 
-  imageUrl?: string;
+  imageName?: string;
 
-  avatarUrl?: string;
+  avatarName?: string;
 
   newsSubscription?: boolean;
 

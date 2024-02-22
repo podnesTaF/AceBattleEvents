@@ -1,4 +1,5 @@
 import { AuthenticatedUser } from "@/lib/users/types";
+import { IUser } from "@/lib/users/types/IUser";
 import { AxiosInstance } from "axios";
 
 export const UserApi = (instance: AxiosInstance) => ({
@@ -13,7 +14,7 @@ export const UserApi = (instance: AxiosInstance) => ({
   },
 
   async getMe() {
-    const { data } = await instance.get<AuthenticatedUser>("/users/me");
+    const { data } = await instance.get<IUser>("/users/me");
     return data;
   },
 });

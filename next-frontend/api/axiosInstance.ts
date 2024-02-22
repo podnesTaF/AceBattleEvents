@@ -6,8 +6,8 @@ interface ApiReturnType {
   users: ReturnType<typeof UserApi>;
 }
 
-const baseURL = "http://localhost:4000/api/v2",
-  isServer = typeof window === "undefined";
+export const baseURL = "http://localhost:4000/api/v2";
+const isServer = typeof window === "undefined";
 
 export const Api = (session?: Session | null): ApiReturnType => {
   const headers = {
