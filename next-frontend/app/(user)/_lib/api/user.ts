@@ -17,7 +17,11 @@ export const UserApi = (instance: AxiosInstance) => ({
     return data;
   },
 
-  async updateMyProfile(formData: FormData | Partial<IUser>) {
+  async updateMyProfile(dto: Partial<IUser>) {
+    const { data } = await instance.patch<IUser>("/users/profile", dto);
+    return data;
+  },
+  async updateMyProfileImage(formData: FormData) {
     const { data } = await instance.patch<IUser>("/users/profile", formData, {
       headers: {
         "Content-Type": "multipart/form-data",

@@ -24,7 +24,9 @@ const MenuItem = ({
           variant === "dark" ? " text-black" : " text-white"
         } cursor-pointer h-full px-3 flex items-center ${className ?? ""}`}
       >
-        <h4 className="font-semibold text-xl select-none">{children}</h4>
+        <h4 className="font-semibold text-lg 2xl:text-xl select-none">
+          {children}
+        </h4>
       </div>
     </div>
   );

@@ -38,7 +38,7 @@ export default function SettingsLayout({
             </Link>
           </div>
         </div>
-        <div className="max-w-4xl mx-auto my-4">{children}</div>
+        <div className="max-w-4xl mx-auto my-4 mb-20">{children}</div>
       </StoreProvider>
     </SessionProvider>
   );

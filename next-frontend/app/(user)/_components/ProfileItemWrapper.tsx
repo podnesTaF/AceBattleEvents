@@ -9,7 +9,7 @@ const ProfileItemWrapper = ({
 }): JSX.Element => {
   return (
     <div
-      className={`flex p-5 border-b-[1px] border-b-gray-300 w-full ${className}`}
+      className={`flex p-5 border-b-[1px]  border-b-gray-300 w-full ${className}`}
     >
       {children}
     </div>

@@ -30,7 +30,7 @@ export const statsMenuItems = [
 
 export const homeItems = [
   { content: "Home", href: "/" },
-  { content: "Memberships", href: "/" },
+  { content: "Memberships", href: "/memberships" },
   { content: "About ABM", href: "/" },
   { content: "Game Rules", href: "/" },
   { content: "Support", href: "/" },
@@ -68,19 +68,20 @@ export const Navbar = ({ session }: { session: Session | null }) => {
         from="from-[#ff00001a]"
         to="to-[#000]"
         direction="bg-gradient-to-r"
-        className={`max-w-[1400px] w-full 2xl:mx-auto  transition-all ${
+        className={`max-w-[1400px] 2xl:max-w-none w-full 2xl:mx-auto  transition-all ${
           showNavbar
             ? "scale-100 opacity-100 translate-y-0"
             : "transform scale-[0.9] opacity-0 -translate-y-12"
         }`}
       >
-        <div className="w-full bg-background rounded-[30px] flex justify-between px-4 py-2">
+        <div className="w-full bg-background rounded-[30px] flex justify-between px-4 py-1 2xl:py-2">
           <div className="flex items-center gap-4">
             <Image
               src="/logo/abe-logo-black.svg"
               alt="Ace Battle Mile"
               width={80}
               height={30}
+              className="w-16 2xl:w-20"
             />
             <Divider size="w-[1px]" />
             <Menubar className="border-none hidden lg:flex">
@@ -114,7 +115,9 @@ export const Navbar = ({ session }: { session: Session | null }) => {
                 <MenuItem href={"/login"}>Log In</MenuItem>
                 <Link href={"/signup"}>
                   <div className="bg-red-500 text-white flex px-12 py-1 items-center h-12 rounded-[30px] relative">
-                    <h4 className="font-semibold text-xl">Sign Up</h4>
+                    <h4 className="font-semibold text-lg 2xl:text-xl">
+                      Sign Up
+                    </h4>
                     <div className="absolute left-1 top-1 bg-white rounded-full p-2">
                       <Image
                         src={"/icons/running-guy-icon.svg"}

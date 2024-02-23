@@ -5,22 +5,27 @@ import { IUser } from "../types";
 export const updateUserField = async (
   session: Session,
   names: (keyof IUser)[],
-  newValues: (string | number | null | File)[]
+  newValues: (string | number | null | File | boolean)[]
 ) => {
-  const formData = new FormData();
+  if (names.includes("avatar" as any) || names.includes("image" as any)) {
+    const formData = new FormData();
 
-  names.forEach((name, index) => {
-    const value = newValues[index];
+    names.forEach((name, index) => {
+      const value = newValues[index];
 
-    // Check if the value is a File object
-    if (value instanceof File) {
-      formData.append(name, value, value.name);
-    } else if (value !== null) {
-      formData.append(name, value.toString());
-    } else {
-      formData.append(name, "");
-    }
-  });
+      if (value instanceof File) {
+        formData.append(name, value, value.name);
+      }
+    });
 
-  await Api(session).users.updateMyProfile(formData);
+    await Api(session).users.updateMyProfileImage(formData);
+    return;
+  }
+
+  const payload = names.reduce((acc, name, index) => {
+    acc[name] = newValues[index];
+    return acc;
+  }, {} as Partial<IUser>);
+
+  await Api(session).users.updateMyProfile(payload);
 };

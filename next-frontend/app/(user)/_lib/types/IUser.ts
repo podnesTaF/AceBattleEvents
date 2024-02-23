@@ -43,7 +43,7 @@ export type IUser = {
 
   avatarName?: string;
 
-  newsSubscription?: boolean;
+  notificationsEnabled?: boolean;
 
   bestResults?: any[];
 

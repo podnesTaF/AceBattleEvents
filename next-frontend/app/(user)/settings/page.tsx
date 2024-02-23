@@ -3,6 +3,7 @@ import { auth } from "@/app/(auth)/_lib/utils/auth";
 import { Progress } from "@/common/components/ui/progress";
 import dynamic from "next/dynamic";
 import { calculateSettingsProgress } from "../_lib/utils/calculate-settings-progress";
+import EmailNotifications from "./_components/EmailNotifications";
 import ProfileInformation from "./_components/ProfileInformation";
 
 const PersonalDetails = dynamic(() => import("./_components/PersonalDetails"), {
@@ -29,6 +30,11 @@ export default async function ProfilePage() {
       <ProfileInformation session={session} user={user} />
 
       <PersonalDetails session={session} user={user} />
+
+      <EmailNotifications
+        session={session}
+        notificationEnabled={user.notificationsEnabled}
+      />
     </div>
   );
 }

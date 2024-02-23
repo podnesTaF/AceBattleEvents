@@ -31,7 +31,7 @@ const GenericMenubarMenu = ({
   return (
     <MenubarMenu>
       <MenubarTrigger
-        className={`relative w-full lg:w-auto px-0 lg:px-3 py-2 border-b-[1px]  lg:border-b-0 border-gray-200  ${
+        className={`relative w-full lg:w-auto px-0 lg:px-2 2xl:px-3 py-2 border-b-[1px]  lg:border-b-0 border-gray-200  ${
           titleVariant === "dark"
             ? "hover:bg-transparent focus:bg-gray-200"
             : "hover:bg-white/10 focus:bg-white/10 data-[state=open]:bg-white/10"
