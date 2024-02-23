@@ -1,39 +1,41 @@
 "use client";
 import { Api } from "@/api/axiosInstance";
+import EditableWrapper from "@/common/components/editable/EditableWrapper";
 import { useGetCountryNamesQuery } from "@/lib/features/countries/CountryService";
 import { useSession } from "next-auth/react";
-import EditableSelect from "../../_components/EditableSelect";
-import ProfileItemWrapper from "../../_components/ProfileItemWrapper";
+import EditableSelect from "../../../../common/components/editable/EditableSelect";
 import { IUser } from "../../_lib/types";
 
 const UserCountry = ({ user }: { user: IUser }) => {
   const { data: countries, isLoading, error } = useGetCountryNamesQuery();
   const { data: session } = useSession();
 
-  const onSave = async (value: number | null) => {
+  const onSave = async (names: (keyof IUser)[], values: string[]) => {
     const payload = {
-      countryId: value,
+      [names[0]]: values[0],
     };
 
     await Api(session).users.updateMyProfile(payload);
   };
   return (
-    <ProfileItemWrapper className="justify-between items-center gap-3">
-      <h4 className="text-gray-400  w-44">Country</h4>
+    <EditableWrapper
+      title="Country"
+      values={[user.countryId || null]}
+      names={["countryId"]}
+      onSave={onSave}
+      removable={true}
+    >
       {countries ? (
         <EditableSelect
           options={countries}
           name="country"
-          value={user.countryId || null}
-          onSave={onSave}
           defaultOption={{ id: null, name: "Select a country" }}
           groupLabel="Country"
-          removable={true}
         />
       ) : (
         <h4 className="text-gray-400  flex-[3]">Loading...</h4>
       )}
-    </ProfileItemWrapper>
+    </EditableWrapper>
   );
 };
 

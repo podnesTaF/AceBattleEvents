@@ -1,12 +1,17 @@
 "use client";
 
 import { Session } from "next-auth";
-import EditableField from "../../_components/EditableField";
-import EditableSelect from "../../_components/EditableSelect";
+import dynamic from "next/dynamic";
+import EditableInput from "../../../../common/components/editable/EditableInput";
+import EditableSelect from "../../../../common/components/editable/EditableSelect";
+import { default as EditableWrapper } from "../../../../common/components/editable/EditableWrapper";
 import ProfileItemWrapper from "../../_components/ProfileItemWrapper";
 import { IUser } from "../../_lib/types";
 import { updateUserField } from "../../_lib/utils";
-import UserCountry from "./UserCountry";
+
+const UserCountry = dynamic(() => import("./UserCountry"), {
+  loading: () => <p>Loading...</p>,
+});
 
 interface ProfileInformationProps {
   session: Session;
@@ -22,18 +27,23 @@ const PersonalDetails = ({
       <ProfileItemWrapper>
         <h3>Personal Details</h3>
       </ProfileItemWrapper>
-      <EditableField
+      <EditableWrapper
         values={[user.dateOfBirth || ""]}
-        type="date"
-        placeholder="Enter your date of birth"
         title="Date Of Birth"
         names={["dateOfBirth"]}
         removable={true}
         onSave={updateUserField.bind(null, session)}
-      />
+      >
+        <EditableInput type="date" placeholder="Enter your date of birth" />
+      </EditableWrapper>
 
-      <ProfileItemWrapper className="justify-between items-center gap-3">
-        <h4 className="text-gray-400 w-44">Sex</h4>
+      <EditableWrapper
+        values={[user.genderId || null]}
+        title="Sex"
+        names={["genderId"]}
+        onSave={updateUserField.bind(null, session)}
+        removable={true}
+      >
         <EditableSelect
           options={[
             {
@@ -45,22 +55,20 @@ const PersonalDetails = ({
               name: "female",
             },
           ]}
-          name="gender"
-          value={user.genderId || null}
+          name={"genderId"}
           defaultOption={{ id: null, name: "Select sex" }}
-          removable={true}
-          onSave={(value) => updateUserField(session, ["genderId"], [value])}
         />
-      </ProfileItemWrapper>
+      </EditableWrapper>
       <UserCountry user={user} />
-      <EditableField
+      <EditableWrapper
         values={[user.city || ""]}
-        placeholder="Enter your city"
         title="City"
         names={["city"]}
         removable={true}
         onSave={updateUserField.bind(null, session)}
-      />
+      >
+        <EditableInput placeholder="Enter your city" />
+      </EditableWrapper>
     </div>
   );
 };

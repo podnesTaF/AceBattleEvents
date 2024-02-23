@@ -8,14 +8,23 @@ import { IUser } from "../_lib/types";
 
 interface UserAvatarProps {
   user: IUser;
+  avatar?: File | null;
   className?: string;
 }
 
-const UserAvatar = ({ user, className }: UserAvatarProps): JSX.Element => {
-  return (
+const UserAvatar = ({
+  user,
+  className,
+  avatar,
+}: UserAvatarProps): JSX.Element => {
+  return avatar ? (
+    <Avatar className={className}>
+      <AvatarImage src={URL.createObjectURL(avatar)} alt={user.firstName} />
+    </Avatar>
+  ) : (
     <Avatar className={className}>
       <AvatarImage
-        src={getImageSrc(user?.avatarName, "avatars", user.id)}
+        src={getImageSrc(user.avatarName, "avatars", user.id)}
         alt={user.firstName}
       />
       <AvatarFallback className="bg-orange-400 text-white">

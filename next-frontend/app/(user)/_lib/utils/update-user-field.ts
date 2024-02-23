@@ -5,12 +5,22 @@ import { IUser } from "../types";
 export const updateUserField = async (
   session: Session,
   names: (keyof IUser)[],
-  newValues: (string | number | null)[]
+  newValues: (string | number | null | File)[]
 ) => {
-  const payload = names.reduce((acc, name, index) => {
-    acc[name] = newValues[index];
-    return acc;
-  }, {} as Partial<IUser>);
+  const formData = new FormData();
 
-  await Api(session).users.updateMyProfile(payload);
+  names.forEach((name, index) => {
+    const value = newValues[index];
+
+    // Check if the value is a File object
+    if (value instanceof File) {
+      formData.append(name, value, value.name);
+    } else if (value !== null) {
+      formData.append(name, value.toString());
+    } else {
+      formData.append(name, "");
+    }
+  });
+
+  await Api(session).users.updateMyProfile(formData);
 };

@@ -17,8 +17,19 @@ export const UserApi = (instance: AxiosInstance) => ({
     return data;
   },
 
-  async updateMyProfile(payload: Partial<IUser>) {
-    const { data } = await instance.patch<IUser>("/users/profile", payload);
+  async updateMyProfile(formData: FormData | Partial<IUser>) {
+    const { data } = await instance.patch<IUser>("/users/profile", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return data;
+  },
+
+  async getCountries() {
+    const { data } = await instance.get<{ id: number; name: string }[]>(
+      "/countries/names"
+    );
     return data;
   },
 });
