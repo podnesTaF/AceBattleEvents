@@ -1,5 +1,5 @@
-import Navbar from "@/components/common/navbar/Navbar";
-import { auth } from "@/lib/auth/utils/auth";
+import { auth } from "@/app/(auth)/_lib/utils/auth";
+import Navbar from "@/common/components/navbar/Navbar";
 
 export default async function Home() {
   const session = await auth();
@@ -31,3 +31,4 @@ export default async function Home() {
     </>
   );
 }
+
