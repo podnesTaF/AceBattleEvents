@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/common/lib/utils/utils";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
@@ -28,3 +28,4 @@ export default async function RootLayout({
     </html>
   );
 }
+

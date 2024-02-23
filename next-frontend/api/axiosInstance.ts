@@ -1,6 +1,6 @@
+import { UserApi } from "@/app/(user)/_lib/api/user";
 import axios from "axios";
 import { Session } from "next-auth";
-import { UserApi } from "./endpoints/user";
 
 interface ApiReturnType {
   users: ReturnType<typeof UserApi>;
