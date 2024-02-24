@@ -13,7 +13,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 200, 5%, 12%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -181,3 +181,54 @@
   -moz-text-fill-color: transparent;
 }
 
+.gradient-text-redish {
+  background-image: linear-gradient(153deg, #ff0000, #ffffff 50%, #fff 100%);
+  background-size: 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+
+.btn-clip {
+  clip-path: polygon(0 0, 100% 0, 100% 75%, 90% 75%, 90% 100%, 0 100%);
+}
+
+.bg-main-section {
+  background: linear-gradient(
+    180deg,
+    rgba(30, 28, 31, 1) 0%,
+    rgba(30, 28, 31, 0.5) 40%,
+    rgba(30, 28, 31, 1) 50%,
+    rgba(30, 28, 31, 1) 100%
+  );
+}
+
+@media screen and (min-width: 980px) {
+  .bg-main-section {
+    background: linear-gradient(
+      180deg,
+      rgba(30, 28, 31, 1) 0%,
+      rgba(30, 28, 31, 0.5) 60%,
+      rgba(30, 28, 31, 1) 80%,
+      rgba(30, 28, 31, 1) 100%
+    );
+  }
+}
+
+
+.clip-right {
+  clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
+  transform: translateX(10%);
+}
+
+.clip-left {
+  clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
+  transform: translateX(-10%);
+}
+
+.clip-both {
+  clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+  transform: translateX(0);
+}
