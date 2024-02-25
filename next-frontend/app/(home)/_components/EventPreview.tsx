@@ -32,7 +32,7 @@ const news = [
 
 const EventPreview = () => {
   return (
-    <div className="relative w-full">
+    <div className="relative w-full overflow-hidden">
       <Image
         src={"/images/paphos.jpg"}
         alt="event image"

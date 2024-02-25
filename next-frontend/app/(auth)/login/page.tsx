@@ -28,6 +28,10 @@ const Login = () => {
     },
   });
 
+  const signInWithGoogle = async () => {
+    await signIn("google", { callbackUrl: "/" });
+  };
+
   const onSubmit = async (dto: z.infer<typeof LoginFormSchema>) => {
     const result = await signIn("credentials", {
       email: dto.email,
@@ -36,6 +40,10 @@ const Login = () => {
       redirect: true,
       callbackUrl: "/",
     });
+
+    if (result && !result.error) {
+      console.log("Success");
+    }
   };
 
   return (
@@ -111,7 +119,12 @@ const Login = () => {
                 Sign In
               </Button>
               <div className="bg-gray-200 w-full h-[2px]"></div>
-              <Button className="px-3 md:px-5 py-6 md:py-6 xl:py-7">
+              <Button
+                type={"button"}
+                onClick={signInWithGoogle}
+                variant={"default"}
+                className="px-3 md:px-5 py-6 md:py-6 xl:py-7 bg-primary hover:bg-primary/10"
+              >
                 <span className="flex items-center gap-2">
                   <Image
                     src="/icons/google.svg"

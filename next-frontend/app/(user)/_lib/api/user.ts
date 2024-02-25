@@ -12,6 +12,13 @@ export const UserApi = (instance: AxiosInstance) => ({
     return data;
   },
 
+  async getUserIfExists(email?: string | null) {
+    const { data } = await instance.get<AuthenticatedUser>(
+      `/users/exists/${email}`
+    );
+    return data;
+  },
+
   async getMe() {
     const { data } = await instance.get<IUser>("/users/me");
     return data;
