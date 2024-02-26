@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { Content } from 'src/modules/content/entities/content.entity';
 import { CountryService } from 'src/modules/country/country.service';
 import { FileService } from 'src/modules/file/file.service';
+import { OneTimeToken } from 'src/modules/ott/entities/ott.entity';
 import { RoleService } from 'src/modules/role/role.service';
 import { UserRoleService } from 'src/modules/user-role/user-role.service';
 import { Repository } from 'typeorm';
@@ -25,6 +26,8 @@ export class UserService extends AbstractUserService {
     private contentRepository: Repository<Content>,
     private countryService: CountryService,
     private fileService: FileService,
+    @InjectRepository(OneTimeToken)
+    private ottRepository: Repository<OneTimeToken>,
   ) {
     super(repository, roleService, userRoleService);
   }
@@ -207,6 +210,10 @@ export class UserService extends AbstractUserService {
       .leftJoinAndSelect('user.country', 'country');
 
     const user = await query.getOne();
+
+    if (user) {
+      await this.ottRepository.delete({ user: user });
+    }
 
     return user || null;
   }

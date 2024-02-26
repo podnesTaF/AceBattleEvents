@@ -23,6 +23,7 @@ import { IntegrationModule } from './modules/integration/integration.module';
 import { JoinRequestModule } from './modules/join-request/join-request.module';
 import { LocationModule } from './modules/location/location.module';
 import { MediaModule } from './modules/media/media.module';
+import { OttModule } from './modules/ott/ott.module';
 import { PaymentsModule } from './modules/payment/payment.module';
 import { PenaltyModule } from './modules/penalty/penalty.module';
 import { PushTokenModule } from './modules/push-token/push-token.module';
@@ -86,6 +87,7 @@ import { VisitorTicketModule } from './visitor-ticket/visitor-ticket.module';
     JoinRequestModule,
     TicketModule,
     VisitorTicketModule,
+    OttModule,
   ],
 })
 export class AppModule implements NestModule {

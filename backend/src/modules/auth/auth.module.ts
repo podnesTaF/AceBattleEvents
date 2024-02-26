@@ -7,6 +7,8 @@ import { CountryService } from 'src/modules/country/country.service';
 import { Country } from 'src/modules/country/entity/country.entity';
 import { ResetUser } from 'src/modules/reset-user/entities/reset-user.entity';
 import { ResetUserService } from 'src/modules/reset-user/reset-user.service';
+import { OneTimeToken } from '../ott/entities/ott.entity';
+import { OneTimeTokenService } from '../ott/ott.service';
 import { UserModule } from '../users/modules/user.module';
 import { AuthController } from './auth.controller';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -31,7 +33,7 @@ import { LocalStrategy } from './strategies/local.strategy';
         };
       },
     }),
-    TypeOrmModule.forFeature([Country, ResetUser]),
+    TypeOrmModule.forFeature([Country, ResetUser, OneTimeToken]),
   ],
   controllers: [AuthController],
   providers: [
@@ -44,6 +46,7 @@ import { LocalStrategy } from './strategies/local.strategy';
     JwtAuthGuard,
     ResetUserService,
     GoogleStrategy,
+    OneTimeTokenService,
   ],
   exports: [PassportModule, JwtModule],
 })

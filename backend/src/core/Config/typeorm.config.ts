@@ -17,6 +17,7 @@ import { Gender } from 'src/modules/gender/entities/gender.entity';
 import { Hashtag } from 'src/modules/hashtag/entities/hashtag.entity';
 import { JoinRequest } from 'src/modules/join-request/entities/join-request.entity';
 import { Location } from 'src/modules/location/entities/location.entity';
+import { OneTimeToken } from 'src/modules/ott/entities/ott.entity';
 import { PaymentPurpose } from 'src/modules/payment/entities/payment-purpose.entity';
 import { Payment } from 'src/modules/payment/entities/payment.entity';
 import { Penalty } from 'src/modules/penalty/entities/penalty.entity';
@@ -92,6 +93,7 @@ const config: TypeOrmModuleOptions = {
     Ticket,
     TicketPrice,
     VisitorTicket,
+    OneTimeToken,
   ],
   synchronize: true,
 };

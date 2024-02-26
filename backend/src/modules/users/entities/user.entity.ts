@@ -5,6 +5,7 @@ import { Country } from 'src/modules/country/entity/country.entity';
 import { EventRaceRegistration } from 'src/modules/event-race-registration/entities/event-race-registration.entity';
 import { Gender } from 'src/modules/gender/entities/gender.entity';
 import { JoinRequest } from 'src/modules/join-request/entities/join-request.entity';
+import { OneTimeToken } from 'src/modules/ott/entities/ott.entity';
 import { Payment } from 'src/modules/payment/entities/payment.entity';
 import { PushToken } from 'src/modules/push-token/entities/push-token.entity';
 import { Race } from 'src/modules/race/entities/race.entity';
@@ -149,6 +150,9 @@ export class User {
 
   @OneToMany(() => VisitorTicket, (visitorTicket) => visitorTicket.user)
   visitorTickets: VisitorTicket[];
+
+  @OneToMany(() => OneTimeToken, (ott) => ott.user)
+  ottMappings: OneTimeToken[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
