@@ -1,5 +1,4 @@
 import { Event } from 'src/modules/event/entities/event.entity';
-import { VisitorTicket } from 'src/visitor-ticket/entities/visitor-ticket.entity';
 import {
   Column,
   Entity,
@@ -30,7 +29,4 @@ export class Ticket {
   eventId: number;
   @ManyToOne(() => Event, (event) => event.tickets)
   event: Event;
-
-  @OneToMany(() => VisitorTicket, (visitorTicket) => visitorTicket.ticket)
-  purchases: VisitorTicket[];
 }

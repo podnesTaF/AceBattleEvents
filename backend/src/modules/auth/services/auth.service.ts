@@ -7,13 +7,13 @@ import { JwtService } from '@nestjs/jwt';
 import sgMail from '@sendgrid/mail';
 import * as bcrypt from 'bcrypt';
 import * as uuid from 'uuid';
-import { CreateUserDto } from '../users/dtos/create-user.dto';
-import { User } from '../users/entities/user.entity';
-import { UserService } from '../users/services/user.service';
+import { CreateUserDto } from '../../users/dtos/create-user.dto';
+import { User } from '../../users/entities/user.entity';
+import { UserService } from '../../users/services/user.service';
 
 import { ResetUserService } from 'src/modules/reset-user/reset-user.service';
 import { RequestRole } from 'src/modules/users/decorators/user.decorator';
-import { changePasswordTemplate } from './utils/getChangePassTemplate';
+import { changePasswordTemplate } from '../utils/getChangePassTemplate';
 
 @Injectable()
 export class AuthService {

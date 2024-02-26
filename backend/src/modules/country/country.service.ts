@@ -49,4 +49,8 @@ export class CountryService {
   async findById(id: number) {
     return this.repository.findOne({ where: { id } });
   }
+
+  getAllNames() {
+    return this.repository.find({ select: ['id', 'name'] });
+  }
 }

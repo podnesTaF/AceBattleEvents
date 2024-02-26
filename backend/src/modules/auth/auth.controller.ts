@@ -11,12 +11,16 @@ import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoginUserDto } from 'src/modules/users/dtos/login-user.dto';
 import { User } from 'src/modules/users/entities/user.entity';
 import { CreateUserDto } from '../users/dtos/create-user.dto';
-import { AuthService } from './auth.service';
+import { AuthService } from './services/auth.service';
+import { GoogleAuthService } from './services/google-auth.service';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly googleAuthService: GoogleAuthService,
+  ) {}
 
   @UseGuards(AuthGuard('local'))
   @Post('login')
@@ -25,6 +29,15 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
   async login(@Request() req: { user: Partial<User> }) {
     return this.authService.login(req.user);
+  }
+
+  @Post('google')
+  async googleAuth(@Body() body: any) {
+    const { token } = body;
+    const validatedUser = await this.googleAuthService.validateGoogleUser(
+      token,
+    );
+    return validatedUser;
   }
 
   @Post('register')

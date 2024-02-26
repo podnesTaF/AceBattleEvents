@@ -103,8 +103,8 @@ export class User {
   @ApiProperty({
     description: 'Indicates if the user is subscribed to news updates',
   })
-  @Column({ default: false })
-  newsSubscription: boolean;
+  @Column({ default: true })
+  notificationsEnabled: boolean;
 
   @OneToMany(() => BestResult, (bestResult) => bestResult.runner)
   bestResults: BestResult[];

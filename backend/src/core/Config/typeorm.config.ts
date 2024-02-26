@@ -39,6 +39,7 @@ import { UserRole } from 'src/modules/user-role/entities/user-role.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 import { TicketPrice } from 'src/ticket/entities/ticket-price.entity';
 import { Ticket } from 'src/ticket/entities/ticket.entity';
+import { VisitorTicket } from 'src/visitor-ticket/entities/visitor-ticket.entity';
 
 evnconfig();
 
@@ -90,6 +91,7 @@ const config: TypeOrmModuleOptions = {
     Split,
     Ticket,
     TicketPrice,
+    VisitorTicket,
   ],
   synchronize: true,
 };

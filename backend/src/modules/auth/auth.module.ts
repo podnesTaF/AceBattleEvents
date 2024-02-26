@@ -9,9 +9,11 @@ import { ResetUser } from 'src/modules/reset-user/entities/reset-user.entity';
 import { ResetUserService } from 'src/modules/reset-user/reset-user.service';
 import { UserModule } from '../users/modules/user.module';
 import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RolesGuard } from './guards/roles.guard';
+import { AuthService } from './services/auth.service';
+import { GoogleAuthService } from './services/google-auth.service';
+import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 
@@ -34,12 +36,14 @@ import { LocalStrategy } from './strategies/local.strategy';
   controllers: [AuthController],
   providers: [
     AuthService,
+    GoogleAuthService,
     LocalStrategy,
     JwtStrategy,
     CountryService,
     RolesGuard,
     JwtAuthGuard,
     ResetUserService,
+    GoogleStrategy,
   ],
   exports: [PassportModule, JwtModule],
 })
