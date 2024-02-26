@@ -15,10 +15,15 @@ import { Switch } from "@/common/components/ui/switch";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
+
+import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const Login = () => {
+  const searchParams = useSearchParams();
+  const redirectUri = searchParams?.get("redirectUri") || "/";
+
   const form = useForm<z.infer<typeof LoginFormSchema>>({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
@@ -28,14 +33,34 @@ const Login = () => {
     },
   });
 
+  const signInWithGoogle = async () => {
+    await signIn("google", { callbackUrl: "/" });
+  };
+
   const onSubmit = async (dto: z.infer<typeof LoginFormSchema>) => {
+    console.log("red", redirectUri);
     const result = await signIn("credentials", {
       email: dto.email,
       password: dto.password,
       rememberMe: dto.rememberMe,
-      redirect: true,
-      callbackUrl: "/",
+      redirect: false,
+      callbackUrl:
+        redirectUri !== "/"
+          ? `${
+              process.env.PLATFORM_URL
+            }/api/auth/callback?redirectUri=${encodeURIComponent(redirectUri)}`
+          : "/",
     });
+
+    if (result && !result.error && result.url) {
+      if (redirectUri !== "/") {
+        window.location.href = "/login/redirect?redirectUri=" + redirectUri;
+      } else {
+        window.location.href = result.url;
+      }
+    } else {
+      // Handle error
+    }
   };
 
   return (
@@ -111,7 +136,12 @@ const Login = () => {
                 Sign In
               </Button>
               <div className="bg-gray-200 w-full h-[2px]"></div>
-              <Button className="px-3 md:px-5 py-6 md:py-6 xl:py-7">
+              <Button
+                type={"button"}
+                onClick={signInWithGoogle}
+                variant={"default"}
+                className="px-3 md:px-5 py-6 md:py-6 xl:py-7 bg-primary hover:bg-primary/10"
+              >
                 <span className="flex items-center gap-2">
                   <Image
                     src="/icons/google.svg"

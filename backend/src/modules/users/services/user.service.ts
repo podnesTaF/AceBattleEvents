@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { Content } from 'src/modules/content/entities/content.entity';
 import { CountryService } from 'src/modules/country/country.service';
 import { FileService } from 'src/modules/file/file.service';
+import { OneTimeToken } from 'src/modules/ott/entities/ott.entity';
 import { RoleService } from 'src/modules/role/role.service';
 import { UserRoleService } from 'src/modules/user-role/user-role.service';
 import { Repository } from 'typeorm';
@@ -25,6 +26,8 @@ export class UserService extends AbstractUserService {
     private contentRepository: Repository<Content>,
     private countryService: CountryService,
     private fileService: FileService,
+    @InjectRepository(OneTimeToken)
+    private ottRepository: Repository<OneTimeToken>,
   ) {
     super(repository, roleService, userRoleService);
   }
@@ -202,15 +205,17 @@ export class UserService extends AbstractUserService {
       .createQueryBuilder('user')
       .where({ ...cond })
       .leftJoinAndSelect('user.roles', 'roles')
-      .leftJoinAndSelect('roles.role', 'role');
+      .leftJoinAndSelect('roles.role', 'role')
+      .leftJoinAndSelect('user.gender', 'gender')
+      .leftJoinAndSelect('user.country', 'country');
 
     const user = await query.getOne();
 
-    if (!user) {
-      throw new ForbiddenException('User not found');
+    if (user) {
+      await this.ottRepository.delete({ user: user });
     }
 
-    return user;
+    return user || null;
   }
 
   async count() {
@@ -228,7 +233,7 @@ export class UserService extends AbstractUserService {
     if (dto.image) {
       await this.fileService.uploadFileToStorage(
         dto.image.originalname,
-        `/avatars/${id}`,
+        `/images/${id}`,
         dto.image.mimetype,
         dto.image.buffer,
         [{ mediaName: dto.image.originalname }],
@@ -250,6 +255,39 @@ export class UserService extends AbstractUserService {
 
       user.avatarName = dto.avatar.originalname;
     }
+
+    user.firstName = dto.firstName || user.firstName;
+    user.secondName = dto.secondName || user.secondName;
+
+    if (dto.dateOfBirth !== undefined) {
+      console.log(dto.dateOfBirth, 'dateOfBirth');
+      user.dateOfBirth = dto.dateOfBirth ? new Date(dto.dateOfBirth) : null;
+    }
+
+    if (dto.city !== undefined) {
+      user.city = dto.city;
+    }
+
+    if (dto.countryId !== undefined) {
+      user.countryId = dto.countryId || null;
+    }
+
+    if (dto.genderId !== undefined) {
+      user.genderId = dto.genderId || null;
+    }
+
+    if (dto.avatarName !== undefined) {
+      user.avatarName = dto.avatarName || null;
+    }
+
+    if (dto.imageName !== undefined) {
+      user.imageName = dto.imageName || null;
+    }
+
+    if (dto.notificationsEnabled !== undefined) {
+      user.notificationsEnabled = dto.notificationsEnabled;
+    }
+
     return this.repository.save(user);
 
     // const user = await this.repository.findOne({ where: { id } });

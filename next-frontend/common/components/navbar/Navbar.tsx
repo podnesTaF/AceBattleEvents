@@ -32,33 +32,35 @@ export const homeItems = [
   { content: "Home", href: "/" },
   { content: "Memberships", href: "/memberships" },
   { content: "About ABM", href: "/" },
-  { content: "Game Rules", href: "/" },
   { content: "Support", href: "/" },
 ];
 
 export const Navbar = ({ session }: { session: Session | null }) => {
   const [showNavbar, setShowNavbar] = useState(true);
   const [expanded, setExpanded] = useState(false);
+  const [lastScrollTop, setLastScrollTop] = useState(0);
 
   useEffect(() => {
-    let lastScrollTop = 0;
-
     const handleScroll = () => {
       const currentScrollTop = window.scrollY;
+      const scrollingDown = currentScrollTop > lastScrollTop;
+      const scrolledEnough = Math.abs(currentScrollTop - lastScrollTop) > 200;
 
-      if (currentScrollTop > lastScrollTop) {
+      if (scrollingDown && scrolledEnough) {
         setShowNavbar(false);
         setExpanded(false);
-      } else {
+      } else if (!scrollingDown && scrolledEnough) {
         setShowNavbar(true);
       }
 
-      lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
+      if (scrolledEnough) {
+        setLastScrollTop(currentScrollTop);
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [lastScrollTop]);
 
   return (
     <Element name="navbar" className="w-full px-4 relative">

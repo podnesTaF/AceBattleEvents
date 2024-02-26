@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
 import { Roles } from 'src/modules/auth/roles/roles-auth.decorator';
@@ -15,5 +15,10 @@ export class CountryController {
   @Roles('admin')
   createMany(@Body() body: CreateCountryDto[]) {
     return this.countryService.createManyCountries(body);
+  }
+
+  @Get('/names')
+  getAllNames() {
+    return this.countryService.getAllNames();
   }
 }

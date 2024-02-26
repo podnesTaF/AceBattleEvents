@@ -17,6 +17,7 @@ import { Gender } from 'src/modules/gender/entities/gender.entity';
 import { Hashtag } from 'src/modules/hashtag/entities/hashtag.entity';
 import { JoinRequest } from 'src/modules/join-request/entities/join-request.entity';
 import { Location } from 'src/modules/location/entities/location.entity';
+import { OneTimeToken } from 'src/modules/ott/entities/ott.entity';
 import { PaymentPurpose } from 'src/modules/payment/entities/payment-purpose.entity';
 import { Payment } from 'src/modules/payment/entities/payment.entity';
 import { Penalty } from 'src/modules/penalty/entities/penalty.entity';
@@ -39,6 +40,7 @@ import { UserRole } from 'src/modules/user-role/entities/user-role.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 import { TicketPrice } from 'src/ticket/entities/ticket-price.entity';
 import { Ticket } from 'src/ticket/entities/ticket.entity';
+import { VisitorTicket } from 'src/visitor-ticket/entities/visitor-ticket.entity';
 
 evnconfig();
 
@@ -90,6 +92,8 @@ const config: TypeOrmModuleOptions = {
     Split,
     Ticket,
     TicketPrice,
+    VisitorTicket,
+    OneTimeToken,
   ],
   synchronize: true,
 };

@@ -7,13 +7,14 @@ import { JwtService } from '@nestjs/jwt';
 import sgMail from '@sendgrid/mail';
 import * as bcrypt from 'bcrypt';
 import * as uuid from 'uuid';
-import { CreateUserDto } from '../users/dtos/create-user.dto';
-import { User } from '../users/entities/user.entity';
-import { UserService } from '../users/services/user.service';
+import { CreateUserDto } from '../../users/dtos/create-user.dto';
+import { User } from '../../users/entities/user.entity';
+import { UserService } from '../../users/services/user.service';
 
+import { OneTimeTokenService } from 'src/modules/ott/ott.service';
 import { ResetUserService } from 'src/modules/reset-user/reset-user.service';
 import { RequestRole } from 'src/modules/users/decorators/user.decorator';
-import { changePasswordTemplate } from './utils/getChangePassTemplate';
+import { changePasswordTemplate } from '../utils/getChangePassTemplate';
 
 @Injectable()
 export class AuthService {
@@ -21,6 +22,7 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
     private resetRepository: ResetUserService,
+    private oneTimeTokenService: OneTimeTokenService,
   ) {
     sgMail.setApiKey(process.env.SEND_GRID_API_K);
   }
@@ -33,15 +35,23 @@ export class AuthService {
     }));
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...userData } = user;
+    const jwtToken = this.generateJwtToken({
+      id: user.id,
+      email: user.email,
+      roles,
+    });
+
+    const ott = await this.oneTimeTokenService.createToken(
+      user as User,
+      jwtToken,
+    );
+
     return {
       id: user.id,
       email: user.email,
       roles: roles,
-      token: this.generateJwtToken({
-        id: user.id,
-        email: user.email,
-        roles,
-      }),
+      token: jwtToken,
+      ott: ott,
     };
   }
 

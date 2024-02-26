@@ -38,6 +38,11 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Get('/exists/:email')
+  getUserIfExists(@Param('email') email: string) {
+    return this.userService.findByCond({ email });
+  }
+
   @Get('/me')
   @UseGuards(JwtAuthGuard)
   getMe(@Request() req) {
@@ -98,11 +103,10 @@ export class UserController {
     @Request() req,
     @Body() body: UpdateUserDto,
   ) {
-    console.log(files.avatar?.[0].originalname);
     return this.userService.updateProfileData(req.user.id, {
       ...body,
-      image: files.image?.[0],
-      avatar: files.avatar?.[0],
+      image: files?.image?.[0],
+      avatar: files?.avatar?.[0],
     });
   }
 

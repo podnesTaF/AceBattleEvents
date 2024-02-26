@@ -1,6 +1,7 @@
 import { Api } from "@/api/axiosInstance";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions: NextAuthOptions = {
   // Secret for Next-auth, without this JWT encryption/decryption won't work
@@ -26,20 +27,41 @@ export const authOptions: NextAuthOptions = {
         }
       },
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    }),
   ],
   jwt: {
     maxAge: 60 * 60 * 24 * 30,
   },
   callbacks: {
-    async signIn({ user, account, profile }) {
-      return true;
-    },
-    async jwt({ token, user }) {
-      // If the user object exists, it means authorization was successful
-      if (user) {
+    async jwt({ token, user, account, profile }) {
+      if (account?.provider === "google") {
+        const data = await Api().users.loginWithGoogle(
+          account.id_token as string
+        );
+
+        if (data.token) {
+          token.user = data;
+        }
+      } else if (account?.provider === "credentials") {
         token.user = user as any;
       }
+
       return token;
+    },
+    async signIn({ user, account, profile, email }) {
+      if (account?.provider === "credentials") {
+        return true;
+      }
+
+      const existingUser = await Api().users.getUserIfExists(user.email);
+
+      if (existingUser) {
+        return true;
+      }
+      return "/signup";
     },
     async session({ session, token }) {
       if (token.user) {
