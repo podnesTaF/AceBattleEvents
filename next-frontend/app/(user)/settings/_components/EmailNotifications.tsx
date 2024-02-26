@@ -22,7 +22,6 @@ const EmailNotifications = ({
 
   const onChange = async (checked: boolean) => {
     setEmailNotifications(checked);
-    console.log(checked);
     setIsLoading(true);
     await updateUserField(session, ["notificationsEnabled"], [checked]);
     setIsLoading(false);

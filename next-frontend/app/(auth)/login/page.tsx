@@ -15,10 +15,15 @@ import { Switch } from "@/common/components/ui/switch";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
+
+import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const Login = () => {
+  const searchParams = useSearchParams();
+  const redirectUri = searchParams?.get("redirectUri") || "/";
+
   const form = useForm<z.infer<typeof LoginFormSchema>>({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
@@ -33,16 +38,28 @@ const Login = () => {
   };
 
   const onSubmit = async (dto: z.infer<typeof LoginFormSchema>) => {
+    console.log("red", redirectUri);
     const result = await signIn("credentials", {
       email: dto.email,
       password: dto.password,
       rememberMe: dto.rememberMe,
-      redirect: true,
-      callbackUrl: "/",
+      redirect: false,
+      callbackUrl:
+        redirectUri !== "/"
+          ? `${
+              process.env.PLATFORM_URL
+            }/api/auth/callback?redirectUri=${encodeURIComponent(redirectUri)}`
+          : "/",
     });
 
-    if (result && !result.error) {
-      console.log("Success");
+    if (result && !result.error && result.url) {
+      if (redirectUri !== "/") {
+        window.location.href = "/login/redirect?redirectUri=" + redirectUri;
+      } else {
+        window.location.href = result.url;
+      }
+    } else {
+      // Handle error
     }
   };
 
