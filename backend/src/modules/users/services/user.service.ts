@@ -1,18 +1,20 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import sgMail from '@sendgrid/mail';
 import * as bcrypt from 'bcrypt';
 import { Content } from 'src/modules/content/entities/content.entity';
 import { CountryService } from 'src/modules/country/country.service';
 import { FileService } from 'src/modules/file/file.service';
-import { OneTimeToken } from 'src/modules/ott/entities/ott.entity';
+import { OneTimeTokenService } from 'src/modules/ott/ott.service';
 import { RoleService } from 'src/modules/role/role.service';
 import { UserRoleService } from 'src/modules/user-role/user-role.service';
 import { Repository } from 'typeorm';
-import { CompleteVerificationDto } from '../dtos/complete-verification.dto';
-import { CreateUserDto } from '../dtos/create-user.dto';
+import { AuthenticatedUser } from '../decorators/user.decorator';
+import { CreateUserDto, CreateUserWithGoogle } from '../dtos/create-user.dto';
 import { LoginUserDto } from '../dtos/login-user.dto';
 import { UpdateUserDtoWithImages } from '../dtos/update-user.dto';
 import { User } from '../entities/user.entity';
+import { getVerificationLetterTemplate } from '../utils/getVerificationTemplate';
 import { AbstractUserService } from './abstract-user.service';
 
 @Injectable()
@@ -26,23 +28,20 @@ export class UserService extends AbstractUserService {
     private contentRepository: Repository<Content>,
     private countryService: CountryService,
     private fileService: FileService,
-    @InjectRepository(OneTimeToken)
-    private ottRepository: Repository<OneTimeToken>,
+    private ottService: OneTimeTokenService,
   ) {
     super(repository, roleService, userRoleService);
   }
 
-  async create(dto: CreateUserDto) {
+  async create(dto: CreateUserDto | CreateUserWithGoogle) {
+    await this.isDuplicateEmail(dto.email);
+
     const user = await this.repository.save(dto);
     const userRole = await this.createRoleForUser(user.id, 'user');
     user.roles = [userRole];
+
     return this.repository.save(user);
-    // const isDuplicate = await this.repository.findOne({
-    //   where: [{ email: dto.email }],
-    // });
-    // if (isDuplicate) {
-    //   throw new ForbiddenException('User with this email already exists');
-    // }
+
     // const user = new User();
     // user.role = dto.role;
     // user.name = dto.name;
@@ -66,46 +65,90 @@ export class UserService extends AbstractUserService {
     //   token: randomToken,
     //   user: newUser,
     // });
-    // const msg = {
-    //   to: newUser.email,
-    //   from: {
-    //     email: 'it.podnes@gmail.com',
-    //     name: 'Ace Battle Mile',
-    //   },
-    //   subject: 'Confirm your email address | Ace Battle Mile',
-    //   html: getVerificationLetterTemplate({
-    //     name: newUser.name,
-    //     token: verification.token,
-    //     ticket: false,
-    //   }),
-    // };
-    // try {
-    //   await sgMail.send(msg);
-    // } catch (error) {
-    //   console.log('error sending email', error.message);
-    // }
+
     // return this.repository.save(newUser);
   }
 
-  async completeVerification({
-    user,
-    token,
-    password,
-  }: CompleteVerificationDto) {
-    // try {
-    //   const fullUser = await this.repository.findOne({
-    //     where: { id: user.id },
-    //   });
-    //   fullUser.verified = true;
-    //   const hashedPassword = await bcrypt.hash(password, 10);
-    //   fullUser.password = hashedPassword;
-    //   await this.verifyRepository.delete(token);
-    //   await this.sendGreetingNotification(fullUser);
-    //   return this.repository.save(fullUser);
-    // } catch (error) {
-    //   console.log(error.message);
-    //   throw new Error(error.message);
-    // }
+  async isDuplicateEmail(email: string) {
+    const isDuplicate = await this.repository.findOne({
+      where: [{ email: email }],
+    });
+    if (isDuplicate) {
+      throw new ForbiddenException('User with this email already exists');
+    }
+  }
+
+  async sendEmailConfirmation(user: AuthenticatedUser, jwt: string) {
+    const fullUser = await this.repository.findOne({
+      where: { id: user.id },
+    });
+
+    if (fullUser.emailVerified) {
+      return;
+    }
+
+    const existingToken = await this.ottService.getOttByCond({
+      userId: user.id,
+      goal: 'email-verify',
+    });
+    let token: string;
+
+    if (existingToken && existingToken?.expiresAt > new Date()) {
+      token = existingToken.ott;
+
+      // If less then 5 minutes passed after the last email sent
+      // If so, return void and do not send another email
+      if (existingToken.createdAt > new Date(Date.now() - 300000)) {
+        return;
+      }
+    } else {
+      token = await this.ottService.createToken(user, jwt, 60, 'email-verify');
+    }
+
+    const msg = {
+      to: user.email,
+      from: {
+        email: 'it.podnes@gmail.com',
+        name: 'Ace Battle Mile',
+      },
+      subject: 'Confirm your email address | Ace Battle Mile',
+      html: getVerificationLetterTemplate({
+        name: fullUser.firstName + ' ' + fullUser.lastName,
+        token: token,
+      }),
+    };
+    try {
+      await sgMail.send(msg);
+    } catch (error) {
+      console.log('error sending email', error.message);
+    }
+  }
+
+  async getVerifyStatus(userId: number): Promise<boolean> {
+    const data = await this.userRepository.findOne({
+      where: { id: userId },
+      select: ['emailVerified'],
+    });
+
+    return data.emailVerified;
+  }
+
+  async completeVerification(ott: string) {
+    const ottInstance = await this.ottService.getOttInfo(ott);
+
+    if (!ottInstance) {
+      throw new ForbiddenException('Invalid token');
+    }
+
+    const user = await this.repository.findOne({
+      where: { id: ottInstance.userId },
+    });
+
+    user.emailVerified = true;
+
+    await this.repository.save(user);
+
+    return user;
   }
 
   async sendGreetingNotification(user: User) {
@@ -137,7 +180,7 @@ export class UserService extends AbstractUserService {
 
   findAll() {
     return this.repository.find({
-      select: ['id', 'firstName', 'secondName', 'email', 'city', 'country'],
+      select: ['id', 'firstName', 'lastName', 'email', 'city', 'country'],
     });
   }
 
@@ -212,7 +255,7 @@ export class UserService extends AbstractUserService {
     const user = await query.getOne();
 
     if (user) {
-      await this.ottRepository.delete({ user: user });
+      await this.ottService.removeExpiredUserTokens(user.id);
     }
 
     return user || null;
@@ -257,7 +300,7 @@ export class UserService extends AbstractUserService {
     }
 
     user.firstName = dto.firstName || user.firstName;
-    user.secondName = dto.secondName || user.secondName;
+    user.lastName = dto.lastName || user.lastName;
 
     if (dto.dateOfBirth !== undefined) {
       console.log(dto.dateOfBirth, 'dateOfBirth');

@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import sgMail from '@sendgrid/mail';
 import * as bcrypt from 'bcrypt';
@@ -13,61 +9,32 @@ import { UserService } from '../../users/services/user.service';
 
 import { OneTimeTokenService } from 'src/modules/ott/ott.service';
 import { ResetUserService } from 'src/modules/reset-user/reset-user.service';
-import { RequestRole } from 'src/modules/users/decorators/user.decorator';
 import { changePasswordTemplate } from '../utils/getChangePassTemplate';
+import { AbstractAuthService } from './abstract-auth.service';
 
 @Injectable()
-export class AuthService {
+export class AuthService extends AbstractAuthService {
   constructor(
     private userService: UserService,
-    private jwtService: JwtService,
+    protected jwtService: JwtService,
     private resetRepository: ResetUserService,
-    private oneTimeTokenService: OneTimeTokenService,
+    protected oneTimeTokenService: OneTimeTokenService,
   ) {
+    super(jwtService, oneTimeTokenService);
     sgMail.setApiKey(process.env.SEND_GRID_API_K);
   }
 
-  async login(user: Partial<User>) {
-    const roles = user.roles.map((userRole) => ({
-      id: userRole.role.id,
-      name: userRole.role.name,
-      active: userRole.active,
-    }));
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...userData } = user;
-    const jwtToken = this.generateJwtToken({
-      id: user.id,
-      email: user.email,
-      roles,
+  async register(dto: CreateUserDto) {
+    const encryptedPassword = await bcrypt.hash(dto.password, 12);
+
+    const userData = await this.userService.create({
+      ...dto,
+      password: encryptedPassword,
     });
 
-    const ott = await this.oneTimeTokenService.createToken(
-      user as User,
-      jwtToken,
-    );
-
     return {
-      id: user.id,
-      email: user.email,
-      roles: roles,
-      token: jwtToken,
-      ott: ott,
+      ...userData,
     };
-  }
-
-  async register(dto: CreateUserDto) {
-    try {
-      const encryptedPassword = await bcrypt.hash(dto.password, 12);
-      const userData = await this.userService.create({
-        ...dto,
-        password: encryptedPassword,
-      });
-      return {
-        ...userData,
-      };
-    } catch (err) {
-      throw new BadRequestException('Register error');
-    }
   }
 
   async validateUser({
@@ -83,16 +50,12 @@ export class AuthService {
     if (user) {
       const isEqual = await bcrypt.compare(password, user.password);
       if (isEqual) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { password, ...result } = user;
         return result;
       }
     }
     return null;
-  }
-
-  generateJwtToken(data: { id: number; email: string; roles: RequestRole[] }) {
-    const payload = { email: data.email, id: data.id, roles: data.roles };
-    return this.jwtService.sign(payload);
   }
 
   async setPassword(

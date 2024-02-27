@@ -1,42 +1,41 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { OAuth2Client, TokenPayload } from 'google-auth-library';
-import { RequestRole } from 'src/modules/users/decorators/user.decorator';
+import { OneTimeTokenService } from 'src/modules/ott/ott.service';
+import { RegisterWithGoogleDto } from 'src/modules/users/dtos/create-user.dto';
 import { UserService } from 'src/modules/users/services/user.service';
+import { AbstractAuthService } from './abstract-auth.service';
 
 @Injectable()
-export class GoogleAuthService {
+export class GoogleAuthService extends AbstractAuthService {
   constructor(
-    private jwtService: JwtService,
+    protected jwtService: JwtService,
     private userService: UserService,
-  ) {}
+    protected oneTimeTokenService: OneTimeTokenService,
+  ) {
+    super(jwtService, oneTimeTokenService);
+  }
+
+  async register(dto: RegisterWithGoogleDto) {
+    const userProfile = await this.validateGoogleToken(dto.id_token);
+
+    await this.userService.create({
+      email: userProfile.email,
+      firstName: userProfile.given_name,
+      lastName: userProfile.family_name,
+      emailVerified: true,
+    });
+  }
 
   async validateGoogleUser(token: string): Promise<any> {
     const userProfile = await this.validateGoogleToken(token);
-    // Here you would use the Google token to verify the user's identity with Google's API.
-    // This might involve calling Google's token info endpoint or using a Google client library.
+
     const userRecord = await this.userService.findByCond({
       email: userProfile.email,
     });
 
     if (userRecord) {
-      const roles = userRecord.roles.map((userRole) => ({
-        id: userRole.role.id,
-        name: userRole.role.name,
-        active: userRole.active,
-      }));
-
-      const jwtToken = this.generateJwtToken({
-        id: userRecord.id,
-        email: userRecord.email,
-        roles: roles,
-      });
-      return {
-        id: userRecord.id,
-        email: userRecord.email,
-        roles: roles,
-        token: jwtToken,
-      };
+      return this.login(userRecord);
     }
 
     return null;
@@ -55,10 +54,5 @@ export class GoogleAuthService {
     } catch (error) {
       throw new Error('Invalid Google token');
     }
-  }
-
-  generateJwtToken(data: { id: number; email: string; roles: RequestRole[] }) {
-    const payload = { email: data.email, id: data.id, roles: data.roles };
-    return this.jwtService.sign(payload);
   }
 }

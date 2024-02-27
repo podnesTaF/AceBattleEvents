@@ -38,7 +38,7 @@ export class User {
   firstName: string;
 
   @Column()
-  secondName: string;
+  lastName: string;
 
   @Column({ unique: true })
   email: string;
