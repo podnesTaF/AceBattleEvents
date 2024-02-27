@@ -28,7 +28,7 @@ const UserAvatar = ({
         alt={user.firstName}
       />
       <AvatarFallback className="bg-orange-400 text-white">
-        {(user.firstName[0] + user.secondName[0]).toUpperCase()}
+        {(user.firstName[0] + user.lastName?.[0]).toUpperCase()}
       </AvatarFallback>
     </Avatar>
   );

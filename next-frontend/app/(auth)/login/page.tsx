@@ -13,16 +13,19 @@ import {
 import { Input } from "@/common/components/ui/input";
 import { Switch } from "@/common/components/ui/switch";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 
 import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const Login = () => {
+  const { data } = useSession();
   const searchParams = useSearchParams();
   const redirectUri = searchParams?.get("redirectUri") || "/";
+  const [errorMessage, setErrorMessage] = useState("");
 
   const form = useForm<z.infer<typeof LoginFormSchema>>({
     resolver: zodResolver(LoginFormSchema),
@@ -34,11 +37,26 @@ const Login = () => {
   });
 
   const signInWithGoogle = async () => {
-    await signIn("google", { callbackUrl: "/" });
+    const result = await signIn("google", {
+      redirect: false,
+      callbackUrl:
+        redirectUri !== "/"
+          ? `${
+              process.env.PLATFORM_URL
+            }/api/auth/callback?redirectUri=${encodeURIComponent(redirectUri)}`
+          : "/",
+    });
+
+    if (result && !result.error && result.url) {
+      if (redirectUri !== "/") {
+        window.location.href = "/login/redirect?redirectUri=" + redirectUri;
+      } else {
+        window.location.href = result.url;
+      }
+    }
   };
 
   const onSubmit = async (dto: z.infer<typeof LoginFormSchema>) => {
-    console.log("red", redirectUri);
     const result = await signIn("credentials", {
       email: dto.email,
       password: dto.password,
@@ -59,9 +77,26 @@ const Login = () => {
         window.location.href = result.url;
       }
     } else {
-      // Handle error
+      let errorMessage = "An unexpected error occurred"; // Default message
+
+      if (result?.error) {
+        errorMessage = "Wrong email or password";
+      }
+
+      setErrorMessage(errorMessage);
     }
   };
+
+  useEffect(() => {
+    if (data) {
+      if (redirectUri !== "/") {
+        window.location.href =
+          "/login/redirect?redirectUri=" + redirectUri + "&newOtt=true";
+      } else {
+        window.location.href = "/";
+      }
+    }
+  }, [data, redirectUri]);
 
   return (
     <>
@@ -127,6 +162,9 @@ const Login = () => {
               <a href="#" className="text-primary text-sm">
                 Forgot password?
               </a>
+            </div>
+            <div className="w-full">
+              <FormMessage>{errorMessage}</FormMessage>
             </div>
             <div className="flex flex-col gap-6 mt-3">
               <Button

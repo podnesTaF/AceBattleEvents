@@ -10,10 +10,14 @@ export const baseURL = "http://localhost:4000/api/v2";
 const isServer = typeof window === "undefined";
 
 export const Api = (session?: Session | null): ApiReturnType => {
-  const headers = {
+  const bearerToken = session?.user?.token;
+  const headers: any = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${session?.user?.token}`,
   };
+
+  if (bearerToken) {
+    headers["Authorization"] = `Bearer ${bearerToken}`;
+  }
 
   const instance = axios.create({
     baseURL,

@@ -1,5 +1,6 @@
 "use client";
 
+import { Api } from "@/api/axiosInstance";
 import { Button } from "@/common/components/ui/button";
 import {
   Form,
@@ -11,12 +12,17 @@ import {
 } from "@/common/components/ui/form";
 import { Input } from "@/common/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { registerSchema } from "../_lib/utils";
 
-const Login = () => {
+const SignUp = () => {
+  const searchParams = useSearchParams();
+  const redirectUri = searchParams?.get("redirectUri") || "/";
+
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -28,9 +34,59 @@ const Login = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof registerSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof registerSchema>) {
+    if (values.confirm !== values.password) {
+      form.setError("confirm", {
+        type: "manual",
+        message: "Password does not match",
+      });
+
+      return;
+    }
+
+    try {
+      const user = await Api().users.register(values);
+
+      const result = await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        rememberMe: true,
+        redirect: false,
+        callbackUrl: "/signup/confirm-email",
+      });
+
+      if (result && !result.error && result.url) {
+        window.location.href = result.url;
+      }
+    } catch (error: any) {
+      form.setError("root", {
+        type: "manual",
+        message:
+          error?.response?.data?.message ||
+          "An error occurred while registering user",
+      });
+    }
   }
+
+  const signInWithGoogle = async () => {
+    const result = await signIn("google", {
+      redirect: false,
+      callbackUrl:
+        redirectUri !== "/"
+          ? `${
+              process.env.PLATFORM_URL
+            }/api/auth/callback?redirectUri=${encodeURIComponent(redirectUri)}`
+          : "/",
+    });
+
+    if (result && !result.error && result.url) {
+      if (redirectUri !== "/") {
+        window.location.href = "/login/redirect?redirectUri=" + redirectUri;
+      } else {
+        window.location.href = result.url;
+      }
+    }
+  };
 
   return (
     <>
@@ -131,6 +187,11 @@ const Login = () => {
                 </FormItem>
               )}
             />
+            <div className="py-2">
+              <FormMessage className="text-lg">
+                {form.formState.errors.root?.message}
+              </FormMessage>
+            </div>
             <div className="flex flex-col gap-6 mt-3">
               <Button
                 className="px-3 md:px-4 py-4 lg:py-6 font-semibold text-lg"
@@ -139,7 +200,11 @@ const Login = () => {
                 Sign Up
               </Button>
               <div className="bg-gray-200 w-full h-[2px]"></div>
-              <Button className="px-3 md:px-4 py-4 lg:py-5 md:py-6 xl:py-7">
+              <Button
+                type="button"
+                onClick={signInWithGoogle}
+                className="px-3 md:px-4 py-4 lg:py-5 md:py-6 xl:py-7"
+              >
                 <span className="flex items-center gap-2">
                   <Image
                     src="/icons/google.svg"
@@ -165,4 +230,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

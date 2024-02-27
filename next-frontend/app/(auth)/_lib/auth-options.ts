@@ -51,17 +51,27 @@ export const authOptions: NextAuthOptions = {
 
       return token;
     },
-    async signIn({ user, account, profile, email }) {
+    async signIn({ user, account, profile }) {
       if (account?.provider === "credentials") {
         return true;
       }
 
       const existingUser = await Api().users.getUserIfExists(user.email);
 
-      if (existingUser) {
-        return true;
+      if (
+        !existingUser &&
+        account?.provider === "google" &&
+        account?.id_token
+      ) {
+        try {
+          await Api().users.googleRegister({
+            id_token: account.id_token,
+          });
+        } catch (error) {
+          return "/signup";
+        }
       }
-      return "/signup";
+      return true;
     },
     async session({ session, token }) {
       if (token.user) {
