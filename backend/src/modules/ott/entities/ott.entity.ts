@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -18,7 +19,13 @@ export class OneTimeToken {
   @Column('text')
   jwtToken: string;
 
-  @ManyToOne(() => User, (user) => user.ottMappings)
+  @Column({ default: 'auth' })
+  goal: string;
+
+  @Column()
+  userId: number;
+  @ManyToOne(() => User, (user) => user.ottMappings, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'userId' })
   user: User;
 
   @CreateDateColumn()

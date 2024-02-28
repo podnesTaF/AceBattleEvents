@@ -11,7 +11,7 @@ export type IUser = {
 
   firstName: string;
 
-  secondName: string;
+  lastName: string;
 
   email: string;
 

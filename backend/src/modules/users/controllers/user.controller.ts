@@ -16,8 +16,9 @@ import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
 import { Roles } from 'src/modules/auth/roles/roles-auth.decorator';
-import { CompleteVerificationDto } from '../dtos/complete-verification.dto';
+import { AuthenticatedUser, GetUser } from '../decorators/user.decorator';
 import { UpdateUserDto } from '../dtos/update-user.dto';
+import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
 
 @ApiTags('users')
@@ -26,11 +27,23 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('/verify')
-  verifyMember(
-    @Body()
-    dto: CompleteVerificationDto,
+  verifyMember(@Body() body: { ott: string }): Promise<User> {
+    return this.userService.completeVerification(body.ott);
+  }
+
+  @Post('/email-confirmation')
+  @UseGuards(JwtAuthGuard)
+  sendEmailConfirmation(
+    @Body() body: { token: string },
+    @GetUser() user: AuthenticatedUser,
   ) {
-    return this.userService.completeVerification(dto);
+    return this.userService.sendEmailConfirmation(user, body.token);
+  }
+
+  @Get('/verify-status')
+  @UseGuards(JwtAuthGuard)
+  getVerifyStatus(@GetUser() user: AuthenticatedUser) {
+    return this.userService.getVerifyStatus(user.id);
   }
 
   @Get()

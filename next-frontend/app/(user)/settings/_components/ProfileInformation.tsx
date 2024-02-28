@@ -63,9 +63,9 @@ const ProfileInformation = ({
         </div>
       </ProfileItemWrapper> */}
       <EditableWrapper
-        values={[user.firstName, user.secondName]}
+        values={[user.firstName, user.lastName]}
         title="Full Name"
-        names={["firstName", "secondName"]}
+        names={["firstName", "lastName"]}
         onSave={updateUserField.bind(null, session)}
       >
         <EditableInput placeholder="enter your name" />

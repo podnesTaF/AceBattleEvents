@@ -1,13 +1,10 @@
-import { IsObject, IsString } from "class-validator";
-import { User } from "../entities/user.entity";
+import { IsObject, IsString } from 'class-validator';
+import { AuthenticatedUser } from '../decorators/user.decorator';
 
 export class CompleteVerificationDto {
   @IsObject()
-  user: User;
+  user: AuthenticatedUser;
 
   @IsString()
   token: string;
-
-  @IsString()
-  password: string;
 }

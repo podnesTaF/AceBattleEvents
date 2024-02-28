@@ -1,4 +1,4 @@
-import { IUser } from "@/lib/users/types/IUser";
+import { IUser } from "../types";
 
 export const calculateSettingsProgress = (user: IUser) => {
   const progress = {
@@ -10,7 +10,7 @@ export const calculateSettingsProgress = (user: IUser) => {
     progress.steps += 1;
   }
 
-  if (user.firstName && user.secondName) {
+  if (user.firstName && user.lastName) {
     progress.steps += 1;
   }
 

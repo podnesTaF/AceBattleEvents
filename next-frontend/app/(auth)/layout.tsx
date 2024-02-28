@@ -1,14 +1,12 @@
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { auth } from "./_lib/utils/auth";
 
-const AuthLayout = async ({
+const AuthLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const session = await auth();
   return (
     <div className="md:min-h-screen  flex flex-row py-8 px-4 md:py-0 md:px-0">
       <div className="md:w-1/2 xl:w-2/5 h-auto bg-white rounded-lg opacity-95 py-4 px-2 sm:px-5 sm:max-w-lg sm:mx-auto md:max-w-none">
