@@ -1,5 +1,5 @@
 import { auth } from "@/app/(auth)/_lib/utils/auth";
-import Navbar from "@/common/components/navbar/Navbar";
+import AppBar from "@/common/components/navbar/AppBar";
 import { NewsCard } from "@/common/components/news/NewsCard";
 import { Button } from "@/common/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
@@ -57,7 +57,7 @@ export default async function Home() {
   return (
     <>
       <div className="fixed w-full left-0 top-0  flex justify-center pt-4 z-50">
-        <Navbar session={session} />
+        <AppBar session={session} />
       </div>
       <main>
         <EventPreview />
