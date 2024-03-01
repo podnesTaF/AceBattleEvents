@@ -1,4 +1,7 @@
 import { cn } from "@/common/lib/utils/utils";
+import theme from "@/styles/theme";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
+import { ThemeProvider } from "@mui/material/styles";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
@@ -23,7 +26,9 @@ export default async function RootLayout({
           montserrat.variable
         )}
       >
-        {children}
+        <AppRouterCacheProvider>
+          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
