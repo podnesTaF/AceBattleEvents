@@ -49,7 +49,7 @@ export class Team {
   prevRank: number;
 
   @Column({ nullable: true })
-  logoUrl: string;
+  logoName: string;
 
   @Column({ nullable: true })
   imageUrl: string;

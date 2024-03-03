@@ -17,6 +17,7 @@ import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
 import { Roles } from 'src/modules/auth/roles/roles-auth.decorator';
 import { AuthenticatedUser, GetUser } from '../decorators/user.decorator';
+import { CreateMigration } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
@@ -29,6 +30,11 @@ export class UserController {
   @Post('/verify')
   verifyMember(@Body() body: { ott: string }): Promise<User> {
     return this.userService.completeVerification(body.ott);
+  }
+
+  @Post('/migration')
+  migrateUser(@Body() body: CreateMigration) {
+    return this.userService.migrateUser(body);
   }
 
   @Post('/email-confirmation')

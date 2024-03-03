@@ -21,4 +21,9 @@ export class CountryController {
   getAllNames() {
     return this.countryService.getAllNames();
   }
+
+  @Get('/:name')
+  getCountryByName(@Body() name: string) {
+    return this.countryService.findByName(name);
+  }
 }

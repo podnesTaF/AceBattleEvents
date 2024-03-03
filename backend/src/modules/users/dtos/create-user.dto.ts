@@ -1,6 +1,9 @@
 import {
+  IsArray,
   IsBoolean,
+  IsDateString,
   IsEmail,
+  IsNumber,
   IsOptional,
   IsString,
   IsStrongPassword,
@@ -31,4 +34,51 @@ export class RegisterWithGoogleDto {
 export class CreateUserWithGoogle extends CreateUserDto {
   @IsBoolean()
   emailVerified: boolean;
+}
+
+export class CreateMigration extends CreateUserDto {
+  @IsNumber()
+  id: number;
+
+  @IsDateString()
+  @IsOptional()
+  dateOfBirth?: Date;
+
+  @IsString()
+  @IsOptional()
+  countryName: string;
+
+  @IsString()
+  @IsOptional()
+  genderName: string;
+
+  @IsString()
+  @IsOptional()
+  categoryName: string;
+
+  @IsString()
+  @IsOptional()
+  city: string;
+
+  @IsString()
+  @IsOptional()
+  phoneNumber: string;
+
+  @IsBoolean()
+  @IsOptional()
+  verified: boolean;
+
+  @IsDateString()
+  createdAt: Date;
+
+  @IsString()
+  @IsOptional()
+  avatarUrl: string;
+
+  @IsString()
+  @IsOptional()
+  imageUrl: string;
+
+  @IsArray()
+  roles: string[];
 }

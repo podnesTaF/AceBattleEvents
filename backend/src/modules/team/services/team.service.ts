@@ -46,4 +46,11 @@ export class TeamService {
       relations: ['teamRunners', 'country', 'gender', 'category', 'coach'],
     });
   }
+
+  // Get all teams previews
+  findAllPreviews() {
+    return this.teamRepository.find({
+      select: ['id', 'name', 'logoName'],
+    });
+  }
 }

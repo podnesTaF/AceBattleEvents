@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -12,6 +13,7 @@ import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
 import { Roles } from 'src/modules/auth/roles/roles-auth.decorator';
 import { CreateEventTypeDto } from './dto/create-event-type.dto';
 import { CreateEventDto } from './dto/create-event.dto';
+import { GetEventsQuery } from './dto/get-events-query';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { EventService } from './event.service';
 
@@ -58,6 +60,12 @@ export class EventController {
   @Roles('admin')
   async updateEvent(@Body() dto: UpdateEventDto, @Param('id') id: number) {
     return this.eventService.updateEvent(id, dto);
+  }
+
+  // get all events
+  @Get()
+  findAll(@Query() queries: GetEventsQuery) {
+    return this.eventService.getAll(queries);
   }
 
   // delete event
