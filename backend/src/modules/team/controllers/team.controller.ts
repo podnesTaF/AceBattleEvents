@@ -22,6 +22,11 @@ export class TeamController {
     return this.teamService.createTeam({ user, dto: body });
   }
 
+  @Get('/previews')
+  findAllPreviews() {
+    return this.teamService.findAllPreviews();
+  }
+
   @Get()
   getAllTeams() {
     return this.teamService.getAllTeams();

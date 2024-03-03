@@ -49,4 +49,7 @@ export class Article {
     onDelete: 'SET NULL',
   })
   event: Event;
+
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 }

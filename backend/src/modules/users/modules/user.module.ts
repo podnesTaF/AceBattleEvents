@@ -6,6 +6,7 @@ import { Content } from 'src/modules/content/entities/content.entity';
 import { CountryService } from 'src/modules/country/country.service';
 import { Country } from 'src/modules/country/entity/country.entity';
 import { FileService } from 'src/modules/file/file.service';
+import { Gender } from 'src/modules/gender/entities/gender.entity';
 import { OneTimeToken } from 'src/modules/ott/entities/ott.entity';
 import { OneTimeTokenService } from 'src/modules/ott/ott.service';
 import { Role } from 'src/modules/role/entities/role.entity';
@@ -33,6 +34,7 @@ import { UserService } from '../services/user.service';
       BestResult,
       Standard,
       OneTimeToken,
+      Gender,
     ]),
   ],
   controllers: [UserController, RunnerController, CoachController],

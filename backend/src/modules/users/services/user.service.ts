@@ -1,16 +1,22 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import sgMail from '@sendgrid/mail';
+import axios from 'axios';
 import * as bcrypt from 'bcrypt';
 import { Content } from 'src/modules/content/entities/content.entity';
 import { CountryService } from 'src/modules/country/country.service';
 import { FileService } from 'src/modules/file/file.service';
+import { Gender } from 'src/modules/gender/entities/gender.entity';
 import { OneTimeTokenService } from 'src/modules/ott/ott.service';
 import { RoleService } from 'src/modules/role/role.service';
 import { UserRoleService } from 'src/modules/user-role/user-role.service';
 import { Repository } from 'typeorm';
 import { AuthenticatedUser } from '../decorators/user.decorator';
-import { CreateUserDto, CreateUserWithGoogle } from '../dtos/create-user.dto';
+import {
+  CreateMigration,
+  CreateUserDto,
+  CreateUserWithGoogle,
+} from '../dtos/create-user.dto';
 import { LoginUserDto } from '../dtos/login-user.dto';
 import { UpdateUserDtoWithImages } from '../dtos/update-user.dto';
 import { User } from '../entities/user.entity';
@@ -26,6 +32,8 @@ export class UserService extends AbstractUserService {
     protected readonly userRoleService: UserRoleService,
     @InjectRepository(Content)
     private contentRepository: Repository<Content>,
+    @InjectRepository(Gender)
+    private genderRepository: Repository<Gender>,
     private countryService: CountryService,
     private fileService: FileService,
     private ottService: OneTimeTokenService,
@@ -149,6 +157,103 @@ export class UserService extends AbstractUserService {
     await this.repository.save(user);
 
     return user;
+  }
+
+  async migrateUser(dto: CreateMigration) {
+    const user = new User();
+    user.id = dto.id;
+    user.firstName = dto.firstName;
+    user.lastName = dto.lastName;
+    user.email = dto.email;
+    user.dateOfBirth = dto.dateOfBirth;
+    user.city = dto.city;
+    user.emailVerified = dto.verified;
+
+    const country = await this.countryService.returnIfExist({
+      name: dto.countryName,
+    });
+
+    user.country = country || null;
+
+    const gender =
+      (await this.genderRepository.findOne({
+        where: { name: dto.genderName },
+      })) || null;
+
+    user.gender = gender;
+
+    if (dto.imageUrl) {
+      const image = await this.fetchImageAsMulterFile(dto.imageUrl);
+
+      user.imageName = await this.fileService.uploadFileToStorage(
+        image.originalname,
+        `/images/${user.id}`,
+        image.mimetype,
+        image.buffer,
+        [{ mediaName: image.originalname }],
+        user.imageName,
+      );
+    }
+
+    if (dto.avatarUrl) {
+      const avatar = await this.fetchImageAsMulterFile(dto.avatarUrl);
+
+      user.avatarName = await this.fileService.uploadFileToStorage(
+        avatar.originalname,
+        `/avatars/${user.id}`,
+        avatar.mimetype,
+        avatar.buffer,
+        [{ mediaName: avatar.originalname }],
+        user.avatarName,
+      );
+    }
+
+    const savedUser = await this.userRepository.save(user);
+
+    const roles = await Promise.all(
+      dto.roles.map(async (role) => await this.roleService.findByName(role)),
+    );
+
+    const userRoles = await Promise.all(
+      roles.map(
+        async (role) =>
+          await this.userRoleService.createUserRole({
+            userId: savedUser.id,
+            roleId: role.id,
+          }),
+      ),
+    );
+
+    user.roles = userRoles;
+
+    await this.repository.save(user);
+  }
+
+  async fetchImageAsMulterFile(url: string): Promise<Express.Multer.File> {
+    try {
+      const response = await axios.get(url, { responseType: 'arraybuffer' });
+      const contentType = response.headers['content-type'];
+      const contentLength = response.headers['content-length'];
+
+      const multerFile: Express.Multer.File = {
+        buffer: response.data,
+        size: parseInt(contentLength, 10),
+        mimetype: contentType,
+        originalname: url.split('/').pop() || 'image', // Extract filename from URL or fallback to a default
+        // You can fill in the rest of the Multer.File properties as needed, or set them to defaults
+        fieldname: 'image', // or 'avatar', depending on your needs
+        encoding: '7bit', // Default encoding
+        destination: '', // Not applicable for buffers
+        filename: '', // Not applicable for buffers
+        path: '', // Not applicable for buffers
+        stream: null, // Not applicable for buffers
+      };
+
+      return multerFile;
+    } catch (error) {
+      console.error('Failed to fetch image:', error);
+      throw new Error('Failed to fetch image');
+    }
   }
 
   async sendGreetingNotification(user: User) {
