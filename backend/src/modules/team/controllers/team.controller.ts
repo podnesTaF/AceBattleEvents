@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UploadedFiles,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
@@ -18,8 +27,31 @@ export class TeamController {
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('coach')
-  createTeam(@GetUser() user: AuthenticatedUser, @Body() body: CreateTeamDto) {
-    return this.teamService.createTeam({ user, dto: body });
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'image', maxCount: 1 },
+        { name: 'logo', maxCount: 1 },
+      ],
+      {
+        limits: {
+          fileSize: 4 * 1024 * 1024,
+        },
+      },
+    ),
+  )
+  createTeam(
+    @UploadedFiles()
+    files: { image?: Express.Multer.File[]; logo?: Express.Multer.File[] },
+    @GetUser() user: AuthenticatedUser,
+    @Body() body: CreateTeamDto,
+  ) {
+    return this.teamService.createTeam({
+      user,
+      dto: body,
+      image: files?.image?.[0],
+      logo: files?.logo?.[0],
+    });
   }
 
   @Get('/previews')

@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateEventDto {
@@ -15,10 +16,7 @@ export class CreateEventDto {
   @IsOptional()
   endDate?: Date;
 
-  @IsString()
-  @IsOptional()
-  mainImageUrl?: string;
-
+  @Type(() => Number)
   @IsNumber()
   typeId: number;
 }
