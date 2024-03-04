@@ -3,12 +3,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTeamPlayerDto } from '../dto/create-team-player.dto';
 import { TeamPlayer } from '../entities/team-player.entity';
+import { Team } from '../entities/team.entity';
 
 @Injectable()
 export class TeamPlayerService {
   constructor(
     @InjectRepository(TeamPlayer)
     private readonly teamPlayerRepository: Repository<TeamPlayer>,
+    @InjectRepository(Team)
+    private readonly teamRepository: Repository<Team>,
   ) {}
 
   async createTeamPlayer(teamPlayer: CreateTeamPlayerDto): Promise<TeamPlayer> {

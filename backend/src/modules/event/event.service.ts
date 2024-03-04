@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
+import { FileService } from '../file/file.service';
 import { CreateEventTypeDto } from './dto/create-event-type.dto';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
@@ -14,6 +15,7 @@ export class EventService {
     private readonly eventRepository: Repository<Event>,
     @InjectRepository(EventType)
     private readonly eventTypeRepository: Repository<EventType>,
+    private readonly fileService: FileService,
   ) {}
 
   // get full event
@@ -31,10 +33,37 @@ export class EventService {
     });
   }
 
-  async createEvent(dto: CreateEventDto): Promise<Event> {
-    return await this.eventRepository.save({
+  async createEvent(
+    dto: CreateEventDto,
+    mainImage: Express.Multer.File,
+  ): Promise<Event> {
+    const event = await this.eventRepository.save({
       ...dto,
     });
+
+    if (mainImage) {
+      await this.uploadEventMedia(event.id, mainImage, 'mainImage');
+      event.mainImageName = mainImage.originalname;
+      return await this.eventRepository.save(event);
+    }
+
+    return event;
+  }
+
+  uploadEventMedia(
+    eventId: number,
+    file: Express.Multer.File,
+    type: string,
+    oldMediaName?: string,
+  ) {
+    return this.fileService.uploadFileToStorage(
+      file.originalname,
+      `events/${type}/${eventId}`,
+      file.mimetype,
+      file.buffer,
+      [{ mediaName: file.originalname }],
+      oldMediaName,
+    );
   }
 
   // create event type

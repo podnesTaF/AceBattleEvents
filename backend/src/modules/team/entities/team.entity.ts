@@ -35,6 +35,8 @@ export class Team {
   @Column()
   categoryId: number;
 
+  @Column()
+  genderId: number;
   @ManyToOne(() => Gender)
   @JoinColumn({ name: 'genderId' })
   gender: Gender;
@@ -52,7 +54,7 @@ export class Team {
   logoName: string;
 
   @Column({ nullable: true })
-  imageUrl: string;
+  imageName: string;
 
   @Column({ nullable: true })
   teamBio: string;

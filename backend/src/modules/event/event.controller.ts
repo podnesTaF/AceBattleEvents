@@ -6,8 +6,11 @@ import {
   Patch,
   Post,
   Query,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
 import { Roles } from 'src/modules/auth/roles/roles-auth.decorator';
@@ -31,8 +34,19 @@ export class EventController {
   @Post()
   @UseGuards(RolesGuard)
   @Roles('admin')
-  async createEvent(@Body() dto: CreateEventDto) {
-    return this.eventService.createEvent(dto);
+  @UseInterceptors(
+    FileFieldsInterceptor([{ name: 'mainImage', maxCount: 1 }], {
+      limits: {
+        fileSize: 4 * 1024 * 1024,
+      },
+    }),
+  )
+  async createEvent(
+    @UploadedFiles()
+    files: { mainImage?: Express.Multer.File[] },
+    @Body() dto: CreateEventDto,
+  ) {
+    return this.eventService.createEvent(dto, files?.mainImage?.[0]);
   }
 
   // create event type

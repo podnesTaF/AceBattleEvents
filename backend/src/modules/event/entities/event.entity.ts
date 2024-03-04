@@ -40,7 +40,7 @@ export class Event {
   type: EventType;
 
   @Column({ nullable: true })
-  mainImageUrl: string;
+  mainImageName: string;
 
   @Column({ nullable: true })
   locationId: number;
