@@ -80,7 +80,7 @@ export class TeamService {
   }
 
   // Get all teams previews
-  findAllPreviews() {
+  findAllPreviews(): Promise<Partial<Team>[]> {
     return this.teamRepository.find({
       select: ['id', 'name', 'logoName'],
     });

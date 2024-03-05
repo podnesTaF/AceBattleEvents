@@ -15,4 +15,8 @@ export class GenderService {
     const gender = await this.genderRepository.save(dto);
     return gender;
   }
+
+  async findAll(): Promise<Gender[]> {
+    return this.genderRepository.find();
+  }
 }

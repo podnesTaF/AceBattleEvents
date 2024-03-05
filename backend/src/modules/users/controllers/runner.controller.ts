@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
 import { Roles } from 'src/modules/auth/roles/roles-auth.decorator';
@@ -19,5 +19,21 @@ export class RunnerController {
     @Body() body: BecomeRunnerDto,
   ) {
     return this.runnerService.becomeRunner(user.id, body);
+  }
+
+  @Get()
+  async getRunners(
+    @Query()
+    query: {
+      page?: number;
+      limit?: number;
+      search?: string;
+      teamId?: number;
+      countryId?: number;
+      genderId?: number;
+      categoryId?: number;
+    },
+  ) {
+    return this.runnerService.getRunners(query);
   }
 }
