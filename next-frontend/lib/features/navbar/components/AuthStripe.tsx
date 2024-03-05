@@ -54,7 +54,7 @@ const AuthStripe = ({
                 <Link
                   href={"/profile/" + session.user.id + "/Teams"}
                   className={`text-sm py-1 px-2 rounded-sm bg-black text-white font-semibold hover:text-green-500 transition-all ${
-                    location.pathname === "/profile/" + session.user.id &&
+                    pathname === "/profile/" + session.user.id &&
                     "text-green-500"
                   }`}
                 >
@@ -73,7 +73,7 @@ const AuthStripe = ({
                 <Link
                   href={"/signup"}
                   className={`text-sm py-1 px-2 rounded-sm bg-black text-white font-semibold hover:text-green-500 transition-all  ${
-                    location.pathname === "/signup" && "text-red-500"
+                    pathname === "/signup" && "text-red-500"
                   }`}
                 >
                   Join Us
@@ -81,7 +81,7 @@ const AuthStripe = ({
                 <Link
                   href={"/login"}
                   className={`text-xs font-semibold hover:text-red-500 transition-all ${
-                    location.pathname === "/login" && "text-red-500"
+                    pathname === "/login" && "text-red-500"
                   }`}
                 >
                   Log in

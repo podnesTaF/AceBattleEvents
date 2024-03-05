@@ -5,6 +5,6 @@ const baseQuery = fetchBaseQuery({ baseUrl: baseURL });
 
 export const api = createApi({
   baseQuery,
-  tagTypes: ["Country"],
+  tagTypes: ["Country", "Athletes", "TeamPreviews", "Genders"],
   endpoints: () => ({}),
 });

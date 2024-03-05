@@ -37,7 +37,7 @@ const AppBar = ({ session }: { session: Session | null }) => {
 
   return (
     <>
-      <div className={`relative w-full mb-[56px] md:mb-[80px]`}>
+      <div className={`relative w-full mb-[40px]`}>
         <div className="w-full fixed top-0 left-0 z-30">
           <AuthStripe session={session} isScrollingUp={isScrollingUp} />
           <div

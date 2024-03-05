@@ -256,3 +256,13 @@
   }
 }
 
+.bg-gradient-to-b-light {
+  background: linear-gradient(
+    180deg,
+    #ffffff00 0%,
+    #ffffff00 70%,
+    #fff9ff 80%,
+    #fff9ff 100%
+  );
+}
+
