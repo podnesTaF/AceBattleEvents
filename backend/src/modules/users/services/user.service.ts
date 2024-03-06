@@ -49,32 +49,6 @@ export class UserService extends AbstractUserService {
     user.roles = [userRole];
 
     return this.repository.save(user);
-
-    // const user = new User();
-    // user.role = dto.role;
-    // user.name = dto.name;
-    // user.surname = dto.surname;
-    // user.email = dto.email;
-    // user.image = dto.image;
-    // user.avatar = dto.avatar;
-    // user.phone = dto.countryCode + ' ' + dto.phone;
-    // user.city = dto.city;
-    // let country = await this.countryService.returnIfExist({
-    //   name: dto.country,
-    // });
-    // if (!country) {
-    //   country = await this.countryService.create(dto.country);
-    // }
-    // user.country = country;
-    // user.interest = dto.interest;
-    // const newUser = await this.repository.save(user);
-    // const randomToken = uuid.v4().toString();
-    // const verification = await this.verifyRepository.create({
-    //   token: randomToken,
-    //   user: newUser,
-    // });
-
-    // return this.repository.save(newUser);
   }
 
   async isDuplicateEmail(email: string) {

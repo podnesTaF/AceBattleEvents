@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
 import { Roles } from 'src/modules/auth/roles/roles-auth.decorator';
@@ -35,5 +43,10 @@ export class RunnerController {
     },
   ) {
     return this.runnerService.getRunners(query);
+  }
+
+  @Get('/:id')
+  async getRunner(@Param('id') id: string) {
+    return this.runnerService.getRunnerInfo(id);
   }
 }

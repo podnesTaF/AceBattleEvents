@@ -140,4 +140,25 @@ export class RunnerService extends AbstractUserService {
 
     return paginate<User>(qb, { page, limit });
   }
+
+  // get runner profile info
+  async getRunnerInfo(id: string): Promise<User> {
+    const runner = await this.userRepository.findOne({
+      where: { id: +id },
+      relations: ['country', 'category', 'gender'],
+      select: [
+        'id',
+        'firstName',
+        'lastName',
+        'dateOfBirth',
+        'country',
+        'category',
+        'gender',
+        'imageName',
+        'avatarName',
+      ],
+    });
+
+    return runner;
+  }
 }
