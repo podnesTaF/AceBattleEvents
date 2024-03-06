@@ -8,6 +8,7 @@ export const getImageSrc = (
   return `${baseURL}/media/${topic}/${id}/${imageName}`;
 };
 
-export const getCountryFlagSrc = (shortName: string) => {
+export const getCountryFlagSrc = (shortName?: string) => {
+  if (!shortName) return "";
   return `https://flagcdn.com/${shortName.toLowerCase()}.svg`;
 };

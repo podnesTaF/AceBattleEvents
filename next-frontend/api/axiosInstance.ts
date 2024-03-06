@@ -1,9 +1,11 @@
 import { UserApi } from "@/app/(user)/_lib/api/user";
+import { AthleteApi } from "@/lib/features/athletes/services/athletes";
 import axios from "axios";
 import { Session } from "next-auth";
 
 interface ApiReturnType {
   users: ReturnType<typeof UserApi>;
+  runners: ReturnType<typeof AthleteApi>;
 }
 
 export const baseURL = "http://localhost:4000/api/v2";
@@ -26,5 +28,6 @@ export const Api = (session?: Session | null): ApiReturnType => {
 
   return {
     users: UserApi(instance),
+    runners: AthleteApi(instance),
   };
 };
