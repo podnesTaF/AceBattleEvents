@@ -256,3 +256,17 @@
   }
 }
 
+.bg-gradient-to-b-light {
+  background: linear-gradient(
+    180deg,
+    #ffffff00 0%,
+    #ffffff00 70%,
+    #fff9ff 80%,
+    #fff9ff 100%
+  );
+}
+
+.clip-title-team {
+  clip-path: polygon(100% 0, 100% 36%, 88% 54%, 88% 100%, 0 100%, 0 0);
+}
+

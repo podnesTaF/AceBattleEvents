@@ -7,7 +7,8 @@ export const formatDateToDots = (date: string): string => {
 };
 
 // Convert date string to DD MMM YYYY format
-export const formatDateToShortMonth = (date: string): string => {
+export const formatDateToShortMonth = (date?: string): string => {
+  if (!date) return "";
   return dayjs(date).format("DD MMM YYYY");
 };
 

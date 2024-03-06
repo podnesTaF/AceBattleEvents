@@ -34,4 +34,35 @@ export class TeamPlayerService {
       memberSince: new Date(),
     });
   }
+
+  async getRunnerTeams(
+    runnerId: number,
+  ): Promise<{ active: Team[]; past: Team[] }> {
+    const pastRunnerTeams = await this.teamPlayerRepository.find({
+      where: {
+        runnerId: runnerId,
+        active: false,
+      },
+      relations: ['team', 'team.coach', 'team.country'],
+    });
+
+    const activeRunnerTeams = await this.teamPlayerRepository.find({
+      where: {
+        runnerId: runnerId,
+        active: true,
+      },
+      relations: [
+        'team',
+        'team.coach',
+        'team.country',
+        'team.teamRunners',
+        'team.teamRunners.runner',
+      ],
+    });
+
+    return {
+      active: activeRunnerTeams.map((teamPlayer) => teamPlayer.team),
+      past: pastRunnerTeams.map((teamPlayer) => teamPlayer.team),
+    };
+  }
 }
