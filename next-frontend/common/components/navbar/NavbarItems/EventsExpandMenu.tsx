@@ -1,5 +1,5 @@
-import { Badge } from "@/common/components/ui/badge";
-import { MenubarItem } from "@/common/components/ui/menubar";
+import { Badge } from "@/src/shared/ui/badge";
+import { MenubarItem } from "@/src/shared/ui/menubar";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import GenericMenubarMenu from "./GenericMenubarMenu";

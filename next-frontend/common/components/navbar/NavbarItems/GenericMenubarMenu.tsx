@@ -3,7 +3,7 @@ import {
   MenubarItem,
   MenubarMenu,
   MenubarTrigger,
-} from "@/common/components/ui/menubar";
+} from "@/src/shared/ui/menubar";
 import Image from "next/image";
 import Link from "next/link";
 import MenuItem from "../MenuItem";

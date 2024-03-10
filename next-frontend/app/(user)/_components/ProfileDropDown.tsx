@@ -6,7 +6,7 @@ import {
   MenubarItem,
   MenubarMenu,
   MenubarTrigger,
-} from "@/common/components/ui/menubar";
+} from "@/src/shared/ui/menubar";
 import { Menubar } from "@radix-ui/react-menubar";
 import { LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";

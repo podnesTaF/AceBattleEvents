@@ -1,6 +1,6 @@
 import { auth } from "@/app/(auth)/_lib/utils/auth";
-import { Button } from "@/common/components/ui/button";
 import SubscriptionCard from "@/lib/features/subscription/ui/SubscriptionCard";
+import { Button } from "@/src/shared/ui/button";
 import ProfileItemWrapper from "../../_components/ProfileItemWrapper";
 
 const SubscriptionOption = {

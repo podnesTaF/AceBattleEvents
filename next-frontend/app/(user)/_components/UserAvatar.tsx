@@ -1,9 +1,5 @@
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/common/components/ui/avatar";
 import { getImageSrc } from "@/common/lib/utils/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/src/shared/ui/avatar";
 import { IUser } from "../_lib/types";
 
 interface UserAvatarProps {

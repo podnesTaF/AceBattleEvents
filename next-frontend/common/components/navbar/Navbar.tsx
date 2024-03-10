@@ -1,9 +1,9 @@
 "use client";
 import ProfileDropDown from "@/app/(user)/_components/ProfileDropDown";
-import { Button } from "@/common/components/ui/button";
-import Divider from "@/common/components/ui/divider";
-import { Menubar } from "@/common/components/ui/menubar";
-import RoundedGradientBorder from "@/common/components/ui/rounded-gradient-border";
+import { Button } from "@/src/shared/ui/button";
+import Divider from "@/src/shared/ui/divider";
+import { Menubar } from "@/src/shared/ui/menubar";
+import RoundedGradientBorder from "@/src/shared/ui/rounded-gradient-border";
 import { AlignJustify, X } from "lucide-react";
 import { Session } from "next-auth";
 import Image from "next/image";

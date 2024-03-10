@@ -1,7 +1,8 @@
 "use client";
 
 import { Api } from "@/api/axiosInstance";
-import { Button } from "@/common/components/ui/button";
+import { registerSchema } from "@/src/entities/Auth/validation";
+import { Button } from "@/src/shared/ui/button";
 import {
   Form,
   FormControl,
@@ -9,15 +10,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/common/components/ui/form";
-import { Input } from "@/common/components/ui/input";
+} from "@/src/shared/ui/form";
+import { Input } from "@/src/shared/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { registerSchema } from "../_lib/utils";
 
 const SignUp = () => {
   const searchParams = useSearchParams();

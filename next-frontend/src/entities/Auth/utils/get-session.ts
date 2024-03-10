@@ -5,8 +5,7 @@ import type {
 } from "next";
 import type { NextAuthOptions } from "next-auth";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth-options";
-
+import { authOptions } from ".";
 // You'll need to import and pass this
 // to `NextAuth` in `app/api/auth/[...nextauth]/route.ts`
 export const config = {
