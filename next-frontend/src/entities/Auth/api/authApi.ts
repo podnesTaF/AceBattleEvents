@@ -1,6 +1,8 @@
 import { createApiInstance } from "@/src/shared/api";
 import { Session } from "next-auth";
 import { AuthenticatedUser } from "../../../../../../Cross Fit Factory/my-cfit-factory-front/src/entities/Auth";
+import { IUser } from "../../User/model";
+import { CreateUserDto } from "../model";
 
 class AuthApi {
   private instance;
@@ -37,6 +39,47 @@ class AuthApi {
       "/auth/google-register",
       dto
     );
+    return data;
+  }
+
+  async register(dto: CreateUserDto) {
+    const { data } = await this.instance.post<AuthenticatedUser>(
+      "/auth/register",
+      dto
+    );
+    return data;
+  }
+
+  async verifyEmailStatus() {
+    const { data } = await this.instance.get<boolean>("/users/verify-status");
+    return data;
+  }
+
+  async sendConfirmationEmail(token: string) {
+    const { data } = await this.instance.post<void>(
+      "/users/email-confirmation",
+      {
+        token,
+      }
+    );
+  }
+
+  async verifyEmail(token: string) {
+    const { data } = await this.instance.post<IUser>("/users/verify", {
+      ott: token,
+    });
+
+    return data;
+  }
+
+  async generateNewOtt(token: string) {
+    const { data } = await this.instance.post<{ ott: string }>(
+      "/ott/generate",
+      {
+        token,
+      }
+    );
+
     return data;
   }
 }

@@ -1,6 +1,6 @@
-import { auth } from "@/app/(auth)/_lib/utils/auth";
 import AppBar from "@/common/components/navbar/AppBar";
 import { NewsCard } from "@/common/components/news/NewsCard";
+import { auth } from "@/src/entities/Auth/utils";
 import { Button } from "@/src/shared/ui/button";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";

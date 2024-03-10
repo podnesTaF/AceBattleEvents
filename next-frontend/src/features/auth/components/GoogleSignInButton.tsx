@@ -3,8 +3,10 @@ import Image from "next/image";
 
 export const GoogleSignInButton = ({
   onGoogleSignIn,
+  title = "Sign in with Google",
 }: {
   onGoogleSignIn: () => void;
+  title?: string;
 }): JSX.Element => {
   return (
     <Button
@@ -21,7 +23,7 @@ export const GoogleSignInButton = ({
           height={24}
           className="w-6 h-6"
         />
-        <span>Sign in with Google</span>
+        <span>{title}</span>
       </span>
     </Button>
   );
