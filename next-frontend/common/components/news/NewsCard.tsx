@@ -1,6 +1,11 @@
 import { cn, formatDateToShortMonth } from "@/common/lib/utils/utils";
 import Image from "next/image";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "../../../src/shared/ui/card";
 
 type CardProps = React.ComponentProps<typeof Card> & {
   headImageSrc: string;

@@ -2,7 +2,7 @@
 
 import ProfileItemWrapper from "@/app/(user)/_components/ProfileItemWrapper";
 import { IUser } from "@/app/(user)/_lib/types";
-import { Button } from "@/common/components/ui/button";
+import { Button } from "@/src/shared/ui/button";
 import React, { useState } from "react";
 import { EditableProvider } from "./EditableProvider";
 

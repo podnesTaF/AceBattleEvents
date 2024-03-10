@@ -1,7 +1,7 @@
 "use client";
 import ProfileDropDown from "@/app/(user)/_components/ProfileDropDown";
-import StoreProvider from "@/app/StoreProvider";
-import { Button } from "@/common/components/ui/button";
+import StoreProvider from "@/src/app/providers/StoreProvider";
+import { Button } from "@/src/shared/ui/button";
 import { SessionProvider } from "next-auth/react";
 import Link from "next/link";
 

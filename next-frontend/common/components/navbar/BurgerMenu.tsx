@@ -1,6 +1,6 @@
 import ProfileDropDown from "@/app/(user)/_components/ProfileDropDown";
-import { Menubar } from "@/common/components/ui/menubar";
-import RoundedGradientBorder from "@/common/components/ui/rounded-gradient-border";
+import { Menubar } from "@/src/shared/ui/menubar";
+import RoundedGradientBorder from "@/src/shared/ui/rounded-gradient-border";
 import { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";

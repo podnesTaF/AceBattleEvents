@@ -1,7 +1,7 @@
 "use client";
 
 import EditableAvatar from "@/common/components/editable/EditableImageField";
-import { Button } from "@/common/components/ui/button";
+import { Button } from "@/src/shared/ui/button";
 import { Session } from "next-auth";
 import EditableInput from "../../../../common/components/editable/EditableInput";
 import EditableWrapper from "../../../../common/components/editable/EditableWrapper";

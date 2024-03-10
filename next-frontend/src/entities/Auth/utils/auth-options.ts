@@ -1,7 +1,7 @@
-import { Api } from "@/api/axiosInstance";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import AuthApi from "../api/authApi";
 
 export const authOptions: NextAuthOptions = {
   // Secret for Next-auth, without this JWT encryption/decryption won't work
@@ -15,13 +15,15 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const data = await Api().users.login({
+        const authApi = new AuthApi();
+
+        const userData = await authApi.login({
           email: credentials?.email,
           password: credentials?.password,
         });
 
-        if (data) {
-          return data as any;
+        if (userData) {
+          return userData as any;
         } else {
           return null;
         }
@@ -38,9 +40,8 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user, account, profile }) {
       if (account?.provider === "google") {
-        const data = await Api().users.loginWithGoogle(
-          account.id_token as string
-        );
+        const authApi = new AuthApi();
+        const data = await authApi.loginWithGoogle(account.id_token as string);
 
         if (data.token) {
           token.user = data;
@@ -56,7 +57,8 @@ export const authOptions: NextAuthOptions = {
         return true;
       }
 
-      const existingUser = await Api().users.getUserIfExists(user.email);
+      const authApi = new AuthApi();
+      const existingUser = await authApi.getUserIfExists(user.email);
 
       if (
         !existingUser &&
@@ -64,7 +66,8 @@ export const authOptions: NextAuthOptions = {
         account?.id_token
       ) {
         try {
-          await Api().users.googleRegister({
+          const authApi = new AuthApi();
+          await authApi.googleRegister({
             id_token: account.id_token,
           });
         } catch (error) {

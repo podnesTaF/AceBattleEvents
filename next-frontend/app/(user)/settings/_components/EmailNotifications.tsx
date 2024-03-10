@@ -1,6 +1,6 @@
 "use client";
-import { Label } from "@/common/components/ui/label";
-import { Switch } from "@/common/components/ui/switch";
+import { Label } from "@/src/shared/ui/label";
+import { Switch } from "@/src/shared/ui/switch";
 import { Session } from "next-auth";
 import { useState } from "react";
 import ProfileItemWrapper from "../../_components/ProfileItemWrapper";

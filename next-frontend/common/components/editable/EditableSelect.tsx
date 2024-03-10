@@ -7,7 +7,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/common/components/ui/select";
+} from "@/src/shared/ui/select";
 import { useEditableContext } from "./EditableProvider";
 
 interface EditableSelectProps {

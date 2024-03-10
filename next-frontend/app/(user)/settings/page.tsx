@@ -1,6 +1,6 @@
 import { Api } from "@/api/axiosInstance";
 import { auth } from "@/app/(auth)/_lib/utils/auth";
-import { Progress } from "@/common/components/ui/progress";
+import { Progress } from "@/src/shared/ui/progress";
 import dynamic from "next/dynamic";
 import { calculateSettingsProgress } from "../_lib/utils/calculate-settings-progress";
 import EmailNotifications from "./_components/EmailNotifications";

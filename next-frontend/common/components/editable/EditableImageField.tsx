@@ -4,8 +4,8 @@ import { getImageSrc } from "@/common/lib/utils";
 import { Trash2Icon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import { Button } from "../../../src/shared/ui/button";
+import { Input } from "../../../src/shared/ui/input";
 
 interface EditableImageFieldProps {
   user: IUser;

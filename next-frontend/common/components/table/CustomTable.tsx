@@ -5,7 +5,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/common/components/ui/table";
+} from "@/src/shared/ui/table";
 
 interface CustomTableProps {
   rows?: any[];

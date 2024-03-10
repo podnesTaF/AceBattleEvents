@@ -1,5 +1,5 @@
-import { Input } from "@/common/components/ui/input";
 import { formatDateToDots } from "@/common/lib/utils";
+import { Input } from "@/src/shared/ui/input";
 import { useEditableContext } from "./EditableProvider";
 
 interface EditableInputProps {

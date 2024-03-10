@@ -1,8 +1,8 @@
 "use client";
 
 import { NewsCard } from "@/common/components/news/NewsCard";
-import CountDown from "@/common/components/ui/CountDown";
-import { Button } from "@/common/components/ui/button";
+import CountDown from "@/src/shared/ui/CountDown";
+import { Button } from "@/src/shared/ui/button";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 

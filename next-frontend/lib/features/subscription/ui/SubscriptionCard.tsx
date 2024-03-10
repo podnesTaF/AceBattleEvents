@@ -1,6 +1,6 @@
-import { Badge } from "@/common/components/ui/badge";
-import { Button } from "@/common/components/ui/button";
 import { IUserRole } from "@/common/lib/types";
+import { Badge } from "@/src/shared/ui/badge";
+import { Button } from "@/src/shared/ui/button";
 import { Check } from "lucide-react";
 
 interface SubscriptionCardProps {
