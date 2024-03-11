@@ -11,7 +11,7 @@ const AuthStripe = ({
   session,
   isScrollingUp,
 }: {
-  session: Session | null;
+  session?: Session | null;
   isScrollingUp: boolean;
 }) => {
   const pathname = usePathname();
