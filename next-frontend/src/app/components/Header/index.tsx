@@ -1,11 +1,15 @@
+"use client";
+
 import { Session } from "next-auth";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import AnnonceStripe from "./components/AnnounceStripe";
 import AuthStripe from "./components/AuthStripe";
+import NavBar from "./components/NavBar";
 
-const Header = ({ session }: { session: Session }) => {
+export const Header = ({ session }: { session?: Session | null }) => {
   const [isScrollingUp, setIsScrollingUp] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const pathname = usePathname();
 
@@ -30,6 +34,7 @@ const Header = ({ session }: { session: Session }) => {
       <div className={`relative w-full mb-[56px] md:mb-[80px]`}>
         <div className="w-full fixed top-0 left-0 z-30">
           <AuthStripe session={session} isScrollingUp={isScrollingUp} />
+          <NavBar isScrollingUp={isScrollingUp} />
         </div>
       </div>
       {pathname === "/" && <AnnonceStripe />}
@@ -37,5 +42,3 @@ const Header = ({ session }: { session: Session }) => {
     </>
   );
 };
-
-export default Header;
