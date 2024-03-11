@@ -1,7 +1,7 @@
-import { auth } from "@/app/(auth)/_lib/utils/auth";
 import SubscriptionCard from "@/lib/features/subscription/ui/SubscriptionCard";
+import { auth } from "@/src/entities/Auth/utils";
+import { ProfileItemWrapper } from "@/src/entities/User";
 import { Button } from "@/src/shared/ui/button";
-import ProfileItemWrapper from "../../_components/ProfileItemWrapper";
 
 const SubscriptionOption = {
   title: "Subscription",
@@ -18,6 +18,7 @@ const SubscriptionOption = {
 
 const MembershipPage = async () => {
   const session = await auth();
+
   return (
     <div className="flex flex-col w-full gap-4">
       {session?.user.roles.map((role, index) => (
