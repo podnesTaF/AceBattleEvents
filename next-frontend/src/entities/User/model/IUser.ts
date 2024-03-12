@@ -1,5 +1,5 @@
-import { ICountry } from "../../Country/model";
-import { IGender } from "../../Gender/model";
+import { ICountry } from "@/src/entities/Country/model";
+import { IGender } from "@/src/entities/Gender/model";
 
 export enum MemberRole {
   RUNNER = "runner",

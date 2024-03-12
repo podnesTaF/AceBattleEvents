@@ -1,3 +1,5 @@
+"use client";
+
 import { IUser, ProfileItemWrapper } from "@/src/entities/User";
 import { EditableProvider } from "@/src/shared/lib";
 import { Button } from "@/src/shared/ui/button";

@@ -1,10 +1,10 @@
 "use client";
+import { ProfileDropDown } from "@/src/features/profile/user";
 import { Menubar } from "@radix-ui/react-menubar";
 import { LogOut } from "lucide-react";
 import { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
-import ProfileDropDown from "../../../app/(user)/_components/ProfileDropDown";
 import MenuItem from "./MenuItem";
 import GenericMenubarMenu from "./NavbarItems/GenericMenubarMenu";
 

@@ -1,12 +1,12 @@
-import AppBar from "@/common/components/navbar/AppBar";
-import { auth } from "../(auth)/_lib/utils/auth";
+import { Header } from "@/src/app/components/Header";
+import { auth } from "@/src/entities/Auth/utils";
 
 const ProfileLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await auth();
 
   return (
     <div className="relative">
-      <AppBar session={session} />
+      <Header session={session} />
       {children}
     </div>
   );

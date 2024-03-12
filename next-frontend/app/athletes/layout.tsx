@@ -1,11 +1,11 @@
-import AppBar from "@/common/components/navbar/AppBar";
-import { auth } from "../(auth)/_lib/utils/auth";
+import { Header } from "@/src/app/components/Header";
+import { auth } from "@/src/entities/Auth/utils";
 
 const AthletesLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await auth();
   return (
     <div>
-      <AppBar session={session} />
+      <Header session={session} />
       <>
         <header className="w-full bg-[url('/images/auth-intro.jpg')] bg-cover bg-no-repeat bg-center h-[200px] relative flex items-end">
           <div className="w-full absolute bg-gradient-to-b from-transparent via-transparent to-black h-full left-0"></div>

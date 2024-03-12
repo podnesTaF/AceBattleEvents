@@ -1,6 +1,7 @@
-import SubscriptionCard from "@/lib/features/subscription/ui/SubscriptionCard";
 import { auth } from "@/src/entities/Auth/utils";
+import { SubscriptionCard } from "@/src/entities/Subscription";
 import { ProfileItemWrapper } from "@/src/entities/User";
+import { IUserRole } from "@/src/entities/User/model";
 import { Button } from "@/src/shared/ui/button";
 
 const SubscriptionOption = {
@@ -21,7 +22,7 @@ const MembershipPage = async () => {
 
   return (
     <div className="flex flex-col w-full gap-4">
-      {session?.user.roles.map((role, index) => (
+      {session?.user.roles.map((role: IUserRole, index: number) => (
         <div key={role.id} className="border-gray-300 border-[1px] shadow-sm">
           <ProfileItemWrapper>
             <h3>{role.name}</h3>

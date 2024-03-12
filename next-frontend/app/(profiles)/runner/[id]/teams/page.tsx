@@ -1,8 +1,9 @@
-import { Api } from "@/api/axiosInstance";
-import TeamCard from "@/lib/features/teams/components/TeamCard";
+import { AthleteApi } from "@/src/entities/Athletes";
+import { TeamCard } from "@/src/entities/Teams";
 
 const RunnerTeamsPage = async ({ params }: { params: { id: string } }) => {
-  const { active, past } = await Api().runners.getAthleteTeams(params.id);
+  const atheleteApi = new AthleteApi();
+  const { active, past } = await atheleteApi.getAthleteTeams(params.id);
   return (
     <div className="py-6 px-4 w-full">
       <div className="mb-6">

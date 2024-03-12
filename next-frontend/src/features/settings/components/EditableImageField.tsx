@@ -1,5 +1,5 @@
-import { getImageSrc } from "@/common/lib/utils";
 import { IUser, ProfileItemWrapper } from "@/src/entities/User";
+import { getImageSrc } from "@/src/shared/lib";
 import { Button } from "@/src/shared/ui/button";
 import { Input } from "@/src/shared/ui/input";
 import { Trash2Icon } from "lucide-react";
