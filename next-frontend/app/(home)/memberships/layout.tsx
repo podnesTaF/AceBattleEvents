@@ -1,5 +1,5 @@
-import { auth } from "@/app/(auth)/_lib/utils/auth";
 import Navbar from "@/common/components/navbar/Navbar";
+import { auth } from "@/src/entities/Auth/utils";
 
 const layout = async ({ children }: { children: React.ReactNode }) => {
   const session = await auth();

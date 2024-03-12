@@ -1,5 +1,5 @@
-import { cn } from "@/common/lib/utils/utils";
 import { StoreProvider } from "@/src/app/providers";
+import { cn } from "@/src/shared/config";
 import theme from "@/styles/theme";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import { ThemeProvider } from "@mui/material/styles";

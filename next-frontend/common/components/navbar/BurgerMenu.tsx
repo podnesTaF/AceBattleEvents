@@ -1,4 +1,4 @@
-import ProfileDropDown from "@/app/(user)/_components/ProfileDropDown";
+import { ProfileDropDown } from "@/src/features/profile/user";
 import { Menubar } from "@/src/shared/ui/menubar";
 import RoundedGradientBorder from "@/src/shared/ui/rounded-gradient-border";
 import { Session } from "next-auth";

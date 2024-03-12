@@ -1,13 +1,12 @@
-import { Api } from "@/api/axiosInstance";
+import { AthleteApi } from "@/src/entities/Athletes";
+import { InfoContainer, RunnerTabs } from "@/src/features/profile/runner";
 import {
   formatDateToDots,
   getCountryFlagSrc,
   getImageSrc,
-} from "@/common/lib/utils";
+} from "@/src/shared/lib";
 import Image from "next/image";
 import React from "react";
-import InfoContainer from "../../_components/RunnerInfo";
-import RunnerTabs from "../../_components/RunnerTabs";
 
 const RunnerProfileLayout = async ({
   children,
@@ -16,7 +15,8 @@ const RunnerProfileLayout = async ({
   children: React.ReactNode;
   params: { id: string };
 }) => {
-  const runner = await Api().runners.getAthlete(params.id);
+  const atheleteApi = new AthleteApi();
+  const runner = await atheleteApi.getAthlete(params.id);
 
   const tabs = [
     {

@@ -1,11 +1,11 @@
-import { NewsCard } from "@/common/components/news/NewsCard";
 import { Header } from "@/src/app/components/Header";
 import { auth } from "@/src/entities/Auth/utils";
+import { NewsCard } from "@/src/entities/News/ui/NewsCard";
 import { Button } from "@/src/shared/ui/button";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
-import EventPreview from "./(home)/_components/EventPreview";
-import Ranking from "./(home)/_components/Ranking";
+import EventPreview from "../src/pages/home/ui/EventPreview";
+import Ranking from "../src/pages/home/ui/Ranking";
 
 const fascinatigSport = [
   "Based on the most affordable, and trending human activity running.",
@@ -169,10 +169,10 @@ export default async function Home() {
           <div className="md:min-h-screen relative flex justify-center items-center">
             <Image
               src={"/images/brus-competition.jpg"}
-              layout="fill"
-              objectFit="cover"
+              width={1400}
+              height={800}
               alt="competitions"
-              className="absolute left-0 top-0 h-96 md:h-full w-full z-[1]"
+              className="absolute left-0 top-0 object-cover h-96 md:h-full w-full z-[1]"
             />
             <div className="absolute bg-black/30 left-0 top-0 h-full w-full z-[2]"></div>
             <div className="max-w-[1500px] md:px-6 lg:px-10 w-full flex flex-col-reverse lg:flex-row justify-between items-end z-[3] ">

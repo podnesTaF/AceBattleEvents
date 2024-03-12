@@ -1,5 +1,5 @@
-import { auth } from "@/app/(auth)/_lib/utils/auth";
 import MyNavbar from "@/common/components/navbar/MyNavbar";
+import { auth } from "@/src/entities/Auth/utils";
 
 const MyAceBattleMileLayout = async ({
   children,

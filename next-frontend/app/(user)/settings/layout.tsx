@@ -1,6 +1,6 @@
 "use client";
 import { StoreProvider } from "@/src/app/providers";
-import { ProfileDropDown } from "@/src/features/profile";
+import { ProfileDropDown } from "@/src/features/profile/user";
 import { Button } from "@/src/shared/ui/button";
 import { SessionProvider } from "next-auth/react";
 import Link from "next/link";

@@ -1,13 +1,6 @@
-import { createApiInstance } from "@/src/shared/api";
-import { Session } from "next-auth";
+import { Api } from "@/src/shared/api";
 
-export class CountryApi {
-  private instance;
-
-  constructor(session?: Session | null) {
-    this.instance = createApiInstance(session);
-  }
-
+export class CountryApi extends Api {
   async getCountries() {
     const { data } = await this.instance.get<{ id: number; name: string }[]>(
       "/countries/names"
