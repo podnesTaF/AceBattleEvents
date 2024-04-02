@@ -34,6 +34,7 @@ import { ResetUserModule } from './modules/reset-user/reset-user.module';
 import { RoleModule } from './modules/role/role.module';
 import { SplitModule } from './modules/split/split.module';
 import { StandardModule } from './modules/standard/standard.module';
+import { StripeModule } from './modules/stripe/stripe.module';
 import { SubscriptionModule } from './modules/subscription/subscription.module';
 import { TeamModule } from './modules/team/team.module';
 import { TimetableModule } from './modules/timetable/timetable.module';
@@ -88,6 +89,7 @@ import { VisitorTicketModule } from './visitor-ticket/visitor-ticket.module';
     TicketModule,
     VisitorTicketModule,
     OttModule,
+    StripeModule,
   ],
 })
 export class AppModule implements NestModule {
