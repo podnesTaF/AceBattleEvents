@@ -9,7 +9,7 @@ export const useSendConfirmationEmail = () => {
   const sendConfirmationEmail = useCallback(async () => {
     if (emailSent || !session) return;
     try {
-      const authApi = new AuthApi();
+      const authApi = new AuthApi(session);
       await authApi.sendConfirmationEmail(session.user.token);
       setEmailSent(true);
     } catch (error) {

@@ -7,7 +7,7 @@ const nextConfig = {
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   },
   images: {
-    domains: ["localhost"],
+    domains: ["localhost", "placeimg.com"],
   },
 };
 
