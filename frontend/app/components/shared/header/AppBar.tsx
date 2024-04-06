@@ -3,12 +3,7 @@ import { useEffect, useState } from "react";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton } from "@mui/material";
-import {
-  AdminStripe,
-  AnnonceStripe,
-  AuthStripe,
-  CustomDrawer,
-} from "~/components";
+import { AdminStripe, AuthStripe, CustomDrawer } from "~/components";
 import { IAdmin, IUser } from "~/lib/types";
 import { links } from "~/lib/utils";
 
@@ -21,7 +16,6 @@ const AppBar: React.FC<AppBarProps> = ({ admin, user }) => {
   const [open, setOpen] = useState(false);
   const [isScrollingUp, setIsScrollingUp] = useState(false);
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const router = useLocation();
   const pathname = router.pathname;
   let navigate = useNavigate();
@@ -98,8 +92,6 @@ const AppBar: React.FC<AppBarProps> = ({ admin, user }) => {
           </div>
         </div>
       </div>
-
-      {pathname === "/" && <AnnonceStripe />}
       <CustomDrawer setOpen={setOpen} open={open} user={user} />
     </>
   );

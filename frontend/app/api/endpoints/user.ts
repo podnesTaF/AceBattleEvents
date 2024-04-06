@@ -46,15 +46,13 @@ export const UserApi = (instance: AxiosInstance) => ({
     token: string;
     password: string;
   }) {
-    try {
-      const { data } = await instance.post<IUser>("/users/verify", {
-        token,
-        user,
-        password,
-      });
+    const { data } = await instance.post<IUser>("/users/verify", {
+      token,
+      user,
+      password,
+    });
 
-      return data;
-    } catch (error) {}
+    return data;
   },
   async loginUser(dto: {
     email: FormDataEntryValue | null;

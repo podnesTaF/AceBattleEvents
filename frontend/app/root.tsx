@@ -1,3 +1,4 @@
+import { withEmotionCache } from "@emotion/react";
 import {
   V2_MetaFunction,
   json,
@@ -15,8 +16,6 @@ import {
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
-
-import { withEmotionCache } from "@emotion/react";
 import { ReactNode, useContext, useEffect } from "react";
 import globalStyles from "~/styles/global.css";
 import stylesheet from "~/tailwind.css";
@@ -28,8 +27,11 @@ import { adminAuthenticator, authenticator } from "./lib/utils";
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
   { rel: "stylesheet", href: globalStyles },
+  {
+    rel: "stylesheet",
+    href: "/styles/swiper-bundle.min.css",
+  },
 ];
-
 export const loader = async ({ request }: LoaderArgs) => {
   const user = await authenticator.isAuthenticated(request);
   const admin = await adminAuthenticator.isAuthenticated(request);

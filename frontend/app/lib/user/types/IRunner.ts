@@ -9,7 +9,7 @@ export interface IRunner {
   personalBests?: IRunnerResult[];
   results?: IRunnerResult[];
   user: IUser;
-  teams?: ITeam[];
+  teamsAsRunner?: ITeam[];
   club?: IClub;
 }
 

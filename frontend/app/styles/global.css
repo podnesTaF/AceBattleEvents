@@ -87,7 +87,7 @@ body {
 }
 
 .h-calc-screen {
-  height: 320px;
+  height: auto;
 }
 
 .h-screen-join {
@@ -157,6 +157,10 @@ body {
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
 }
 
+.text-shadowed {
+  filter: drop-shadow(2px 4px 6px black);
+}
+
 @keyframes appearing {
   0% {
     opacity: 0;
@@ -196,6 +200,13 @@ body {
 
   .clip-title-sm {
     clip-path: polygon(0 0, 100% 0, 96% 100%, 0% 100%);
+  }
+}
+
+@media screen and (min-width: 1240px) {
+  .h-calc-screen {
+    height: 800px;
+    max-height: 70vh;
   }
 }
 

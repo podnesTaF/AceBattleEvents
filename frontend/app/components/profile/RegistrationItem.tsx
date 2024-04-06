@@ -30,7 +30,7 @@ const TeamRegistrationItem: React.FC<RegistrationsProps> = ({
           <p className="text-gray-400 border-b-[1px] border-red-500 pb-1 mb-2">
             Event
           </p>
-          <Link to={`/events/${event.id}`}>
+          <Link to={`/events/${event.eventCode}`}>
             <h3 className="text-2xl font-semibold mb-2">{event.title}</h3>
           </Link>
           {team && (

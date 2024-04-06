@@ -18,7 +18,7 @@ const SectionTitle: React.FC<Props> = ({
       <h3
         className={`${textColor} flex border-b-4 border-l-[20px] ${
           borderColor ? borderColor : "border-red-500"
-        } rounded-bl-xl pl-2 py-1 text-2xl font-semibold w-fit`}
+        } rounded-bl-xl pl-2 py-1 text-xl md:text-2xl font-semibold w-fit`}
       >
         {title}
       </h3>

@@ -95,7 +95,7 @@ export const teamResultsTable = (teamResults: ITeamResult[]) => {
     event: {
       id: teamResult.race?.event.id,
       name: teamResult.race?.event.title,
-      link: "/events/" + teamResult.race.event.id,
+      link: "/events/" + teamResult.race.event.eventCode,
     },
     runnerResults: teamResult.runnerResults.map((runnerResult) => ({
       runner:

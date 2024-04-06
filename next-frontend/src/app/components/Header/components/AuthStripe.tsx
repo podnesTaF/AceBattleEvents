@@ -2,7 +2,6 @@ import { Button } from "@/src/shared/ui/button";
 import { LogOut } from "lucide-react";
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -72,19 +71,6 @@ const AuthStripe = ({
             </>
           ) : (
             <>
-              <Link href={"/signup"}>
-                <div className="bg-red-500 text-white flex pl-2 pr-12 py-1 items-center h-12 rounded-[30px] relative">
-                  <h4 className="font-semibold text-lg 2xl:text-xl">Sign Up</h4>
-                  <div className="absolute right-1 top-1 bg-white rounded-full p-2">
-                    <Image
-                      src={"/icons/running-guy-icon.svg"}
-                      alt="Running guy"
-                      width={24}
-                      height={24}
-                    />
-                  </div>
-                </div>
-              </Link>
               <Link
                 href={"/login"}
                 className={`text-xs font-semibold hover:text-red-500 transition-all ${

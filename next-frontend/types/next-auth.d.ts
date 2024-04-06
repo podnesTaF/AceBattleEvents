@@ -1,4 +1,4 @@
-import { AuthenticatedUser } from "@/app/(user)/_lib/types";
+import { AuthenticatedUser } from "@/src/entities/Auth/model";
 import "next-auth";
 import { DefaultSession } from "next-auth";
 import "next-auth/jwt";

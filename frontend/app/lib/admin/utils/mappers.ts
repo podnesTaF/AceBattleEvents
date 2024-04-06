@@ -7,11 +7,11 @@ export const formatAdminEvents = (events: IEvent[]) => {
     country: event.location.country.name,
     date: formatDate(event.startDateTime),
     "event page": {
-      link: `/events/${event.id}`,
+      link: `/events/${event.eventCode}`,
       value: "Event Page",
     },
     edit: {
-      link: `/admin/events/${event.id}`,
+      link: `/admin/events/${event.eventCode}`,
       value: "edit",
     },
   }));

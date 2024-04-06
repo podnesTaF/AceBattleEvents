@@ -9,11 +9,12 @@ import {
 } from "../../../shared/ui/card";
 
 type CardProps = React.ComponentProps<typeof Card> & {
-  headImageSrc: string;
+  headImageSrc?: string;
   title: string;
   description?: string;
   date: string;
-  variant: "light" | "dark";
+  variant?: "light" | "dark";
+  hideImage?: boolean;
 };
 
 export function NewsCard({
@@ -24,6 +25,7 @@ export function NewsCard({
   title,
   date,
   description,
+  hideImage = false,
   ...props
 }: CardProps) {
   return (
@@ -35,22 +37,24 @@ export function NewsCard({
       )}
       {...props}
     >
-      <CardHeader className="p-0 overflow-hidden">
-        <Image
-          src={headImageSrc}
-          alt="head image"
-          width={400}
-          height={200}
-          className="object-cover flex-1 w-full hover:scale-105 transition-transform duration-300 ease-in-out"
-        />
-      </CardHeader>
+      {!hideImage && headImageSrc && (
+        <CardHeader className="p-0 overflow-hidden">
+          <Image
+            src={headImageSrc}
+            alt="head image"
+            width={400}
+            height={200}
+            className="object-cover flex-1 w-full hover:scale-105 transition-transform duration-300 ease-in-out"
+          />
+        </CardHeader>
+      )}
       <CardContent
         className={cn(
           "flex-1 flex flex-col gap-1 p-2 px-4 text-white hover:text-gray-200  transition-colors duration-300 ease-in-out"
         )}
       >
         <h4 className="text-xl 2xl:text-2xl">{title}</h4>
-        <p className="text-sm  2xl:text-lg">{description}</p>
+        {description && <p className="text-sm  2xl:text-lg">{description}</p>}
       </CardContent>
       <CardFooter className="border-t-[1px] mx-3 border-t-gray-400 p-0 pt-2 text-white">
         <p className="text-sm   2xl:text-lg">{formatDateToShortMonth(date)}</p>

@@ -11,7 +11,7 @@ const EventItemCard: React.FC<Props> = ({ item }) => {
   const navigate = useNavigate();
   return (
     <div
-      onClick={() => navigate("/events/" + item.id)}
+      onClick={() => navigate("/events/" + item.eventCode)}
       className="relative shadow-md cursor-pointer h-full flex"
     >
       <div className="w-full px-4 py-2 z-20 relative mt-auto">

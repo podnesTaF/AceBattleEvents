@@ -70,7 +70,7 @@ const UpcomingEventDesc = ({ event }: { event: IEvent }) => {
           </div>
           <div className="w-full flex justify-around my-4 gap-3">
             <button
-              onClick={() => navigate("/events/" + event.id)}
+              onClick={() => navigate("/events/" + event.eventCode)}
               className="p-4 border-[1px] border-green-500 bg-green-400 md:bg-white text-white md:text-black font-semibold text-lg sm:text-xl uppercase rounded hover:bg-gray-100 drop-shadow-lg active:scale-95"
             >
               See details
