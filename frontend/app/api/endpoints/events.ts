@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import { EventShortform, IEvent } from "~/lib/events/types";
+import { EventShortform, IEvent, IFutureEvent } from "~/lib/events/types";
 import {
   CreateViewer,
   IViewer,
@@ -71,13 +71,22 @@ export const EventsApi = (instance: AxiosInstance) => ({
     }
   },
 
-  async getEvent(id: string) {
+  async getEvent(value: string, cond?: string) {
     try {
-      const { data } = await instance.get<IEvent>(`events/${id}`);
+      const { data } = await instance.get<IEvent>(
+        `events/${value}?cond=${cond}`
+      );
       return data;
     } catch (e: any) {
       throw new Error(e.response?.data?.message || "error registering viewer");
     }
+  },
+
+  async getFututeEvents(params?: string) {
+    const { data } = await instance.get<{ futureEvents: IFutureEvent[] }>(
+      `future-events?${params}`
+    );
+    return data;
   },
 
   async registerViewer(dto: CreateViewer) {

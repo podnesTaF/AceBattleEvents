@@ -111,7 +111,7 @@ const RegisterAsViewer = () => {
   const handleClose = () => {
     setDialogOpen(false);
     if (!data?.error) {
-      navigate(`/events/${event.id}`);
+      navigate(`/events/${event.eventCode}`);
     } else {
       navigate(`/events/${event.id}/register`);
     }
@@ -145,7 +145,7 @@ const RegisterAsViewer = () => {
             className="object-cover h-full w-full"
           />
           <button
-            onClick={() => navigate(`/events/${event.id}`)}
+            onClick={() => navigate(`/events/${event.eventCode}`)}
             className="rounded-md absolute top-4 md:top-8 right-4 md:right-8 bg-green-400 text-white font-semibold text-xl py-3 px-4 hover:bg-green-600"
           >
             view event page

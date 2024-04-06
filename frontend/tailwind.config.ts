@@ -15,11 +15,12 @@ export default {
         sm: "0 0 4px rgba(0, 0, 0, 0.1)",
         md: "0 0 8px rgba(0, 0, 0, 0.1)",
       },
+
       fontSize: {
-        "4xl": ["2.25rem"],
-        "3xl": ["1.85rem"],
-        "2xl": ["1.5rem"],
-        lg: ["1rem"],
+        "4xl": "2.25rem",
+        "3xl": "1.85rem",
+        "2xl": "1.5rem",
+        lg: "1rem",
       },
     },
   },

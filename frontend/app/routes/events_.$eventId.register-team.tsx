@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 
 import { Checkbox, FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { red } from "@mui/material/colors";
-import type { LoaderArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { LoaderArgs, json } from "@remix-run/node";
 import { useLoaderData, useLocation, useNavigate } from "@remix-run/react";
 import { Api } from "~/api/axiosInstance";
 import { NoTeams, StatusCard, TeamCard } from "~/components";
-import type { ITeam } from "~/lib/types";
+import { ITeam } from "~/lib/types";
 import { authenticator, formatDate } from "~/lib/utils";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
@@ -50,7 +49,7 @@ const RegisterTeamIndex = () => {
 
   const handleCancel = () => {
     setActiveTab(0);
-    navigate(`/events/${event.id}`);
+    navigate(`/events/${event.eventCode}`);
   };
 
   useEffect(() => {
@@ -96,7 +95,11 @@ const RegisterTeamIndex = () => {
             Register Team
           </h2>
         </div>
-        <StatusCard status={status} eventId={event.id} />
+        <StatusCard
+          status={status}
+          eventId={event.id}
+          eventCode={event.eventCode}
+        />
       </div>
     );
   }
@@ -194,7 +197,8 @@ const RegisterTeamIndex = () => {
               <div className="flex flex-col sm:flex-row w-full sm:justify-between gap-3 my-3">
                 <p>Location:</p>
                 <p className="font-semibold w-full text-center md:w-auto md:text-start">
-                  {event?.location.city}, {event?.location.country.name}
+                  {`${event?.location.city}, ${event?.location.country.name}` ||
+                    "Event Location"}
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row w-full sm:justify-between gap-3 my-3">

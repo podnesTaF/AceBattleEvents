@@ -10,7 +10,7 @@ const CarouselItem: React.FC<Props> = ({ item }) => {
   return (
     <div
       onClick={() => navigate(`/teams/${item.id}`)}
-      className="w-full overflow-hidden relative cursor-pointer active:scale-95 flex justify-center items-center"
+      className="w-full relative cursor-pointer active:scale-95 flex flex-col justify-center items-center"
     >
       <img
         src={item.logo?.mediaUrl || "/abm-logo-white.svg"}
@@ -19,11 +19,9 @@ const CarouselItem: React.FC<Props> = ({ item }) => {
         width={350}
         height={350}
       />
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 px-3 py-1 md:px-4 md:py-1 bg-red-500 rounded-md">
-        <h3 className="text-lg md:text-xl uppercase font-semibold text-white">
-          {item.name}
-        </h3>
-      </div>
+      <h3 className="text-lg md:text-xl uppercase font-semibold text-white text-center">
+        {item.name}
+      </h3>
     </div>
   );
 };

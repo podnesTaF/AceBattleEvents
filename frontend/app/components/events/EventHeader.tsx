@@ -1,6 +1,7 @@
 import { useNavigate } from "@remix-run/react";
 import React from "react";
 import { IEvent } from "~/lib/types";
+import { formatDate } from "~/lib/utils";
 import { CountDown } from "../shared";
 
 interface IProps {
@@ -32,27 +33,16 @@ const EventHeader: React.FC<IProps> = ({ event, userRole, isEventPast }) => {
       />
       <div className="flex flex-col gap-4 items-center z-10">
         {!isEventPast && <CountDown date={event.startDateTime} />}
-        <h2 className="text-white uppercase font-semibold text-3xl sm:text-5xl mb-3 text-center">
+        <h2 className="text-white text-shadowed uppercase font-bold text-2xl sm:text-3xl lg:text-5xl mb-3 text-center max-w-3xl">
           {event.title}
         </h2>
+      </div>
+      <div className="absolute bottom-0 left-0 bg-[url('/event-page-bg.svg')] bg-no-repeat bg-cover bg-bottom w-full pb-4 flex justify-center items-end z-10 h-[150px]">
         <h3 className="text-white uppercase font-semibold text-2xl sm:text-3xl mb-3 text-center">
-          {event.location.city}, {event.location.country.name}
+          {event.location.city}, {event.location.country.name}.{" "}
+          {formatDate(event.startDateTime, false)}
         </h3>
       </div>
-      {!isEventPast && (
-        <div className="absolute bottom-0 left-0 bg-[url('/event-page-bg.svg')] bg-no-repeat bg-cover bg-bottom w-full pb-4 flex justify-center items-end z-10 h-[150px]">
-          {userRole !== "runner" && (
-            <button
-              onClick={handleAction}
-              className="hover:bg-green-500 bg-green-300 text-white font-bold py-2 px-3 sm:py-4 sm:px-6 rounded active:scale-95"
-            >
-              {userRole === "manager"
-                ? "Register Your Team"
-                : "Attend the event"}
-            </button>
-          )}
-        </div>
-      )}
     </header>
   );
 };

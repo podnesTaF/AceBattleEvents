@@ -1,6 +1,6 @@
 import EventHeader from "./EventHeader";
 import EventUsersAction from "./EventUsersAction";
-import GoogleMap from "./GoogleMap";
+import Map from "./Map";
 import PrizesPodium from "./PrizesPodium";
 import RegistrationPopup from "./RegistrationPopup";
 import ResultPodium from "./ResultPodium";
@@ -10,7 +10,7 @@ import TimeTable from "./TimeTable";
 export {
   EventHeader,
   EventUsersAction,
-  GoogleMap,
+  Map,
   PrizesPodium,
   RegistrationPopup,
   ResultPodium,

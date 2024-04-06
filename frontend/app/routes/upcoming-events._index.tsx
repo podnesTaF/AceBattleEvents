@@ -4,72 +4,37 @@ import {
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
+import { Api } from "~/api/axiosInstance";
+import { EventCard } from "~/components/events/EventCard";
 import FutureEventCard from "~/components/events/FutureEventCard";
-import UpcomingEventDesc from "~/components/events/UpcomingEventDesc";
-import { IFutureEvent } from "~/lib/types";
-import { authenticator, getEvents } from "~/lib/utils";
+import { authenticator } from "~/lib/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
-  const { events } = await getEvents({ params: "" });
+  const { events } = await Api().events.getEvents();
+  const { futureEvents } = await Api().events.getFututeEvents();
   const user = await authenticator.isAuthenticated(request);
 
-  if (!events) {
+  if (!futureEvents) {
     throw new Response("Events not found.", {
       status: 404,
     });
   }
 
-  return json({ events, user });
+  return json({ events, futureEvents, user });
 };
 
 const CloseEventsIndex = () => {
-  const futureEvents: IFutureEvent[] = [
-    {
-      id: 1,
-      title: "Mace of London",
-      description: "The Presentation of Ace Battle Mile in London, UK",
-      season: "Spring 2024",
-      introImage: {
-        id: 1,
-        title: "london-mile.jpg",
-        mediaUrl:
-          "https://storage.googleapis.com/abe_cloud_storage/image/large/cc245307-cc45-44b1-889a-250ef665be8e.jpg",
-      },
-    },
-    {
-      id: 2,
-      title: "Oxford Roger Bannister Cup",
-      description: "Grand competition in Oxford, UK",
-      season: "Spring 2024",
-      introImage: {
-        id: 1,
-        title: "roger-bannister.jpeg",
-        mediaUrl:
-          "https://storage.googleapis.com/abe_cloud_storage/image/large/ce6361b2-9e02-4248-baf9-b82df7cf22a7.jpeg",
-      },
-    },
-    {
-      id: 3,
-      title: "Washington DC Cup",
-      description: "The first competition in the US, Washington DC",
-      season: "Summer 2024",
-      introImage: {
-        id: 2,
-        title: "washington-dc.webp",
-        mediaUrl:
-          "https://storage.googleapis.com/abe_cloud_storage/image/large/a250986b-4910-441d-aba1-01a62e200b72.webp",
-      },
-    },
-  ];
-  const { events, user } = useLoaderData<typeof loader>();
+  const { futureEvents } = useLoaderData<typeof loader>();
+
   return (
-    <main className="max-w-7xl my-5 md:my-8 mx-auto">
-      {events.map((item, i) => (
-        <UpcomingEventDesc key={item.id} event={item} />
-      ))}
-      {futureEvents.map((item, i) => (
-        <FutureEventCard key={item.id} futureEvent={item} />
-      ))}
+    <main className="max-w-7xl my-5 md:my-8 mx-auto flex flex-col gap-10">
+      {futureEvents?.map((item, i) =>
+        item.announced ? (
+          <EventCard key={item.id} futureEvent={item} />
+        ) : (
+          <FutureEventCard key={item.id} futureEvent={item} />
+        )
+      )}
     </main>
   );
 };

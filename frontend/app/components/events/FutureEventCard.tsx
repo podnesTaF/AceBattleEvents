@@ -23,9 +23,11 @@ const FutureEventCard = ({ futureEvent }: { futureEvent: IFutureEvent }) => {
         />
         <div className="px-5 md:py-5 w-full h-fit lg:w-[820px] backdrop-blur-sm">
           <h3 className="p-3 bg-black/50 text-white md:bg-none  md:text-xl font-semibold text-center mb-5 w-full md:my-5">
-            {futureEvent.description.length < 100
-              ? futureEvent.description
-              : futureEvent.description.slice(0, 97) + "..."}
+            {futureEvent.description
+              ? futureEvent.description.length < 100
+                ? futureEvent.description
+                : futureEvent.description.slice(0, 97) + "..."
+              : ""}
           </h3>
           <div className="flex flex-col md:flex-row w-full">
             <div className="md:min-h-[400px] mb-5  w-full flex justify-center items-center">

@@ -64,8 +64,11 @@ const VerifyMember = () => {
       if (verified) {
         setVerifiedUser(verified);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      form.setError("confirmPassword", {
+        message: error.response?.data?.message?.[0],
+      });
     }
   };
 

@@ -66,50 +66,33 @@ const rows = [
 const rowClass = "text-white text-lg md:text-xl";
 const rowHeaderClass = "text-white text-lg md:text-xl font-semibold";
 
-const TimeTable = () => {
+const TimeTable = ({
+  rows,
+}: {
+  rows: {
+    "Call Room Time": string;
+    "Start Time": string;
+    Gender: string;
+    "Team Members"?: string;
+    Event: string;
+  }[];
+}) => {
   return (
     <Table className="w-full md:max-w-[650px]" aria-label="simple table">
       <TableHead>
         <TableRow>
-          <TableCell
-            sx={{
-              color: "white",
-              fontSize: "1rem",
-              fontWeight: "bold",
-            }}
-          >
-            Call Room Time
-          </TableCell>
-          <TableCell
-            sx={{
-              color: "white",
-              fontSize: "1rem",
-              fontWeight: "bold",
-            }}
-            align="right"
-          >
-            Start Time
-          </TableCell>
-          <TableCell
-            sx={{
-              color: "white",
-              fontSize: "1rem",
-              fontWeight: "bold",
-            }}
-            align="right"
-          >
-            Gender
-          </TableCell>
-          <TableCell
-            sx={{
-              color: "white",
-              fontSize: "1rem",
-              fontWeight: "bold",
-            }}
-            align="right"
-          >
-            Event
-          </TableCell>
+          {Object.keys(rows[0])?.map((title, index) => (
+            <TableCell
+              key={index}
+              sx={{
+                color: "white",
+                fontSize: "1rem",
+                fontWeight: "bold",
+              }}
+            >
+              {title}
+            </TableCell>
+          ))}
         </TableRow>
       </TableHead>
       <TableBody>
@@ -120,43 +103,19 @@ const TimeTable = () => {
               "&:last-child td, &:last-child th": { border: 0 },
             }}
           >
-            <TableCell
-              sx={{
-                color: "white",
-                fontSize: "1rem",
-              }}
-              component="th"
-              scope="row"
-            >
-              {row["Call Room Time"]}
-            </TableCell>
-            <TableCell
-              sx={{
-                color: "white",
-                fontSize: "1rem",
-              }}
-              align="right"
-            >
-              {row["Start Time"]}
-            </TableCell>
-            <TableCell
-              sx={{
-                color: "white",
-                fontSize: "1rem",
-              }}
-              align="right"
-            >
-              {row["Gender"]}
-            </TableCell>
-            <TableCell
-              sx={{
-                color: "white",
-                fontSize: "1rem",
-              }}
-              align="right"
-            >
-              {row["Event"]}
-            </TableCell>
+            {Object.keys(row).map((title, i) => (
+              <TableCell
+                key={i}
+                sx={{
+                  color: "white",
+                  fontSize: "1rem",
+                }}
+                component="th"
+                scope="row"
+              >
+                {(row as any)[title]}
+              </TableCell>
+            ))}
           </TableRow>
         ))}
       </TableBody>

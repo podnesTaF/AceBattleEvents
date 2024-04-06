@@ -1,10 +1,10 @@
 /** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
   ignoredRouteFiles: ["**/.*"],
-  // appDirectory: "app",
-  // assetsBuildDirectory: "public/build",
-  // serverBuildPath: "build/index.js",
-  // publicPath: "/build/",
+  appDirectory: "app",
+  assetsBuildDirectory: "public/build",
+  serverBuildPath: "build/index.js",
+  publicPath: "/build/",
   serverModuleFormat: "cjs",
   future: {
     v2_dev: true,
@@ -15,5 +15,12 @@ module.exports = {
     v2_routeConvention: true,
   },
   tailwind: true,
-  serverDependenciesToBundle: [/^rehype.*/, /^remark.*/, /^unified.*/, "esm"],
+  serverDependenciesToBundle: [
+    "swiper",
+    "swiper/react",
+    "swiper/react/swiper-react.js",
+    "ssr-window",
+    "ssr-window/ssr-window.esm.js",
+    "dom7",
+  ],
 };

@@ -3,9 +3,14 @@ import { Link, useNavigate } from "@remix-run/react";
 interface StatusCardProps {
   status: string;
   eventId?: number;
+  eventCode?: string;
 }
 
-const StatusCard: React.FC<StatusCardProps> = ({ status, eventId }) => {
+const StatusCard: React.FC<StatusCardProps> = ({
+  status,
+  eventId,
+  eventCode,
+}) => {
   const navigate = useNavigate();
   return (
     <div className="w-full min-h-[60vh] relative">
@@ -31,7 +36,7 @@ const StatusCard: React.FC<StatusCardProps> = ({ status, eventId }) => {
           {status === "success" ? (
             <>
               <button className="hover:bg-w-gray-100 bg-white shadow-sm text-xl font-semibold py-2 px-4 border border-red-500 w-2/5 rounded uppercase">
-                <Link to={"/events/" + eventId}>Back to event</Link>
+                <Link to={"/events/" + eventCode}>Back to event</Link>
               </button>
               <button className="hover:bg-red-400 bg-red-500 text-white text-xl font-semibold py-2 px-4 border border-red-500 w-2/5  rounded uppercase">
                 <Link to={"/profile"}>Check your registrations</Link>

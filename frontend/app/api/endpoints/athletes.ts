@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import { IRunner } from "~/lib/user/types/IUser";
+import { IRunner } from "~/lib/types";
 
 export const AthletesApi = (instance: AxiosInstance) => ({
   async getAthletes(params?: string) {
@@ -21,5 +21,12 @@ export const AthletesApi = (instance: AxiosInstance) => ({
         error: error.response.data.message,
       };
     }
+  },
+  async getTopAthletes(count: number) {
+    const { data } = await instance.get<{
+      male: IRunner[];
+      female: IRunner[];
+    }>(`/runners/top?count=${count}`);
+    return data;
   },
 });

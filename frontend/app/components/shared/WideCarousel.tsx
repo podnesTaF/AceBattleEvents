@@ -3,11 +3,20 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { IconButton } from "@mui/material";
 import { useRef, useState } from "react";
 
-const WideCarousel = ({ items, ItemCard }: { items: any[]; ItemCard: any }) => {
+const WideCarousel = ({
+  items,
+  ItemCard,
+  slideDispance,
+}: {
+  items: any[];
+  ItemCard: any;
+  slideDispance?: number;
+}) => {
   const [translateDistance, setTranslateDistance] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const slide = (direction: "next" | "prev") => {
-    const slideDistance = (ref.current?.offsetWidth || 550) + 24;
+    const slideDistance =
+      (ref.current?.offsetWidth || slideDispance || 550) + 24;
     setTranslateDistance(
       (prev) => prev + (direction === "next" ? -slideDistance : slideDistance)
     );
@@ -24,7 +33,10 @@ const WideCarousel = ({ items, ItemCard }: { items: any[]; ItemCard: any }) => {
           <ChevronLeftIcon className="text-white text-lg md:text-xl" />
         </IconButton>
       )}
-      <div className="w-full overflow-x-scroll pb-2 pl-2">
+      <div
+        className="w-full overflow-x-scroll pb-2 pl-2"
+        style={{ scrollbarWidth: "none" }}
+      >
         <div
           className="flex flex-nowrap w-max transition-transform ease-in duration-300"
           style={{
@@ -35,7 +47,8 @@ const WideCarousel = ({ items, ItemCard }: { items: any[]; ItemCard: any }) => {
             <div
               ref={ref}
               key={item.id}
-              className="w-[350px] sm:w-[550px] mr-6 overflow-hidden"
+              className={`w-[350px] sm:w-[550px] mr-6 overflow-hidden`}
+              style={slideDispance ? { width: slideDispance } : {}}
             >
               <ItemCard item={item} />
             </div>
@@ -43,7 +56,8 @@ const WideCarousel = ({ items, ItemCard }: { items: any[]; ItemCard: any }) => {
         </div>
       </div>
       {-translateDistance <
-        (items.length - 1) * ((ref.current?.offsetWidth || 550) + 24) && (
+        (items.length - 1) *
+          ((ref.current?.offsetWidth || slideDispance || 550) + 24) && (
         <IconButton
           onClick={() => slide("next")}
           style={{ position: "absolute", backgroundColor: "red" }}

@@ -32,7 +32,7 @@ const SideTab: React.FC<Props> = ({
   return (
     <div className="w-1/3 sm:w-full flex flex-col-reverse sm:flex-col relative">
       <div
-        onClick={(name) => setIsOpened(name)}
+        onClick={setIsOpened.bind(null, name)}
         className={`w-full ${
           isActive ? "bg-[#ff0000]" : "bg-[#1E1C1F]"
         } px-2 py-3 sm:py-4 border-b-[1px] border-red-500 hover:opacity-80 flex justify-center`}
