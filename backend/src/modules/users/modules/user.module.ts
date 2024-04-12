@@ -9,6 +9,7 @@ import { FileService } from 'src/modules/file/file.service';
 import { Gender } from 'src/modules/gender/entities/gender.entity';
 import { OneTimeToken } from 'src/modules/ott/entities/ott.entity';
 import { OneTimeTokenService } from 'src/modules/ott/ott.service';
+import { PaymentsService } from 'src/modules/payments/payments.service';
 import { Role } from 'src/modules/role/entities/role.entity';
 import { RoleService } from 'src/modules/role/role.service';
 import { Standard } from 'src/modules/standard/entities/standard.entity';
@@ -49,6 +50,7 @@ import { UserService } from '../services/user.service';
     CoachService,
     FileService,
     OneTimeTokenService,
+    PaymentsService,
   ],
   exports: [UserService],
 })

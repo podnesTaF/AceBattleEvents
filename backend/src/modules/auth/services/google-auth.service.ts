@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { OAuth2Client, TokenPayload } from 'google-auth-library';
 import { OneTimeTokenService } from 'src/modules/ott/ott.service';
-import { RegisterWithGoogleDto } from 'src/modules/users/dtos/create-user.dto';
 import { UserService } from 'src/modules/users/services/user.service';
 import { AbstractAuthService } from './abstract-auth.service';
 
@@ -14,17 +13,6 @@ export class GoogleAuthService extends AbstractAuthService {
     protected oneTimeTokenService: OneTimeTokenService,
   ) {
     super(jwtService, oneTimeTokenService);
-  }
-
-  async register(dto: RegisterWithGoogleDto) {
-    const userProfile = await this.validateGoogleToken(dto.id_token);
-
-    await this.userService.create({
-      email: userProfile.email,
-      firstName: userProfile.given_name,
-      lastName: userProfile.family_name,
-      emailVerified: true,
-    });
   }
 
   async validateGoogleUser(token: string): Promise<any> {

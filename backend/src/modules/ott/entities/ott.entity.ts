@@ -22,11 +22,17 @@ export class OneTimeToken {
   @Column({ default: 'auth' })
   goal: string;
 
-  @Column()
+  @Column({ nullable: true })
   userId: number;
-  @ManyToOne(() => User, (user) => user.ottMappings, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.ottMappings, {
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
   @JoinColumn({ name: 'userId' })
   user: User;
+
+  @Column({ nullable: true })
+  email: string;
 
   @CreateDateColumn()
   createdAt: Date;

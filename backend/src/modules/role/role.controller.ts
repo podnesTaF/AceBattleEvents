@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
@@ -19,7 +27,19 @@ export class RoleController {
   }
 
   @Get()
-  getRoles() {
-    return this.roleService.getRoles();
+  getRoles(@Query('type') type?: string) {
+    return this.roleService.getRoles({ type });
+  }
+
+  @Patch('update-stripe-product-id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  updateRoleWithStripeProductId(
+    @Body() body: { roleId: number; stripeProductId: string },
+  ) {
+    return this.roleService.updateRoleWithStripeProductId(
+      body.roleId,
+      body.stripeProductId,
+    );
   }
 }

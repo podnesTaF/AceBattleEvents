@@ -42,7 +42,7 @@ export abstract class AbstractAuthService {
     return roles.map((userRole) => ({
       id: userRole.role.id,
       name: userRole.role.name,
-      active: userRole.active,
+      active: userRole.startDate < new Date() && userRole.endDate > new Date(),
     }));
   }
 }

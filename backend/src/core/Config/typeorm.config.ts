@@ -18,8 +18,6 @@ import { Hashtag } from 'src/modules/hashtag/entities/hashtag.entity';
 import { JoinRequest } from 'src/modules/join-request/entities/join-request.entity';
 import { Location } from 'src/modules/location/entities/location.entity';
 import { OneTimeToken } from 'src/modules/ott/entities/ott.entity';
-import { PaymentPurpose } from 'src/modules/payment/entities/payment-purpose.entity';
-import { Payment } from 'src/modules/payment/entities/payment.entity';
 import { Penalty } from 'src/modules/penalty/entities/penalty.entity';
 import { PushToken } from 'src/modules/push-token/entities/push-token.entity';
 import { RaceRunner } from 'src/modules/race-runner/entities/race-runner.entity';
@@ -31,7 +29,6 @@ import { ResetUser } from 'src/modules/reset-user/entities/reset-user.entity';
 import { Role } from 'src/modules/role/entities/role.entity';
 import { Split } from 'src/modules/split/entities/split.entity';
 import { Standard } from 'src/modules/standard/entities/standard.entity';
-import { Subscription } from 'src/modules/subscription/enitites/subscription.entity';
 import { TeamPlayer } from 'src/modules/team/entities/team-player.entity';
 import { Team } from 'src/modules/team/entities/team.entity';
 import { TimetableRow } from 'src/modules/timetable/entities/timetable-row.entity';
@@ -67,7 +64,6 @@ const config: TypeOrmModuleOptions = {
     Distance,
     BestResult,
     Standard,
-    Subscription,
     JoinRequest,
     Team,
     TeamPlayer,
@@ -79,8 +75,6 @@ const config: TypeOrmModuleOptions = {
     EventRaceType,
     Event,
     EventType,
-    Payment,
-    PaymentPurpose,
     EventRaceRegistration,
     RegistrationFee,
     RaceTeam,

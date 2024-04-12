@@ -24,6 +24,27 @@ export class OttController {
     return { ott };
   }
 
+  @Post('/send-verifcation-email')
+  sendVerificationEmail(
+    @Body()
+    dto: {
+      email: string;
+    },
+  ) {
+    return this.ottService.sendVerificationEmail(dto);
+  }
+
+  @Post('/verify')
+  verifyEmail(
+    @Body()
+    dto: {
+      email: string;
+      otp: string;
+    },
+  ) {
+    return this.ottService.completeVerification(dto);
+  }
+
   @Post('validate')
   async validateOtt(@Body() body: { ott: string }) {
     const jwtToken = await this.ottService.validateAndRemoveToken(body.ott);

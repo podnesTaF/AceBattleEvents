@@ -8,6 +8,7 @@ import { CountryService } from 'src/modules/country/country.service';
 import { FileService } from 'src/modules/file/file.service';
 import { Gender } from 'src/modules/gender/entities/gender.entity';
 import { OneTimeTokenService } from 'src/modules/ott/ott.service';
+import { Role } from 'src/modules/role/entities/role.entity';
 import { RoleService } from 'src/modules/role/role.service';
 import { UserRoleService } from 'src/modules/user-role/user-role.service';
 import { Repository } from 'typeorm';
@@ -22,6 +23,7 @@ import { UpdateUserDtoWithImages } from '../dtos/update-user.dto';
 import { User } from '../entities/user.entity';
 import { getVerificationLetterTemplate } from '../utils/getVerificationTemplate';
 import { AbstractUserService } from './abstract-user.service';
+import { RunnerService } from './runner.service';
 
 @Injectable()
 export class UserService extends AbstractUserService {
@@ -37,16 +39,51 @@ export class UserService extends AbstractUserService {
     private countryService: CountryService,
     private fileService: FileService,
     private ottService: OneTimeTokenService,
+    private runnerService: RunnerService,
   ) {
     super(repository, roleService, userRoleService);
   }
 
   async create(dto: CreateUserDto | CreateUserWithGoogle) {
-    await this.isDuplicateEmail(dto.email);
+    const isDuplicate = await this.isDuplicateEmail(dto.email);
+    if (isDuplicate) {
+      throw new ForbiddenException('Email already exists');
+    }
 
-    const user = await this.repository.save(dto);
-    const userRole = await this.createRoleForUser(user.id, 'user');
-    user.roles = [userRole];
+    const user = new User();
+
+    user.firstName = dto.firstName;
+    user.lastName = dto.lastName;
+    user.email = dto.email;
+    user.city = dto.city;
+    user.password = await bcrypt.hash(dto.password, 10);
+
+    const country = await this.countryService.findById(dto.countryId);
+
+    if (country) {
+      user.country = country;
+    }
+    const newUser = await this.repository.save(user);
+
+    const userRoles = await this.createRolesForUser({
+      userId: newUser.id,
+      roleNames: ['user'],
+      roleIds: dto.roleIds,
+    });
+
+    // create runner entity
+    if (userRoles.some((r) => r.role.name === 'runner')) {
+      const user = await this.runnerService.becomeRunner(
+        newUser.id,
+        dto.runner,
+      );
+      if (!user) {
+        await this.repository.delete(newUser.id);
+        throw new Error('Error creating runner entity');
+      }
+    }
+
+    user.roles = userRoles;
 
     return this.repository.save(user);
   }
@@ -56,8 +93,54 @@ export class UserService extends AbstractUserService {
       where: [{ email: email }],
     });
     if (isDuplicate) {
-      throw new ForbiddenException('User with this email already exists');
+      return true;
     }
+
+    return false;
+  }
+
+  async createRolesForUser({
+    userId,
+    roleIds,
+    roleNames,
+  }: {
+    userId: number;
+    roleNames?: string[];
+    roleIds?: number[];
+  }) {
+    let roles: Role[] = [];
+
+    // Fetch roles based on provided IDs or names
+    if (roleIds?.length) {
+      roles = await Promise.all(
+        roleIds.map((rId) => this.roleService.findByCond({ id: rId })),
+      );
+    } else if (roleNames?.length) {
+      roles = await Promise.all(
+        roleNames.map((rName) => this.roleService.findByCond({ name: rName })),
+      );
+    }
+
+    if (!roles.length) {
+      throw new Error('Roles not found');
+    }
+
+    // Process each role
+    const userRoles = await Promise.all(
+      roles.map(async (role) => {
+        const userRole = await this.userRoleService.createUserRole({
+          userId,
+          roleId: role.id,
+        });
+        return userRole;
+      }),
+    );
+
+    return userRoles;
+  }
+
+  async cancelRegistration(user: User) {
+    await this.repository.delete(user.id);
   }
 
   async sendEmailConfirmation(user: AuthenticatedUser, jwt: string) {
@@ -131,76 +214,6 @@ export class UserService extends AbstractUserService {
     await this.repository.save(user);
 
     return user;
-  }
-
-  async migrateUser(dto: CreateMigration) {
-    const user = new User();
-    user.id = dto.id;
-    user.firstName = dto.firstName;
-    user.lastName = dto.lastName;
-    user.email = dto.email;
-    user.dateOfBirth = dto.dateOfBirth;
-    user.city = dto.city;
-    user.emailVerified = dto.verified;
-
-    const country = await this.countryService.returnIfExist({
-      name: dto.countryName,
-    });
-
-    user.country = country || null;
-
-    const gender =
-      (await this.genderRepository.findOne({
-        where: { name: dto.genderName },
-      })) || null;
-
-    user.gender = gender;
-
-    if (dto.imageUrl) {
-      const image = await this.fetchImageAsMulterFile(dto.imageUrl);
-
-      user.imageName = await this.fileService.uploadFileToStorage(
-        image.originalname,
-        `/images/${user.id}`,
-        image.mimetype,
-        image.buffer,
-        [{ mediaName: image.originalname }],
-        user.imageName,
-      );
-    }
-
-    if (dto.avatarUrl) {
-      const avatar = await this.fetchImageAsMulterFile(dto.avatarUrl);
-
-      user.avatarName = await this.fileService.uploadFileToStorage(
-        avatar.originalname,
-        `/avatars/${user.id}`,
-        avatar.mimetype,
-        avatar.buffer,
-        [{ mediaName: avatar.originalname }],
-        user.avatarName,
-      );
-    }
-
-    const savedUser = await this.userRepository.save(user);
-
-    const roles = await Promise.all(
-      dto.roles.map(async (role) => await this.roleService.findByName(role)),
-    );
-
-    const userRoles = await Promise.all(
-      roles.map(
-        async (role) =>
-          await this.userRoleService.createUserRole({
-            userId: savedUser.id,
-            roleId: role.id,
-          }),
-      ),
-    );
-
-    user.roles = userRoles;
-
-    await this.repository.save(user);
   }
 
   async fetchImageAsMulterFile(url: string): Promise<Express.Multer.File> {
@@ -452,5 +465,76 @@ export class UserService extends AbstractUserService {
 
   updatePassword(id: number, password: string) {
     return this.repository.update(id, { password });
+  }
+
+  async migrateUser(dto: CreateMigration) {
+    const user = new User();
+    user.id = dto.id;
+    user.firstName = dto.firstName;
+    user.lastName = dto.lastName;
+    user.email = dto.email;
+    user.city = dto.city;
+    user.emailVerified = dto.verified;
+
+    const country = await this.countryService.returnIfExist({
+      name: dto.countryName,
+    });
+
+    user.country = country || null;
+
+    const gender =
+      (await this.genderRepository.findOne({
+        where: { name: dto.genderName },
+      })) || null;
+
+    user.gender = gender;
+
+    if (dto.imageUrl) {
+      const image = await this.fetchImageAsMulterFile(dto.imageUrl);
+
+      user.imageName = await this.fileService.uploadFileToStorage(
+        image.originalname,
+        `/images/${user.id}`,
+        image.mimetype,
+        image.buffer,
+        [{ mediaName: image.originalname }],
+        user.imageName,
+      );
+    }
+
+    if (dto.avatarUrl) {
+      const avatar = await this.fetchImageAsMulterFile(dto.avatarUrl);
+
+      user.avatarName = await this.fileService.uploadFileToStorage(
+        avatar.originalname,
+        `/avatars/${user.id}`,
+        avatar.mimetype,
+        avatar.buffer,
+        [{ mediaName: avatar.originalname }],
+        user.avatarName,
+      );
+    }
+
+    const savedUser = await this.userRepository.save(user);
+
+    const roles = await Promise.all(
+      dto.roles.map(
+        async (role) => await this.roleService.findByCond({ name: role }),
+      ),
+    );
+
+    const userRoles = await Promise.all(
+      roles.map(
+        async (role) =>
+          await this.userRoleService.createUserRole({
+            userId: savedUser.id,
+            roleId: role.id,
+          }),
+      ),
+    );
+
+    user.roles = userRoles;
+
+    await this.repository.save(user);
   }
 }

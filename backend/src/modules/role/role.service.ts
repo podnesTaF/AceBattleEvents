@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { Role } from './entities/role.entity';
 
@@ -16,11 +16,29 @@ export class RoleService {
     return await this.roleRepository.save(role);
   }
 
-  async findByName(name: string): Promise<Role> {
-    return await this.roleRepository.findOne({ where: { name } });
+  async findByCond(cond: { [key: string]: any }): Promise<Role> {
+    console.log(cond);
+    return await this.roleRepository.findOne({ where: cond });
   }
 
-  async getRoles(): Promise<Role[]> {
+  async getRoles({ type }): Promise<Role[]> {
+    if (type === 'product') {
+      return await this.roleRepository.find({
+        where: { stripe_product_id: Not(null) && Not('') },
+      });
+    }
     return await this.roleRepository.find();
+  }
+
+  async updateRoleWithStripeProductId(
+    roleId: number,
+    stripeProductId: string,
+  ): Promise<void> {
+    const role = await this.roleRepository.findOne({ where: { id: roleId } });
+    if (!role) {
+      throw new Error('Role not found');
+    }
+    role.stripe_product_id = stripeProductId;
+    await this.roleRepository.save(role);
   }
 }

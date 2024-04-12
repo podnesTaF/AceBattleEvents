@@ -15,7 +15,7 @@ export abstract class AbstractUserService {
   ) {}
 
   async createRoleForUser(userId: number, roleName: string) {
-    const role = await this.roleService.findByName(roleName);
+    const role = await this.roleService.findByCond({ name: roleName });
     const userRole = await this.userRoleService.createUserRole({
       roleId: role.id,
       userId,
@@ -44,9 +44,6 @@ export abstract class AbstractUserService {
     user.genderId = dto.genderId;
     user.avatarName = dto.avatarName;
     user.imageName = dto.imageUrl;
-    user.countryId = dto.countryId;
-    user.city = dto.city;
-    user.phoneNumber = dto.phoneNumber;
 
     return user;
   }
