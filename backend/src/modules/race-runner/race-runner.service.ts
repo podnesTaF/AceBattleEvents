@@ -16,6 +16,7 @@ import {
 } from 'src/modules/split/dto/create-split.dto';
 import { SplitService } from 'src/modules/split/split.service';
 import { Repository } from 'typeorm';
+import { Gender } from '../gender/entities/gender.entity';
 import { AuthenticatedUser } from '../users/decorators/user.decorator';
 import { CreateRaceParticipantDto } from './dto/create-race-runner.dto';
 import { CreateRunnerRoleDto } from './dto/create-runner-role.dto';
@@ -39,6 +40,8 @@ export class RaceRunnerService {
     private readonly raceTeamRepository: Repository<RaceTeam>,
     @InjectRepository(RunnerRole)
     private readonly runnerRoleRepository: Repository<RunnerRole>,
+    @InjectRepository(Gender)
+    private readonly genderRepository: Repository<Gender>,
     private readonly splitService: SplitService,
     private jwtService: JwtService,
   ) {}
@@ -274,6 +277,69 @@ export class RaceRunnerService {
       startNumber: raceRunner.startNumber,
       race: raceRunner.race || raceRunner.raceTeam?.race,
     };
+  }
+
+  // results bounded
+
+  async getBestMilersByEvent({
+    eventCode,
+  }: {
+    eventCode: string;
+  }): Promise<{ [gender: string]: RaceRunner }> {
+    const genders = await this.genderRepository.find();
+
+    const groupedByGender = {};
+
+    for (const gender of genders) {
+      const res = await this.raceRunnerRepository
+        .createQueryBuilder('raceRunner')
+        .leftJoinAndSelect('raceRunner.runner', 'runner')
+        .leftJoinAndSelect('runner.gender', 'gender')
+        .leftJoinAndSelect('raceRunner.race', 'race')
+        .leftJoinAndSelect('race.eventRaceType', 'eventRaceType')
+        .leftJoinAndSelect('eventRaceType.event', 'event')
+        .where('event.eventCode = :eventCode', { eventCode })
+        .leftJoinAndSelect('raceRunner.raceTeam', 'raceTeam')
+        .leftJoinAndSelect('raceTeam.team', 'team')
+        .leftJoinAndSelect('raceTeam.race', 'teamRace')
+        .leftJoinAndSelect('teamRace.eventRaceType', 'teamEventRaceType')
+        .leftJoinAndSelect('teamEventRaceType.event', 'teamEvent')
+        .orWhere('event.eventCode = :eventCode', { eventCode })
+        .leftJoinAndSelect(
+          'raceRunner.splits',
+          'split',
+          'split.finalSplit = true',
+        )
+        .leftJoinAndSelect('raceRunner.runnerRole', 'runnerRole')
+        .where('runnerRole.name = :role', { role: 'miler' })
+        .andWhere('runner.genderId = :genderId', { genderId: gender.id })
+        .orderBy('split.resultInMs', 'ASC')
+        .getOne();
+
+      groupedByGender[gender.name] = res;
+    }
+
+    return groupedByGender;
+  }
+
+  async getBestPairByEvent({ eventId }: { eventId: number }) {
+    const genders = await this.genderRepository.find();
+
+    const groupedByGender = {};
+
+    for (const gender of genders) {
+      const res = await this.raceRunnerRepository
+        .createQueryBuilder('raceRunner')
+        .leftJoinAndSelect('raceRunner.runnerRole', 'runnerRole')
+        .leftJoinAndSelect('raceRunner.runner', 'runner')
+        .leftJoinAndSelect('runner.gender', 'gender')
+        .leftJoinAndSelect('raceRunner.race', 'race')
+        .leftJoinAndSelect('raceRunner.raceTeam', 'raceTeam')
+        .leftJoinAndSelect('raceTeam.team', 'team')
+        .leftJoinAndSelect('raceTeam.race', 'teamRace')
+        .leftJoinAndSelect('teamRace.eventRaceType', 'teamEventRaceType')
+        .orWhere('teamEventRaceType.eventId = :eventId', { eventId });
+    }
   }
 
   // create runner role

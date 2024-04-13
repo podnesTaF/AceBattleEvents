@@ -14,7 +14,7 @@ export class CreateContentDto {
 
   @IsString()
   @IsOptional()
-  contentFor: string;
+  purpose: string;
 
   @IsNumber()
   @IsOptional()

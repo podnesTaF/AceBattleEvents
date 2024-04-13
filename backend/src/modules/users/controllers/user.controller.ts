@@ -58,6 +58,11 @@ export class UserController {
     }
   }
 
+  @Get('/migrate-to-url')
+  async migrateToUrl() {
+    return this.userService.migrateToUrl();
+  }
+
   @Post('/cancel-registration')
   async cancelRegistration(@Body() body: { sessionId: string }) {
     const user = await this.paymentsService.getUserFromSession(body.sessionId);

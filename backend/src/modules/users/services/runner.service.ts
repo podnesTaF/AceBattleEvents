@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { BestResultsService } from 'src/modules/best-results/services/best-results.service';
+import { GenderService } from 'src/modules/gender/gender.service';
 import { RoleService } from 'src/modules/role/role.service';
 import { StandardService } from 'src/modules/standard/standard.service';
 import { UserRoleService } from 'src/modules/user-role/user-role.service';
@@ -19,6 +20,7 @@ export class RunnerService extends AbstractUserService {
     protected readonly standardService: StandardService,
     private readonly bestResultsService: BestResultsService,
     protected readonly roleService: RoleService,
+    protected readonly gerderService: GenderService,
   ) {
     super(userRepository, roleService, userRoleService);
   }
@@ -78,7 +80,9 @@ export class RunnerService extends AbstractUserService {
       .leftJoinAndSelect('user.roles', 'userRoles')
       .leftJoinAndSelect('userRoles.role', 'role')
       .where('role.name = :role', { role: 'runner' })
-      .andWhere('userRoles.active = :active', { active: true })
+      .andWhere(':now BETWEEN userRoles.startDate AND userRoles.endDate', {
+        now: new Date(),
+      })
       .leftJoinAndSelect('user.country', 'country')
       .leftJoinAndSelect('user.gender', 'gender')
       .leftJoinAndSelect('user.category', 'category')
@@ -95,7 +99,8 @@ export class RunnerService extends AbstractUserService {
         'user.lastName',
         'user.genderId',
         'user.dateOfBirth',
-        'user.imageName',
+        'user.imageUrl',
+        'user.avatarUrl',
         'user.countryId',
         'user.city',
         'country',
@@ -103,7 +108,8 @@ export class RunnerService extends AbstractUserService {
         'team',
         'category',
         'gender',
-      ]);
+      ])
+      .orderBy('user.rank', 'ASC');
 
     if (countryId) {
       qb.andWhere('user.countryId = :countryId', {
@@ -141,6 +147,48 @@ export class RunnerService extends AbstractUserService {
     return paginate<User>(qb, { page, limit });
   }
 
+  async getTopRunners({
+    count,
+    genderName,
+  }: {
+    count: number;
+    genderName?: string;
+  }): Promise<{
+    male: User[] | null;
+    female: User[] | null;
+  }> {
+    const gender = await this.gerderService.findByCond({ name: genderName });
+
+    const returnData = {
+      male: null,
+      female: null,
+    };
+    if (!genderName) {
+      returnData['male'] = await this.getTopRunnersByGender(count, 1);
+      returnData['female'] = await this.getTopRunnersByGender(count, 2);
+    } else {
+      returnData[gender.name] = await this.getTopRunnersByGender(
+        count,
+        gender.id,
+      );
+    }
+
+    return returnData;
+  }
+
+  async getTopRunnersByGender(count: number, genderId: number) {
+    const qb = this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.country', 'country')
+      .leftJoinAndSelect('user.runnerTeams', 'runnerTeams')
+      .leftJoinAndSelect('runnerTeams.team', 'team')
+      .where('user.genderId = :genderId', { genderId })
+      .orderBy('user.rank', 'ASC')
+      .take(count);
+
+    return qb.getMany();
+  }
+
   // get runner profile info
   async getRunnerInfo(id: string): Promise<User> {
     const runner = await this.userRepository.findOne({
@@ -154,8 +202,8 @@ export class RunnerService extends AbstractUserService {
         'country',
         'category',
         'gender',
-        'imageName',
-        'avatarName',
+        'avatarUrl',
+        'imageUrl',
       ],
     });
 

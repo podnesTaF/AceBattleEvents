@@ -4,6 +4,7 @@ import { Hashtag } from 'src/modules/hashtag/entities/hashtag.entity';
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -24,17 +25,30 @@ export class Article {
   @Column({ default: false })
   active: boolean;
 
-  @Column({ type: 'datetime' })
+  @Column({ type: 'datetime', nullable: true })
   publishedAt: Date;
 
   @Column({
     type: 'datetime',
     onUpdate: 'CURRENT_TIMESTAMP',
+    nullable: true,
   })
   updatedAt: Date;
 
   @ManyToMany(() => Hashtag, (hashtag) => hashtag.articles, {
     onDelete: 'SET NULL',
+    nullable: true,
+  })
+  @JoinTable({
+    name: 'article_hashtag',
+    joinColumn: {
+      name: 'article_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'hashtag_id',
+      referencedColumnName: 'id',
+    },
   })
   hashtags: Hashtag[];
 

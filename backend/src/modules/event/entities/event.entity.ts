@@ -23,6 +23,9 @@ export class Event {
   @Column()
   title: string;
 
+  @Column({ unique: true })
+  eventCode: string;
+
   @Column({ nullable: true })
   subtitle?: string;
 
@@ -40,7 +43,10 @@ export class Event {
   type: EventType;
 
   @Column({ nullable: true })
-  mainImageName: string;
+  mainImageUrl: string;
+
+  @Column({ nullable: true })
+  introImageUrl: string;
 
   @Column({ nullable: true })
   locationId: number;

@@ -33,6 +33,13 @@ export class RaceRunnerController {
     return this.raceRunnerService.addRaceRunners(raceId, dto, raceTeamId);
   }
 
+  @Get('/event-best-milers/:eventCode')
+  async getBestMilersOfEvent(@Param('eventCode') eventCode: string) {
+    return this.raceRunnerService.getBestMilersByEvent({
+      eventCode: eventCode,
+    });
+  }
+
   @Get('/qrcode/:token')
   @UseGuards(RolesGuard)
   @Roles('admin')

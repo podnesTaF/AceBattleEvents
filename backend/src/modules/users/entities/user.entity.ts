@@ -91,23 +91,23 @@ export class User {
   @Column({ nullable: true })
   city: string;
 
-  @ApiProperty({
-    description: "URL to the user's full scale image, nullable",
-  })
   @Column({ nullable: true })
-  imageName: string;
+  imageUrl: string;
 
-  @ApiProperty({
-    description: "URL to the user's avatar image, nullable",
-  })
   @Column({ nullable: true })
-  avatarName: string;
+  avatarUrl: string;
 
   @ApiProperty({
     description: 'Indicates if the user is subscribed to news updates',
   })
   @Column({ default: true })
   notificationsEnabled: boolean;
+
+  @Column({ nullable: true })
+  totalPoints: number;
+
+  @Column({ default: 9999, nullable: true })
+  rank: number;
 
   @OneToMany(() => BestResult, (bestResult) => bestResult.runner)
   bestResults: BestResult[];

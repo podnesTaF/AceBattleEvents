@@ -37,7 +37,7 @@ export class MediaController {
       prefix,
       file.mimetype,
       file.buffer,
-      [{ mediaName: file.originalname }],
+      { mediaName: file.originalname, contentType: file.mimetype },
     );
 
     return { mediaUrl: url };

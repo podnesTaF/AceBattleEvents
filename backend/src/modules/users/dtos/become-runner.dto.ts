@@ -21,7 +21,7 @@ export class BecomeRunnerDto {
 
   @IsString()
   @IsOptional()
-  avatarName: string;
+  avatarUrl: string;
 
   @IsString()
   @IsOptional()

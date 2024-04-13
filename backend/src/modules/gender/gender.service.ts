@@ -16,6 +16,10 @@ export class GenderService {
     return gender;
   }
 
+  async findByCond(cond: { [key: string]: any }): Promise<Gender> {
+    return await this.genderRepository.findOne({ where: cond });
+  }
+
   async findAll(): Promise<Gender[]> {
     return this.genderRepository.find();
   }

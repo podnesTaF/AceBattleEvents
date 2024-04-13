@@ -1,5 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { config as evnconfig } from 'dotenv';
+import { ArticleHashtag } from 'src/modules/article/entities/article-hashtag.entity';
 import { Article } from 'src/modules/article/entities/article.entity';
 import { BestResult } from 'src/modules/best-results/entities/best-result.entity';
 import { Distance } from 'src/modules/best-results/entities/distance.entity';
@@ -11,6 +12,7 @@ import { EventRaceRegistration } from 'src/modules/event-race-registration/entit
 import { EventRaceType } from 'src/modules/event-race-type/entities/event-race-type.entity';
 import { RaceType } from 'src/modules/event-race-type/entities/race-type.entity';
 import { RegistrationFee } from 'src/modules/event-race-type/entities/registration-fee.entity';
+import { EventPreview } from 'src/modules/event/entities/event-preview.entity';
 import { EventType } from 'src/modules/event/entities/event-type.entity';
 import { Event } from 'src/modules/event/entities/event.entity';
 import { Gender } from 'src/modules/gender/entities/gender.entity';
@@ -88,6 +90,8 @@ const config: TypeOrmModuleOptions = {
     TicketPrice,
     VisitorTicket,
     OneTimeToken,
+    EventPreview,
+    ArticleHashtag,
   ],
   synchronize: true,
 };

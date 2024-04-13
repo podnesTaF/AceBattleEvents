@@ -51,10 +51,10 @@ export class Team {
   prevRank: number;
 
   @Column({ nullable: true })
-  logoName: string;
+  logoUrl: string;
 
   @Column({ nullable: true })
-  imageName: string;
+  imageUrl: string;
 
   @Column({ nullable: true })
   teamBio: string;

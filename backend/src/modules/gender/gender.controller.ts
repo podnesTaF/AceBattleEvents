@@ -17,7 +17,7 @@ export class GenderController {
     return this.genderService.createGender(body);
   }
 
-  @Get()
+  @Get('/dictionary')
   findAll() {
     return this.genderService.findAll();
   }

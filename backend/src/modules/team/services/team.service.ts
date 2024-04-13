@@ -43,14 +43,14 @@ export class TeamService {
 
     // Upload Team Image
     if (image) {
-      await this.uploadTeamMedia(team.id, image, 'image');
-      team.imageName = image.originalname;
+      const url = await this.uploadTeamMedia(team.id, image, 'image');
+      team.imageUrl = url;
     }
 
     // Upload Team Logo
     if (logo) {
-      await this.uploadTeamMedia(team.id, logo, 'logo');
-      team.logoName = logo.originalname;
+      const url = await this.uploadTeamMedia(team.id, logo, 'logo');
+      team.logoUrl = url;
     }
 
     // Save and Return the created team
@@ -68,7 +68,7 @@ export class TeamService {
       `teams/${type}/${teamId}`,
       file.mimetype,
       file.buffer,
-      [{ mediaName: file.originalname }],
+      { mediaName: file.originalname, contentType: file.mimetype },
       oldMediaName,
     );
   }
@@ -82,7 +82,7 @@ export class TeamService {
   // Get all teams previews
   findAllPreviews(): Promise<Partial<Team>[]> {
     return this.teamRepository.find({
-      select: ['id', 'name', 'logoName'],
+      select: ['id', 'name', 'logoUrl'],
     });
   }
 }

@@ -44,6 +44,28 @@ export class UserService extends AbstractUserService {
     super(repository, roleService, userRoleService);
   }
 
+  async migrateToUrl() {
+    const users = await this.repository.find();
+
+    for (const user of users) {
+      const image_path = user.imageUrl
+        ? `images/${user.id}/${user.imageUrl}`
+        : null;
+
+      const avatar_path = user.avatarUrl
+        ? `images/${user.id}/${user.avatarUrl}`
+        : null;
+
+      user.imageUrl = await this.fileService.migrateToUrl(image_path, 'images');
+      user.avatarUrl = await this.fileService.migrateToUrl(
+        avatar_path,
+        'avatars',
+      );
+
+      await this.repository.save(user);
+    }
+  }
+
   async create(dto: CreateUserDto | CreateUserWithGoogle) {
     const isDuplicate = await this.isDuplicateEmail(dto.email);
     if (isDuplicate) {
@@ -366,29 +388,33 @@ export class UserService extends AbstractUserService {
     const user = await this.userRepository.findOne({ where: { id } });
 
     if (dto.image) {
-      await this.fileService.uploadFileToStorage(
+      const imageUrl = await this.fileService.uploadFileToStorage(
         dto.image.originalname,
         `/images/${id}`,
         dto.image.mimetype,
         dto.image.buffer,
-        [{ mediaName: dto.image.originalname }],
-        user.imageName,
+        { mediaName: dto.image.originalname, contentType: dto.image.mimetype },
+        user.imageUrl,
       );
 
-      user.imageName = dto.image.originalname;
+      if (imageUrl) {
+        user.imageUrl = imageUrl;
+      }
     }
 
     if (dto.avatar) {
-      await this.fileService.uploadFileToStorage(
+      const avatarUrl = await this.fileService.uploadFileToStorage(
         dto.avatar.originalname,
         `/avatars/${id}`,
         dto.avatar.mimetype,
         dto.avatar.buffer,
-        [{ mediaName: dto.avatar.originalname }],
-        user.avatarName,
+        { mediaName: dto.avatar.originalname, contentType: dto.image.mimetype },
+        user.avatarUrl,
       );
 
-      user.avatarName = dto.avatar.originalname;
+      if (avatarUrl) {
+        user.avatarUrl = avatarUrl;
+      }
     }
 
     user.firstName = dto.firstName || user.firstName;
@@ -411,12 +437,12 @@ export class UserService extends AbstractUserService {
       user.genderId = dto.genderId || null;
     }
 
-    if (dto.avatarName !== undefined) {
-      user.avatarName = dto.avatarName || null;
+    if (dto.avatarUrl !== undefined) {
+      user.avatarUrl = dto.avatarUrl || null;
     }
 
-    if (dto.imageName !== undefined) {
-      user.imageName = dto.imageName || null;
+    if (dto.imageUrl !== undefined) {
+      user.imageUrl = dto.imageUrl || null;
     }
 
     if (dto.notificationsEnabled !== undefined) {
@@ -492,26 +518,26 @@ export class UserService extends AbstractUserService {
     if (dto.imageUrl) {
       const image = await this.fetchImageAsMulterFile(dto.imageUrl);
 
-      user.imageName = await this.fileService.uploadFileToStorage(
+      user.avatarUrl = await this.fileService.uploadFileToStorage(
         image.originalname,
         `/images/${user.id}`,
         image.mimetype,
         image.buffer,
-        [{ mediaName: image.originalname }],
-        user.imageName,
+        { mediaName: image.originalname, contentType: image.mimetype },
+        user.avatarUrl,
       );
     }
 
     if (dto.avatarUrl) {
       const avatar = await this.fetchImageAsMulterFile(dto.avatarUrl);
 
-      user.avatarName = await this.fileService.uploadFileToStorage(
+      user.avatarUrl = await this.fileService.uploadFileToStorage(
         avatar.originalname,
         `/avatars/${user.id}`,
         avatar.mimetype,
         avatar.buffer,
-        [{ mediaName: avatar.originalname }],
-        user.avatarName,
+        { mediaName: avatar.originalname, contentType: avatar.mimetype },
+        user.avatarUrl,
       );
     }
 

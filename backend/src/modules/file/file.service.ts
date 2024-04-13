@@ -2,6 +2,11 @@ import { DownloadResponse, Storage } from '@google-cloud/storage';
 import { Injectable } from '@nestjs/common';
 import { StorageFile } from './types/file';
 
+interface FileMetadata {
+  [key: string]: string;
+  contentType: string;
+}
+
 @Injectable()
 export class FileService {
   private storage: Storage;
@@ -31,24 +36,20 @@ export class FileService {
     prefix: string,
     contentType: string,
     media: Buffer,
-    metadata: { [key: string]: string }[],
-    replaceName?: string,
+    metadata: FileMetadata,
+    replaceUrl?: string,
   ): Promise<string> {
-    if (replaceName) await this.delete(this.setPrefix(prefix) + replaceName);
+    if (replaceUrl) await this.delete(replaceUrl);
 
     return new Promise((resolve, reject) => {
-      const object = metadata.reduce(
-        (obj, item) => Object.assign(obj, item),
-        {},
-      );
-      object.contentType = contentType;
+      metadata.contentType = contentType;
       const path = this.setPrefix(prefix) + mediaName;
       const file = this.storage.bucket(this.bucket).file(path);
       const stream = file.createWriteStream({
         resumable: false,
         gzip: true,
         metadata: {
-          metadata: object,
+          metadata,
           contentType,
         },
       });
@@ -60,7 +61,7 @@ export class FileService {
 
       stream.on('finish', async () => {
         try {
-          await file.setMetadata({ metadata: object });
+          await file.setMetadata({ metadata });
           resolve(file.publicUrl()); // Resolve the promise with the public URL
         } catch (error) {
           console.error('Error setting metadata:', error);
@@ -70,6 +71,34 @@ export class FileService {
 
       stream.end(media);
     });
+  }
+
+  async migrateToUrl(
+    path: string | null,
+    new_prefix: string,
+  ): Promise<string> | null {
+    if (!path) return null;
+
+    const file = await this.getWithMetaData(path);
+
+    const newPath = path.split('/').pop();
+
+    const metadataObject: FileMetadata = {
+      contentType: file.contentType || '',
+      ...Object.fromEntries(file.metadata.entries()),
+    };
+
+    const mediaUrl = await this.uploadFileToStorage(
+      newPath,
+      new_prefix,
+      file.contentType || '',
+      file.buffer,
+      metadataObject,
+    );
+
+    if (mediaUrl) await this.delete(path);
+
+    return mediaUrl || null;
   }
 
   async delete(path: string) {

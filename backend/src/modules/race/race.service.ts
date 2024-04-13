@@ -38,12 +38,19 @@ export class RaceService {
     );
   }
 
-  async getRace(id: number): Promise<Race> {
-    return await this.raceRepository.findOne({
-      where: {
-        id: id,
-      },
-      relations: ['raceTeams.team', 'raceTeams.raceRunners.runner'],
+  async getFullRace(id: number): Promise<Race> {
+    return this.raceRepository.findOne({
+      where: { id },
+      relations: [
+        'eventRaceType',
+        'eventRaceType.raceType',
+        'eventRaceType.event',
+        'raceRunners',
+        'raceTeams.team',
+        'raceTeams.raceRunners.runnerRole',
+        'raceTeams.raceRunners.splits',
+        'raceTeams.raceRunners.runner.country',
+      ],
     });
   }
 

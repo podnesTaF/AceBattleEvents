@@ -30,7 +30,7 @@ export class RaceController {
 
   @Get(':id')
   async getRace(@Param('id') id: number) {
-    return this.raceService.getRace(id);
+    return this.raceService.getFullRace(id);
   }
 
   // Automatically create races based on the registrations for the event race type.

@@ -15,6 +15,7 @@ import { CountryModule } from './modules/country/country.module';
 import { DocumentModule } from './modules/document/document.module';
 import { EventRaceRegistrationModule } from './modules/event-race-registration/event-race-registration.module';
 import { EventRaceTypeModule } from './modules/event-race-type/event-race-type.module';
+import { EventPreviewModule } from './modules/event/event-preview.module';
 import { EventModule } from './modules/event/event.module';
 import { FileModule } from './modules/file/file.module';
 import { GenderModule } from './modules/gender/gender.module';
@@ -86,6 +87,7 @@ import { VisitorTicketModule } from './visitor-ticket/visitor-ticket.module';
     TicketModule,
     VisitorTicketModule,
     OttModule,
+    EventPreviewModule,
   ],
 })
 export class AppModule implements NestModule {

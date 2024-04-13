@@ -45,6 +45,13 @@ export class RunnerController {
     return this.runnerService.getRunners(query);
   }
 
+  @Get('/top')
+  getTopRunners(
+    @Query() queries: { count: number; gender?: 'male' | 'female' },
+  ) {
+    return this.runnerService.getTopRunners(queries);
+  }
+
   @Get('/:id')
   async getRunner(@Param('id') id: string) {
     return this.runnerService.getRunnerInfo(id);
