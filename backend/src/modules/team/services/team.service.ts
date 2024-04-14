@@ -85,4 +85,32 @@ export class TeamService {
       select: ['id', 'name', 'logoUrl'],
     });
   }
+
+  // get team profile
+  async getTeam(id: number): Promise<Team> {
+    return this.teamRepository.findOne({
+      where: { id },
+      relations: [
+        'teamRunners',
+        'country',
+        'gender',
+        'teamRunners.runner.roles.role',
+        'teamRunners.runner.country',
+        'coach',
+        'teamRaces',
+        'teamRaces.race.eventRaceType.event',
+      ],
+      select: [
+        'id',
+        'name',
+        'logoUrl',
+        'imageUrl',
+        'country',
+        'gender',
+        'teamRunners',
+        'coach',
+        'teamRaces',
+      ],
+    });
+  }
 }

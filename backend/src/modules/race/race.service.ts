@@ -94,7 +94,7 @@ export class RaceService {
       .createQueryBuilder('race')
       .leftJoinAndSelect('race.eventRaceType', 'eventRaceType')
       .leftJoinAndSelect('eventRaceType.event', 'event')
-      .leftJoinAndSelect('eventRaceType.location', 'location')
+      .leftJoinAndSelect('event.location', 'location')
       .leftJoinAndSelect('location.country', 'country')
       .leftJoinAndSelect('race.raceTeams', 'raceTeams')
       .leftJoinAndSelect('raceTeams.team', 'team');

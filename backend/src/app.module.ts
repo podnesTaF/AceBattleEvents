@@ -27,6 +27,7 @@ import { MediaModule } from './modules/media/media.module';
 import { OttModule } from './modules/ott/ott.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { PenaltyModule } from './modules/penalty/penalty.module';
+import { PrizesModule } from './modules/prizes/prizes.module';
 import { PushTokenModule } from './modules/push-token/push-token.module';
 import { RaceRunnerModule } from './modules/race-runner/race-runner.module';
 import { RaceTeamModule } from './modules/race-team/race-team.module';
@@ -88,6 +89,7 @@ import { VisitorTicketModule } from './visitor-ticket/visitor-ticket.module';
     VisitorTicketModule,
     OttModule,
     EventPreviewModule,
+    PrizesModule,
   ],
 })
 export class AppModule implements NestModule {

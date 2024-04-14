@@ -45,8 +45,8 @@ export class EventRaceRegistrationController {
 
   // get runner's registrations
 
-  @Get('user/:id')
-  async getRegistrations(@Param() id: string) {
+  @Get('/user/:id')
+  async getRegistrations(@Param('id') id: string) {
     return this.eventRaceRegistrationService.getUserRegistrations(+id);
   }
 }

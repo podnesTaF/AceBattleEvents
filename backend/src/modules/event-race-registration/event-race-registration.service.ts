@@ -81,9 +81,12 @@ export class EventRaceRegistrationService {
       .createQueryBuilder('registration')
       .leftJoinAndSelect('registration.eventRaceType', 'eventRaceType')
       .leftJoinAndSelect('eventRaceType.event', 'event')
+      .leftJoinAndSelect('event.location', 'location')
+      .leftJoinAndSelect('location.country', 'country')
       .leftJoinAndSelect('eventRaceType.raceType', 'raceType')
       .where('registration.runnerId = :userId', { userId })
       .leftJoinAndSelect('registration.team', 'team')
+      .leftJoinAndSelect('team.coach', 'coach')
       .leftJoinAndSelect('team.teamRunners', 'teamRunners')
       .orWhere('teamRunners.runnerId = :userId', { userId })
       .getMany();

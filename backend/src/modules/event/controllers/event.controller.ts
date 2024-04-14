@@ -41,9 +41,9 @@ export class EventController {
     return this.eventService.getResults(eventCode);
   }
 
-  @Get(':id')
-  async getFullEvent(@Param('id') id: number) {
-    return this.eventService.getFullEvent(id);
+  @Get(':eventCode')
+  async getFullEvent(@Param('eventCode') eventCode: string) {
+    return this.eventService.getFullEvent(eventCode);
   }
 
   // create event

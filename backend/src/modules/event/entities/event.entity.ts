@@ -3,6 +3,7 @@ import { Content } from 'src/modules/content/entities/content.entity';
 import { Document } from 'src/modules/document/entities/document.entity.dto';
 import { EventRaceType } from 'src/modules/event-race-type/entities/event-race-type.entity';
 import { Location } from 'src/modules/location/entities/location.entity';
+import { PrizeCategory } from 'src/modules/prizes/entities/prize-category';
 import { Timetable } from 'src/modules/timetable/entities/timetable.entity';
 import { Ticket } from 'src/ticket/entities/ticket.entity';
 import {
@@ -75,6 +76,12 @@ export class Event {
 
   @Column({ default: false })
   finished: boolean;
+
+  @OneToMany(() => PrizeCategory, (cat) => cat.event, {
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
+  prizeCategories: PrizeCategory[];
 
   @OneToMany(() => EventRaceType, (eventRaceType) => eventRaceType.event)
   eventRaceTypes: EventRaceType[];

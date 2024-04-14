@@ -364,8 +364,10 @@ export class RaceRunnerService {
       .andWhere('split.finalSplit = true')
       .leftJoinAndSelect('raceRunner.race', 'race')
       .leftJoinAndSelect('race.eventRaceType', 'eventRaceType')
+      .leftJoinAndSelect('eventRaceType.event', 'event')
       .leftJoinAndSelect('raceTeam.race', 'teamRace')
       .leftJoinAndSelect('teamRace.eventRaceType', 'teamEventRaceType')
+      .leftJoinAndSelect('teamEventRaceType.event', 'teamEvent')
       .orderBy(
         'CASE WHEN raceTeam.id IS NOT NULL THEN teamRace.startTime ELSE race.startTime END',
         'DESC',

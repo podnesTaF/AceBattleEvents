@@ -21,6 +21,8 @@ import { JoinRequest } from 'src/modules/join-request/entities/join-request.enti
 import { Location } from 'src/modules/location/entities/location.entity';
 import { OneTimeToken } from 'src/modules/ott/entities/ott.entity';
 import { Penalty } from 'src/modules/penalty/entities/penalty.entity';
+import { PrizeCategory } from 'src/modules/prizes/entities/prize-category';
+import { PrizeEntity } from 'src/modules/prizes/entities/prize.entity';
 import { PushToken } from 'src/modules/push-token/entities/push-token.entity';
 import { RaceRunner } from 'src/modules/race-runner/entities/race-runner.entity';
 import { RunnerRole } from 'src/modules/race-runner/entities/runner-role.entity';
@@ -92,6 +94,8 @@ const config: TypeOrmModuleOptions = {
     OneTimeToken,
     EventPreview,
     ArticleHashtag,
+    PrizeCategory,
+    PrizeEntity,
   ],
   synchronize: true,
 };

@@ -1,8 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Gender } from 'src/modules/gender/entities/gender.entity';
-import { RaceTeam } from 'src/modules/race-team/entities/race-team.entity';
 import { Team } from 'src/modules/team/entities/team.entity';
+import {
+  TimetableByDay,
+  mapTimeTableByRows,
+} from 'src/modules/timetable/utils/helpers';
 import { formatDate } from 'src/utils/date-formater';
 import { Repository } from 'typeorm';
 import { FileService } from '../../file/file.service';
@@ -11,32 +14,6 @@ import { CreateEventDto } from '../dto/create-event.dto';
 import { UpdateEventDto } from '../dto/update-event.dto';
 import { EventType } from '../entities/event-type.entity';
 import { Event } from '../entities/event.entity';
-
-interface ReturnResultsData {
-  eventRaceTypes: [
-    {
-      id: number;
-      raceType: {
-        id: number;
-        name: string;
-      };
-      races: [
-        {
-          id: number;
-          name: string;
-          winner: RaceTeam;
-          raceTeams: [
-            {
-              id: number;
-              totalTimeInMs: number;
-              team: Team;
-            },
-          ];
-        },
-      ];
-    },
-  ];
-}
 
 @Injectable()
 export class EventService {
@@ -52,17 +29,28 @@ export class EventService {
 
   // get full event
 
-  getFullEvent(id: number): Promise<Event> {
-    return this.eventRepository.findOne({
-      where: { id },
+  async getFullEvent(
+    eventCode: string,
+  ): Promise<Event & { timetableByDays: TimetableByDay[] }> {
+    const event = await this.eventRepository.findOne({
+      where: { eventCode },
       relations: [
         'location',
+        'location.country',
+        'contents',
+        'prizeCategories.prizes',
         'type',
         'timetables.rows',
-        'location.country',
         'eventRaceTypes.raceType',
+        'timetables.rows',
       ],
     });
+
+    const activeTimetable = event.timetables?.find((t) => t.active);
+    const timetableByDays =
+      activeTimetable && mapTimeTableByRows(activeTimetable);
+    delete event.timetables;
+    return { ...event, timetableByDays };
   }
 
   async createEvent(
