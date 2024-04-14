@@ -13,7 +13,7 @@ export class CreateTimetableDto {
 
   @IsString()
   @IsOptional()
-  desctioption?: string;
+  description?: string;
 
   @IsNumber()
   eventId: number;

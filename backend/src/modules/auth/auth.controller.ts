@@ -10,10 +10,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoginUserDto } from 'src/modules/users/dtos/login-user.dto';
 import { User } from 'src/modules/users/entities/user.entity';
-import {
-  CreateUserDto,
-  RegisterWithGoogleDto,
-} from '../users/dtos/create-user.dto';
+import { CreateUserDto } from '../users/dtos/create-user.dto';
 import { AuthService } from './services/auth.service';
 import { GoogleAuthService } from './services/google-auth.service';
 
@@ -49,14 +46,6 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   register(@Body() dto: CreateUserDto) {
     return this.authService.register(dto);
-  }
-
-  @Post('google-register')
-  @ApiBody({ type: CreateUserDto })
-  @ApiResponse({ status: 201, description: 'User registered successfully.' })
-  @ApiResponse({ status: 400, description: 'Bad Request.' })
-  registerWithGoogle(@Body() dto: RegisterWithGoogleDto) {
-    return this.googleAuthService.register(dto);
   }
 
   @Post('change-password/:id')

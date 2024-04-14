@@ -6,7 +6,6 @@ import { EventRaceRegistration } from 'src/modules/event-race-registration/entit
 import { Gender } from 'src/modules/gender/entities/gender.entity';
 import { JoinRequest } from 'src/modules/join-request/entities/join-request.entity';
 import { OneTimeToken } from 'src/modules/ott/entities/ott.entity';
-import { Payment } from 'src/modules/payment/entities/payment.entity';
 import { PushToken } from 'src/modules/push-token/entities/push-token.entity';
 import { Race } from 'src/modules/race/entities/race.entity';
 import { TeamPlayer } from 'src/modules/team/entities/team-player.entity';
@@ -77,6 +76,9 @@ export class User {
   roles: UserRole[];
 
   @Column({ nullable: true })
+  customerId: string;
+
+  @Column({ nullable: true })
   countryId: number;
 
   @ManyToOne(() => Country, (country) => country.users, {
@@ -89,23 +91,23 @@ export class User {
   @Column({ nullable: true })
   city: string;
 
-  @ApiProperty({
-    description: "URL to the user's full scale image, nullable",
-  })
   @Column({ nullable: true })
-  imageName: string;
+  imageUrl: string;
 
-  @ApiProperty({
-    description: "URL to the user's avatar image, nullable",
-  })
   @Column({ nullable: true })
-  avatarName: string;
+  avatarUrl: string;
 
   @ApiProperty({
     description: 'Indicates if the user is subscribed to news updates',
   })
   @Column({ default: true })
   notificationsEnabled: boolean;
+
+  @Column({ nullable: true })
+  totalPoints: number;
+
+  @Column({ default: 9999, nullable: true })
+  rank: number;
 
   @OneToMany(() => BestResult, (bestResult) => bestResult.runner)
   bestResults: BestResult[];
@@ -144,9 +146,6 @@ export class User {
 
   @OneToMany(() => Race, (race) => race.raceRunners, { nullable: true })
   runnerForRaces: Race[];
-
-  @OneToMany(() => Payment, (payment) => payment.user)
-  payments: Payment[];
 
   @OneToMany(() => VisitorTicket, (visitorTicket) => visitorTicket.user)
   visitorTickets: VisitorTicket[];

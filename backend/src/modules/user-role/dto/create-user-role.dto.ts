@@ -1,4 +1,4 @@
-import { IsNumber } from 'class-validator';
+import { IsDateString, IsNumber, IsString } from 'class-validator';
 
 export class CreateUserRoleDto {
   @IsNumber()
@@ -6,4 +6,18 @@ export class CreateUserRoleDto {
 
   @IsNumber()
   userId: number;
+}
+
+export class CreateUserRoleSubscription extends CreateUserRoleDto {
+  @IsString()
+  subscriptionStatus: string;
+
+  @IsString()
+  stripeSubscriptionId: string;
+
+  @IsDateString()
+  startDate: Date;
+
+  @IsDateString()
+  endDate: Date;
 }

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Article } from 'src/modules/article/entities/article.entity';
 import { Event } from 'src/modules/event/entities/event.entity';
 import { Repository, UpdateResult } from 'typeorm';
+import { FileService } from '../file/file.service';
 import { CreateContentDto } from './dto/create-content.dto';
 import { UpdateContentDto } from './dto/update-content.dto';
 import { Content } from './entities/content.entity';
@@ -16,13 +17,31 @@ export class ContentService {
     private eventRepository: Repository<Event>,
     @InjectRepository(Article)
     private articleRepository: Repository<Article>,
+    private fileService: FileService,
   ) {}
 
-  async createContent(dto: CreateContentDto): Promise<Content> {
+  async createContent(
+    dto: CreateContentDto,
+    media?: Express.Multer.File,
+  ): Promise<Content> {
+    let mediaUrl: string | null = null;
+
+    if (media) {
+      mediaUrl = await this.fileService.uploadFileToStorage(
+        media.originalname,
+        'contents',
+        media.mimetype,
+        media.buffer,
+        {
+          mediaName: media.originalname,
+          contentType: media.mimetype,
+        },
+      );
+    }
+
     const content = this.repository.create({
       ...dto,
-      articleId: null,
-      eventId: null,
+      mediaUrl,
     });
 
     // check if event or article exists

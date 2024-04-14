@@ -4,6 +4,7 @@ import { RaceTeam } from 'src/modules/race-team/entities/race-team.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -42,4 +43,10 @@ export class Race {
 
   @OneToMany(() => RaceTeam, (raceTeam) => raceTeam.race)
   raceTeams: RaceTeam[];
+
+  @Column({ nullable: true })
+  winnerId: number;
+  @ManyToOne(() => RaceTeam, { nullable: true })
+  @JoinColumn({ name: 'winnerId' })
+  winner: RaceTeam;
 }

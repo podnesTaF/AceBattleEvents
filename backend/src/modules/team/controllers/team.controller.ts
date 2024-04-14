@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   UploadedFiles,
   UseGuards,
@@ -62,5 +63,10 @@ export class TeamController {
   @Get()
   getAllTeams() {
     return this.teamService.getAllTeams();
+  }
+
+  @Get('/:id')
+  getTeam(@Param('id') id: string) {
+    return this.teamService.getTeam(+id);
   }
 }

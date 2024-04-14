@@ -25,11 +25,8 @@ export class AuthService extends AbstractAuthService {
   }
 
   async register(dto: CreateUserDto) {
-    const encryptedPassword = await bcrypt.hash(dto.password, 12);
-
     const userData = await this.userService.create({
       ...dto,
-      password: encryptedPassword,
     });
 
     return {

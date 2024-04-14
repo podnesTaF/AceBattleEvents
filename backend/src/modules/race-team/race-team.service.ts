@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Pagination, paginate } from 'nestjs-typeorm-paginate';
 import { RaceRunner } from 'src/modules/race-runner/entities/race-runner.entity';
 import { Race } from 'src/modules/race/entities/race.entity';
 import { Team } from 'src/modules/team/entities/team.entity';
@@ -99,5 +100,18 @@ export class RaceTeamService {
     raceTeam.confirmed = true;
 
     return this.raceTeamRepository.save(raceTeam);
+  }
+
+  async getTeamDetails(teamId: number): Promise<Pagination<RaceTeam>> {
+    const qb = this.raceTeamRepository
+      .createQueryBuilder('raceTeam')
+      .leftJoinAndSelect('raceTeam.race', 'race')
+      .leftJoinAndSelect('raceTeam.team', 'team')
+      .leftJoinAndSelect('team.gender', 'gender')
+      .leftJoinAndSelect('race.eventRaceType', 'eventRaceType')
+      .leftJoinAndSelect('eventRaceType.event', 'event')
+      .where('team.id = :teamId', { teamId });
+
+    return paginate<RaceTeam>(qb, { page: 1, limit: 10 });
   }
 }

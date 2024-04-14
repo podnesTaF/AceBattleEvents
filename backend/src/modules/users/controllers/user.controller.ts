@@ -5,7 +5,6 @@ import {
   Param,
   Patch,
   Post,
-  Query,
   Request,
   UploadedFiles,
   UseGuards,
@@ -16,8 +15,9 @@ import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
 import { Roles } from 'src/modules/auth/roles/roles-auth.decorator';
+import { PaymentsService } from 'src/modules/payments/payments.service';
 import { AuthenticatedUser, GetUser } from '../decorators/user.decorator';
-import { CreateMigration } from '../dtos/create-user.dto';
+import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
@@ -25,16 +25,57 @@ import { UserService } from '../services/user.service';
 @ApiTags('users')
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly paymentsService: PaymentsService,
+  ) {}
+
+  @Post('/register')
+  async register(@Body() body: CreateUserDto) {
+    const user = await this.userService.create(body as CreateUserDto);
+    const response: {
+      message: string;
+      checkoutUrl?: string;
+    } = {
+      message: 'User created successfully.',
+    };
+
+    const pendingRolesIds = user.roles
+      .filter((r) => r.role?.stripe_price_id)
+      .map((r) => r.role.id);
+
+    if (pendingRolesIds.length > 0) {
+      const url = await this.paymentsService.createCheckoutSession(
+        user.id,
+        pendingRolesIds,
+      );
+
+      response.checkoutUrl = url;
+      response.message = 'User created. Redirecting to payment...';
+
+      return response;
+    }
+  }
+
+  @Post('/cancel-registration')
+  async cancelRegistration(@Body() body: { sessionId: string }) {
+    const user = await this.paymentsService.getUserFromSession(body.sessionId);
+    return this.userService.cancelRegistration(user);
+  }
 
   @Post('/verify')
   verifyMember(@Body() body: { ott: string }): Promise<User> {
     return this.userService.completeVerification(body.ott);
   }
 
-  @Post('/migration')
-  migrateUser(@Body() body: CreateMigration) {
-    return this.userService.migrateUser(body);
+  @Get()
+  getAllUsers() {
+    return this.userService.findAll();
+  }
+
+  @Get('/exists/:email')
+  checkEmail(@Param('email') email: string) {
+    return this.userService.isDuplicateEmail(email);
   }
 
   @Post('/email-confirmation')
@@ -50,11 +91,6 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   getVerifyStatus(@GetUser() user: AuthenticatedUser) {
     return this.userService.getVerifyStatus(user.id);
-  }
-
-  @Get()
-  getAllUsers() {
-    return this.userService.findAll();
   }
 
   @Get('/exists/:email')
@@ -82,8 +118,8 @@ export class UserController {
   }
 
   @Get(':id')
-  getUserProfile(@Param('id') id: number, @Query() query: { authId: string }) {
-    return this.userService.findById(+id, query.authId);
+  getUserProfile(@Param('id') id: number) {
+    return this.userService.findById(+id);
   }
 
   @Patch('/image')

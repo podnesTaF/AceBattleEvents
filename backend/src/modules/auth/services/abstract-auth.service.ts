@@ -13,11 +13,16 @@ export abstract class AbstractAuthService {
   async login(user: Partial<User>) {
     const roles = this.getRoles(user.roles);
 
-    const jwtToken = this.generateJwtToken({
+    const payload = {
       id: user.id,
       email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      avatarUrl: user.avatarUrl,
       roles,
-    });
+    };
+
+    const jwtToken = this.generateJwtToken(payload);
 
     const ott = await this.oneTimeTokenService.createToken(
       user as User,
@@ -25,24 +30,28 @@ export abstract class AbstractAuthService {
     );
 
     return {
-      id: user.id,
-      email: user.email,
-      roles: roles,
+      ...payload,
       token: jwtToken,
       ott: ott,
     };
   }
 
-  generateJwtToken(data: { id: number; email: string; roles: RequestRole[] }) {
-    const payload = { email: data.email, id: data.id, roles: data.roles };
-    return this.jwtService.sign(payload);
+  generateJwtToken(data: {
+    id: number;
+    email: string;
+    roles: RequestRole[];
+    firstName: string;
+    lastName: string;
+    avatarUrl: string;
+  }) {
+    return this.jwtService.sign(data);
   }
 
   getRoles(roles: UserRole[]) {
     return roles.map((userRole) => ({
       id: userRole.role.id,
       name: userRole.role.name,
-      active: userRole.active,
+      active: userRole.startDate < new Date() && userRole.endDate > new Date(),
     }));
   }
 }

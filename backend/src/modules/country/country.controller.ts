@@ -17,7 +17,7 @@ export class CountryController {
     return this.countryService.createManyCountries(body);
   }
 
-  @Get('/names')
+  @Get('/dictionary')
   getAllNames() {
     return this.countryService.getAllNames();
   }

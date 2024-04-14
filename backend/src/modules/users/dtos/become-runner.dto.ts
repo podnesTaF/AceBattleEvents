@@ -21,21 +21,11 @@ export class BecomeRunnerDto {
 
   @IsString()
   @IsOptional()
-  avatarName: string;
+  avatarUrl: string;
 
   @IsString()
   @IsOptional()
   imageUrl?: string;
-
-  @IsNumber()
-  countryId: number;
-
-  @IsString()
-  @IsOptional()
-  phoneNumber: string;
-
-  @IsString()
-  city: string;
 
   @IsArray()
   bestResults?: CreateBestResultForUser[];

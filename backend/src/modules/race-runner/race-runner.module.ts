@@ -6,6 +6,7 @@ import { RaceTeam } from 'src/modules/race-team/entities/race-team.entity';
 import { Race } from 'src/modules/race/entities/race.entity';
 import { Split } from 'src/modules/split/entities/split.entity';
 import { SplitService } from 'src/modules/split/split.service';
+import { Gender } from '../gender/entities/gender.entity';
 import { RaceRunner } from './entities/race-runner.entity';
 import { RunnerRole } from './entities/runner-role.entity';
 import { RunnerStatus } from './entities/runner-status.entity';
@@ -29,6 +30,7 @@ import { RaceRunnerService } from './race-runner.service';
       Race,
       Split,
       RaceTeam,
+      Gender,
     ]),
   ],
   controllers: [RaceRunnerController],

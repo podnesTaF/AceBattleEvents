@@ -15,6 +15,7 @@ import { CountryModule } from './modules/country/country.module';
 import { DocumentModule } from './modules/document/document.module';
 import { EventRaceRegistrationModule } from './modules/event-race-registration/event-race-registration.module';
 import { EventRaceTypeModule } from './modules/event-race-type/event-race-type.module';
+import { EventPreviewModule } from './modules/event/event-preview.module';
 import { EventModule } from './modules/event/event.module';
 import { FileModule } from './modules/file/file.module';
 import { GenderModule } from './modules/gender/gender.module';
@@ -24,8 +25,9 @@ import { JoinRequestModule } from './modules/join-request/join-request.module';
 import { LocationModule } from './modules/location/location.module';
 import { MediaModule } from './modules/media/media.module';
 import { OttModule } from './modules/ott/ott.module';
-import { PaymentsModule } from './modules/payment/payment.module';
+import { PaymentsModule } from './modules/payments/payments.module';
 import { PenaltyModule } from './modules/penalty/penalty.module';
+import { PrizesModule } from './modules/prizes/prizes.module';
 import { PushTokenModule } from './modules/push-token/push-token.module';
 import { RaceRunnerModule } from './modules/race-runner/race-runner.module';
 import { RaceTeamModule } from './modules/race-team/race-team.module';
@@ -34,8 +36,6 @@ import { ResetUserModule } from './modules/reset-user/reset-user.module';
 import { RoleModule } from './modules/role/role.module';
 import { SplitModule } from './modules/split/split.module';
 import { StandardModule } from './modules/standard/standard.module';
-import { StripeModule } from './modules/stripe/stripe.module';
-import { SubscriptionModule } from './modules/subscription/subscription.module';
 import { TeamModule } from './modules/team/team.module';
 import { TimetableModule } from './modules/timetable/timetable.module';
 import { UserRoleModule } from './modules/user-role/user-role.module';
@@ -68,7 +68,6 @@ import { VisitorTicketModule } from './visitor-ticket/visitor-ticket.module';
     CategoryModule,
     BestResultsModule,
     StandardModule,
-    SubscriptionModule,
     TeamModule,
     ArticleModule,
     EventModule,
@@ -89,7 +88,8 @@ import { VisitorTicketModule } from './visitor-ticket/visitor-ticket.module';
     TicketModule,
     VisitorTicketModule,
     OttModule,
-    StripeModule,
+    EventPreviewModule,
+    PrizesModule,
   ],
 })
 export class AppModule implements NestModule {

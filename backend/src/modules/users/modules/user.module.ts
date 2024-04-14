@@ -7,8 +7,10 @@ import { CountryService } from 'src/modules/country/country.service';
 import { Country } from 'src/modules/country/entity/country.entity';
 import { FileService } from 'src/modules/file/file.service';
 import { Gender } from 'src/modules/gender/entities/gender.entity';
+import { GenderService } from 'src/modules/gender/gender.service';
 import { OneTimeToken } from 'src/modules/ott/entities/ott.entity';
 import { OneTimeTokenService } from 'src/modules/ott/ott.service';
+import { PaymentsService } from 'src/modules/payments/payments.service';
 import { Role } from 'src/modules/role/entities/role.entity';
 import { RoleService } from 'src/modules/role/role.service';
 import { Standard } from 'src/modules/standard/entities/standard.entity';
@@ -49,6 +51,8 @@ import { UserService } from '../services/user.service';
     CoachService,
     FileService,
     OneTimeTokenService,
+    PaymentsService,
+    GenderService,
   ],
   exports: [UserService],
 })

@@ -7,4 +7,7 @@ export class CompleteVerificationDto {
 
   @IsString()
   token: string;
+
+  @IsString()
+  password: string;
 }

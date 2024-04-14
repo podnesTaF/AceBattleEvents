@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
@@ -28,9 +29,22 @@ export class RaceController {
     return this.raceService.createRace(eventRaceTypeId, dto);
   }
 
+  @Get('/last-matches')
+  getLastMatches(
+    @Query()
+    query: {
+      runnerId?: string;
+      teamId?: string;
+      managerId?: string;
+      count?: string;
+    },
+  ) {
+    return this.raceService.getLastMatches(query);
+  }
+
   @Get(':id')
   async getRace(@Param('id') id: number) {
-    return this.raceService.getRace(id);
+    return this.raceService.getFullRace(id);
   }
 
   // Automatically create races based on the registrations for the event race type.

@@ -33,6 +33,26 @@ export class RaceRunnerController {
     return this.raceRunnerService.addRaceRunners(raceId, dto, raceTeamId);
   }
 
+  @Get('/event-best-milers/:eventCode')
+  async getBestMilersOfEvent(@Param('eventCode') eventCode: string) {
+    return this.raceRunnerService.getBestMilersByEvent({
+      eventCode: eventCode,
+    });
+  }
+
+  @Get('/runner/:id')
+  async getRunnerResults(
+    @Param('id') id: number,
+    @Query()
+    query: {
+      page?: number;
+      limit?: number;
+      year?: number;
+    },
+  ) {
+    return this.raceRunnerService.getRunnerResults(+id, query);
+  }
+
   @Get('/qrcode/:token')
   @UseGuards(RolesGuard)
   @Roles('admin')

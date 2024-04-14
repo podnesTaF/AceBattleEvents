@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { FileService } from '../file/file.service';
+import { CreateArticleDto } from './dto/create-article.dto';
 import { Article } from './entities/article.entity';
 
 @Injectable()
@@ -8,7 +10,33 @@ export class ArticleService {
   constructor(
     @InjectRepository(Article)
     private readonly articleRepository: Repository<Article>,
+    private readonly fileService: FileService,
   ) {}
+
+  async createArticle(
+    dto: CreateArticleDto & { previewImage: Express.Multer.File },
+  ) {
+    const { previewImage, ...rest } = dto;
+    const article = await this.articleRepository.save(rest);
+
+    if (previewImage) {
+      const url = await this.fileService.uploadFileToStorage(
+        previewImage.originalname,
+        'articles',
+        previewImage.mimetype,
+        previewImage.buffer,
+        {
+          mediaName: previewImage.originalname,
+          contentType: previewImage.mimetype,
+        },
+      );
+
+      article.previewImageUrl = url;
+      return await this.articleRepository.save(article);
+    }
+
+    return article;
+  }
 
   async getNewsPreviews({
     relatedNews,
@@ -35,9 +63,6 @@ export class ArticleService {
 
     const newsPreviews = newsList.map((news) => {
       const content = news.contents.find((item) => item.type === 'text');
-      const media = news.contents.find(
-        (item) => item.type === 'image',
-      )?.mediaUrl;
 
       let previewText = '';
       if (content) {
@@ -51,7 +76,7 @@ export class ArticleService {
         id: news.id,
         title: news.title,
         previewText: previewText,
-        smallImageUrl: media || '',
+        previewImageUrl: news.previewImageUrl,
         createdAt: news.createdAt,
       };
     });
@@ -72,5 +97,45 @@ export class ArticleService {
       skip: page ? (page - 1) * limit : 0,
       order: { createdAt: 'DESC' },
     });
+  }
+
+  async getArticle(id: number) {
+    const article = await this.articleRepository.findOne({
+      where: { id: +id },
+      relations: ['contents', 'hashtags', 'hashtags.articles'],
+    });
+
+    const relatedFullNews: {
+      [key: number]: Article;
+    } = article.hashtags.reduce((acc, hashtag) => {
+      return {
+        ...acc,
+        ...hashtag.articles.reduce(
+          (acc, article) => ({ ...acc, [article.id]: article }),
+          {},
+        ),
+      };
+    }, {});
+
+    console.log(relatedFullNews);
+
+    const relatedArticles = await this.getNewsPreviews({
+      relatedNews: Object.values(relatedFullNews).filter(
+        (item) => item.id !== article.id,
+      ),
+    });
+
+    article.hashtags = article.hashtags.map((hashtag) => ({
+      id: hashtag.id,
+      name: hashtag.name,
+      articles: null,
+      events: null,
+    }));
+
+    return {
+      ...article,
+      relatedArticles,
+      // relatedEvents,
+    };
   }
 }

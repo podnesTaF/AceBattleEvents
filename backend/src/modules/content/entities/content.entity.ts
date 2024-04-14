@@ -1,4 +1,5 @@
 import { Article } from 'src/modules/article/entities/article.entity';
+import { EventPreview } from 'src/modules/event/entities/event-preview.entity';
 import { Event } from 'src/modules/event/entities/event.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -11,12 +12,14 @@ export class Content {
   type: string;
 
   @Column({ default: 'article' })
-  contentFor: string;
+  purpose: string;
 
   @Column({ type: 'text', nullable: true })
   text: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   mediaUrl: string;
 
   @Column({ nullable: true })
@@ -38,4 +41,15 @@ export class Content {
     onDelete: 'CASCADE',
   })
   event: Event;
+
+  @Column({
+    nullable: true,
+  })
+  eventPreviewId: number;
+
+  @ManyToOne(() => EventPreview, (preview) => preview.contents, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  eventPreview: EventPreview;
 }

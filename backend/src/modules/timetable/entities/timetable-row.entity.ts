@@ -7,17 +7,25 @@ export class TimetableRow {
   id: number;
 
   @Column({ type: 'datetime', nullable: true })
+  callRoomTime: Date;
+
+  @Column({ type: 'datetime' })
   startTime?: Date;
 
   @Column({ nullable: true })
   category?: string;
 
+  @Column({ nullable: true })
+  teamMembers?: string;
+
   @Column()
-  event?: string;
+  event: string;
 
   @Column()
   timetableId: number;
 
-  @ManyToOne(() => Timetable, (timetable) => timetable.rows)
+  @ManyToOne(() => Timetable, (timetable) => timetable.rows, {
+    onDelete: 'CASCADE',
+  })
   timetable: Timetable;
 }

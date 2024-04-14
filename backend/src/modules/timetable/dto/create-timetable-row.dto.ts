@@ -1,9 +1,11 @@
 import { IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateTimetableRowDto {
+  @IsString()
+  callRoomTime?: Date;
+
   @IsDateString()
-  @IsOptional()
-  startTime?: Date;
+  startTime: Date;
 
   @IsString()
   @IsOptional()
@@ -15,4 +17,8 @@ export class CreateTimetableRowDto {
   @IsNumber()
   @IsOptional()
   timetableId: number;
+
+  @IsString()
+  @IsOptional()
+  teamMembers?: string;
 }

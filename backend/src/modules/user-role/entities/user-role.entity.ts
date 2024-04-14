@@ -1,12 +1,10 @@
 import { Role } from 'src/modules/role/entities/role.entity';
-import { Subscription } from 'src/modules/subscription/enitites/subscription.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
@@ -23,11 +21,17 @@ export class UserRole {
   @Column()
   roleId: number;
 
-  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
-  assignedAt: Date;
+  @Column({ nullable: true })
+  subscriptionStatus: string;
 
-  @Column({ default: true })
-  active: boolean;
+  @Column({ nullable: true })
+  stripeSubscriptionId: string;
+
+  @Column({ nullable: true })
+  startDate: Date;
+
+  @Column({ nullable: true })
+  endDate: Date;
 
   @ManyToOne(() => User, (user) => user.roles, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
@@ -36,9 +40,4 @@ export class UserRole {
   @ManyToOne(() => Role, (role) => role.userRoles, { onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'roleId' })
   role: Role;
-
-  @OneToMany(() => Subscription, (subscription) => subscription.userRole, {
-    nullable: true,
-  })
-  subscriptions: Subscription[];
 }

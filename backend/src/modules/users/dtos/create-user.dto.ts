@@ -4,11 +4,18 @@ import {
   IsDateString,
   IsEmail,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
   IsStrongPassword,
   Length,
 } from 'class-validator';
+import { BecomeRunnerDto } from './become-runner.dto';
+
+export enum RunnerCategory {
+  PROFESSIONAL = 'professional',
+  AMATEUR = 'amateur',
+}
 
 export class CreateUserDto {
   @Length(2)
@@ -24,6 +31,22 @@ export class CreateUserDto {
   @IsStrongPassword()
   @IsOptional()
   password?: string;
+
+  @IsBoolean()
+  emailConfirmed: boolean;
+
+  @IsString()
+  city: string;
+
+  @IsNumber()
+  countryId: number;
+
+  @IsArray()
+  roleIds: number[];
+
+  @IsObject()
+  @IsOptional()
+  runner: BecomeRunnerDto;
 }
 
 export class RegisterWithGoogleDto {
@@ -39,10 +62,6 @@ export class CreateUserWithGoogle extends CreateUserDto {
 export class CreateMigration extends CreateUserDto {
   @IsNumber()
   id: number;
-
-  @IsDateString()
-  @IsOptional()
-  dateOfBirth?: Date;
 
   @IsString()
   @IsOptional()
