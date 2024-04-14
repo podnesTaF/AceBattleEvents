@@ -5,6 +5,7 @@ import { BestResultsService } from 'src/modules/best-results/services/best-resul
 import { GenderService } from 'src/modules/gender/gender.service';
 import { RoleService } from 'src/modules/role/role.service';
 import { StandardService } from 'src/modules/standard/standard.service';
+import { TeamPlayer } from 'src/modules/team/entities/team-player.entity';
 import { UserRoleService } from 'src/modules/user-role/user-role.service';
 import { Repository } from 'typeorm';
 import { BecomeRunnerDto } from '../dtos/become-runner.dto';
@@ -208,5 +209,21 @@ export class RunnerService extends AbstractUserService {
     });
 
     return runner;
+  }
+
+  async getRunnerTeams(runnerId: number): Promise<TeamPlayer[]> {
+    const runner = await this.userRepository.findOne({
+      where: { id: runnerId },
+      relations: [
+        'runnerTeams',
+        'runnerTeams.team',
+        'runnerTeams.team.country',
+        'runnerTeams.team.coach',
+        'runnerTeams.team.teamRunners',
+        'runnerTeams.team.teamRunners.runner',
+      ],
+    });
+
+    return runner.runnerTeams;
   }
 }

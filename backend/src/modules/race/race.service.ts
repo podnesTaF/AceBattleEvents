@@ -84,4 +84,42 @@ export class RaceService {
 
     return published;
   }
+
+  getLastMatches(query: {
+    runnerId?: string;
+    teamId?: string;
+    count?: string;
+  }) {
+    const qb = this.raceRepository
+      .createQueryBuilder('race')
+      .leftJoinAndSelect('race.eventRaceType', 'eventRaceType')
+      .leftJoinAndSelect('eventRaceType.event', 'event')
+      .leftJoinAndSelect('eventRaceType.location', 'location')
+      .leftJoinAndSelect('location.country', 'country')
+      .leftJoinAndSelect('race.raceTeams', 'raceTeams')
+      .leftJoinAndSelect('raceTeams.team', 'team');
+
+    if (query.runnerId) {
+      qb.leftJoinAndSelect('raceTeams.raceRunners', 'raceRunners').where(
+        'raceRunners.runnerId = :runnerId',
+        {
+          runnerId: +query.runnerId,
+        },
+      );
+    }
+
+    if (query.teamId) {
+      qb.andWhere('team.id = :teamId', {
+        teamId: +query.teamId,
+      });
+    }
+
+    qb.andWhere('race.startTime < :now', {
+      now: new Date(), // Current time
+    })
+      .orderBy('race.startTime', 'DESC') // Order by startTime in descending order
+      .take(query.count ? +query.count : 5);
+
+    return qb.getMany();
+  }
 }

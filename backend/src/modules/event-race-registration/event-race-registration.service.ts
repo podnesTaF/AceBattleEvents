@@ -75,4 +75,19 @@ export class EventRaceRegistrationService {
 
     return this.eventRaceRegistrationRepository.save(dto);
   }
+
+  async getUserRegistrations(userId: number): Promise<EventRaceRegistration[]> {
+    const registrations = await this.eventRaceRegistrationRepository
+      .createQueryBuilder('registration')
+      .leftJoinAndSelect('registration.eventRaceType', 'eventRaceType')
+      .leftJoinAndSelect('eventRaceType.event', 'event')
+      .leftJoinAndSelect('eventRaceType.raceType', 'raceType')
+      .where('registration.runnerId = :userId', { userId })
+      .leftJoinAndSelect('registration.team', 'team')
+      .leftJoinAndSelect('team.teamRunners', 'teamRunners')
+      .orWhere('teamRunners.runnerId = :userId', { userId })
+      .getMany();
+
+    return registrations;
+  }
 }

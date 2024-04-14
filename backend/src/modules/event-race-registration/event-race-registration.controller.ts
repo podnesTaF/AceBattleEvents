@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
 import { Roles } from 'src/modules/auth/roles/roles-auth.decorator';
@@ -43,5 +43,10 @@ export class EventRaceRegistrationController {
     );
   }
 
-  // add payments to the registration and active if paid
+  // get runner's registrations
+
+  @Get('user/:id')
+  async getRegistrations(@Param() id: string) {
+    return this.eventRaceRegistrationService.getUserRegistrations(+id);
+  }
 }

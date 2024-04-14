@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Pagination, paginate } from 'nestjs-typeorm-paginate';
 import * as QRCode from 'qrcode';
 import { EventRaceRegistration } from 'src/modules/event-race-registration/entities/event-race-registration.entity';
 import { RaceTeam } from 'src/modules/race-team/entities/race-team.entity';
@@ -340,6 +341,49 @@ export class RaceRunnerService {
         .leftJoinAndSelect('teamRace.eventRaceType', 'teamEventRaceType')
         .orWhere('teamEventRaceType.eventId = :eventId', { eventId });
     }
+  }
+
+  // runner results
+
+  async getRunnerResults(
+    runnerId: number,
+    query: {
+      page?: number;
+      limit?: number;
+      year?: number;
+    },
+  ): Promise<Pagination<RaceRunner>> {
+    const qb = this.raceRunnerRepository
+      .createQueryBuilder('raceRunner')
+      .leftJoinAndSelect('raceRunner.runner', 'runner')
+      .where('runner.id = :runnerId', { runnerId })
+      .leftJoinAndSelect('raceRunner.runnerRole', 'runnerRole')
+      .leftJoinAndSelect('raceRunner.raceTeam', 'raceTeam')
+      .leftJoinAndSelect('raceTeam.team', 'team')
+      .leftJoinAndSelect('raceRunner.splits', 'split')
+      .andWhere('split.finalSplit = true')
+      .leftJoinAndSelect('raceRunner.race', 'race')
+      .leftJoinAndSelect('race.eventRaceType', 'eventRaceType')
+      .leftJoinAndSelect('raceTeam.race', 'teamRace')
+      .leftJoinAndSelect('teamRace.eventRaceType', 'teamEventRaceType')
+      .orderBy(
+        'CASE WHEN raceTeam.id IS NOT NULL THEN teamRace.startTime ELSE race.startTime END',
+        'DESC',
+      );
+
+    if (query.year) {
+      qb.andWhere(
+        'YEAR(race.startTime) = :year OR YEAR(teamRace.startTime) = :year',
+        {
+          year: query.year,
+        },
+      );
+    }
+
+    return paginate<RaceRunner>(qb, {
+      page: query.page || 1,
+      limit: query.limit || 10,
+    });
   }
 
   // create runner role

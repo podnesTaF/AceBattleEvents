@@ -52,6 +52,11 @@ export class RunnerController {
     return this.runnerService.getTopRunners(queries);
   }
 
+  @Get('/:id/teams')
+  async getRunnerTeams(@Param('id') id: string) {
+    return this.runnerService.getRunnerTeams(+id);
+  }
+
   @Get('/:id')
   async getRunner(@Param('id') id: string) {
     return this.runnerService.getRunnerInfo(id);

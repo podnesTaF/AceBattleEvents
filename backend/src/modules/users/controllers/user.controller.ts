@@ -5,7 +5,6 @@ import {
   Param,
   Patch,
   Post,
-  Query,
   Request,
   UploadedFiles,
   UseGuards,
@@ -18,7 +17,7 @@ import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
 import { Roles } from 'src/modules/auth/roles/roles-auth.decorator';
 import { PaymentsService } from 'src/modules/payments/payments.service';
 import { AuthenticatedUser, GetUser } from '../decorators/user.decorator';
-import { CreateMigration, CreateUserDto } from '../dtos/create-user.dto';
+import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
@@ -58,11 +57,6 @@ export class UserController {
     }
   }
 
-  @Get('/migrate-to-url')
-  async migrateToUrl() {
-    return this.userService.migrateToUrl();
-  }
-
   @Post('/cancel-registration')
   async cancelRegistration(@Body() body: { sessionId: string }) {
     const user = await this.paymentsService.getUserFromSession(body.sessionId);
@@ -74,14 +68,14 @@ export class UserController {
     return this.userService.completeVerification(body.ott);
   }
 
+  @Get()
+  getAllUsers() {
+    return this.userService.findAll();
+  }
+
   @Get('/exists/:email')
   checkEmail(@Param('email') email: string) {
     return this.userService.isDuplicateEmail(email);
-  }
-
-  @Post('/migration')
-  migrateUser(@Body() body: CreateMigration) {
-    return this.userService.migrateUser(body);
   }
 
   @Post('/email-confirmation')
@@ -97,11 +91,6 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   getVerifyStatus(@GetUser() user: AuthenticatedUser) {
     return this.userService.getVerifyStatus(user.id);
-  }
-
-  @Get()
-  getAllUsers() {
-    return this.userService.findAll();
   }
 
   @Get('/exists/:email')
@@ -129,8 +118,8 @@ export class UserController {
   }
 
   @Get(':id')
-  getUserProfile(@Param('id') id: number, @Query() query: { authId: string }) {
-    return this.userService.findById(+id, query.authId);
+  getUserProfile(@Param('id') id: number) {
+    return this.userService.findById(+id);
   }
 
   @Patch('/image')

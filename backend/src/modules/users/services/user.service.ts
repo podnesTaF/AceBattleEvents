@@ -13,11 +13,7 @@ import { RoleService } from 'src/modules/role/role.service';
 import { UserRoleService } from 'src/modules/user-role/user-role.service';
 import { Repository } from 'typeorm';
 import { AuthenticatedUser } from '../decorators/user.decorator';
-import {
-  CreateMigration,
-  CreateUserDto,
-  CreateUserWithGoogle,
-} from '../dtos/create-user.dto';
+import { CreateUserDto, CreateUserWithGoogle } from '../dtos/create-user.dto';
 import { LoginUserDto } from '../dtos/login-user.dto';
 import { UpdateUserDtoWithImages } from '../dtos/update-user.dto';
 import { User } from '../entities/user.entity';
@@ -42,28 +38,6 @@ export class UserService extends AbstractUserService {
     private runnerService: RunnerService,
   ) {
     super(repository, roleService, userRoleService);
-  }
-
-  async migrateToUrl() {
-    const users = await this.repository.find();
-
-    for (const user of users) {
-      const image_path = user.imageUrl
-        ? `images/${user.id}/${user.imageUrl}`
-        : null;
-
-      const avatar_path = user.avatarUrl
-        ? `images/${user.id}/${user.avatarUrl}`
-        : null;
-
-      user.imageUrl = await this.fileService.migrateToUrl(image_path, 'images');
-      user.avatarUrl = await this.fileService.migrateToUrl(
-        avatar_path,
-        'avatars',
-      );
-
-      await this.repository.save(user);
-    }
   }
 
   async create(dto: CreateUserDto | CreateUserWithGoogle) {
@@ -315,7 +289,7 @@ export class UserService extends AbstractUserService {
       .getMany();
   }
 
-  async findById(id: number, authId?: string) {
+  async findById(id: number) {
     const user = await this.repository.findOne({
       where: { id },
       relations: [
@@ -342,19 +316,7 @@ export class UserService extends AbstractUserService {
       ],
     });
 
-    // let isFollowing;
-
-    // if (authId) {
-    //   isFollowing = user.runner?.followers?.some(
-    //     (follower) => follower.id === +authId,
-    //   );
-    // } else {
-    //   isFollowing = null;
-    // }
-
-    // return user.runner
-    //   ? { ...user, runner: { ...user.runner, isFollowing } }
-    //   : user;
+    return user;
   }
 
   async findByCond(cond: LoginUserDto | { id: number }): Promise<User> {
@@ -491,76 +453,5 @@ export class UserService extends AbstractUserService {
 
   updatePassword(id: number, password: string) {
     return this.repository.update(id, { password });
-  }
-
-  async migrateUser(dto: CreateMigration) {
-    const user = new User();
-    user.id = dto.id;
-    user.firstName = dto.firstName;
-    user.lastName = dto.lastName;
-    user.email = dto.email;
-    user.city = dto.city;
-    user.emailVerified = dto.verified;
-
-    const country = await this.countryService.returnIfExist({
-      name: dto.countryName,
-    });
-
-    user.country = country || null;
-
-    const gender =
-      (await this.genderRepository.findOne({
-        where: { name: dto.genderName },
-      })) || null;
-
-    user.gender = gender;
-
-    if (dto.imageUrl) {
-      const image = await this.fetchImageAsMulterFile(dto.imageUrl);
-
-      user.avatarUrl = await this.fileService.uploadFileToStorage(
-        image.originalname,
-        `/images/${user.id}`,
-        image.mimetype,
-        image.buffer,
-        { mediaName: image.originalname, contentType: image.mimetype },
-        user.avatarUrl,
-      );
-    }
-
-    if (dto.avatarUrl) {
-      const avatar = await this.fetchImageAsMulterFile(dto.avatarUrl);
-
-      user.avatarUrl = await this.fileService.uploadFileToStorage(
-        avatar.originalname,
-        `/avatars/${user.id}`,
-        avatar.mimetype,
-        avatar.buffer,
-        { mediaName: avatar.originalname, contentType: avatar.mimetype },
-        user.avatarUrl,
-      );
-    }
-
-    const savedUser = await this.userRepository.save(user);
-
-    const roles = await Promise.all(
-      dto.roles.map(
-        async (role) => await this.roleService.findByCond({ name: role }),
-      ),
-    );
-
-    const userRoles = await Promise.all(
-      roles.map(
-        async (role) =>
-          await this.userRoleService.createUserRole({
-            userId: savedUser.id,
-            roleId: role.id,
-          }),
-      ),
-    );
-
-    user.roles = userRoles;
-
-    await this.repository.save(user);
   }
 }

@@ -40,6 +40,19 @@ export class RaceRunnerController {
     });
   }
 
+  @Get('/runner/:id')
+  async getRunnerResults(
+    @Param('id') id: number,
+    @Query()
+    query: {
+      page?: number;
+      limit?: number;
+      year?: number;
+    },
+  ) {
+    return this.raceRunnerService.getRunnerResults(+id, query);
+  }
+
   @Get('/qrcode/:token')
   @UseGuards(RolesGuard)
   @Roles('admin')

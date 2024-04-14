@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
@@ -26,6 +27,19 @@ export class RaceController {
     @Param('eventRaceTypeId') eventRaceTypeId: number,
   ) {
     return this.raceService.createRace(eventRaceTypeId, dto);
+  }
+
+  @Get('/last-matches')
+  getLastMatches(
+    @Query()
+    query: {
+      runnerId?: string;
+      teamId?: string;
+      managerId?: string;
+      count?: string;
+    },
+  ) {
+    return this.raceService.getLastMatches(query);
   }
 
   @Get(':id')

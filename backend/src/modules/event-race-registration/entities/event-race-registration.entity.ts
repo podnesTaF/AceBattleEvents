@@ -36,6 +36,9 @@ export class EventRaceRegistration {
   @JoinColumn({ name: 'teamId' })
   team: Team;
 
+  @Column({ default: 'team' })
+  type: string;
+
   @Column()
   eventRaceTypeId: number;
   @ManyToOne(

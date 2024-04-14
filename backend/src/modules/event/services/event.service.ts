@@ -155,7 +155,7 @@ export class EventService {
     const returnData: {
       notFinished: boolean;
       eventTitle: string;
-      introImageUrl?: string;
+      mainImageUrl?: string;
       eventRaceTypesResults: {
         id: number;
         raceType: {
@@ -182,7 +182,7 @@ export class EventService {
     } = {
       notFinished: false,
       eventTitle: event.title,
-      introImageUrl: event.mainImageUrl,
+      mainImageUrl: event.mainImageUrl,
       eventRaceTypesResults: [],
     };
 
@@ -190,7 +190,7 @@ export class EventService {
       return {
         notFinished: true,
         eventTitle: event.title,
-        introImageUrl: event.mainImageUrl,
+        mainImageUrl: event.mainImageUrl,
       };
     }
 
