@@ -25,7 +25,7 @@ export class BestResult {
   @Column()
   distanceId: number;
 
-  @Column()
+  @Column({ nullable: true })
   year: number;
 
   @Column({ default: 'personal best' })

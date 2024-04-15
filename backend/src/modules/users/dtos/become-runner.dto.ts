@@ -1,11 +1,5 @@
 import { OmitType } from '@nestjs/mapped-types';
-import {
-  IsArray,
-  IsDateString,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 import { CreateBestResultDto } from 'src/modules/best-results/dto/create-best-result.dto';
 
 export class CreateBestResultForUser extends OmitType(CreateBestResultDto, [
@@ -13,8 +7,8 @@ export class CreateBestResultForUser extends OmitType(CreateBestResultDto, [
 ] as const) {}
 
 export class BecomeRunnerDto {
-  @IsDateString()
-  dateOfBirth: Date;
+  @IsString()
+  dateOfBirth: string;
 
   @IsNumber()
   genderId: number;

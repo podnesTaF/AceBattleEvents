@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { paginate, Pagination } from 'nestjs-typeorm-paginate';
+import { format, parse } from 'date-fns';
+import { Pagination, paginate } from 'nestjs-typeorm-paginate';
 import { BestResultsService } from 'src/modules/best-results/services/best-results.service';
 import { GenderService } from 'src/modules/gender/gender.service';
 import { RoleService } from 'src/modules/role/role.service';
@@ -28,7 +29,15 @@ export class RunnerService extends AbstractUserService {
 
   async becomeRunner(userId: number, dto: BecomeRunnerDto): Promise<User> {
     // assing user fields from dto to user
-    const user = await this.assignRequiredRoleFields(userId, dto, 'runner');
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+
+    // Assigning user fields from dto to user
+    const parsedDate = parse(dto.dateOfBirth, 'dd/MM/yyyy', new Date());
+
+    const formattedDate = format(parsedDate, 'yyyy-MM-dd');
+
+    user.dateOfBirth = formattedDate;
+    user.genderId = +dto.genderId;
 
     // Creating bestResults
 
@@ -37,12 +46,6 @@ export class RunnerService extends AbstractUserService {
     ]);
 
     user.bestResults = bestResults;
-
-    // Creating userRole
-
-    const userRole = await this.createRoleForUser(user.id, 'runner');
-
-    user.roles = user.roles ? [...user.roles, userRole] : [userRole];
 
     // Define Category based on bestResults and standard for gender and distance
     const { category } = await this.standardService.findHighestRankingStandard(

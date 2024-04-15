@@ -40,7 +40,7 @@ export abstract class AbstractUserService {
       throw new BadRequestException('User already has this role');
     }
 
-    user.dateOfBirth = new Date(dto.dateOfBirth);
+    user.dateOfBirth = dto.dateOfBirth;
     user.genderId = dto.genderId;
     user.avatarUrl = dto.avatarUrl;
     user.imageUrl = dto.imageUrl;

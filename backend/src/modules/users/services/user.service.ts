@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import sgMail from '@sendgrid/mail';
 import axios from 'axios';
 import * as bcrypt from 'bcrypt';
+import { format, parse } from 'date-fns';
 import { Content } from 'src/modules/content/entities/content.entity';
 import { CountryService } from 'src/modules/country/country.service';
 import { FileService } from 'src/modules/file/file.service';
@@ -53,6 +54,7 @@ export class UserService extends AbstractUserService {
     user.email = dto.email;
     user.city = dto.city;
     user.password = await bcrypt.hash(dto.password, 10);
+    user.emailVerified = dto.emailConfirmed;
 
     const country = await this.countryService.findById(dto.countryId);
 
@@ -371,8 +373,11 @@ export class UserService extends AbstractUserService {
     user.lastName = dto.lastName || user.lastName;
 
     if (dto.dateOfBirth !== undefined) {
-      console.log(dto.dateOfBirth, 'dateOfBirth');
-      user.dateOfBirth = dto.dateOfBirth ? new Date(dto.dateOfBirth) : null;
+      const parsedDate = parse(dto.dateOfBirth, 'dd/MM/yyyy', new Date());
+
+      const formattedDate = format(parsedDate, 'yyyy-MM-dd');
+
+      user.dateOfBirth = dto.dateOfBirth ? formattedDate : null;
     }
 
     if (dto.city !== undefined) {

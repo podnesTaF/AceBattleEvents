@@ -16,7 +16,7 @@ export class OneTimeToken {
   @Column({ unique: true })
   ott: string;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   jwtToken: string;
 
   @Column({ default: 'auth' })

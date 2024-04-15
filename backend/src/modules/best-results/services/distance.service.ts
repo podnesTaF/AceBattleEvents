@@ -20,4 +20,8 @@ export class DistanceService {
     const distances = this.distanceRepository.create(body);
     return await this.distanceRepository.save(distances);
   }
+
+  getDistancesDictionary() {
+    return this.distanceRepository.find({ select: ['id', 'name'] });
+  }
 }

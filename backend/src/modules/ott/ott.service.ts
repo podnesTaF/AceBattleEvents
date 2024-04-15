@@ -99,8 +99,8 @@ export class OneTimeTokenService {
 
     await this.ottRepository.save({
       email: dto.email,
-      token: otp,
-      expires: new Date(new Date().getTime() + 1000 * 60 * 10),
+      ott: otp,
+      expiresAt: new Date(new Date().getTime() + 1000 * 60 * 10),
     });
 
     const msg = {

@@ -59,8 +59,8 @@ export class User {
   @JoinColumn({ name: 'genderId' })
   gender: Gender;
 
-  @Column({ nullable: true, type: 'date' })
-  dateOfBirth: Date;
+  @Column({ nullable: true })
+  dateOfBirth: string;
 
   @ApiProperty({
     example: '+1234567890',
