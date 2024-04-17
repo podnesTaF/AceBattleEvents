@@ -1,0 +1,162 @@
+import { withEmotionCache } from "@emotion/react";
+import { ThemeProvider } from "@mui/material/styles";
+import {
+  V2_MetaFunction,
+  json,
+  type LinksFunction,
+  type LoaderArgs,
+} from "@remix-run/node";
+import {
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  isRouteErrorResponse,
+  useLoaderData,
+  useRouteError,
+} from "@remix-run/react";
+import { ReactNode, useContext, useEffect } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+import globalStyles from "~/styles/global.css";
+import stylesheet from "~/tailwind.css";
+import { AppBar, CustomDrawer, Footer } from "./components";
+import MainNavigation from "./components/shared/header/MainNavigation";
+import ClientStyleContext from "./context/ClientStyleContext";
+import { LayoutProvider, useLayout } from "./lib/shared/context/LayoutContex";
+import { AuthenticatedUser, IAdmin } from "./lib/types";
+import { adminAuthenticator, authenticator } from "./lib/utils";
+import theme from "./styles/theme";
+
+const queryClient = new QueryClient();
+
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: stylesheet },
+  { rel: "stylesheet", href: globalStyles },
+  {
+    rel: "stylesheet",
+    href: "/styles/swiper-bundle.min.css",
+  },
+];
+export const loader = async ({ request }: LoaderArgs) => {
+  const user = await authenticator.isAuthenticated(request);
+  const admin = await adminAuthenticator.isAuthenticated(request);
+
+  return json({ user, admin });
+};
+
+export const meta: V2_MetaFunction = () => {
+  return [{ title: "Ace Battle Events | Main Page" }];
+};
+
+const Document = withEmotionCache(
+  (
+    {
+      children,
+      title,
+      user,
+      admin,
+    }: {
+      children: ReactNode;
+      title: string;
+      user: AuthenticatedUser | null;
+      admin: IAdmin | null;
+    },
+    emotionCache
+  ) => {
+    const { showNav } = useLayout();
+    const clientStyleData = useContext(ClientStyleContext);
+
+    useEffect(() => {
+      // re-link sheet container
+      emotionCache.sheet.container = document.head;
+      // re-inject tags
+      const tags = emotionCache.sheet.tags;
+      emotionCache.sheet.flush();
+      tags.forEach((tag) => {
+        (emotionCache.sheet as any)._insertTag(tag);
+      });
+      clientStyleData.reset();
+    }, []);
+
+    return (
+      <QueryClientProvider client={queryClient}>
+        <html lang="en">
+          <head>
+            <meta charSet="utf-8" />
+            <meta
+              name="viewport"
+              content="width=device-width,initial-scale=1"
+            />
+            <Meta />
+            <Links />
+          </head>
+          <body>
+            <ThemeProvider theme={theme}>
+              {showNav && (
+                <AppBar
+                  DrawerComponent={CustomDrawer}
+                  drawerProps={{ user }}
+                  NavComponent={MainNavigation}
+                  user={user}
+                  admin={admin}
+                  className={"mb-[56px] lg:mb-[80px]"}
+                />
+              )}
+              {children}
+              <Footer />
+              <ScrollRestoration />
+              <Scripts />
+              {process.env.NODE_ENV === "development" && <LiveReload />}
+              <ReactQueryDevtools initialIsOpen={false} />
+            </ThemeProvider>
+          </body>
+        </html>
+      </QueryClientProvider>
+    );
+  }
+);
+
+export default function App() {
+  const { user, admin } = useLoaderData();
+
+  return (
+    <LayoutProvider>
+      <Document title="" user={user} admin={admin}>
+        <Outlet />
+      </Document>
+    </LayoutProvider>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <LayoutProvider>
+        <Document title="" user={null} admin={null}>
+          <div className="error-container">
+            <h1 className="font-semibold text-3xl">
+              {error.status} {error.statusText}
+            </h1>
+          </div>
+        </Document>
+      </LayoutProvider>
+    );
+  }
+
+  const errorMessage = error instanceof Error ? error.message : "Unknown error";
+  return (
+    <LayoutProvider>
+      <Document title="" user={null} admin={null}>
+        <div className="error-container">
+          <h1 className="font-semibold text-3xl mb-3">App Error</h1>
+          <pre>{errorMessage}</pre>
+        </div>
+      </Document>
+    </LayoutProvider>
+  );
+}
