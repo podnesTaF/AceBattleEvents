@@ -1,12 +1,12 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import sgMail from '@sendgrid/mail';
-import { randomBytes } from 'crypto';
-import { LessThan, Repository } from 'typeorm';
-import { AuthenticatedUser } from '../users/decorators/user.decorator';
-import { User } from '../users/entities/user.entity';
-import { OneTimeToken } from './entities/ott.entity';
-import { getOtpEmailTemplate } from './utils/getOtpEmailTemplate';
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import sgMail from "@sendgrid/mail";
+import { randomBytes } from "crypto";
+import { LessThan, Repository } from "typeorm";
+import { AuthenticatedUser } from "../users/decorators/user.decorator";
+import { User } from "../users/entities/user.entity";
+import { OneTimeToken } from "./entities/ott.entity";
+import { getOtpEmailTemplate } from "./utils/getOtpEmailTemplate";
 
 @Injectable()
 export class OneTimeTokenService {
@@ -19,9 +19,9 @@ export class OneTimeTokenService {
     user: User | AuthenticatedUser,
     jwtToken: string,
     expiresInMinutes = 5,
-    goal = 'auth',
+    goal = "auth",
   ): Promise<string> {
-    const ott = randomBytes(16).toString('hex');
+    const ott = randomBytes(16).toString("hex");
     const expiresAt = new Date(Date.now() + expiresInMinutes * 60000); // Token expires in 5 minutes
 
     const tokenEntity = this.ottRepository.create({
@@ -40,7 +40,7 @@ export class OneTimeTokenService {
   async validateAndRemoveToken(ott: string): Promise<string | null> {
     const tokenEntity = await this.ottRepository.findOne({
       where: { ott },
-      relations: ['user'], // Assuming you want to fetch the user as well
+      relations: ["user"], // Assuming you want to fetch the user as well
     });
 
     if (!tokenEntity || tokenEntity.expiresAt < new Date()) {
@@ -81,10 +81,17 @@ export class OneTimeTokenService {
 
   // otp token handling
 
-  async sendVerificationEmail(dto: { email: string }) {
+  async sendVerificationEmail(
+    dto: { email: string },
+    template: (props: {
+      otp: string;
+      [key: string]: any;
+    }) => string = getOtpEmailTemplate,
+    props: { [key: string]: any } = {},
+  ) {
     const existing = await this.ottRepository.findOne({
       where: { email: dto.email },
-      order: { expiresAt: 'DESC' },
+      order: { expiresAt: "DESC" },
     });
 
     if (
@@ -92,7 +99,7 @@ export class OneTimeTokenService {
       new Date().getTime() - existing.createdAt.getTime() + 1000 * 60 * 10 <
         1000 * 60
     ) {
-      return { sent: false, message: 'Email already sent' };
+      return { sent: false, message: "Email already sent" };
     }
 
     const otp = this.generateOtp();
@@ -106,22 +113,23 @@ export class OneTimeTokenService {
     const msg = {
       to: dto.email,
       from: {
-        email: 'it.podnes@gmail.com',
-        name: 'Ace Battle Mile',
+        email: "it.podnes@gmail.com",
+        name: "Ace Battle Mile",
       },
-      subject: 'Your OTP | Ace Battle Mile',
-      html: getOtpEmailTemplate({
+      subject: "Your OTP | Ace Battle Mile",
+      html: template({
         otp: otp,
+        ...props,
       }),
     };
 
     try {
       await sgMail.send(msg);
     } catch (error) {
-      console.log('error sending email', error.message);
+      console.log("error sending email", error.message);
     }
 
-    return { sent: true, message: 'Email sent' };
+    return { sent: true, message: "Email sent" };
   }
 
   generateOtp() {
@@ -132,7 +140,7 @@ export class OneTimeTokenService {
   async completeVerification(dto: { email: string; otp: string }) {
     const isValid = await this.checkToken(dto.otp, dto.email);
     if (!isValid) {
-      throw new BadRequestException('Invalid token');
+      throw new BadRequestException("Invalid token");
     }
 
     await this.ottRepository.delete({ ott: dto.otp });

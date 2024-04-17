@@ -3,7 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Content } from 'src/modules/content/entities/content.entity';
 import { FileService } from 'src/modules/file/file.service';
 import { Repository } from 'typeorm';
-import { UpdateEventPreviewDto } from '../dto/event-preview.dto';
+import {
+  CreateEventPreviewDto,
+  UpdateEventPreviewDto,
+} from '../dto/event-preview.dto';
 import { EventPreview } from '../entities/event-preview.entity';
 
 @Injectable()
@@ -18,8 +21,25 @@ export class EventPreviewService {
     private readonly contentRepository: Repository<Content>,
   ) {}
 
-  async create(event: Partial<EventPreview>) {
-    return await this.repository.save(event);
+  async create(event: CreateEventPreviewDto, introImage?: Express.Multer.File) {
+    let introImageUrl: string | null = null;
+    if (introImage) {
+      introImageUrl = await this.fileService.uploadFileToStorage(
+        introImage.originalname,
+        'event-previews',
+        introImage.mimetype,
+        introImage.buffer,
+        {
+          mediaName: introImage.originalname,
+          contentType: introImage.mimetype,
+        },
+      );
+    }
+
+    return await this.repository.save({
+      ...event,
+      introImageUrl,
+    });
   }
 
   async getAll(queries: { announced: boolean }) {
@@ -60,6 +80,7 @@ export class EventPreviewService {
           mediaName: dto.introImage.originalname,
           contentType: dto.introImage.mimetype,
         },
+        eventPreview.introImageUrl,
       );
 
       eventPreview.introImageUrl = url;
@@ -73,6 +94,7 @@ export class EventPreviewService {
       }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { replaceContents, introImage, ...rest } = dto;
 
     return await this.repository.save({ ...eventPreview, ...rest, contents });

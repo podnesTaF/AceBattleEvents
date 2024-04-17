@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateLocationDto {
@@ -10,6 +11,7 @@ export class CreateLocationDto {
   @IsString()
   zipCode: string;
 
+  @Transform(({ value }) => parseInt(value), { toClassOnly: true })
   @IsNumber()
   countryId: number;
 

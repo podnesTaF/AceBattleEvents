@@ -17,6 +17,11 @@ export class CountryController {
     return this.countryService.createManyCountries(body);
   }
 
+  @Get()
+  getAllCountries() {
+    return this.countryService.getFullCountries();
+  }
+
   @Get('/dictionary')
   getAllNames() {
     return this.countryService.getAllNames();

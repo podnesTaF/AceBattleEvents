@@ -1,5 +1,6 @@
 import { EventRaceType } from 'src/modules/event-race-type/entities/event-race-type.entity';
 import { RegistrationFee } from 'src/modules/event-race-type/entities/registration-fee.entity';
+import { Participant } from 'src/modules/participant/entities/participant.entity';
 import { Team } from 'src/modules/team/entities/team.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 import {
@@ -9,6 +10,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { RegistrationType } from './registration-type.entity';
 
 @Entity('event_race_registration')
 export class EventRaceRegistration {
@@ -36,8 +38,20 @@ export class EventRaceRegistration {
   @JoinColumn({ name: 'teamId' })
   team: Team;
 
-  @Column({ default: 'team' })
-  type: string;
+  @Column({ nullable: true })
+  participantId: number;
+  @ManyToOne(() => Participant, (participant) => participant.registrations, {
+    onDelete: 'RESTRICT',
+    nullable: true,
+  })
+  @JoinColumn({ name: 'participantId' })
+  participant: Participant;
+
+  @Column({ nullable: true })
+  typeId: number;
+  @ManyToOne(() => RegistrationType, (t) => t.registrations, { nullable: true })
+  @JoinColumn({ name: 'typeId' })
+  type: RegistrationType;
 
   @Column()
   eventRaceTypeId: number;
@@ -47,14 +61,14 @@ export class EventRaceRegistration {
     { onDelete: 'RESTRICT' },
   )
   @JoinColumn({ name: 'eventRaceTypeId' })
-  eventRaceType: RegistrationFee;
+  eventRaceType: EventRaceType;
 
-  @Column()
+  @Column({ nullable: true })
   feeId: number;
   @ManyToOne(
     () => RegistrationFee,
     (registrationFee) => registrationFee.registrations,
-    { onDelete: 'RESTRICT' },
+    { onDelete: 'RESTRICT', nullable: true },
   )
   @JoinColumn({ name: 'feeId' })
   fee: RegistrationFee;

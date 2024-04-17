@@ -55,6 +55,22 @@ export class EventRaceTypeService {
     });
   }
 
+  // get by event id
+  async getEventRaceTypes(eventId: number): Promise<EventRaceType[]> {
+    const types = await this.eventRaceTypeRepository.find({
+      where: { eventId },
+      relations: ['raceType', 'registrationFees', 'registrations'],
+    });
+
+    return types.map((type) => {
+      return {
+        ...type,
+        registrations: null,
+        registrationsCount: type.registrations.length,
+      };
+    });
+  }
+
   // create registration fee
   async createRegistrationFee(
     dto: CreateRegistrationFeeDto,

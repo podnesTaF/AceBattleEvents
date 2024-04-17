@@ -1,4 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
+import { Transform } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
@@ -29,10 +30,12 @@ export class CreateEventPreviewDto {
   @IsOptional()
   date?: Date;
 
+  @Transform(({ value }) => !!value, { toClassOnly: true })
   @IsBoolean()
   @IsOptional()
   announced: boolean;
 
+  @Transform(({ value }) => parseInt(value), { toClassOnly: true })
   @IsNumber()
   @IsOptional()
   eventId: number;

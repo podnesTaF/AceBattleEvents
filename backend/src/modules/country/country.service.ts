@@ -46,6 +46,10 @@ export class CountryService {
     });
   }
 
+  async getFullCountries() {
+    return this.repository.find();
+  }
+
   async findById(id: number) {
     return this.repository.findOne({ where: { id } });
   }

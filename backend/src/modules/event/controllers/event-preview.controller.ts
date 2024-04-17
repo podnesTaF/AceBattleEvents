@@ -14,7 +14,10 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
 import { Roles } from 'src/modules/auth/roles/roles-auth.decorator';
-import { UpdateEventPreviewDto } from '../dto/event-preview.dto';
+import {
+  CreateEventPreviewDto,
+  UpdateEventPreviewDto,
+} from '../dto/event-preview.dto';
 import { EventPreviewService } from '../services/event-preview.service';
 
 @Controller('event-previews')
@@ -24,18 +27,22 @@ export class EventPreviewController {
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
+  @UseInterceptors(
+    FileFieldsInterceptor([{ name: 'introImage', maxCount: 1 }], {
+      limits: {
+        fileSize: 2 * 1024 * 1024,
+      },
+    }),
+  )
   create(
-    @Body()
-    dto: {
-      title: string;
-      season: string;
-      introImageUrl?: string;
-      description?: string;
-      date?: Date;
-      locationInfo?: string;
+    @UploadedFiles()
+    files: {
+      introImage?: Express.Multer.File[];
     },
+    @Body()
+    dto: CreateEventPreviewDto,
   ) {
-    return this.eventPreviewService.create(dto);
+    return this.eventPreviewService.create(dto, files?.introImage?.[0]);
   }
 
   // edit

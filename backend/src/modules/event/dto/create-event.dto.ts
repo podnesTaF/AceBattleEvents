@@ -6,6 +6,9 @@ export class CreateEventDto {
   title: string;
 
   @IsString()
+  eventCode: string;
+
+  @IsString()
   @IsOptional()
   subtitle?: string;
 

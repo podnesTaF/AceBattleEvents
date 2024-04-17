@@ -16,7 +16,7 @@ export class LocationService {
 
   async createLocation(
     dto: CreateLocationDto,
-    placeImage: Express.Multer.File,
+    placeImage?: Express.Multer.File,
   ): Promise<Location> {
     let placeImageUrl: string | null = null;
 

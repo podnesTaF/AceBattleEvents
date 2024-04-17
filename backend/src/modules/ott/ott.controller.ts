@@ -4,16 +4,17 @@ import {
   Post,
   UnauthorizedException,
   UseGuards,
-} from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { AuthenticatedUser, GetUser } from '../users/decorators/user.decorator';
-import { OneTimeTokenService } from './ott.service';
+} from "@nestjs/common";
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import { AuthenticatedUser, GetUser } from "../users/decorators/user.decorator";
+import { OneTimeTokenService } from "./ott.service";
+import { getOtpParticipantTemplate } from "./utils/getOtpParticipantTemplate";
 
-@Controller('ott')
+@Controller("ott")
 export class OttController {
   constructor(private readonly ottService: OneTimeTokenService) {}
 
-  @Post('generate')
+  @Post("generate")
   @UseGuards(JwtAuthGuard)
   async generateOtt(
     @Body() body: { token: string },
@@ -24,7 +25,7 @@ export class OttController {
     return { ott };
   }
 
-  @Post('/send-verifcation-email')
+  @Post("/send-verifcation-email")
   sendVerificationEmail(
     @Body()
     dto: {
@@ -34,7 +35,25 @@ export class OttController {
     return this.ottService.sendVerificationEmail(dto);
   }
 
-  @Post('/verify')
+  @Post("/send-verifcation-email/participant")
+  sendVerificationEmailParticipant(
+    @Body()
+    dto: {
+      email: string;
+      event: {
+        id: number;
+        title: string;
+      };
+    },
+  ) {
+    return this.ottService.sendVerificationEmail(
+      { email: dto.email },
+      getOtpParticipantTemplate,
+      { event: dto.event },
+    );
+  }
+
+  @Post("/verify")
   verifyEmail(
     @Body()
     dto: {
@@ -45,11 +64,11 @@ export class OttController {
     return this.ottService.completeVerification(dto);
   }
 
-  @Post('validate')
+  @Post("validate")
   async validateOtt(@Body() body: { ott: string }) {
     const jwtToken = await this.ottService.validateAndRemoveToken(body.ott);
     if (!jwtToken) {
-      throw new UnauthorizedException('Invalid or expired OTT');
+      throw new UnauthorizedException("Invalid or expired OTT");
     }
 
     return { token: jwtToken };

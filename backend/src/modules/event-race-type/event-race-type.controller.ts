@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/modules/auth/guards/roles.guard';
 import { Roles } from 'src/modules/auth/roles/roles-auth.decorator';
@@ -29,6 +29,11 @@ export class EventRaceTypeController {
     @Param('eventId') eventId: number,
   ) {
     return this.eventRaceTypeService.addRaceTypeToEvent(eventId, dto);
+  }
+
+  @Get('/event/:eventId')
+  async getEventRaceTypes(@Param('eventId') eventId: number) {
+    return this.eventRaceTypeService.getEventRaceTypes(eventId);
   }
 
   // create registration fee and add it to the event race type
