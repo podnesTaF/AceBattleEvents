@@ -3,6 +3,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import {
   V2_MetaFunction,
   json,
+  redirect,
   type LinksFunction,
   type LoaderArgs,
 } from "@remix-run/node";
@@ -26,8 +27,8 @@ import { AppBar, CustomDrawer, Footer } from "./components";
 import MainNavigation from "./components/shared/header/MainNavigation";
 import ClientStyleContext from "./context/ClientStyleContext";
 import { LayoutProvider, useLayout } from "./lib/shared/context/LayoutContex";
-import { AuthenticatedUser, IAdmin } from "./lib/types";
-import { adminAuthenticator, authenticator } from "./lib/utils";
+import { AuthenticatedUser } from "./lib/types";
+import { authenticator } from "./lib/utils";
 import theme from "./styles/theme";
 
 const queryClient = new QueryClient();
@@ -42,9 +43,16 @@ export const links: LinksFunction = () => [
 ];
 export const loader = async ({ request }: LoaderArgs) => {
   const user = await authenticator.isAuthenticated(request);
-  const admin = await adminAuthenticator.isAuthenticated(request);
+  if (
+    user?.roles?.find((r) => r.name === "admin") ||
+    request.url.includes("under-construction") ||
+    request.url.includes("auth/login")
+  ) {
+    return json({ user });
+  }
 
-  return json({ user, admin });
+  // redirect to under construction
+  return redirect("/under-construction");
 };
 
 export const meta: V2_MetaFunction = () => {
@@ -57,12 +65,10 @@ const Document = withEmotionCache(
       children,
       title,
       user,
-      admin,
     }: {
       children: ReactNode;
       title: string;
       user: AuthenticatedUser | null;
-      admin: IAdmin | null;
     },
     emotionCache
   ) => {
@@ -95,18 +101,23 @@ const Document = withEmotionCache(
           </head>
           <body>
             <ThemeProvider theme={theme}>
-              {showNav && (
-                <AppBar
-                  DrawerComponent={CustomDrawer}
-                  drawerProps={{ user }}
-                  NavComponent={MainNavigation}
-                  user={user}
-                  admin={admin}
-                  className={"mb-[56px] lg:mb-[80px]"}
-                />
+              {user?.roles?.find((r) => r.name === "admin") ? (
+                <>
+                  {showNav && (
+                    <AppBar
+                      DrawerComponent={CustomDrawer}
+                      drawerProps={{ user }}
+                      NavComponent={MainNavigation}
+                      user={user}
+                      className={"mb-[56px] lg:mb-[80px]"}
+                    />
+                  )}
+                  {children}
+                  <Footer />
+                </>
+              ) : (
+                children
               )}
-              {children}
-              <Footer />
               <ScrollRestoration />
               <Scripts />
               {process.env.NODE_ENV === "development" && <LiveReload />}
@@ -120,11 +131,11 @@ const Document = withEmotionCache(
 );
 
 export default function App() {
-  const { user, admin } = useLoaderData();
+  const { user } = useLoaderData();
 
   return (
     <LayoutProvider>
-      <Document title="" user={user} admin={admin}>
+      <Document title="" user={user}>
         <Outlet />
       </Document>
     </LayoutProvider>
@@ -137,7 +148,7 @@ export function ErrorBoundary() {
   if (isRouteErrorResponse(error)) {
     return (
       <LayoutProvider>
-        <Document title="" user={null} admin={null}>
+        <Document title="" user={null}>
           <div className="error-container">
             <h1 className="font-semibold text-3xl">
               {error.status} {error.statusText}
@@ -151,7 +162,7 @@ export function ErrorBoundary() {
   const errorMessage = error instanceof Error ? error.message : "Unknown error";
   return (
     <LayoutProvider>
-      <Document title="" user={null} admin={null}>
+      <Document title="" user={null}>
         <div className="error-container">
           <h1 className="font-semibold text-3xl mb-3">App Error</h1>
           <pre>{errorMessage}</pre>

@@ -1,6 +1,6 @@
-import { DownloadResponse, Storage } from '@google-cloud/storage';
-import { Injectable } from '@nestjs/common';
-import { StorageFile } from './types/file';
+import { DownloadResponse, Storage } from "@google-cloud/storage";
+import { Injectable } from "@nestjs/common";
+import { StorageFile } from "./types/file";
 
 interface FileMetadata {
   [key: string]: string;
@@ -25,9 +25,9 @@ export class FileService {
   }
 
   private setPrefix(prefix: string): string {
-    let escDestination = '';
-    escDestination += prefix.replace(/^\.+/g, '').replace(/^\/+|\/+$/g, '');
-    if (escDestination !== '') escDestination = escDestination + '/';
+    let escDestination = "";
+    escDestination += prefix.replace(/^\.+/g, "").replace(/^\/+|\/+$/g, "");
+    if (escDestination !== "") escDestination = escDestination + "/";
     return escDestination;
   }
 
@@ -39,6 +39,12 @@ export class FileService {
     metadata: FileMetadata,
     replaceUrl?: string,
   ): Promise<string> {
+    // if replaceUrl is provided, or the filename already exitst delete the file first
+    await this.storage
+      .bucket(this.bucket)
+      .file(this.setPrefix(prefix) + mediaName)
+      .delete({ ignoreNotFound: true });
+
     if (replaceUrl) await this.delete(replaceUrl);
 
     return new Promise((resolve, reject) => {
@@ -54,17 +60,17 @@ export class FileService {
         },
       });
 
-      stream.on('error', (error) => {
-        console.error('Stream error:', error);
+      stream.on("error", (error) => {
+        console.error("Stream error:", error);
         reject(error); // Reject the promise on error
       });
 
-      stream.on('finish', async () => {
+      stream.on("finish", async () => {
         try {
           await file.setMetadata({ metadata });
           resolve(file.publicUrl()); // Resolve the promise with the public URL
         } catch (error) {
-          console.error('Error setting metadata:', error);
+          console.error("Error setting metadata:", error);
           reject(error); // Reject the promise if setting metadata fails
         }
       });
@@ -81,17 +87,17 @@ export class FileService {
 
     const file = await this.getWithMetaData(path);
 
-    const newPath = path.split('/').pop();
+    const newPath = path.split("/").pop();
 
     const metadataObject: FileMetadata = {
-      contentType: file.contentType || '',
+      contentType: file.contentType || "",
       ...Object.fromEntries(file.metadata.entries()),
     };
 
     const mediaUrl = await this.uploadFileToStorage(
       newPath,
       new_prefix,
-      file.contentType || '',
+      file.contentType || "",
       file.buffer,
       metadataObject,
     );
@@ -138,7 +144,7 @@ export class FileService {
     storageFile.metadata = new Map<string, string>(
       Object.entries(metadata || {}),
     );
-    storageFile.contentType = storageFile.metadata.get('contentType');
+    storageFile.contentType = storageFile.metadata.get("contentType");
     return storageFile;
   }
 }

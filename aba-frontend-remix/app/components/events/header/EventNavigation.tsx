@@ -10,6 +10,7 @@ interface IProps {
   event: IEvent;
   isEventPast: boolean;
   openModal?: () => void;
+  modalVisible?: boolean;
 }
 
 const EventNavigation = ({
@@ -17,6 +18,7 @@ const EventNavigation = ({
   isEventPast,
   setOpen,
   openModal,
+  modalVisible = true,
 }: IProps): JSX.Element => {
   const { pathname } = useLocation();
 
@@ -49,7 +51,7 @@ const EventNavigation = ({
               </p>
             </Link>
           ))}
-          {!isEventPast && (
+          {modalVisible && !isEventPast && (
             <EventButton
               onClick={openModal}
               className="hidden lg:block"

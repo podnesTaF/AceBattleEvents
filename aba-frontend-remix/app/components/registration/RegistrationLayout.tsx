@@ -1,7 +1,6 @@
 import { ArrowForward } from "@mui/icons-material";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import React, { useState } from "react";
-
 import { useFormContext } from "react-hook-form";
 
 interface RegistrationLayoutProps {
@@ -13,6 +12,7 @@ interface RegistrationLayoutProps {
     title: string;
     fieldsToValidate?: string[];
     submit?: boolean;
+    navigation?: boolean;
   }[];
   isSubmitting?: boolean;
 }
@@ -50,27 +50,34 @@ const RegistrationLayout = ({
       </div>
       <div className="bg-[#FFF9FF] rounded-xl w-full flex-1 flex flex-col">
         <div className="flex-1 p-2 sm:p-3 lg:p-4">{children}</div>
-        <div className="flex justify-end border-t border-t-gray-400 py-2 md:py-3 px-2">
-          <Button
-            onClick={validatedHandleNext}
-            type={"button"}
-            variant="contained"
-            className="!rounded-full !px-2 font-semibold gap-5 md:!px-3 min-w-48"
-            color="error"
-            disabled={
-              !isStepValid || activeStep === steps.length - 1 || isSubmitting
-            }
-          >
-            {!!steps[activeStep].submit ? (
-              <p className="font-semibold">Confirm And Register</p>
-            ) : (
-              <>
-                <p className="font-semibold">Next</p>
-                <ArrowForward fontSize={"medium"} />
-              </>
-            )}
-          </Button>
-        </div>
+        {steps[activeStep]?.navigation && (
+          <div className="flex justify-end border-t border-t-gray-400 py-2 md:py-3 px-2">
+            <Button
+              onClick={validatedHandleNext}
+              type={"button"}
+              variant="contained"
+              className="!rounded-full !px-2 font-semibold gap-5 md:!px-3 min-w-48"
+              color="error"
+              disabled={activeStep === steps.length - 1 || isSubmitting}
+            >
+              {!!steps[activeStep].submit ? (
+                <>
+                  <p className="font-semibold">Confirm And Register</p>
+                  {isSubmitting ? (
+                    <CircularProgress size={20} />
+                  ) : (
+                    <ArrowForward />
+                  )}
+                </>
+              ) : (
+                <>
+                  <p className="font-semibold">Next</p>
+                  <ArrowForward fontSize={"medium"} />
+                </>
+              )}
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

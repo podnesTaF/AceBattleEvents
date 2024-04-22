@@ -12,8 +12,32 @@ export const ParticipantApi = (instance: AxiosInstance) => ({
   },
 
   async create(dto: CreateParticipant) {
-    const { data } = await instance.post<IParticipant>(`/participants`, dto);
+    const { data } = await instance.post<IParticipant & { ott: string }>(
+      `/participants`,
+      dto
+    );
 
+    return data;
+  },
+
+  async resendConfirmationEmail(token: string) {
+    const { data } = await instance.post<string>(
+      `/participants/${token}/resend-confirmation-email`
+    );
+    return data;
+  },
+
+  async confirmEmail(token: string) {
+    const { data } = await instance.patch<IParticipant>(
+      `/participants/${token}/confirm-email`
+    );
+    return data;
+  },
+
+  async generateTickets(token: string) {
+    const { data } = await instance.post<string>(
+      `/participants/${token}/generate-tickets`
+    );
     return data;
   },
 });

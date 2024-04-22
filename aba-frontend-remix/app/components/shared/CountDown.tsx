@@ -46,26 +46,30 @@ const CountDown: React.FC<IProps> = ({ date }) => {
   }, [targetDate]);
 
   return (
-    <div className="flex justify-center">
-      <div className="pr-4">
-        <h4 className="text-lg md:text-xl 2xl:text-2xl font-semibold text-white">
-          {countdown.days} d
-        </h4>
+    <div className="flex justify-center gap-6 xs:gap-8 sm:gap-12 lg:gap-16 2xl:gap-24 xs:max-w-[90%]">
+      <div>
+        <h2 className="text-3xl lg:text-5xl xl:text-7xl font-extrabold text-white text-center md:text-start">
+          {countdown.days}
+        </h2>
+        <h4 className="text-white text-base sm:text-lg">days</h4>
       </div>
-      <div className="pr-4">
-        <h4 className="text-lg md:text-xl 2xl:text-2xl font-semibold text-white">
-          {countdown.hours} h
-        </h4>
+      <div>
+        <h2 className="text-3xl lg:text-5xl xl:text-7xl font-extrabold text-white text-center md:text-start">
+          {countdown.hours}
+        </h2>
+        <h4 className="text-white text-base sm:text-lg">hours</h4>
       </div>
-      <div className="pr-4">
-        <h4 className="text-lg md:text-xl 2xl:text-2xl font-semibold text-white">
-          {countdown.minutes} m
-        </h4>
+      <div>
+        <h2 className="text-3xl lg:text-5xl xl:text-7xl font-extrabold text-white text-center md:text-start">
+          {countdown.minutes}
+        </h2>
+        <h4 className="text-white text-base sm:text-lg">minutes</h4>
       </div>
-      <div className="">
-        <h4 className="text-lg md:text-xl 2xl:text-2xl font-semibold text-white w-[42px] md:w-[55px] text-center">
-          {countdown.seconds} s
+      <div>
+        <h4 className="text-3xl lg:text-5xl xl:text-7xl font-extrabold text-white text-center md:text-start">
+          {countdown.seconds}
         </h4>
+        <h4 className="text-white text-base sm:text-lg">seconds</h4>
       </div>
     </div>
   );

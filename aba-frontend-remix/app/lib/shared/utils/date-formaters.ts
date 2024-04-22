@@ -132,3 +132,14 @@ export const formatTo24HourTime = (dateString?: string | null): string => {
   const minutes = date.getUTCMinutes().toString().padStart(2, "0");
   return `${hours}:${minutes}`;
 };
+
+export const getStartOfEvent = (dateString?: string) => {
+  if (!dateString) return "";
+
+  const date = new Date(dateString);
+
+  const hour = date.getHours();
+  const minute = date.getMinutes().toString().padStart(2, "0");
+
+  return `Start at ${hour}:${minute}`;
+};

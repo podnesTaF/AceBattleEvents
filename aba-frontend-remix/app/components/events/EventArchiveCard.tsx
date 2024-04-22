@@ -12,7 +12,7 @@ interface EventArchiveCardProps {
 export const EventArchiveCard = ({ event }: EventArchiveCardProps) => {
   const navigate = useNavigate();
   return (
-    <div className="max-w-6xl 2xl:max-w-7xl w-full xl:mx-auto bg-white shadow-lg">
+    <div className="max-w-6xl 2xl:max-w-7xl w-full xl:mx-auto bg-white shadow-lg rounded-xl">
       <div className="flex flex-col md:flex-row w-full md:min-h-[360px]">
         <div className="relative flex flex-col gap-4 justify-between py-5 px-4 pl-8 lg:pl-12 xl:py-8 w-full md:w-1/2 xl:w-2/5">
           <div className="absolute left-0 top-0 w-7 lg:w-10 h-1/4 bg-[#EE342C]"></div>

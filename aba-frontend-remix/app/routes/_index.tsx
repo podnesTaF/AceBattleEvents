@@ -150,7 +150,7 @@ export default function Index() {
           >
             {data.newsPreviewsData?.newsPreviews.map((news, i) => (
               <SwiperSlide key={news.id}>
-                <NewsCard variant="dark" item={news} />
+                <NewsCard item={news} />
               </SwiperSlide>
             ))}
           </Swiper>

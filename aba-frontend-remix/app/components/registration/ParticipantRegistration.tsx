@@ -3,10 +3,14 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { Api } from "~/api/axiosInstance";
-import { CreateParticipant } from "~/lib/registrations/types/IParticipant";
+import {
+  CreateParticipant,
+  IParticipant,
+} from "~/lib/registrations/types/IParticipant";
 import { IEvent } from "~/lib/types";
 import { ParticipateSchema, participateSchema } from "~/lib/utils";
 import RegistrationLayout from "./RegistrationLayout";
+import ConfirmEmail from "./steps/ConfirmEmail";
 import ParticipantInfo from "./steps/ParticipantInfo";
 import RacePicker from "./steps/RacePicker";
 
@@ -15,6 +19,7 @@ const getRegistrationSteps = () => {
     {
       title: "Choose Races",
       fieldsToValidate: ["raceIds"],
+      navigation: true,
     },
     {
       title: "Participant Information",
@@ -26,7 +31,6 @@ const getRegistrationSteps = () => {
         "year",
         "genderId",
         "email",
-        "emainConfirmed",
         "unique-participant",
         "countryId",
         "city",
@@ -34,35 +38,17 @@ const getRegistrationSteps = () => {
         "phoneCode",
       ],
       submit: true,
+      navigation: true,
     },
     {
-      title: "Status",
+      title: "Confirm Registration",
       fieldsToValidate: [],
+      navigation: false,
     },
   ];
 };
 
 const ParticipantRegistration = ({ event }: { event: IEvent }) => {
-  const [activeStep, setActiveStep] = useState(0);
-  const { mutate: createParticipant, isLoading } = useMutation(
-    (data: CreateParticipant) => Api().participant.create(data),
-    {
-      onSuccess: (data) => {
-        handleNext();
-      },
-      onError: (error) => {
-        handleNext();
-      },
-    }
-  );
-
-  const { data: countries } = useQuery("countries", () =>
-    Api().dictionary.getFullCountries()
-  );
-  const { data: genders } = useQuery("genders", () =>
-    Api().dictionary.getGenders()
-  );
-
   const form = useForm<ParticipateSchema>({
     mode: "onSubmit",
     resolver: yupResolver(participateSchema),
@@ -71,10 +57,47 @@ const ParticipantRegistration = ({ event }: { event: IEvent }) => {
     },
   });
 
+  const [activeStep, setActiveStep] = useState(0);
+  const [participant, setParticipant] = useState<
+    (IParticipant & { ott: string }) | null
+  >(null);
+
+  const { mutate: createParticipant, isLoading } = useMutation(
+    (data: CreateParticipant) => Api().participant.create(data),
+    {
+      onSuccess: (data) => {
+        setParticipant(data);
+        handleNext(true);
+      },
+      onError: (error) => {
+        form.setError("root", {
+          type: "manual",
+          message: "Something went wrong. Please try again later.",
+        });
+      },
+      retry: false,
+    }
+  );
+
+  const { data: countries } = useQuery(
+    "countries",
+    () => Api().dictionary.getFullCountries(),
+    {
+      retry: false,
+    }
+  );
+  const { data: genders } = useQuery(
+    "genders",
+    () => Api().dictionary.getGenders(),
+    {
+      retry: false,
+    }
+  );
+
   const { handleSubmit } = form;
 
-  const handleNext = async () => {
-    if (activeStep === 1) {
+  const handleNext = async (postSubmit?: boolean) => {
+    if (activeStep === 1 && !postSubmit) {
       await handleSubmit(onSubmit)();
       return;
     }
@@ -103,8 +126,6 @@ const ParticipantRegistration = ({ event }: { event: IEvent }) => {
     createParticipant(dto);
   };
 
-  console.log(form.formState.isSubmitting);
-
   return (
     <FormProvider {...form}>
       <form
@@ -125,32 +146,17 @@ const ParticipantRegistration = ({ event }: { event: IEvent }) => {
               genders={genders}
             />
           )}
-          {isLoading && (
-            <div className="flex-1 flex justify-center items-center gap-3 animate-fadeInOut">
-              <img
-                src={"/ticket.svg"}
-                className="w-40 h-40 lg:h-52 lg:w-52"
-                alt="ticket"
-              />
-              <h3 className="text-lg md:text-xl font-semibold text-gray-400">
-                Generating a ticket for you...
-                <br />
-                Please wait and do not leave the page
-              </h3>
-            </div>
+          {activeStep === 2 && participant && (
+            <ConfirmEmail
+              participant={participant!}
+              eventCode={event.eventCode}
+            />
           )}
-          {activeStep === 2 && (
-            <div className="flex-1 flex justify-center items-center gap-3">
-              <img
-                src={"/ticket.svg"}
-                className="w-40 h-40 lg:h-52 lg:w-52"
-                alt="ticket"
-              />
-              <h3 className="text-lg md:text-xl font-semibold text-gray-400">
-                Generated!
-              </h3>
-            </div>
-          )}
+          {form.formState.errors.root ? (
+            <p className="text-red-500 text-sm md:text-md mb-1 ml-3">
+              {form.formState.errors.root.message}
+            </p>
+          ) : null}
         </RegistrationLayout>
       </form>
     </FormProvider>
