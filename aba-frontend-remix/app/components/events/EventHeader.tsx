@@ -17,40 +17,34 @@ const EventHeader: React.FC<IProps> = ({ event, isEventPast, openModal }) => {
   return (
     <>
       <header
-        className={`w-full relative bg-gradient-to-b from-[#1E1C1F]/0 to-[#1E1C1F] md:bg-none 3xl:bg-gradient-to-b`}
+        className={`w-full relative py-[20%] lg:py-[10%] min-h-[440px] md:min-h-[540px]`}
       >
         <img
           src={event.mainImageUrl || "/page-detail.jpg"}
           alt="intro image"
-          height={480}
-          className="w-full h-full absolute object-cover -z-10"
+          className="w-full h-full absolute left-0 top-0 object-cover -z-10"
         />
-        <div className="md:bg-[url('/vectors/gradient-half-circle.svg')] relative -bottom-0.5 3xl:bg-none  bg-no-repeat bg-contain bg-bottom h-[380px] md:h-[480px] pb-2 md:pb-4 flex flex-col justify-between items-center z-10 pt-5">
-          <h4 className="text-white font-semibold text-lg md:text-xl text-center">
+        <div className="absolute top-0 left-0 w-full h-full backdrop-blur-[2px] bg-[#1E1C1F]/60 -z-10"></div>
+        <div className="flex flex-col z-10 px-[5%]">
+          <h4 className="text-white font-semibold text-base sm:text-lg md:text-xl lg:text-2xl 2xl:text-3xl mb-1 sm:mb-2 lg:mb-4">
+            {formatEventDateRange(event.startDateTime, event.endDate)}.{" "}
             {event.location.city}, {event.location.country?.name}
           </h4>
-          <div className="flex flex-1 flex-col gap-4 items-center justify-center z-10 px-5">
-            <h2 className="text-white font-bold text-2xl sm:text-3xl lg:text-5xl mb-3 text-center max-w-3xl">
-              {event.title}
-            </h2>
-          </div>
-          <div className="flex flex-col gap-5 md:gap-8">
-            {!isEventPast && <CountDown date={event.startDateTime} />}
-            <EventButton
-              onClick={openModal}
-              className="md:!px-5 md:!py-3"
-              color="red"
-            >
-              Register Now
-            </EventButton>
-          </div>
+          <h2 className="text-white font-bold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-none mb-3 md:mb-5 xl:mb-6 max-w-full xs:max-w-[95%] sm:max-w-[80%] md:max-w-[60%] 2xl:max-w-4xl">
+            {event.title}
+          </h2>
+          <EventButton
+            onClick={openModal}
+            className="w-fit md:!px-5 md:!py-3"
+            color="red"
+          >
+            Register Now
+          </EventButton>
+        </div>
+        <div className="flex justify-center items-center gap-5 md:gap-8 absolute bottom-0 right-0 bg-[#FF1744] rounded-tl-xl rounded-tr-xl md:rounded-tr-none  w-full md:w-1/2 max-w-[740px] h-1/4">
+          {!isEventPast && <CountDown date={event.startDateTime} />}
         </div>
       </header>
-      <div className="bg-[url('/vectors/black-half-circle.svg')] bg-no-repeat bg-bottom bg-cover -top-1 py-4 relative">
-        <h3 className="text-white capitalize font-semibold text-lg md:text-xl 2xl:text-2xl  text-center">
-          {formatEventDateRange(event.startDateTime, event.endDate)}
-        </h3>
-      </div>
     </>
   );
 };

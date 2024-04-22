@@ -1,7 +1,7 @@
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { RemixForm } from "~/components/shared/forms/CustomForm";
 import { authenticator, loginSchema } from "~/lib/utils";
 
@@ -36,7 +36,7 @@ const LoginPage = () => {
         alt="logo"
         className="w-[150px] h-[140px] md:w-[200px] md:h-[190px]"
       />
-      <div className="mx-4 sm:mx-auto w-max sm:w-[450px]">
+      <div className="mx-4 sm:mx-auto w-full sm:w-[450px]">
         <h3 className="text-center text-xl md:text-2xl font-semibold mb-4">
           Sign in
         </h3>
@@ -92,18 +92,6 @@ const LoginPage = () => {
             </>
           )}
         </RemixForm>
-        <p>
-          Don't have an account yet?{" "}
-          <Link to="/register" className="underline text-blue-400">
-            Join us
-          </Link>
-        </p>
-        <p className="mt-3">
-          Forgot password?{" "}
-          <Link to="/reset-password" className="underline text-red-500">
-            Reset password
-          </Link>
-        </p>
       </div>
     </div>
   );

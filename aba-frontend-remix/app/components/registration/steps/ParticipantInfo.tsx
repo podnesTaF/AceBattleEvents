@@ -1,11 +1,11 @@
-import { Button } from "@mui/material";
-import { useRef, useState } from "react";
+import CheckIcon from "@mui/icons-material/Check";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { debounce } from "lodash";
+import { useCallback, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { useMutation } from "react-query";
 import { Api } from "~/api/axiosInstance";
 import { CustomCheck, FormField, FormSelect } from "~/components/shared";
 import DateField from "~/components/shared/forms/DateField";
-import OtpField from "~/components/shared/forms/OtpField";
 import PhoneField from "~/components/shared/forms/PhoneField";
 import { ICountry, IEvent } from "~/lib/types";
 
@@ -24,111 +24,52 @@ const ParticipantInfo = ({
   countries?: ICountry[];
   event: IEvent;
 }) => {
+  const [isUnique, setIsUnique] = useState<boolean | null>(null);
   const {
-    setValue,
     watch,
-    trigger,
-    formState: { errors },
     setError,
+    clearErrors,
+    formState: { errors },
+    trigger,
   } = useFormContext();
 
-  const isAlreadySending = useRef(false);
-
-  const [timeBeforeResend, setTimeBeforeResend] = useState(0);
-  const [isCodeSent, setIsCodeSent] = useState(false);
-  const [errorSendingEmail, setErrorSendingEmail] = useState(false);
-
   const email = watch("email");
-  const { mutate: sendEmailConfirmation, isLoading: isSendingEmail } =
-    useMutation(
-      async (email: string) => {
-        if (isAlreadySending.current) return;
-        isAlreadySending.current = true;
 
-        try {
-          await Api().users.createParticipantConfirmation(email, {
-            id: event.id,
-            title: event.title,
-          });
-        } finally {
-          isAlreadySending.current = false;
-        }
-      },
-      {
-        onError: (error: any) => {
-          setErrorSendingEmail(true);
-          setTimeout(() => {
-            setErrorSendingEmail(false);
-          }, 3000);
-        },
+  const checkEmailUniqueness = useCallback(
+    debounce(async (email) => {
+      const isValid = await trigger("email");
+      if (!isValid) {
+        setIsUnique(null);
+        return;
       }
-    );
 
-  const {
-    mutate: verifyEmailOtp,
-    isLoading,
-    isError,
-    isSuccess,
-  } = useMutation(
-    async (otp: string) => Api().users.verifyEmailOtp({ email, otp }),
-    {
-      onSuccess: (data) => {
-        setValue("emailConfirmed", true);
-      },
-      onError: (error: any) => {
-        setErrorSendingEmail(true);
-        setTimeout(() => {
-          setErrorSendingEmail(false);
-        }, 3000);
-      },
-    }
+      const res = await Api().participant.isUnique({
+        email,
+        eventRaceTypeIds: event.eventRaceTypes.map((e) => e.id),
+      });
+
+      if (!res) {
+        setError("email", {
+          type: "unique-participant",
+          message: "The participant with the entered email already exists.",
+        });
+        setIsUnique(false);
+      } else {
+        setIsUnique(true);
+        clearErrors("email");
+      }
+    }, 1000),
+    [setError, clearErrors, event.eventRaceTypes]
   );
 
-  const sendCode = async () => {
-    const isValid = await trigger("email");
-    const eventRaceTypes = watch("eventRaceTypes");
-
-    const isUnique = await Api().participant.isUnique({
-      email,
-      eventRaceTypeIds: eventRaceTypes.map((r: string) => +r),
-    });
-
-    if (!isUnique) {
-      setError("unique-participant", {
-        type: "manual",
-        message: "Participant with this email already exists",
-      });
-
-      return;
+  useEffect(() => {
+    if (email) {
+      checkEmailUniqueness(email);
     } else {
-      setError("unique-participant", {
-        type: "manual",
-        message: "",
-      });
+      setIsUnique(null);
+      clearErrors("email");
     }
-
-    if (!isValid || timeBeforeResend > 0) return;
-    // Send code
-
-    sendEmailConfirmation(email);
-    setIsCodeSent(true);
-
-    // Start timer
-    setTimeBeforeResend(60);
-    sendEmailConfirmation(email);
-
-    const interval = setInterval(() => {
-      setTimeBeforeResend((prev) => prev - 1);
-    }, 1000);
-
-    setTimeout(() => {
-      clearInterval(interval);
-    }, 60000);
-  };
-
-  const handleComplete = (value: string) => {
-    verifyEmailOtp(value);
-  };
+  }, [email, checkEmailUniqueness, clearErrors]);
 
   return (
     <div className="flex flex-col flex-1">
@@ -157,49 +98,21 @@ const ParticipantInfo = ({
             label="Email"
             placeholder="e.g example@example.com"
           />
-          <div className="flex items-end">
-            <Button
-              type="button"
-              onClick={sendCode}
-              variant="contained"
-              className="!rounded-full !p-2.5 lg:!p-4"
-              disabled={timeBeforeResend > 0 || isSendingEmail}
-            >
-              {timeBeforeResend > 0
-                ? `Resend in ${timeBeforeResend}s`
-                : "Send Code"}
-            </Button>
-          </div>
+          {isUnique === false && (
+            <ErrorOutlineIcon color="error" className="self-center" />
+          )}
+          {isUnique === true && (
+            <CheckIcon color="success" className="self-center" />
+          )}
         </div>
         <p className="text-sm md:text-md text-gray-500 dark:text-gray-400 mb-1 ml-3">
-          We will send you a verification code to this email
+          We will send you a verification link to this email later
         </p>
         {errors["unique-participant"]?.message && (
           <p className="text-red-500 text-sm md:text-md mb-1 ml-3">
             {errors["unique-participant"]?.message as any}
           </p>
         )}
-        {errors["emailConfirmed"]?.message && (
-          <p className="text-red-500 text-sm md:text-md mb-1 ml-3">
-            {errors["emailConfirmed"]?.message as any}
-          </p>
-        )}
-        {isCodeSent ? (
-          <div className="flex flex-col gap-4">
-            <p className="text-md lg:text-lg dark:text-gray-400 font-medium ml-3">
-              Please enter the code we sent to your email
-            </p>
-            <div className="flex ml-3 sm:ml-0 sm:justify-center flex-row gap-2 lg:gap-5 2xl:gap-[5%] ">
-              <OtpField
-                callback={handleComplete}
-                reset={false}
-                error={errorSendingEmail ? "Invalid code" : undefined}
-                isSuccess={isSuccess}
-                isLoading={isLoading}
-              />
-            </div>
-          </div>
-        ) : null}
         <div className="flex flex-col gap-2 mt-2">
           <p className="block text-sm lg:text-md xl:text-lg font-semibold text-[#333]">
             Date of Birth

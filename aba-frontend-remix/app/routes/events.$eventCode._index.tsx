@@ -17,6 +17,7 @@ import {
 } from "~/components";
 import { EventArchiveCard } from "~/components/events/EventArchiveCard";
 import EventButton from "~/components/events/EventButton";
+import SponsorScroll from "~/components/events/SponsorScroll";
 import EventDrawerMenu from "~/components/events/header/EventDrawerMenu";
 import EventNavigation from "~/components/events/header/EventNavigation";
 import RegistrationModalLayout from "~/components/registration/RegistrationModalLayout";
@@ -28,6 +29,7 @@ import {
   formatDate,
   formatEventDateRange,
   getEventHeaderItems,
+  getStartOfEvent,
 } from "~/lib/utils";
 
 export const loader = async ({ params, request }: LoaderArgs) => {
@@ -98,7 +100,6 @@ const EventPage = () => {
         DrawerComponent={EventDrawerMenu}
         drawerProps={{
           items: getEventHeaderItems(event),
-          openModal: openModal,
         }}
         className="mb-[45px] md:mb-[84px]"
       />
@@ -119,32 +120,54 @@ const EventPage = () => {
                 {event.subtitle}
               </h3>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 xl:gap-16 2xl:gap-20">
-              {event.contents
-                ?.filter((c) => c.purpose === "description")
-                ?.map((c) =>
-                  c.text ? (
-                    <div key={c.id} className="w-full">
-                      <TextContent
-                        className="font-medium leading-8"
-                        text={c.text!}
-                        key={c.id}
-                      />
-                    </div>
-                  ) : c.mediaUrl ? (
-                    <div key={c.id} className="w-full">
-                      <img
-                        key={c.id}
-                        src={c.mediaUrl}
-                        alt={"content"}
-                        width={500}
-                        height={400}
-                        className="w-full h-auto rounded-xl object-cover object-center"
-                      />
-                    </div>
-                  ) : null
-                )}
+            <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+              <div className="grid grid-cols-1 gap-6 md:gap-12">
+                {event.contents
+                  ?.filter((c) => c.purpose === "description")
+                  ?.map(
+                    (c) =>
+                      c.text && (
+                        <div key={c.id} className="w-full">
+                          <TextContent
+                            className="font-medium leading-8"
+                            text={c.text!}
+                            key={c.id}
+                          />
+                        </div>
+                      )
+                  )}
+              </div>
+              <div className="rounded-xl bg-[#1E1C1F]/5 h-full w-full p-[5%] max-w-xl lg:w-2/5 lg:min-w-[460px] flex flex-col justify-around gap-8 2xl:gap-12">
+                <div>
+                  <p className="mb-2 text-xs text-[#1E1C1F]/50 uppercase font-semibold">
+                    where
+                  </p>
+                  <h4 className="text-lg lg:text-xl font-bold">
+                    {event.location.address}. {event.location.country.name},
+                    {event.location.city}
+                  </h4>
+                </div>
+                <div>
+                  <p className="mb-2 text-xs text-[#1E1C1F]/50 uppercase font-semibold">
+                    when
+                  </p>
+                  <h4 className="text-lg lg:text-xl font-bold">
+                    {getStartOfEvent(event.startDateTime)}
+                  </h4>
+                </div>
+                <div>
+                  <p className="mb-2 text-xs text-[#1E1C1F]/50 uppercase font-semibold">
+                    date
+                  </p>
+                  <h4 className="text-lg lg:text-xl font-bold">
+                    {formatEventDateRange(event.startDateTime, event.endDate)}
+                  </h4>
+                </div>
+              </div>
             </div>
+          </section>
+          <section className="w-full my-8 md:my-12">
+            <SponsorScroll />
           </section>
           {event.timetableByDays?.length && (
             <section className="bg-[#1E1C1F] py-[6%]">
@@ -264,23 +287,12 @@ const EventPage = () => {
               )}
             </div>
           </section>
+
           <section className="max-w-7xl xl:mx-auto mb-[6%] px-3">
             <div className="mb-4 lg:mb-12">
               <h4 className="font-semibold text-lg lg:text-xl xl:text-2xl lg:mb-2">
                 News
               </h4>
-              <h2 className="text-2xl lg:text-3xl xl:text-4xl font-extrabold text-[#333]">
-                Past Events
-              </h2>
-            </div>
-            <div className="flex flex-col gap-4">
-              {pastEvents.map((event, i) => (
-                <EventArchiveCard key={i} event={event} />
-              ))}
-            </div>
-          </section>
-          <section className="max-w-7xl xl:mx-auto mb-[6%] px-3">
-            <div className="mb-4 lg:mb-12">
               <h2 className="text-2xl lg:text-3xl xl:text-4xl font-extrabold text-[#333]">
                 Articles
               </h2>
@@ -312,6 +324,18 @@ const EventPage = () => {
                   </SwiperSlide>
                 ))}
               </Swiper>
+            </div>
+          </section>
+          <section className="max-w-7xl xl:mx-auto mb-[6%] px-3">
+            <div className="mb-4 lg:mb-12">
+              <h2 className="text-2xl lg:text-3xl xl:text-4xl font-extrabold text-[#333]">
+                Past Events
+              </h2>
+            </div>
+            <div className="flex flex-col gap-4">
+              {pastEvents.map((event, i) => (
+                <EventArchiveCard key={i} event={event} />
+              ))}
             </div>
           </section>
         </main>

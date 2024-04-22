@@ -14,10 +14,6 @@ export const participateSchema = yup.object().shape({
     .string()
     .email("Invalid email format")
     .required("Please provide your email"),
-  emailConfirmed: yup
-    .boolean()
-    .required("Email confirmation is required")
-    .oneOf([true], "You must confirm your email"),
   countryId: yup
     .number()
     .required("Please provide your country")

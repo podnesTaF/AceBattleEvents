@@ -1,26 +1,26 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import sgMail from '@sendgrid/mail';
-import axios from 'axios';
-import * as bcrypt from 'bcrypt';
-import { format, parse } from 'date-fns';
-import { Content } from 'src/modules/content/entities/content.entity';
-import { CountryService } from 'src/modules/country/country.service';
-import { FileService } from 'src/modules/file/file.service';
-import { Gender } from 'src/modules/gender/entities/gender.entity';
-import { OneTimeTokenService } from 'src/modules/ott/ott.service';
-import { Role } from 'src/modules/role/entities/role.entity';
-import { RoleService } from 'src/modules/role/role.service';
-import { UserRoleService } from 'src/modules/user-role/user-role.service';
-import { Repository } from 'typeorm';
-import { AuthenticatedUser } from '../decorators/user.decorator';
-import { CreateUserDto, CreateUserWithGoogle } from '../dtos/create-user.dto';
-import { LoginUserDto } from '../dtos/login-user.dto';
-import { UpdateUserDtoWithImages } from '../dtos/update-user.dto';
-import { User } from '../entities/user.entity';
-import { getVerificationLetterTemplate } from '../utils/getVerificationTemplate';
-import { AbstractUserService } from './abstract-user.service';
-import { RunnerService } from './runner.service';
+import { ForbiddenException, Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import sgMail from "@sendgrid/mail";
+import axios from "axios";
+import * as bcrypt from "bcrypt";
+import { format, parse } from "date-fns";
+import { Content } from "src/modules/content/entities/content.entity";
+import { CountryService } from "src/modules/country/country.service";
+import { FileService } from "src/modules/file/file.service";
+import { Gender } from "src/modules/gender/entities/gender.entity";
+import { OneTimeTokenService } from "src/modules/ott/ott.service";
+import { Role } from "src/modules/role/entities/role.entity";
+import { RoleService } from "src/modules/role/role.service";
+import { UserRoleService } from "src/modules/user-role/user-role.service";
+import { Repository } from "typeorm";
+import { AuthenticatedUser } from "../decorators/user.decorator";
+import { CreateUserDto, CreateUserWithGoogle } from "../dtos/create-user.dto";
+import { LoginUserDto } from "../dtos/login-user.dto";
+import { UpdateUserDtoWithImages } from "../dtos/update-user.dto";
+import { User } from "../entities/user.entity";
+import { getVerificationLetterTemplate } from "../utils/getVerificationTemplate";
+import { AbstractUserService } from "./abstract-user.service";
+import { RunnerService } from "./runner.service";
 
 @Injectable()
 export class UserService extends AbstractUserService {
@@ -44,7 +44,7 @@ export class UserService extends AbstractUserService {
   async create(dto: CreateUserDto | CreateUserWithGoogle) {
     const isDuplicate = await this.isDuplicateEmail(dto.email);
     if (isDuplicate) {
-      throw new ForbiddenException('Email already exists');
+      throw new ForbiddenException("Email already exists");
     }
 
     const user = new User();
@@ -65,19 +65,19 @@ export class UserService extends AbstractUserService {
 
     const userRoles = await this.createRolesForUser({
       userId: newUser.id,
-      roleNames: ['user'],
+      roleNames: ["user"],
       roleIds: dto.roleIds,
     });
 
     // create runner entity
-    if (userRoles.some((r) => r.role.name === 'runner')) {
+    if (userRoles.some((r) => r.role.name === "runner")) {
       const user = await this.runnerService.becomeRunner(
         newUser.id,
         dto.runner,
       );
       if (!user) {
         await this.repository.delete(newUser.id);
-        throw new Error('Error creating runner entity');
+        throw new Error("Error creating runner entity");
       }
     }
 
@@ -120,7 +120,7 @@ export class UserService extends AbstractUserService {
     }
 
     if (!roles.length) {
-      throw new Error('Roles not found');
+      throw new Error("Roles not found");
     }
 
     // Process each role
@@ -152,7 +152,7 @@ export class UserService extends AbstractUserService {
 
     const existingToken = await this.ottService.getOttByCond({
       userId: user.id,
-      goal: 'email-verify',
+      goal: "email-verify",
     });
     let token: string;
 
@@ -165,32 +165,32 @@ export class UserService extends AbstractUserService {
         return;
       }
     } else {
-      token = await this.ottService.createToken(user, jwt, 60, 'email-verify');
+      token = await this.ottService.createToken(user, jwt, 60, "email-verify");
     }
 
     const msg = {
       to: user.email,
       from: {
-        email: 'it.podnes@gmail.com',
-        name: 'Ace Battle Mile',
+        email: "info@aba.run",
+        name: "Ace Battle Mile",
       },
-      subject: 'Confirm your email address | Ace Battle Mile',
+      subject: "Confirm your email address | Ace Battle Mile",
       html: getVerificationLetterTemplate({
-        name: fullUser.firstName + ' ' + fullUser.lastName,
+        name: fullUser.firstName + " " + fullUser.lastName,
         token: token,
       }),
     };
     try {
       await sgMail.send(msg);
     } catch (error) {
-      console.log('error sending email', error.message);
+      console.log("error sending email", error.message);
     }
   }
 
   async getVerifyStatus(userId: number): Promise<boolean> {
     const data = await this.userRepository.findOne({
       where: { id: userId },
-      select: ['emailVerified'],
+      select: ["emailVerified"],
     });
 
     return data.emailVerified;
@@ -200,7 +200,7 @@ export class UserService extends AbstractUserService {
     const ottInstance = await this.ottService.getOttInfo(ott);
 
     if (!ottInstance) {
-      throw new ForbiddenException('Invalid token');
+      throw new ForbiddenException("Invalid token");
     }
 
     const user = await this.repository.findOne({
@@ -216,28 +216,28 @@ export class UserService extends AbstractUserService {
 
   async fetchImageAsMulterFile(url: string): Promise<Express.Multer.File> {
     try {
-      const response = await axios.get(url, { responseType: 'arraybuffer' });
-      const contentType = response.headers['content-type'];
-      const contentLength = response.headers['content-length'];
+      const response = await axios.get(url, { responseType: "arraybuffer" });
+      const contentType = response.headers["content-type"];
+      const contentLength = response.headers["content-length"];
 
       const multerFile: Express.Multer.File = {
         buffer: response.data,
         size: parseInt(contentLength, 10),
         mimetype: contentType,
-        originalname: url.split('/').pop() || 'image', // Extract filename from URL or fallback to a default
+        originalname: url.split("/").pop() || "image", // Extract filename from URL or fallback to a default
         // You can fill in the rest of the Multer.File properties as needed, or set them to defaults
-        fieldname: 'image', // or 'avatar', depending on your needs
-        encoding: '7bit', // Default encoding
-        destination: '', // Not applicable for buffers
-        filename: '', // Not applicable for buffers
-        path: '', // Not applicable for buffers
+        fieldname: "image", // or 'avatar', depending on your needs
+        encoding: "7bit", // Default encoding
+        destination: "", // Not applicable for buffers
+        filename: "", // Not applicable for buffers
+        path: "", // Not applicable for buffers
         stream: null, // Not applicable for buffers
       };
 
       return multerFile;
     } catch (error) {
-      console.error('Failed to fetch image:', error);
-      throw new Error('Failed to fetch image');
+      console.error("Failed to fetch image:", error);
+      throw new Error("Failed to fetch image");
     }
   }
 
@@ -270,7 +270,7 @@ export class UserService extends AbstractUserService {
 
   findAll() {
     return this.repository.find({
-      select: ['id', 'firstName', 'lastName', 'email', 'city', 'country'],
+      select: ["id", "firstName", "lastName", "email", "city", "country"],
     });
   }
 
@@ -280,14 +280,14 @@ export class UserService extends AbstractUserService {
 
   getRunnerFollowers(id: number) {
     return this.repository
-      .createQueryBuilder('user')
-      .leftJoinAndSelect('user.followingRunners', 'followingRunners')
-      .where('followingRunners.id = :id', { id })
-      .leftJoinAndSelect('user.image', 'image')
-      .leftJoinAndSelect('user.country', 'country')
-      .leftJoinAndSelect('user.runner', 'runner')
-      .leftJoinAndSelect('user.manager', 'manager')
-      .leftJoinAndSelect('runner.teamsAsRunner', 'teamAsRunner')
+      .createQueryBuilder("user")
+      .leftJoinAndSelect("user.followingRunners", "followingRunners")
+      .where("followingRunners.id = :id", { id })
+      .leftJoinAndSelect("user.image", "image")
+      .leftJoinAndSelect("user.country", "country")
+      .leftJoinAndSelect("user.runner", "runner")
+      .leftJoinAndSelect("user.manager", "manager")
+      .leftJoinAndSelect("runner.teamsAsRunner", "teamAsRunner")
       .getMany();
   }
 
@@ -295,14 +295,14 @@ export class UserService extends AbstractUserService {
     const user = await this.repository.findOne({
       where: { id },
       relations: [
-        'country',
-        'runnerTeams',
-        'runnerTeams.team',
-        'runnerTeams.team.country',
-        'runnerTeams.team.coach',
-        'roles',
-        'roles.role',
-        'gender',
+        "country",
+        "runnerTeams",
+        "runnerTeams.team",
+        "runnerTeams.team.country",
+        "runnerTeams.team.coach",
+        "roles",
+        "roles.role",
+        "gender",
       ],
     });
 
@@ -311,12 +311,12 @@ export class UserService extends AbstractUserService {
 
   async findByCond(cond: LoginUserDto | { id: number }): Promise<User> {
     const query = this.repository
-      .createQueryBuilder('user')
+      .createQueryBuilder("user")
       .where({ ...cond })
-      .leftJoinAndSelect('user.roles', 'roles')
-      .leftJoinAndSelect('roles.role', 'role')
-      .leftJoinAndSelect('user.gender', 'gender')
-      .leftJoinAndSelect('user.country', 'country');
+      .leftJoinAndSelect("user.roles", "roles")
+      .leftJoinAndSelect("roles.role", "role")
+      .leftJoinAndSelect("user.gender", "gender")
+      .leftJoinAndSelect("user.country", "country");
 
     const user = await query.getOne();
 
@@ -329,7 +329,7 @@ export class UserService extends AbstractUserService {
 
   async count() {
     const count = await this.repository.count();
-    return { 'Total users': count };
+    return { "Total users": count };
   }
 
   update(id: number, dto: User) {
@@ -373,9 +373,9 @@ export class UserService extends AbstractUserService {
     user.lastName = dto.lastName || user.lastName;
 
     if (dto.dateOfBirth !== undefined) {
-      const parsedDate = parse(dto.dateOfBirth, 'dd/MM/yyyy', new Date());
+      const parsedDate = parse(dto.dateOfBirth, "dd/MM/yyyy", new Date());
 
-      const formattedDate = format(parsedDate, 'yyyy-MM-dd');
+      const formattedDate = format(parsedDate, "yyyy-MM-dd");
 
       user.dateOfBirth = dto.dateOfBirth ? formattedDate : null;
     }
@@ -431,7 +431,7 @@ export class UserService extends AbstractUserService {
     dto: { oldPassword: string; newPassword: string; confirmPassword: string },
   ) {
     if (dto.newPassword !== dto.confirmPassword || dto.newPassword.length < 6) {
-      throw new ForbiddenException('Error Changing password');
+      throw new ForbiddenException("Error Changing password");
     }
     const user = await this.repository.findOne({ where: { id } });
     if (user) {

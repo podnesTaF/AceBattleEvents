@@ -7,6 +7,7 @@ const EventDrawerMenu = ({
   open,
   setOpen,
   items,
+  modalVisible = true,
 }: {
   open: boolean;
   setOpen: (key: boolean) => void;
@@ -14,6 +15,7 @@ const EventDrawerMenu = ({
     title: string;
     href: string;
   }[];
+  modalVisible?: boolean;
 }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();

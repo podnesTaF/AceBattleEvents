@@ -1,6 +1,8 @@
-import EventButton from "../events/EventButton";
+import { useNavigate } from "@remix-run/react";
+import EventButton from "~/components/events/EventButton";
 
 const PageInDevelopment = () => {
+  const navigate = useNavigate();
   return (
     <header
       className={`w-full relative flex items-center py-[20%] lg:py-[10%] min-h-screen`}
@@ -27,7 +29,7 @@ const PageInDevelopment = () => {
         </h4>
       </div>
       <EventButton
-        onClick={() => {}}
+        onClick={() => navigate("/auth/login")}
         className="w-fit md:!px-5 md:!py-3 !absolute bottom-[5%] left-[5%]"
         color="red"
       >
