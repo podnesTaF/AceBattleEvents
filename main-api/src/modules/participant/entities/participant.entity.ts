@@ -52,7 +52,9 @@ export class Participant {
   @Column()
   phoneNumber: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   bibNumber: number;
 
   @Column({ nullable: true })

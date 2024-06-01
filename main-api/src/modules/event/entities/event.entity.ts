@@ -1,12 +1,11 @@
-import { Article } from 'src/modules/article/entities/article.entity';
-import { Content } from 'src/modules/content/entities/content.entity';
-import { Document } from 'src/modules/document/entities/document.entity.dto';
-import { EventRaceType } from 'src/modules/event-race-type/entities/event-race-type.entity';
-import { Location } from 'src/modules/location/entities/location.entity';
-import { Participant } from 'src/modules/participant/entities/participant.entity';
-import { PrizeCategory } from 'src/modules/prizes/entities/prize-category';
-import { Timetable } from 'src/modules/timetable/entities/timetable.entity';
-import { Ticket } from 'src/ticket/entities/ticket.entity';
+import { Article } from "src/modules/article/entities/article.entity";
+import { Content } from "src/modules/content/entities/content.entity";
+import { Document } from "src/modules/document/entities/document.entity.dto";
+import { EventRaceType } from "src/modules/event-race-type/entities/event-race-type.entity";
+import { Location } from "src/modules/location/entities/location.entity";
+import { Participant } from "src/modules/participant/entities/participant.entity";
+import { PrizeCategory } from "src/modules/prizes/entities/prize-category";
+import { Timetable } from "src/modules/timetable/entities/timetable.entity";
 import {
   Column,
   Entity,
@@ -14,8 +13,8 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { EventType } from './event-type.entity';
+} from "typeorm";
+import { EventType } from "./event-type.entity";
 
 @Entity()
 export class Event {
@@ -34,14 +33,14 @@ export class Event {
   @Column({ nullable: true })
   endDate: Date;
 
-  @Column({ nullable: true, type: 'datetime' })
+  @Column({ nullable: true, type: "datetime" })
   startDateTime: Date;
 
   @Column()
   typeId: number;
 
   @ManyToOne(() => EventType, (eventType) => eventType.events)
-  @JoinColumn({ name: 'typeId' })
+  @JoinColumn({ name: "typeId" })
   type: EventType;
 
   @Column({ nullable: true })
@@ -54,7 +53,7 @@ export class Event {
   locationId: number;
 
   @ManyToOne(() => Location, (location) => location.events, { nullable: true })
-  @JoinColumn({ name: 'locationId' })
+  @JoinColumn({ name: "locationId" })
   location: Location;
 
   @OneToMany(() => Document, (document) => document.event)
@@ -72,23 +71,20 @@ export class Event {
   @Column({ default: true })
   active: boolean;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ type: "datetime", nullable: true })
   publishedAt: Date;
 
   @Column({ default: false })
   finished: boolean;
 
   @OneToMany(() => PrizeCategory, (cat) => cat.event, {
-    onDelete: 'CASCADE',
+    onDelete: "CASCADE",
     nullable: true,
   })
   prizeCategories: PrizeCategory[];
 
   @OneToMany(() => EventRaceType, (eventRaceType) => eventRaceType.event)
   eventRaceTypes: EventRaceType[];
-
-  @OneToMany(() => Ticket, (ticket) => ticket.event)
-  tickets: Ticket[];
 
   @OneToMany(() => Participant, (participant) => participant.event)
   participants: Participant[];
