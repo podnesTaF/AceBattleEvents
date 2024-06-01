@@ -4,10 +4,12 @@ import { Event } from "src/modules/event/entities/event.entity";
 import { Gender } from "src/modules/gender/entities/gender.entity";
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 
 @Entity()
@@ -23,6 +25,9 @@ export class Participant {
 
   @Column()
   email: string;
+
+  @Column({ default: "confirmation" })
+  status: string;
 
   @Column()
   eventId: number;
@@ -58,6 +63,9 @@ export class Participant {
   bibNumber: number;
 
   @Column({ nullable: true })
+  entranceHash: string;
+
+  @Column({ nullable: true })
   qrCodeUrl: string;
 
   @Column({ nullable: true })
@@ -68,4 +76,17 @@ export class Participant {
     (registration) => registration.participant,
   )
   registrations: EventRaceRegistration[];
+
+  @CreateDateColumn({
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP(6)",
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP(6)",
+    onUpdate: "CURRENT_TIMESTAMP(6)",
+  })
+  updatedAt: Date;
 }

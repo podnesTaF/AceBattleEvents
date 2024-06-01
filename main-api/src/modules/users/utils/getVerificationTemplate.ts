@@ -1,108 +1,121 @@
 export const getVerificationLetterTemplate = ({
   name,
   token,
+  eventCode,
 }: {
   name: string;
   token: string;
+  eventCode?: string;
 }) => {
   return `
   <!DOCTYPE html>
-<html lang="en" xml:lang="en">
-  <head>
-  <title>Message</title>
-    <style>
-      /* Your CSS styles here */
-      body {
-        font-family: 'Poppins', sans-serif;
-        background: url('https://storage.googleapis.com/abe_cloud_storage/image/large/cd7c495c-0ce7-4300-b107-5c3ea743693c.png')
-          no-repeat center center/cover;
-        margin: 0;
-        padding: 0;
-      }
-      .email-container {
-        max-width: 700px;
-        margin: 30px auto;
-        background-color: #fff;
-        border-radius: 10px;
-        border: 1px solid lightgray;
-      }
-      .title-container {
-        padding: 10px;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-        background-color: #1e1c1f;
-      }
-      .main-container {
-        padding: 16px;
-      }
-      .title-text {
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: 10px;
-      }
-      .main-text {
-        font-size: 18px;
-        font-weight: 400;
-        margin-bottom: 16px;
-      }
-
-      .footer {
-        margin-top: 70px;
-      }
-      .copy-text {
-        font-size: 14px;
-        font-weight: 400;
-        margin-bottom: 10px;
-        color: gray;
-      }
-      .mb-4 {
-        margin-bottom: 16px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="email-container">
-      <div class="title-container">
-        <img
-          src="https://storage.googleapis.com/abe_cloud_storage/image/large/6f9dc70b-f3a1-4fd9-b5ce-cf0f85cb7f17.png"
-          alt="ace battle mile"
-          width="300"
-          height="28"
-        />
-      </div>
-      <div class="main-container">
-        <div class="title-text">Hi, ${name}</div>
-        <div class="title-text mb-4">
-          You are about to join Ace Battle Mile!
-        </div>
-        <div class="main-text">
-          We well received your registration for Ace Battle Mile! You're nearly
-          ready to be part of our game. Just
-          <a href="http://localhost:3000/signup/verify-email?ott=${token}"
-            >click here</a
-          >
-          to confirm your email address. Please note, this link is valid for 24
-          hour.
-        </div>
-        <div class="main-text">
-          Let us know via acebattlemile@info.com if you have any problems
-        </div>
-        <div class="main-text">Have a nice day!</div>
-        <div class="footer">
+  <html lang="en" xml:lang="en">
+    <head>
+      <title>Message</title>
+      <style>
+        /* Your CSS styles here */
+        body {
+          font-family: "Poppins", sans-serif;
+          margin: 0;
+          padding: 0;
+        }
+        .email-container {
+          max-width: 700px;
+          margin: 0px auto;
+          background-color: #fff;
+        }
+        .title-container {
+          padding: 10px 20px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .main-container {
+          padding: 16px;
+        }
+  
+        a {
+          color: #ff1744 !important;
+          font-weight: 700;
+          text-decoration: none;
+        }
+  
+        .title-text {
+          font-size: 18px;
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+        .main-text {
+          font-size: 18px;
+          font-weight: 400;
+          margin-bottom: 16px;
+        }
+  
+        .footer {
+          margin-top: 30px;
+          padding-top: 30px;
+          border-top: 2px solid lightgray;
+        }
+        .copy-text {
+          font-size: 14px;
+          font-weight: 400;
+          margin-bottom: 10px;
+          color: gray;
+        }
+        .mb-4 {
+          margin-bottom: 16px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="email-container">
+        <div class="title-container">
           <img
-            class="mb-4"
-            src="https://storage.googleapis.com/abe_cloud_storage/image/large/a585929f-278f-4d35-ac94-5d01bfdf2ae5.png"
-            alt="ABM"
-            width="100"
-            height="90"
+            src="https://storage.googleapis.com/abe_cloud_storage/logo%2Fabm-logo-black.png"
+            alt="ace battle mile"
+            width="150px"
           />
-          <div class="copy-text">
-            &copy; 2023 Ace Battle Mile. All rights reserved.
+        </div>
+        <div class="main-container">
+          <div class="title-text">Hi, ${name}</div>
+          <div class="mb-4">
+            Welcome to the Ace Battle Mile! We're excited to have you join us.
+          </div>
+          <div>
+            <p>
+              Your registration for ${eventCode} has been successfully received.
+              You're just one step away from securing your place in the race.
+            </p>
+            <p>
+              <b>Please verify your email address by clicking the link below</b>.
+              Once confirmed, you will receive copy of your race ticket and all
+              necessary event details.
+            </p>
+            <p>
+              <a href="https://aba.run/events/${eventCode}/confirm/${token}"
+                >Verify Email & Receive Your Ticket</a
+              >
+            </p>
+            <p>
+              Note: This link will expire in <b>24 hours</b>. If you encounter any
+              issues or have questions, feel free to contact us at
+              <a href="mailto:info@aba.run">info@aba.run</a>.
+            </p>
+          </div>
+          <div class="footer">
+            <img
+              class="mb-4"
+              src="https://storage.googleapis.com/abe_cloud_storage/logo%2Fabm-logo-long-black.png"
+              alt="ABM"
+              height="30"
+            />
+            <div class="copy-text">
+              &copy; 2023 Ace Battle Mile. All rights reserved.
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </body>
-</html>
+    </body>
+  </html>  
     `;
 };

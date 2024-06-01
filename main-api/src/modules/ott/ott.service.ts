@@ -16,18 +16,18 @@ export class OneTimeTokenService {
   ) {}
 
   async createToken(
-    user: User | AuthenticatedUser,
+    user: User | AuthenticatedUser | null,
     jwtToken: string,
     expiresInMinutes = 5,
     goal = "auth",
   ): Promise<string> {
     const ott = randomBytes(16).toString("hex");
-    const expiresAt = new Date(Date.now() + expiresInMinutes * 60000); // Token expires in 5 minutes
+    const expiresAt = new Date(Date.now() + expiresInMinutes * 60000);
 
     const tokenEntity = this.ottRepository.create({
       ott,
       jwtToken,
-      userId: user.id,
+      userId: user?.id || null,
       expiresAt,
       goal,
     });
@@ -113,7 +113,7 @@ export class OneTimeTokenService {
     const msg = {
       to: dto.email,
       from: {
-        email: "it.podnes@gmail.com",
+        email: "info@aba.run",
         name: "Ace Battle Mile",
       },
       subject: "Your OTP | Ace Battle Mile",
