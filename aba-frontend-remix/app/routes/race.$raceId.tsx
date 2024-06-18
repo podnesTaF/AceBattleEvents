@@ -1,16 +1,16 @@
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import HomeIcon from "@mui/icons-material/Home";
-import { LoaderArgs, V2_MetaFunction, json } from "@remix-run/node";
+import { LoaderFunctionArgs, MetaFunction, json } from "@remix-run/node";
 import { Outlet, useLoaderData, useNavigate } from "@remix-run/react";
 import { useState } from "react";
 import { Api } from "~/api/axiosInstance";
 import { CustomCrumbs, HeaderTabs } from "~/components";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [{ title: "Ace Battle Events | Race Details" }];
 };
 
-export const loader = async ({ request, params }: LoaderArgs) => {
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const raceId = params.raceId;
 
   const { url } = request;

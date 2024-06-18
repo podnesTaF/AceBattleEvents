@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 
 import { Pagination } from "@mui/material";
@@ -15,7 +15,7 @@ import { useFilter } from "~/lib/shared";
 import { IRunner } from "~/lib/types";
 import { getNewParams } from "~/lib/utils";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = request.url;
   const scrollY = new URL(url).searchParams.get("scrollY");
   const params = url.split("?")[1];

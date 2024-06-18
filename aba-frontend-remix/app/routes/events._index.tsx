@@ -1,4 +1,4 @@
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { Api } from "~/api/axiosInstance";
@@ -13,7 +13,7 @@ import {
 import { countries, months, useFilter, years } from "~/lib/shared";
 import { getNewParams, transformIntoEventsTable } from "~/lib/utils";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = request.url;
   const params = url.split("?")[1];
 

@@ -1,5 +1,5 @@
 import HomeIcon from "@mui/icons-material/Home";
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { Api } from "~/api/axiosInstance";
 import {
@@ -28,7 +28,7 @@ interface IBestMileRunners {
   [gender: string]: IRaceRunner;
 }
 
-export const loader = async ({ request, params }: LoaderArgs) => {
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const { eventCode } = params;
 
   if (!eventCode) {

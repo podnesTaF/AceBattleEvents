@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, CircularProgress, Fade, Slide } from "@mui/material";
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -9,7 +9,7 @@ import { FormButton, FormField } from "~/components";
 import { setPasswordSchema } from "~/lib/auth/utils/join-schema";
 import { IMedia, IUser } from "~/lib/types";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const token = new URL(request.url).searchParams.get("token");
   const ticket = new URL(request.url).searchParams.get("ticket");
 

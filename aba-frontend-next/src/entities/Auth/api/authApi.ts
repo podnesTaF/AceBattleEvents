@@ -1,8 +1,7 @@
 import { createApiInstance } from "@/src/shared/api";
 import { Session } from "next-auth";
-import { AuthenticatedUser } from "../../../../../../Cross Fit Factory/my-cfit-factory-front/src/entities/Auth";
 import { IUser } from "../../User/model";
-import { CreateUserDto } from "../model";
+import { AuthenticatedUser, CreateUserDto } from "../model";
 
 class AuthApi {
   private instance;

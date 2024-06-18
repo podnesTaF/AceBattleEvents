@@ -2,7 +2,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import { IconButton, Skeleton } from "@mui/material";
-import { json, type V2_MetaFunction } from "@remix-run/node";
+import { json, type MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Api } from "~/api/axiosInstance";
@@ -36,7 +36,7 @@ const networksLinks = [
   },
 ];
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     { title: "Ace Battle Association | Main page" },
     { name: "description", content: "Welcome to the Ace Battle Association" },
@@ -249,7 +249,7 @@ export default function Index() {
           <h4 className="text-white text-2xl font-semibold">Follow us</h4>
           <div className="flex gap-4">
             {networksLinks.map((link, i) => (
-              <a href={link.href} target="_blank" key={i}>
+              <a href={link.href} target="_blank" key={i} rel="noreferrer">
                 <IconButton sx={{ bgcolor: "white" }}>
                   <link.icon className="text-red-500" fontSize="large" />
                 </IconButton>

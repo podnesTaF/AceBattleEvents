@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { LoaderArgs } from "@remix-run/node";
+import { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { Api } from "~/api/axiosInstance";
@@ -13,7 +13,7 @@ import { IRaceTeam } from "~/lib/races/types/teamResults";
 import { IRace, ITeamPlayer } from "~/lib/types";
 import { getCountryFlagSrc, transformClubResults } from "~/lib/utils";
 
-export const loader = async ({ params, request }: LoaderArgs) => {
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const { teamId } = params;
   const { url } = request;
   const resultPage = new URL(url).searchParams.get("resultPage") || "1";

@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import {
   Link,
   isRouteErrorResponse,
@@ -29,7 +29,7 @@ import { TabNames } from "~/components/media/AddImageDialog";
 import { teamTypes } from "~/lib/teams";
 import { AddTeamSchema, authenticator, getPickItems } from "~/lib/utils";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   let user = await authenticator.isAuthenticated(request, {
     failureRedirect: "/auth/login",
   });

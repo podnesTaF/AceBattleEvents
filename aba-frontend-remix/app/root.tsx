@@ -1,15 +1,14 @@
 import { withEmotionCache } from "@emotion/react";
 import { ThemeProvider } from "@mui/material/styles";
-import {
-  V2_MetaFunction,
-  json,
-  redirect,
+import type {
+  MetaFunction,
   type LinksFunction,
-  type LoaderArgs,
+  type LoaderFunctionArgs,
 } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+
 import {
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
@@ -18,7 +17,8 @@ import {
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
-import { ReactNode, useContext, useEffect } from "react";
+import type { ReactNode } from "react";
+import { useContext, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import globalStyles from "~/styles/global.css";
@@ -27,7 +27,7 @@ import { AppBar, CustomDrawer, Footer } from "./components";
 import MainNavigation from "./components/shared/header/MainNavigation";
 import ClientStyleContext from "./context/ClientStyleContext";
 import { LayoutProvider, useLayout } from "./lib/shared/context/LayoutContex";
-import { AuthenticatedUser } from "./lib/types";
+import type { AuthenticatedUser } from "./lib/types";
 import { authenticator } from "./lib/utils";
 import theme from "./styles/theme";
 
@@ -41,7 +41,7 @@ export const links: LinksFunction = () => [
     href: "/styles/swiper-bundle.min.css",
   },
 ];
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request);
   if (
     user?.roles?.find((r) => r.name === "admin") ||
@@ -55,7 +55,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   return redirect("/under-construction");
 };
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [{ title: "Ace Battle Events | Main Page" }];
 };
 
@@ -120,7 +120,6 @@ const Document = withEmotionCache(
               )}
               <ScrollRestoration />
               <Scripts />
-              {process.env.NODE_ENV === "development" && <LiveReload />}
               <ReactQueryDevtools initialIsOpen={false} />
             </ThemeProvider>
           </body>

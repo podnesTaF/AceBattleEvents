@@ -3,7 +3,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import React from "react";
 import { Api } from "~/api/axiosInstance";
@@ -11,7 +11,7 @@ import { CustomCrumbs, RelatedNewsWrapper, TextContent } from "~/components";
 import { INews } from "~/lib/types";
 import { getTimeAgo } from "~/lib/utils";
 
-export const loader = async ({ params }: LoaderArgs) => {
+export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { newsId } = params;
 
   if (!newsId) {

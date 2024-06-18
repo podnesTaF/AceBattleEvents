@@ -1,4 +1,4 @@
-import { LoaderArgs } from "@remix-run/node";
+import { LoaderFunctionArgs } from "@remix-run/node";
 import { Await, useLoaderData, useNavigate } from "@remix-run/react";
 import { Suspense, useEffect } from "react";
 import { Api } from "~/api/axiosInstance";
@@ -7,7 +7,7 @@ import AdminHeader from "~/components/admin/AdminHeader";
 import { useFilter } from "~/lib/hooks";
 import { getNewParams, transformToClubData } from "~/lib/utils";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const params = request.url.split("?")[1];
   const clubsData = await Api().clubs.getClubs(params);
 

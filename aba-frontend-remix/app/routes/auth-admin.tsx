@@ -1,4 +1,4 @@
-import { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
+import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { RemixForm } from "~/components/shared/forms/CustomForm";
 import { adminAuthenticator, loginSchema } from "~/lib/utils";
 
@@ -9,13 +9,13 @@ export const action = async ({ request }: { request: Request }) => {
   });
 };
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   return await adminAuthenticator.isAuthenticated(request, {
     successRedirect: "/admin",
   });
 }
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [{ title: "Ace Battle Events | Admin Login" }];
 };
 

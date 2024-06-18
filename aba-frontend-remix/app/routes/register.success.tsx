@@ -1,8 +1,8 @@
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { Api } from "~/api/axiosInstance";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const urlParams = new URLSearchParams(request.url.split("?")[1]);
   const sessionId = urlParams.get("session_id");
 

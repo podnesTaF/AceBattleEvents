@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { Button, IconButton } from "@mui/material";
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
@@ -19,7 +19,7 @@ import { TabNames } from "~/components/media/AddImageDialog";
 import { IContent } from "~/lib/news/types/INews";
 import { creatNewsSchema } from "~/lib/utils";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { url } = request;
   const newsId = new URL(url).searchParams.get("newsId");
 

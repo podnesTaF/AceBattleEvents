@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 
 import { Checkbox, FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { red } from "@mui/material/colors";
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData, useLocation, useNavigate } from "@remix-run/react";
 import { Api } from "~/api/axiosInstance";
 import { NoTeams, StatusCard, TeamCard } from "~/components";
 import { ITeam } from "~/lib/types";
 import { authenticator, formatDate } from "~/lib/utils";
 
-export const loader = async ({ params, request }: LoaderArgs) => {
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const { eventId } = params;
   const event = await Api().events.getEvent(eventId || "");
   const user = await authenticator.isAuthenticated(request);

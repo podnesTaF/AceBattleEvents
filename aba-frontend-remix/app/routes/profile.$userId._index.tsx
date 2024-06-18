@@ -1,4 +1,4 @@
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { useMemo, useState } from "react";
 import { Api } from "~/api/axiosInstance";
@@ -11,7 +11,7 @@ import {
 import { TabReturnData } from "~/lib/types";
 import { authenticator, getProfileTabs, isRunner } from "~/lib/utils";
 
-export const loader = async ({ params, request }: LoaderArgs) => {
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const { userId } = params;
 
   const selectedTab = new URL(request.url).searchParams.get("tab");

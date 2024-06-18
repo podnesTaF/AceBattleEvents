@@ -1,5 +1,5 @@
 import HomeIcon from "@mui/icons-material/Home";
-import { LoaderArgs, V2_MetaFunction, json } from "@remix-run/node";
+import { LoaderFunctionArgs, MetaFunction, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Api } from "~/api/axiosInstance";
 import { CustomCrumbs } from "~/components";
@@ -19,11 +19,11 @@ const links = [
   },
 ];
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [{ title: "Ace Battle Events | Results" }];
 };
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const finishedEvents = await Api().events.getEventPreviews("finished=true");
 
   return json({

@@ -1,4 +1,4 @@
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { Api } from "~/api/axiosInstance";
 import { LastMatchesSideBar, ProfileHeader } from "~/components";
@@ -14,7 +14,7 @@ type UserProfileLoaderData = {
   matches: IRace[];
 };
 
-export const loader = async ({ params, request }: LoaderArgs) => {
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const { userId } = params;
 
   if (!userId) throw new Response("No user id provided", { status: 404 });

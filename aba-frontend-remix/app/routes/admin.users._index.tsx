@@ -1,12 +1,12 @@
 import { Collapse } from "@mui/material";
-import { LoaderArgs } from "@remix-run/node";
+import { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import { Api } from "~/api/axiosInstance";
 import { CreateAdminForm, CustomTable } from "~/components";
 import { adminAuthenticator } from "~/lib/utils";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const me = await adminAuthenticator.isAuthenticated(request);
 
   const admins = await Api(me?.token).admin.getAdmins();

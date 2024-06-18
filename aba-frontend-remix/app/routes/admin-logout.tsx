@@ -1,7 +1,7 @@
-import { LoaderArgs } from "@remix-run/node";
+import { LoaderFunctionArgs } from "@remix-run/node";
 import { adminAuthenticator } from "~/lib/utils";
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   await adminAuthenticator.logout(request, { redirectTo: "/" });
 }
 

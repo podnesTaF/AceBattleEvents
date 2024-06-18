@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Collapse } from "@mui/material";
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -9,7 +9,7 @@ import { FormButton, ImagePicker, SearchField } from "~/components";
 import { useFilter } from "~/lib/hooks";
 import { addImageSchema, adminAuthenticator } from "~/lib/utils";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const images = await Api().media.getAllMedia();
   const me = await adminAuthenticator.isAuthenticated(request);
 

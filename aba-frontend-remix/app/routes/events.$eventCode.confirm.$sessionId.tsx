@@ -1,6 +1,6 @@
 import { Info } from "@mui/icons-material";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData, useRouteError } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
@@ -13,7 +13,7 @@ import { IParticipant } from "~/lib/registrations/types/IParticipant";
 import { useLayout } from "~/lib/shared/context/LayoutContex";
 import { getEventHeaderItems } from "~/lib/utils";
 
-export const loader = async ({ params }: LoaderArgs) => {
+export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { eventCode, sessionId } = params;
 
   if (!sessionId) {

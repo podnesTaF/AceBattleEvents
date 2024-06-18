@@ -2,7 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Button, Divider, IconButton } from "@mui/material";
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
@@ -12,7 +12,7 @@ import { TabNames } from "~/components/media/AddImageDialog";
 import { countries } from "~/lib/shared";
 import { addEventSchema, adminAuthenticator } from "~/lib/utils";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const me = await adminAuthenticator.isAuthenticated(request);
 
   if (!me) {

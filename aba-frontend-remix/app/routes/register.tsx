@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { KeyboardArrowLeft } from "@mui/icons-material";
 import { Link } from "@mui/material";
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { Link as RemixLink, useLoaderData } from "@remix-run/react";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -24,7 +24,7 @@ import { useStepNavigation } from "~/lib/join/hooks/useStepNavigation";
 import { IRole, IUser } from "~/lib/types";
 import { getJoinSteps, joinSchema } from "~/lib/utils";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const urlParams = new URLSearchParams(request.url.split("?")[1]);
   const sessionId = urlParams.get("sessionId");
   const returnData: {

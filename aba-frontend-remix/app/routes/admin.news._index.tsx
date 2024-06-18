@@ -1,11 +1,11 @@
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { Api } from "~/api/axiosInstance";
 import { ConfirmAlert, NewsLargeItem, Pagination } from "~/components";
 import AdminHeader from "~/components/admin/AdminHeader";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const page = new URL(request.url).searchParams.get("page") || "1";
   const newsData = await Api().news.getNewsPreviews({
     textLength: 300,

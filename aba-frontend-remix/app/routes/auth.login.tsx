@@ -1,6 +1,6 @@
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
+import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { RemixForm } from "~/components/shared/forms/CustomForm";
 import { authenticator, loginSchema } from "~/lib/utils";
@@ -12,7 +12,7 @@ export const action = async ({ request }: { request: Request }) => {
   });
 };
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   // If the user is already authenticated redirect to /dashboard directly
   await authenticator.isAuthenticated(request, {
     successRedirect: "/",
@@ -23,7 +23,7 @@ export async function loader({ request }: LoaderArgs) {
   return { error };
 }
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [{ title: "Ace Battle Events | Login" }];
 };
 

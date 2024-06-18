@@ -4,11 +4,11 @@ import EventIcon from "@mui/icons-material/Event";
 import FeedIcon from "@mui/icons-material/Feed";
 import GroupsIcon from "@mui/icons-material/Groups";
 import PermMediaIcon from "@mui/icons-material/PermMedia";
-import { Outlet, V2_MetaFunction } from "@remix-run/react";
+import { MetaFunction, Outlet } from "@remix-run/react";
 import { SideBar } from "~/components";
 import { adminAuthenticator } from "~/lib/utils";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [{ title: "Ace Battle Events | Admin" }];
 };
 

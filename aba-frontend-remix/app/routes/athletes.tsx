@@ -1,8 +1,8 @@
 import HomeIcon from "@mui/icons-material/Home";
-import { Outlet, V2_MetaFunction } from "@remix-run/react";
+import { MetaFunction, Outlet } from "@remix-run/react";
 import { CustomCrumbs } from "~/components";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [{ title: "Ace Battle Events | Athletes" }];
 };
 

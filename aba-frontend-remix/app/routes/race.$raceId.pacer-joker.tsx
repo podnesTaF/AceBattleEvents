@@ -1,11 +1,11 @@
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Api } from "~/api/axiosInstance";
 import { ResultsTable } from "~/components";
 import { IRace } from "~/lib/types";
 import { getPacersJokersResultTable } from "~/lib/utils";
 
-export const loader = async ({ request, params }: LoaderArgs) => {
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const { raceId } = params;
 
   if (!raceId) {

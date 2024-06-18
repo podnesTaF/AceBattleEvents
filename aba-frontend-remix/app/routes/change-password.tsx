@@ -1,4 +1,4 @@
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Snackbar } from "@mui/material";
@@ -9,7 +9,7 @@ import { Api } from "~/api/axiosInstance";
 import { FormButton, FormField, FormPartsLayout } from "~/components";
 import { createNewPasswordSchema } from "~/lib/utils";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   // localhost:4000/change-password?token=?&userId=?&type=admin
   const token = new URL(request.url).searchParams.get("token");
   const type = new URL(request.url).searchParams.get("type");

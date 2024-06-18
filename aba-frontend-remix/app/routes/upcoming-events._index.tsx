@@ -1,4 +1,4 @@
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import {
   isRouteErrorResponse,
   useLoaderData,
@@ -9,7 +9,7 @@ import { EventCard } from "~/components/events/EventCard";
 import FutureEventCard from "~/components/events/FutureEventCard";
 import { authenticator } from "~/lib/utils";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { events } = await Api().events.getEventPreviews();
   const { futureEvents } = await Api().events.getFututeEvents();
   const user = await authenticator.isAuthenticated(request);

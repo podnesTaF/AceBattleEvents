@@ -1,4 +1,4 @@
-import { LoaderArgs, json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
 import {
   isRouteErrorResponse,
   useLoaderData,
@@ -32,7 +32,7 @@ import {
   getStartOfEvent,
 } from "~/lib/utils";
 
-export const loader = async ({ params, request }: LoaderArgs) => {
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const { events } = await Api().events.getEventPreviews("finished=true");
   const { eventCode } = params;
 
