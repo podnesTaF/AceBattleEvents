@@ -1,0 +1,232 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1 {
+    @apply text-4xl font-bold;
+  }
+
+  h2 {
+    @apply text-3xl font-bold;
+  }
+
+  h3 {
+    @apply text-2xl font-bold;
+  }
+
+  h4 {
+    @apply text-xl font-bold;
+  }
+
+  h5 {
+    @apply text-lg font-bold;
+  }
+}
+
+.border-gradient {
+  border: 2px solid transparent;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(to right, #ff00001a 0%, #1c1e1f 100%);
+  border-radius: 30px;
+}
+
+.divider-gradient {
+  background: rgb(30, 28, 31);
+  background: linear-gradient(
+    90deg,
+    rgba(30, 28, 31, 0.3) 0%,
+    rgba(30, 28, 31, 1) 20%,
+    rgba(30, 28, 31, 1) 80%,
+    rgba(30, 28, 31, 0.3) 100%
+  );
+}
+
+.divider-gradient-dark {
+  background: rgb(30, 28, 31);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 1) 20%,
+    rgba(255, 255, 255, 1) 80%,
+    rgba(255, 255, 255, 0.3) 100%
+  );
+}
+
+.menu-item-light-right {
+  background: rgb(255, 0, 0);
+  background: linear-gradient(
+    270deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(255, 255, 255, 0.3) 100%
+  );
+}
+
+.menu-item-light-left {
+  background: rgb(255, 0, 0);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(255, 255, 255, 0.3) 100%
+  );
+}
+
+.menu-item-dark-left {
+  background: rgb(255, 0, 0);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+}
+
+.menu-item-dark-right {
+  background: rgb(255, 0, 0);
+  background: linear-gradient(
+    270deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+}
+
+.gradient-text-light {
+  background-image: linear-gradient(153deg, #ffffff83, #fff);
+  background-size: 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+
+.gradient-text-dark {
+  background-image: linear-gradient(153deg, #1e1c1f3a, #1e1c1f 100%);
+  background-size: 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+
+.gradient-text-redish {
+  background-image: linear-gradient(153deg, #ff0000, #ffffff 50%, #fff 100%);
+  background-size: 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+
+.btn-clip {
+  clip-path: polygon(0 0, 100% 0, 100% 75%, 90% 75%, 90% 100%, 0 100%);
+}
+
+.bg-main-section {
+  background: linear-gradient(
+    180deg,
+    rgba(30, 28, 31, 1) 0%,
+    rgba(30, 28, 31, 0.5) 40%,
+    rgba(30, 28, 31, 1) 50%,
+    rgba(30, 28, 31, 1) 100%
+  );
+}
+
+.clip-right {
+  clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
+  transform: translateX(10%);
+}
+
+.clip-left {
+  clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
+  transform: translateX(-10%);
+}
+
+.clip-both {
+  clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+  transform: translateX(0);
+}
+
+.clip-pen {
+  clip-path: none;
+}
+
+.clip-hep {
+  clip-path: polygon(100% 0, 100% 10%, 91% 20%, 75% 20%, 75% 100%, 0 100%, 0 0);
+}
+
+@media screen and (min-width: 980px) {
+  .bg-main-section {
+    background: linear-gradient(
+      180deg,
+      rgba(30, 28, 31, 1) 0%,
+      rgba(30, 28, 31, 0.5) 40%,
+      rgba(30, 28, 31, 1) 60%,
+      rgba(30, 28, 31, 1) 100%
+    );
+  }
+
+  .clip-pen {
+    clip-path: polygon(0 0, 100% 0, 100% 50%, 95% 100%, 0 100%);
+  }
+}
+
+@media screen and (min-width: 1480px) {
+  .bg-main-section {
+    background: linear-gradient(
+      180deg,
+      rgba(30, 28, 31, 1) 0%,
+      rgba(30, 28, 31, 0.5) 60%,
+      rgba(30, 28, 31, 1) 80%,
+      rgba(30, 28, 31, 1) 100%
+    );
+  }
+}
+
+.bg-gradient-to-b-light {
+  background: linear-gradient(
+    180deg,
+    #ffffff00 0%,
+    #ffffff00 70%,
+    #fff9ff 80%,
+    #fff9ff 100%
+  );
+}
+
+.clip-title-team {
+  clip-path: polygon(100% 0, 100% 36%, 88% 54%, 88% 100%, 0 100%, 0 0);
+}
+
+.video-section {
+  position: relative;
+}
+
+.video-section.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.video-section .iframe-video {
+  width: 100%;
+  height: 180px;
+  border: none;
+}
+
+.video-section .fullscreen-iframe {
+  height: 640px;
+  width: 100%;
+}
+
+.video-wrapper {
+  width: 80%;
+  max-width: 1080px;
+}
