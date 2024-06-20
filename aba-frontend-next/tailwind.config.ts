@@ -27,7 +27,6 @@ const config = {
       "2xl": "1536px",
       "3xl": "1600px",
     },
-
     backgroundSize: {
       auto: "auto",
       cover: "cover",
@@ -100,4 +99,3 @@ const config = {
 } satisfies Config;
 
 export default config;
-

@@ -1,0 +1,1 @@
+export { NewsApi } from "./NewsApi";
