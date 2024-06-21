@@ -8,15 +8,10 @@ const tabs = ["About", "Rules", "Structure"];
 
 interface AboutPageProps {
   children: React.ReactNode;
-  searchParams?: {
-    tab?: string;
-  };
 }
 
 const AboutLayout = ({ children, searchParams }: AboutPageProps) => {
   const router = useRouter();
-
-  console.log(searchParams?.tab);
 
   const onChangeTab = (index: number) => {
     if (index === 0) {
