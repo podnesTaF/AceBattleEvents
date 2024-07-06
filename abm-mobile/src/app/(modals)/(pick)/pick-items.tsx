@@ -7,8 +7,7 @@ import PickReceiversList from "@Components/notifications/PickReceiversList";
 import PickTeam from "@Components/teams/PickTeam";
 import { Ionicons } from "@expo/vector-icons";
 import { Heading } from "@gluestack-ui/themed";
-import { Stack, useLocalSearchParams } from "expo-router";
-import { usePathname } from "expo-router/src/hooks";
+import { Stack, useLocalSearchParams, usePathname } from "expo-router";
 import React, { useState } from "react";
 import { TouchableOpacity } from "react-native";
 
