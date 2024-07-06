@@ -69,7 +69,7 @@ const TeamPreviewCard = ({
             <TitleRect
               position={titlePosition}
               title={team.name}
-              icon={"md-people"}
+              icon={"people"}
             />
             <Image
               role={"img"}
@@ -92,7 +92,7 @@ const TeamPreviewCard = ({
                 >
                   <Button size="sm" action="primary" variant="solid">
                     <ButtonIcon>
-                      <Ionicons name="md-create" size={16} color="white" />
+                      <Ionicons name="create-outline" size={16} color="white" />
                     </ButtonIcon>
                     <ButtonText>{t("common.edit")}</ButtonText>
                   </Button>

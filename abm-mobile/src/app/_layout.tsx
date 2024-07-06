@@ -17,7 +17,8 @@ import { removeUser, setLoading, setUser, store } from "@lib/store";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "intl-pluralrules";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider } from "react-redux";
 import "../../i18n";
 
@@ -54,7 +55,9 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}>
-      <RootLayoutNav />
+      <GestureHandlerRootView>
+        <RootLayoutNav />
+      </GestureHandlerRootView>
     </Provider>
   );
 }
