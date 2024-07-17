@@ -29,15 +29,13 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import {useHeaderHeight} from "@react-navigation/elements";
 
 const tabsData = (user: IUser) => {
   const { t } = useTranslation();
   if (user.runner) {
     return [
-      <ScrollView>
-        <AthleteBioTab user={user} />
-      </ScrollView>,
-      <ScrollView>
+        <AthleteBioTab user={user} />,
         <VStack p={"$3"} space="lg">
           {user.runner.teamsAsRunner?.length ? (
             user.runner.teamsAsRunner.map((team) => (
@@ -56,8 +54,7 @@ const tabsData = (user: IUser) => {
               </Heading>
             </Box>
           )}
-        </VStack>
-      </ScrollView>,
+        </VStack>,
       <ResultsTab runner={user.runner} />,
       <CompetitionsTab runnerId={user.runner.id} />,
     ];
@@ -72,14 +69,15 @@ const tabsData = (user: IUser) => {
 };
 
 const ProfileScreen = () => {
-  const params = useLocalSearchParams();
+  const params = useLocalSearchParams<{ userId: string }>();
   const [activeTab, setActiveTab] = useState(0);
   const auth = useAppSelector(selectUser);
+  const headerHeight = useHeaderHeight();
   const {
     data: user,
     isLoading,
     error,
-  } = useFetchUserQuery({ userId: +params.userId, authId: auth?.id });
+  } = useFetchUserQuery({ userId: +params.userId!, authId: auth?.id });
 
   const profileTabs = useProfileTabByUserRole(user?.role);
   const { t } = useTranslation();
@@ -103,8 +101,8 @@ const ProfileScreen = () => {
           header: ({ navigation }) => (
             <SafeAreaView
               style={{
-                backgroundColor: "#1c1e1f",
                 paddingTop: getPaddingForPlatform(),
+                backgroundColor: "#1c1e1f"
               }}
             >
               <VStack width={width}>
@@ -152,21 +150,23 @@ const ProfileScreen = () => {
           ),
         }}
       />
-      <SkeletonLoader<IUser> error={error} data={user} isLoading={isLoading}>
-        {(data) => (
-          <FlatList
-            ref={flatListRef}
-            data={tabsData(data)}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            snapToAlignment="center"
-            renderItem={({ item }) => <View style={{ width }}>{item}</View>}
-            keyExtractor={(item, i) => i.toString()}
-            scrollEnabled={false}
-          />
-        )}
-      </SkeletonLoader>
+       <ScrollView style={{paddingTop: 190}}>
+         <SkeletonLoader<IUser> error={error} data={user} isLoading={isLoading}>
+           {(data) => (
+               <FlatList
+                   ref={flatListRef}
+                   data={tabsData(data)}
+                   horizontal
+                   pagingEnabled
+                   showsHorizontalScrollIndicator={false}
+                   snapToAlignment="center"
+                   renderItem={({ item }) => <View style={{ width }}>{item}</View>}
+                   keyExtractor={(item, i) => i.toString()}
+                   scrollEnabled={false}
+               />
+           )}
+         </SkeletonLoader>
+       </ScrollView>
     </>
   );
 };
