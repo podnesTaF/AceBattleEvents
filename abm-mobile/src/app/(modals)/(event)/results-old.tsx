@@ -50,7 +50,7 @@ const tabsData = (
   ];
 };
 
-const Results = () => {
+const ResultsOld = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState(0);
   const { width } = Dimensions.get("window");
@@ -140,4 +140,4 @@ const Results = () => {
   );
 };
 
-export default withWatermarkBg(Results, "#fff9ff");
+export default withWatermarkBg(ResultsOld, "#fff9ff");

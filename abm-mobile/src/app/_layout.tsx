@@ -113,6 +113,41 @@ function RootLayoutNav() {
             headerTransparent: true,
           }}
         />
+        <Stack.Screen
+          name="(modals)/(profile)/[userId]"
+          options={{
+            title: "",
+            headerLeft: () => (
+              <TouchableOpacity onPress={router.back}>
+                <Ionicons name="arrow-back" size={34} color={"#fff"} />
+              </TouchableOpacity>
+            ),
+            headerLargeTitle: true,
+            headerTransparent: true,
+          }}
+        />
+          <Stack.Screen
+              name={"(modals)/(event)/participants"}
+                options={{
+                    headerShown:true,
+                    title: "Participants",
+                    headerShadowVisible: false,
+                    headerStyle: {
+                        backgroundColor: "#1C1E1F",
+                    },
+                    headerTintColor: "#fff",
+                }} />
+          <Stack.Screen
+              name={"(modals)/(event)/results"}
+              options={{
+                  headerShown:true,
+                  title: "Results",
+                  headerShadowVisible: false,
+                  headerStyle: {
+                      backgroundColor: "#1C1E1F",
+                  },
+                  headerTintColor: "#fff",
+              }} />
       </Stack>
     </GluestackUIProvider>
   );

@@ -25,7 +25,7 @@ import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { Calendar } from "lucide-react-native";
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { Animated } from "react-native";
+import {Animated, ScrollView} from "react-native";
 
 const EventScreen = () => {
   const { eventId } = useLocalSearchParams<{ eventId: string }>();
@@ -59,13 +59,13 @@ const EventScreen = () => {
     if (!eventInfo) return;
     if (tabIndex === 0) {
       router.push({
-        pathname: "/participants",
+        pathname: "(modals)/(event)/participants",
         params: { eventId, name: eventInfo.title },
       });
     } else if (tabIndex === 1) {
       router.push({ pathname: "/timetable", params: { eventId: eventId } });
     } else {
-      router.push({ pathname: "/results", params: { eventId: eventId } });
+      router.push({ pathname: "(modals)/(event)/results", params: { eventId: eventId } });
     }
   };
 
@@ -84,12 +84,12 @@ const EventScreen = () => {
         }}
       />
       <SectionList
-        style={{ marginTop: headerHeight }}
         keyExtractor={(i) => (i as any).title}
         sections={[{ data: [{ title: "Event Info" }] }]}
         contentInsetAdjustmentBehavior="automatic"
         renderSectionHeader={() => (
-          <Box style={{ backgroundColor: "#1C1E1F", paddingTop: 12 }}>
+          <Box
+              style={{ backgroundColor: "#1C1E1F"}}>
             <Tabs
               activeColor={"$white"}
               items={tabs}
