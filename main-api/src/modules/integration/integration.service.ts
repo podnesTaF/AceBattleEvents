@@ -1,7 +1,7 @@
-import { Injectable } from "@nestjs/common";
-import axios from "axios";
-import { CreateParticipantDto } from "./dto/create-participnat.dto";
-import { IntegrationGateway } from "./integration.gateway";
+import { Injectable } from '@nestjs/common';
+import axios from 'axios';
+import { CreateParticipantDto } from './dto/create-participnat.dto';
+import { IntegrationGateway } from './integration.gateway';
 
 @Injectable()
 export class IntegrationService {
@@ -17,7 +17,7 @@ export class IntegrationService {
 
   async createParticipant(dto: CreateParticipantDto) {
     const { data } = await axios.post(
-      "http://localhost/_287865/api/OJVQEZUWGHZCBTD4D74U692MEZPVDZGO",
+      'https://api.raceresult.com/287865/OJVQEZUWGHZCBTD4D74U692MEZPVDZGO',
       dto,
     );
 
@@ -26,14 +26,14 @@ export class IntegrationService {
 
   async getStaticResults() {
     const { data } = await axios.get(
-      "http://localhost/_287865/api/XD6G8BR0BT8ZM7FM4CT32QZGTXOCCK8J",
+      'https://api.raceresult.com/287865/XD6G8BR0BT8ZM7FM4CT32QZGTXOCCK8J',
     );
     return data;
   }
 
   async getParticipants() {
     const { data } = await axios.get(
-      "http://localhost/_287865/api/R0WUF52DAVGQTR3287SBG8VM4UXJV2ZV",
+      'https://api.raceresult.com/287865/R0WUF52DAVGQTR3287SBG8VM4UXJV2ZV',
     );
 
     return data;

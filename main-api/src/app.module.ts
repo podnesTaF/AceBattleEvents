@@ -90,10 +90,10 @@ import { UserModule } from "./modules/users/modules/user.module";
     ParticipantModule,
   ],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer): void {
-    if (process.env.NODE_ENV !== "PRODUCTION") {
-      consumer.apply(HttpRequestLogger).forRoutes("*");
+  export class AppModule implements NestModule {
+    configure(consumer: MiddlewareConsumer): void {
+      if (process.env.NODE_ENV !== "PRODUCTION") {
+        consumer.apply(HttpRequestLogger).forRoutes("*");
+      }
     }
   }
-}
